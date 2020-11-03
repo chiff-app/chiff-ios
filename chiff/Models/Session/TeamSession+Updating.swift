@@ -13,9 +13,9 @@ extension TeamSession {
 
     // MARK: - Static methods
 
-    static func updateAllTeamSessions(pushed: Bool) -> Promise<Void> {
+    static func updateAllTeamSessions() -> Promise<Void> {
         return firstly {
-            when(fulfilled: try TeamSession.all().map { updateTeamSession(session: $0, pushed: pushed) })
+            when(fulfilled: try TeamSession.all().map { updateTeamSession(session: $0) })
         }.then { (results) -> Promise<Void> in
             if results.reduce(false, { $0 ? $0 : $1 }) {
                 let teamSessions = try TeamSession.all()
@@ -29,17 +29,12 @@ extension TeamSession {
         }
     }
 
-    static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Bool> {
+    static func updateTeamSession(session: TeamSession) -> Promise<Bool> {
         var session = session
-        var makeBackup = false
-        var changed = false
-        if !session.created && pushed {
-            session.created = true
-            changed = true
-            makeBackup = true
-        }
         return firstly {
-            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get, privKey: try session.signingPrivKey()))
+            when(fulfilled:
+                    session.getOrganisationData(),
+                    API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get, privKey: try session.signingPrivKey()))
         }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
             if let keys = result["keys"] as? [String] {
                 return session.updateKeys(keys: keys).map { (type, result, $0) }
@@ -47,38 +42,40 @@ extension TeamSession {
                 return .value((type, result, nil))
             }
         }.map { (type, result, pubKey) in
-            try session.update(changed: changed, makeBackup: makeBackup, type: type, result: result, pubKey: pubKey)
+            try session.update(type: type, result: result, pubKey: pubKey)
         }.recover { (error) -> Promise<Bool> in
-            guard case APIError.statusCode(404) = error else {
+            if case APIError.statusCode(404) = error {
+                try? session.delete()
+                NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionID.rawValue: session.id])
+                NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
+                return .value(true)
+            } else {
                 throw error
             }
-            guard session.created else {
-                return .value(false)
-            }
-            try? session.delete()
-            NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
-            NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
-            return .value(true)
         }
     }
 
-    mutating func update(changed: Bool, makeBackup: Bool, type: OrganisationType?, result: JSONObject, pubKey: String?) throws -> Bool {
-        var changed = changed
-        var makeBackup = makeBackup
+    mutating func update(type: OrganisationType?, result: JSONObject, pubKey: String?) throws -> Bool {
+        var changed = false
+        var makeBackup = false
         if let pubKey = pubKey {
             signingPubKey = pubKey
             changed = true
-            if created {
-                makeBackup = true
-            }
+            makeBackup = self.created // Only updated the backup if the session is created.
         }
-        guard let accounts = result["accounts"] as? [String: String],
+        guard let created = result["created"] as? Bool,
+              let accounts = result["accounts"] as? [String: String],
               let isAdmin = result["admin"] as? Bool else {
             throw CodingError.missingData
         }
         if let type = type, self.type != type {
             self.type = type
             changed = true
+        }
+        if !self.created && created {
+            self.created = true
+            changed = true
+            makeBackup = true
         }
         if self.isAdmin != isAdmin {
             self.isAdmin = isAdmin
@@ -96,9 +93,11 @@ extension TeamSession {
     }
 
     mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
+        guard LocalAuthenticationManager.shared.isAuthenticated else {
+            return 0 // We're probably in the background, so updating accounts will fail. We'll sync next app is launched.
+        }
         var changed = 0
         let key = try self.passwordSeed()
-        //TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better
         var currentAccounts = try SharedAccount.all(context: nil, label: self.id)
         for (id, data) in accounts {
             currentAccounts.removeValue(forKey: id)
@@ -114,7 +113,6 @@ extension TeamSession {
             }
         }
         for account in currentAccounts.values {
-            // TODO: Check how to safely delete here in the background
             try account.deleteSync()
             changed += 1
         }

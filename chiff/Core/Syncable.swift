@@ -128,7 +128,6 @@ extension Syncable {
             }
             // Remove accounts that were not present
             for object in current.values {
-                // TODO: Check how to safely delete here in the background
                 try object.deleteSync()
                 changed = true
             }

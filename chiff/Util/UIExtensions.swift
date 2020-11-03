@@ -258,7 +258,7 @@ extension UITableViewCell {
 
 extension UNNotificationContent {
     var isProcessed: Bool {
-        return self.userInfo[NotificationContentKey.type] != nil
+        return self.userInfo[NotificationContentKey.type.rawValue] != nil
     }
 }
 
