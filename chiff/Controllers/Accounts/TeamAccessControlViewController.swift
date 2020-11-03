@@ -28,11 +28,6 @@ enum AccessControlType {
     }
 }
 
-struct Test: AccessControllable {
-    let id: String
-    let name: String
-}
-
 class TeamAccessControlViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var tableViewFooter: UILabel!
