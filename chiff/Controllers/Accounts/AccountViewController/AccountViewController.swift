@@ -135,7 +135,9 @@ class AccountViewController: KeynTableViewController {
     // MARK: - Actions
 
     @IBAction func showPassword(_ sender: UIButton) {
-        //TODO: THis function should be disabled if there's no password
+        guard account.hasPassword else {
+            return
+        }
         if passwordLoaded && userPasswordTextField.isEnabled {
             self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
             return
@@ -223,6 +225,8 @@ class AccountViewController: KeynTableViewController {
             showPasswordButton.isEnabled = false
         } else {
             passwordLoaded = true
+            showPasswordButton.isHidden = false
+            showPasswordButton.isEnabled = true
             userPasswordTextField.text = password
             userPasswordTextField.isSecureTextEntry = true
         }

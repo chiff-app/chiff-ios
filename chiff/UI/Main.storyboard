@@ -4247,7 +4247,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <!--Navigation Controller-->
         <scene sceneID="wWa-4W-Plv">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Scr-i3-u3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="Feedback" automaticallyAdjustsScrollViewInsets="NO" id="uen-CQ-Db6" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="ISi-dU-XUZ"/>
@@ -4261,6 +4260,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <segue destination="pSe-JL-PVq" kind="relationship" relationship="rootViewController" id="HcK-jA-QDQ"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Scr-i3-u3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1468" y="3516"/>
         </scene>

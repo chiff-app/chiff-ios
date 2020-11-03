@@ -46,9 +46,13 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
     func setObjects(objects: [AccessControllable], type: AccessControlType) {
         switch type {
         case .user:
-            selectedUsers = objects as! [TeamUser]
+            if let users = objects as? [TeamUser] {
+                selectedUsers = users
+            }
         case .role:
-            selectedRoles = objects as! [TeamRole]
+            if let roles = objects as? [TeamRole] {
+                selectedRoles = roles
+            }
         }
         tableView.reloadData()
     }
@@ -131,7 +135,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             }.then { _ in
                 self.account.delete()
             }.then { _ in
-                TeamSession.updateTeamSession(session: self.session, pushed: false).asVoid()
+                TeamSession.updateTeamSession(session: self.session).asVoid()
             }.done(on: .main) {
                 self.performSegue(withIdentifier: "DeleteUserAccount", sender: self)
             }.catch(on: .main) { error in
