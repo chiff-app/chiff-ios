@@ -100,9 +100,10 @@ enum MessageParameter {
     static let type = "type"
 }
 
-enum BackgroundNotificationType: String {
+enum NotificationType: String {
     case sync = "SYNC"
-    case deleteTeamSession = "DELETE_TEAM_SESSION"
+    case deleteTeamSession = "DELETE_TEAM_SESSION" // Deprecated
+    case browser = "BROWSER"
 }
 
 enum NotificationCategory {
@@ -112,16 +113,19 @@ enum NotificationCategory {
     static let onboardingNudge = "ONBOARDING_NUDGE"
 }
 
-enum NotificationContentKey {
-    static let browserTab = "browserTab"
-    static let data = "data"
-    static let password = "password"
-    static let sessionId = "sessionID"
-    static let siteId = "siteID"
-    static let siteName = "siteName"
-    static let siteURL = "siteURL"
-    static let type = "type"
-    static let username = "username"
+enum NotificationContentKey: String {
+    case browserTab
+    case data
+    case password
+    case sessionID
+    case siteID
+    case siteName
+    case siteURL
+    case type
+    case username
+    case accounts
+    case userTeamSessions
+    case sessions
 }
 
 /**

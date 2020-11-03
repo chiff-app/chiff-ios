@@ -15,20 +15,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     var sessions = [Session]()
 
-    var observers = [NSObjectProtocol]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let nc = NotificationCenter.default
-        observers.append(nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession))
-        observers.append(nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession))
-        observers.append(nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData))
-        observers.append(nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (_) in
-            DispatchQueue.main.async {
-                self.updateUi()
-            }
-        })
+        nc.addObserver(self, selector: #selector(addSession(_:)), name: .sessionStarted, object: nil)
+        nc.addObserver(self, selector: #selector(removeSession(_:)), name: .sessionEnded, object: nil)
+        nc.addObserver(self, selector: #selector(reloadData(_:)), name: .sessionUpdated, object: nil)
+        nc.addObserver(self, selector: #selector(updateUi), name: .notificationSettingsUpdated, object: nil)
 
         scrollView.delegate = self
         tableView.dataSource = self
@@ -41,13 +35,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.sessions = sessions.sorted(by: { $0.creationDate < $1.creationDate })
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        for observer in observers {
-            NotificationCenter.default.removeObserver(observer)
         }
     }
 
@@ -147,7 +134,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.present(alert, animated: true, completion: nil)
     }
 
-    func addSession(notification: Notification) {
+    @objc func addSession(_ notification: Notification) {
         guard let session = notification.userInfo?["session"] as? Session else {
             Logger.shared.warning("Session was nil when trying to add it to the devices view.")
             return
@@ -191,7 +178,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     // MARK: - Private functions
 
-    private func reloadData(notification: Notification) {
+    @objc private func reloadData(_ notification: Notification) {
         if let session = notification.userInfo?["session"] as? Session,
             let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
             sessions[index] = session
@@ -208,22 +195,25 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    private func updateUi() {
-        guard !Properties.deniedPushNotifications else {
-            pushNotificationWarning.isHidden = false
-            navigationItem.rightBarButtonItem = nil
-            return
+    @objc private func updateUi() {
+        DispatchQueue.main.async { [weak self] in
+            guard !Properties.deniedPushNotifications else {
+                self?.pushNotificationWarning.isHidden = false
+                self?.navigationItem.rightBarButtonItem = nil
+                return
+            }
+            self?.pushNotificationWarning.isHidden = true
+            if !(self?.sessions.isEmpty ?? false) {
+                self?.addSessionContainer.isHidden = true
+                self?.tableViewContainer.isHidden = false
+                self?.addAddButton()
+            } else {
+                self?.addSessionContainer.isHidden = false
+                self?.tableViewContainer.isHidden = true
+                self?.navigationItem.rightBarButtonItem = nil
+            }
         }
-        pushNotificationWarning.isHidden = true
-        if !sessions.isEmpty {
-            addSessionContainer.isHidden = true
-            tableViewContainer.isHidden = false
-            addAddButton()
-        } else {
-            addSessionContainer.isHidden = false
-            tableViewContainer.isHidden = true
-            navigationItem.rightBarButtonItem = nil
-        }
+
     }
 
     private func addAddButton() {

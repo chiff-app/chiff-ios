@@ -24,59 +24,39 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     /*
      * Tells the app that a remote notification arrived that indicates there is data to be fetched.
      * Called when we set "content-available": 1
-     * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        do {
-            guard let typeString = userInfo["type"] as? String, let type = BackgroundNotificationType(rawValue: typeString) else {
-                completionHandler(.failed)
-                return
-            }
-            switch type {
-            case .sync:
-                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessions = userInfo["sessions"] as? Bool else {
-                    completionHandler(.failed)
-                    return
-                }
-                var promises: [Promise<Void>] = []
-                if sessions {
-                    promises.append(firstly {
-                        // First sync team session, because keys may have changed.
-                        sessions ? TeamSession.sync(context: nil) : .value(())
-                    }.map {
-                        TeamSession.updateAllTeamSessions(pushed: true)
-                    }.asVoid())
-                } else if userTeamSessions {
-                    promises.append(TeamSession.sync(context: nil))
-                }
-                if accounts {
-                    promises.append(UserAccount.sync(context: nil))
-                }
-                firstly {
-                    when(fulfilled: promises)
-                }.done {
-                    completionHandler(.newData)
-                }.catch { error in
-                    Logger.shared.warning("Failed to sync after push message", error: error)
-                    completionHandler(.failed)
-                }
-            case .deleteTeamSession:
-                // This can be sent directly from admin panel to cancel existing pairing process
-
-                guard let id = userInfo["id"] as? String, let session = try TeamSession.get(id: id, context: nil) else {
-                    completionHandler(UIBackgroundFetchResult.failed)
-                    return
-                }
-                do {
-                    try session.delete(ifNotCreated: true)
-                    NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
-                    completionHandler(.newData)
-                } catch {
-                    completionHandler(.failed)
-                }
-            }
-        } catch {
-            Logger.shared.error("Could not get sessions.", error: error)
+        guard let typeString = userInfo["type"] as? String,
+              let type = NotificationType(rawValue: typeString),
+              type == .sync else {
+            completionHandler(.noData)
+            return
+        }
+        guard let accounts = userInfo[NotificationContentKey.accounts.rawValue] as? Bool,
+              let userTeamSessions = userInfo[NotificationContentKey.userTeamSessions.rawValue] as? Bool,
+              let sessions = userInfo[NotificationContentKey.sessions.rawValue] as? Bool else {
+            completionHandler(.failed)
+            return
+        }
+        var promises: [Promise<Void>] = []
+        if sessions {
+            promises.append(firstly {
+                // First sync team session, because keys may have changed.
+                sessions ? TeamSession.sync(context: nil) : .value(())
+            }.map {
+                TeamSession.updateAllTeamSessions()
+            }.asVoid())
+        } else if userTeamSessions {
+            promises.append(TeamSession.sync(context: nil))
+        }
+        if accounts {
+            promises.append(UserAccount.sync(context: nil))
+        }
+        firstly {
+            when(fulfilled: promises)
+        }.done {
+            completionHandler(UIBackgroundFetchResult.newData)
+        }.catch { _ in
             completionHandler(UIBackgroundFetchResult.failed)
         }
     }
@@ -142,7 +122,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     firstly {
                         session.delete(notify: false)
                     }.done {
-                        NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                        NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionID.rawValue: sessionID])
                     }.catch { error in
                         Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
                     }

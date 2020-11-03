@@ -18,11 +18,11 @@ enum NotificationExtensionError: Error {
 class NotificationProcessor {
 
     static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
-        guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
+        guard let ciphertext = content.userInfo[NotificationContentKey.data.rawValue] as? String else {
             throw NotificationExtensionError.decodeCiphertext
         }
 
-        guard let id = content.userInfo[NotificationContentKey.sessionId] as? String else {
+        guard let id = content.userInfo[NotificationContentKey.sessionID.rawValue] as? String else {
             throw NotificationExtensionError.decodeSessionId
         }
 
@@ -58,7 +58,7 @@ class NotificationProcessor {
             content.body = "Unknown request"
         }
 
-        content.userInfo[NotificationContentKey.type] = keynRequest.type.rawValue
+        content.userInfo[NotificationContentKey.type.rawValue] = NotificationType.browser.rawValue
         content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
         return content
     }

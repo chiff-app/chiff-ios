@@ -133,10 +133,7 @@ struct TeamSession: Session {
         }.log("Error deleting arn for team session")
     }
 
-    func delete(ifNotCreated: Bool = false, backup: Bool = true) throws {
-        if ifNotCreated && created {
-            throw TeamSessionError.alreadyCreated
-        }
+    func delete(backup: Bool = true) throws {
         SharedAccount.deleteAll(for: self.id)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
         try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: id), service: TeamSession.signingService)

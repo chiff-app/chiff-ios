@@ -58,9 +58,6 @@ class TeamAdminLoginAuthorizer: Authorizer {
         guard !adminSessions.isEmpty else {
             throw AuthorizationError.notAdmin
         }
-        guard adminSessions.count == 1 else {
-            throw AuthorizationError.multipleAdminSessionsFound(count: adminSessions.count)
-        }
         return adminSessions.first!
     }
 
