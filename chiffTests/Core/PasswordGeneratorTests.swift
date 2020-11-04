@@ -5,7 +5,7 @@
 import XCTest
 import LocalAuthentication
 
-@testable import keyn
+@testable import chiff
 
 class PasswordGeneratorTests: XCTestCase {
 

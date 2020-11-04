@@ -10,7 +10,7 @@ import XCTest
 import LocalAuthentication
 import PromiseKit
 
-@testable import keyn
+@testable import chiff
 
 class KeychainTests: XCTestCase {
 

@@ -7,7 +7,7 @@ import XCTest
 import OneTimePassword
 import LocalAuthentication
 
-@testable import keyn
+@testable import chiff
 import AuthenticationServices
 import PromiseKit
 
@@ -147,9 +147,9 @@ class AccountTests: XCTestCase {
             let password = "testPassword"
             let url = "www.google.com"
             var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil, askToChange: nil)
-            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: false, enabled: true))
-            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: nil, enabled: true))
-            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: nil, siteName: siteName, url: url, askToLogin: true, askToChange: nil, enabled: true))
+            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: false))
+            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: nil))
+            XCTAssertNoThrow(try account.update(username: TestHelper.username, password: nil, siteName: siteName, url: url, askToLogin: true, askToChange: nil))
             XCTAssertEqual(account.username, TestHelper.username)
             XCTAssertEqual(try account.password(), password)
             XCTAssertEqual(account.site.name, siteName)

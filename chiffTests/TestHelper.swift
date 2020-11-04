@@ -6,7 +6,7 @@ import XCTest
 import OneTimePassword
 import LocalAuthentication
 
-@testable import keyn
+@testable import chiff
 
 /*
  * Test helpers can be used in all tests.

@@ -6,7 +6,7 @@ import XCTest
 import LocalAuthentication
 import PromiseKit
 
-@testable import keyn
+@testable import chiff
 
 class SeedTests: XCTestCase {
 
@@ -252,7 +252,7 @@ class SeedTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testCreateAndMnemonicAndValidateAndDeleteAndRecover")
         Seed.create(context: Self.context).then { (seedResult) in
             Seed.mnemonic()
-        }.then { (mnemonic: [String]) -> Promise<(Int,Int,Int,Int)> in
+        }.then { (mnemonic: [String]) -> Promise<(RecoveryResult, RecoveryResult)> in
             XCTAssertTrue(Seed.validate(mnemonic: mnemonic))
             TestHelper.deleteLocalData()
             return Seed.recover(context: Self.context, mnemonic: mnemonic)

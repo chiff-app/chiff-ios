@@ -4,7 +4,7 @@
  */
 import XCTest
 
-@testable import keyn
+@testable import chiff
 
 /*
  * We test the public validate() function for now. In the future
