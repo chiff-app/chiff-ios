@@ -98,39 +98,6 @@ extension Keychain {
         return try T(x963Representation: data)
     }
 
-    /// Updates a CryptoKit key in the keychain as a SecKey instance.
-    @available(iOS 13.0, *)
-    func updateKey<T: SecKeyConvertible>(id identifier: String, key: T, context: LAContext?) throws {
-        // Seek an elliptic-curve key with a given label.
-        let query: [String: Any] = [kSecClass as String: kSecClassKey,
-                                    kSecAttrApplicationLabel as String: identifier,
-                                    kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                                    kSecUseAuthenticationContext as String: context ?? LocalAuthenticationManager.shared.mainContext]
-
-        // Describe the new key.
-        let keyAttributes = [kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom,
-                          kSecAttrKeyClass: kSecAttrKeyClassPrivate] as [String: Any]
-
-        // Get a SecKey representation.
-        guard let secKey = SecKeyCreateWithData(key.x963Representation as CFData, keyAttributes as CFDictionary, nil) else {
-            throw KeychainError.createSecKey
-        }
-
-        // Describe the add operation.
-        let attributes: [String: Any] = [kSecValueRef as String: secKey]
-
-        // Find and cast the result as a SecKey instance.
-        switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
-        case errSecSuccess: break
-        case -26276, errSecInteractionNotAllowed:
-            throw KeychainError.interactionNotAllowed
-        case errSecItemNotFound:
-            throw KeychainError.notFound
-        case let status:
-            throw KeychainError.unhandledError(status.message)
-        }
-    }
-
     func deleteKey(id identifier: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassKey,
                                     kSecAttrApplicationLabel as String: identifier]

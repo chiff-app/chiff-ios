@@ -12,6 +12,7 @@ import PromiseKit
 
 enum SyncError: Error {
     case dataDeleted
+    case webAuthnExists
 }
 
 enum SyncEndpoint: String {
