@@ -9,7 +9,7 @@
 import XCTest
 import PromiseKit
 
-@testable import keyn
+@testable import chiff
 
 class PPDTests: XCTestCase {
     

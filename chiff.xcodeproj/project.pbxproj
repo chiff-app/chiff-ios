@@ -271,7 +271,6 @@
 		49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* SharedAccount.swift */; };
 		49E5FA192302E9DE009C964E /* SharedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* SharedAccount.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
-		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
 		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
@@ -336,13 +335,6 @@
 			remoteInfo = keynNotificationExtension;
 		};
 		49E766671F7E6F420022C042 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 49E7664F1F7E6F420022C042;
-			remoteInfo = athena;
-		};
-		49E766721F7E6F420022C042 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
 			proxyType = 1;
@@ -533,9 +525,6 @@
 		49E766611F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E766661F7E6F420022C042 /* chiffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chiffTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E7666C1F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49E766711F7E6F420022C042 /* chiffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chiffUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		49E766751F7E6F420022C042 /* keynUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keynUITests.swift; sourceTree = "<group>"; };
-		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PatrickHand-Regular.ttf"; sourceTree = "<group>"; };
 		49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreViewController.swift; sourceTree = "<group>"; };
@@ -608,13 +597,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		49E766631F7E6F420022C042 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		49E7666E1F7E6F420022C042 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -905,7 +887,6 @@
 			children = (
 				49E766521F7E6F420022C042 /* chiff */,
 				49E766691F7E6F420022C042 /* chiffTests */,
-				49E766741F7E6F420022C042 /* chiffUITests */,
 				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
 				611F4B472146B47300B35A89 /* chiffCredentialProvider */,
 				49E766511F7E6F420022C042 /* Products */,
@@ -918,7 +899,6 @@
 			children = (
 				49E766501F7E6F420022C042 /* chiff.app */,
 				49E766661F7E6F420022C042 /* chiffTests.xctest */,
-				49E766711F7E6F420022C042 /* chiffUITests.xctest */,
 				4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */,
 				611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */,
 			);
@@ -951,15 +931,6 @@
 				49E7666C1F7E6F420022C042 /* Info.plist */,
 			);
 			path = chiffTests;
-			sourceTree = "<group>";
-		};
-		49E766741F7E6F420022C042 /* chiffUITests */ = {
-			isa = PBXGroup;
-			children = (
-				49E766751F7E6F420022C042 /* keynUITests.swift */,
-				49E766771F7E6F420022C042 /* Info.plist */,
-			);
-			path = chiffUITests;
 			sourceTree = "<group>";
 		};
 		49E7D3401FC318CD0059D97E /* Models */ = {
@@ -1180,24 +1151,6 @@
 			productReference = 49E766661F7E6F420022C042 /* chiffTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		49E766701F7E6F420022C042 /* chiffUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffUITests" */;
-			buildPhases = (
-				49E7666D1F7E6F420022C042 /* Sources */,
-				49E7666E1F7E6F420022C042 /* Frameworks */,
-				49E7666F1F7E6F420022C042 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				49E766731F7E6F420022C042 /* PBXTargetDependency */,
-			);
-			name = chiffUITests;
-			productName = athenaUITests;
-			productReference = 49E766711F7E6F420022C042 /* chiffUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		611F4B442146B47300B35A89 /* chiffCredentialProvider */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "chiffCredentialProvider" */;
@@ -1289,12 +1242,6 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49E7664F1F7E6F420022C042;
 					};
-					49E766701F7E6F420022C042 = {
-						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1020;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 49E7664F1F7E6F420022C042;
-					};
 					611F4B442146B47300B35A89 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1020;
@@ -1314,7 +1261,7 @@
 			knownRegions = (
 				en,
 				nl,
-				Base
+				Base,
 			);
 			mainGroup = 49E766471F7E6F420022C042;
 			packageReferences = (
@@ -1336,7 +1283,6 @@
 			targets = (
 				49E7664F1F7E6F420022C042 /* chiff */,
 				49E766651F7E6F420022C042 /* chiffTests */,
-				49E766701F7E6F420022C042 /* chiffUITests */,
 				4919DAE320123FE50048B060 /* chiffNotificationExtension */,
 				611F4B442146B47300B35A89 /* chiffCredentialProvider */,
 			);
@@ -1381,13 +1327,6 @@
 			files = (
 				42481A4A23293AE600EA3C3C /* samplePPD.json in Resources */,
 				42481A4E23294F7B00EA3C3C /* questionnaire.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		49E7666F1F7E6F420022C042 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1721,14 +1660,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49E7666D1F7E6F420022C042 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				49E766761F7E6F420022C042 /* keynUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		611F4B412146B47300B35A89 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1806,11 +1737,6 @@
 			isa = PBXTargetDependency;
 			target = 49E7664F1F7E6F420022C042 /* chiff */;
 			targetProxy = 49E766671F7E6F420022C042 /* PBXContainerItemProxy */;
-		};
-		49E766731F7E6F420022C042 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 49E7664F1F7E6F420022C042 /* chiff */;
-			targetProxy = 49E766721F7E6F420022C042 /* PBXContainerItemProxy */;
 		};
 		611F4B502146B47300B35A89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2150,7 +2076,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynTests/Info.plist;
+				INFOPLIST_FILE = chiffTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2173,7 +2099,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynTests/Info.plist;
+				INFOPLIST_FILE = chiffTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2186,52 +2112,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chiff.app/chiff";
-			};
-			name = Release;
-		};
-		49E766811F7E6F420022C042 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = keyn;
-			};
-			name = Debug;
-		};
-		49E766821F7E6F420022C042 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = keyn;
 			};
 			name = Release;
 		};
@@ -2327,15 +2207,6 @@
 			buildConfigurations = (
 				49E7667E1F7E6F420022C042 /* Debug */,
 				49E7667F1F7E6F420022C042 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				49E766811F7E6F420022C042 /* Debug */,
-				49E766821F7E6F420022C042 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,7 +5,7 @@
 import XCTest
 import Sodium
 
-@testable import keyn
+@testable import chiff
 
 class CryptoTests: XCTestCase {
 

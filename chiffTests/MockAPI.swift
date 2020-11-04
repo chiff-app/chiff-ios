@@ -8,7 +8,7 @@
 
 import Foundation
 import PromiseKit
-@testable import keyn
+@testable import chiff
 
 enum MockAPIError: Error {
     case notImplemented
@@ -32,7 +32,7 @@ class MockAPI: APIProtocol {
         customData = data
     }
 
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, parameters: [String : String]?) -> Promise<JSONObject> {
+    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String : String]? = nil) -> Promise<JSONObject> {
         if shouldFail {
             return Promise(error: MockAPIError.fakeError)
         } else {
@@ -69,7 +69,7 @@ class MockAPI: APIProtocol {
         return Promise(error: MockAPIError.notImplemented)
     }
 
-    func request(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
+    func request(path: String, method: APIMethod, signature: String? = nil, body: Data? = nil, parameters: [String:String]? = nil) -> Promise<JSONObject> {
         if shouldFail {
             return Promise(error: MockAPIError.fakeError)
         } else {
@@ -82,11 +82,11 @@ class MockAPI: APIProtocol {
         }
     }
 
-    func request<T>(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<T> {
+    func request<T>(path: String,  method: APIMethod, signature: String? = nil, body: Data? = nil, parameters: [String:String]? = nil) -> Promise<T> {
         return Promise(error: MockAPIError.notImplemented)
     }
 
-    func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, parameters: [String : String]?) -> Promise<T> {
+    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String : String]? = nil) -> Promise<T> {
         return Promise(error: MockAPIError.notImplemented)
     }
     

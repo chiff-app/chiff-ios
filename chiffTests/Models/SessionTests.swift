@@ -9,7 +9,7 @@ import XCTest
 import LocalAuthentication
 import PromiseKit
 
-@testable import keyn
+@testable import chiff
 
 class SessionTests: XCTestCase {
 
@@ -119,12 +119,12 @@ class SessionTests: XCTestCase {
     }
 
     func testExists() {
-        XCTAssertNoThrow(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
-        XCTAssertFalse(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
+        XCTAssertNoThrow(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
+        XCTAssertFalse(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
-            XCTAssertTrue(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
+            XCTAssertTrue(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
         }.catch { error in
             XCTFail(error.localizedDescription)
         }.finally {
@@ -148,14 +148,14 @@ class SessionTests: XCTestCase {
 
     func testDecrypt() {
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         XCTAssertNoThrow(try session.decrypt(message: TestHelper.keynRequestEncrypted))
     }
 
     func testCancelRequest() {
         let expectation = XCTestExpectation(description: "Finish testCancelRequest")
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         session.cancelRequest(reason: .disabled, browserTab: 0).catch { error in
             XCTFail(error.localizedDescription)
         }.finally {
@@ -168,7 +168,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testCancelRequestFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.cancelRequest(reason: .disabled, browserTab: 0).done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -181,7 +181,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessages")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI", "receiptHandle": "test"]])
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         session.getPersistentQueueMessages(shortPolling: true).catch { error in
             XCTFail(error.localizedDescription)
         }.finally {
@@ -193,7 +193,7 @@ class SessionTests: XCTestCase {
     func testGetPersistentQueueMessagesFailsWithoutData() {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsWithoutData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -206,7 +206,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfWrongData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI"]])
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -219,7 +219,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -231,7 +231,7 @@ class SessionTests: XCTestCase {
     func testDeleteFromPersistentQueue() {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").catch { error in
             XCTFail(error.localizedDescription)
         }.finally {
@@ -244,7 +244,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(shouldFail: true)
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -258,7 +258,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
         _ = session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
             XCTFail("Should fail")
         }.ensure {
@@ -270,24 +270,24 @@ class SessionTests: XCTestCase {
     func testDeleteAccount() {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.deleteAccount(accountId: TestHelper.userID)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        _ = session.deleteAccount(accountId: TestHelper.userID)
     }
 
     func testDeleteAccountFailsIfAPIFails() {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(shouldFail: true)
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.deleteAccount(accountId: TestHelper.userID)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        _ = session.deleteAccount(accountId: TestHelper.userID)
     }
 
     func testDeleteAccountFailsIfNoKeys() {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.deleteAccount(accountId: TestHelper.userID)
+        let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
+        _ = session.deleteAccount(accountId: TestHelper.userID)
     }
 
     func testAll() {
