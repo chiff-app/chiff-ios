@@ -173,16 +173,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
         if let unfilteredIndex = unfilteredAccounts.firstIndex(where: { account.id == $0.id }) {
             unfilteredAccounts[unfilteredIndex] = account
         }
-        // Will return the same UI
-        // The updated account will be now included
         prepareAccounts()
         tableView.reloadData()
-        // TODO: For this to work we should use diffing on the data source.
-        // Because in cases where the order of the rows change, for example recent use, this will not be correct.
-//        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-//            let indexPath = IndexPath(row: filteredIndex, section: 0)
-//             tableView.reloadRows(at: [indexPath], with: .automatic)
-//        }
     }
 
     private func updateUi() {

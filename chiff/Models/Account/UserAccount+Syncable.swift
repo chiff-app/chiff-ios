@@ -221,28 +221,26 @@ extension UserAccount: Syncable {
             return false
         }
         if let webAuthn = backupAccount.webAuthn {
-            let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
-            switch webAuthn.algorithm {
-            case .edDSA:
-                if self.webAuthn != nil {
-                    try Keychain.shared.update(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
-                } else {
+            if self.webAuthn == nil {
+                /*  The WebAuthn specification doesn't allow updating the keys, so doesn't make sense to support it here.
+                 *  Only create the keys if they don't exist.
+                 */
+                let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
+                switch webAuthn.algorithm {
+                case .edDSA:
                     try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
-                }
-            case .ECDSA:
-                guard #available(iOS 13.0, *) else {
-                    throw WebAuthnError.notSupported
-                }
-                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                // TODO: Test updateKey
-                if self.webAuthn != nil {
-                    try Keychain.shared.updateKey(id: id, key: privKey, context: context)
-                } else {
+                case .ECDSA:
+                    guard #available(iOS 13.0, *) else {
+                        throw WebAuthnError.notSupported
+                    }
+                    let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
                     try Keychain.shared.saveKey(id: id, key: privKey)
                 }
             }
+            // But always update the object, as the counter is updated frequently.
             self.webAuthn = webAuthn
         } else if let webAuthn = self.webAuthn {
+            // And delete if necessary.
             switch webAuthn.algorithm {
             case .edDSA:
                 try Keychain.shared.delete(id: id, service: .webauthn)
