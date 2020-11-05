@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added support for Opera browser.
+- Added SwiftLint config file.
+- Added LICENSE.
+
+### Changed
+
+- Moved to SPM from CocoaPods.
+- Update README text.
+- Code refactoring to comply with SwiftLint.
+
+### Removed
+
+- Removed unused code.
+
+## [3.8.2] - 2020-08-25
+
+### Added
+
+- Add feedback about progress for CSV import request.
+
+### Changed
+
+- Removed the 'synced' attribute in Account.
+
+### Fixed
+
+- Fix issue where CSV import did not work properly
+
+## [3.8.1] - 2020-09-21
+
+### Fixed
+
+- Fix issue with creating organization.
+- Fix issue where session names were switched.
+
 ## [3.8.0] - 2020-08-11
 
 ### Added
