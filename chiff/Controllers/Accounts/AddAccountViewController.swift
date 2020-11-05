@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  AddAccountViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 
 class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
@@ -63,7 +66,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     @IBAction func showPassword(_ sender: UIButton) {
-        passwordIsHidden = !passwordIsHidden
+        passwordIsHidden.toggle()
         passwordField.isSecureTextEntry = passwordIsHidden
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }

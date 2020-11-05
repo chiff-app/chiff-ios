@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  AccountViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import MBProgressHUD
 import OneTimePassword
@@ -139,14 +142,14 @@ class AccountViewController: KeynTableViewController {
             return
         }
         if passwordLoaded && userPasswordTextField.isEnabled {
-            self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+            self.userPasswordTextField.isSecureTextEntry.toggle()
             return
         }
         firstly {
             account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded)
         }.done(on: .main) { password in
             if self.userPasswordTextField.isEnabled {
-                self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+                self.userPasswordTextField.isSecureTextEntry.toggle()
             } else {
                 self.showHiddenPasswordPopup(password: password ?? "This account has no password")
             }

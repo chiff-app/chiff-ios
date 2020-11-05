@@ -1,9 +1,8 @@
 //
 //  SessionDetailViewController.swift
-//  keyn
+//  chiff
 //
-//  Created by Brandon Maldonado Alonso on 22/01/20.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

@@ -1,12 +1,17 @@
-disabled_rules: # rule identifiers to exclude from running
+disabled_rules:
   - reduce_boolean
-included: # paths to include during linting. `--path` is ignored if present.
+included:
   - chiff
-  # - chiffTests
-  # - chiffCredentialProvider
-  # - chiffNotificationExtension
-excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Pods
+  - chiffCredentialProvider
+  - chiffNotificationExtension
+opt_in_rules:
+  - empty_count
+  - file_header
+  - empty_string
+  - fatal_error_message
+  - first_where
+  - modifier_order
+  - toggle_bool
 force_cast: warning
 force_try: warning
 identifier_name:
@@ -28,3 +33,12 @@ large_tuple:
 function_parameter_count:
   warning: 7
 line_length: 200
+
+file_header:
+  required_pattern: |
+    \/\/
+    \/\/  (.+).swift
+    \/\/  chiff(\w+)?
+    \/\/
+    \/\/  Copyright: see LICENSE.md
+    \/\/

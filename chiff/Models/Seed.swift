@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  Seed.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import Foundation
 import LocalAuthentication
 import PromiseKit
@@ -236,7 +239,7 @@ struct Seed {
         return wordlistData.components(separatedBy: .newlines)
     }
 
-    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
+    private static func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
         let wordlists = try self.wordlists()
         guard let wordlist = (wordlists.first { Set(mnemonic).isSubset(of: (Set($0))) }) else {
             throw SeedError.mnemonicConversion
@@ -263,7 +266,7 @@ struct Seed {
 
     // MARK: - temporary
 
-    static private func oldChecksum(seed: Data) -> String {
+    private static func oldChecksum(seed: Data) -> String {
         return String(seed.hash!.first!, radix: 2).prefix(seed.count / 4).pad(toSize: seed.count / 4)
     }
 }

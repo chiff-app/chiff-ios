@@ -1,9 +1,8 @@
 //
 //  AddSiteAuthorizer.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 22/10/2020.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import LocalAuthentication

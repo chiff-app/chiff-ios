@@ -1,9 +1,8 @@
 //
 //  CircleView.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 20/06/2019.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

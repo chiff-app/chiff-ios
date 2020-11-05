@@ -1,7 +1,10 @@
-/*PrivacyViewController
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  WebViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import WebKit
 import Down

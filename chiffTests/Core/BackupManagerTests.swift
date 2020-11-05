@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  BackupManagerTests.swift
+//  chiffTests
+//
+//  Copyright: see LICENSE.md
+//
+
 import XCTest
 import LocalAuthentication
 import PromiseKit

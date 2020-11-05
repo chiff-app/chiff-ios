@@ -1,9 +1,8 @@
 //
 //  LoggingPreferenceViewController.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 30/05/2019.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

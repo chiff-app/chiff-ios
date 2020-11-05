@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  Properties.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import Foundation
 import LocalAuthentication
 
@@ -23,21 +26,21 @@ struct Properties {
         }
     }
 
-    static private let receivedNewsMessagesFlag = "receivedNewsMessagesFlag"
-    static private let errorLoggingFlag = "errorLogging"
-    static private let analyticsLoggingFlag = "analyticsLogging"
-    static private let userIdFlag = "userID"
-    static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
-    static private let subscriptionProductFlag = "subscriptionProduct"
-    static private let accountCountFlag = "accountCount"
-    static private let teamAccountCountFlag = "accountCount"
-    static private let agreedWithTermsFlag = "agreedWithTerms"
-    static private let firstPairingCompletedFlag = "firstPairingCompleted"
-    static private let reloadAccountsFlag = "reloadAccountsFlag"
-    static private let sortingPreferenceFlag = "sortingPreference"
-    static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
-    static private let lastRunVersionFlag = "lastRunVersionFlag"
-    static private let migratedFlag = "migratedFlag"
+    private static let receivedNewsMessagesFlag = "receivedNewsMessagesFlag"
+    private static let errorLoggingFlag = "errorLogging"
+    private static let analyticsLoggingFlag = "analyticsLogging"
+    private static let userIdFlag = "userID"
+    private static let subscriptionExiryDateFlag = "subscriptionExiryDate"
+    private static let subscriptionProductFlag = "subscriptionProduct"
+    private static let accountCountFlag = "accountCount"
+    private static let teamAccountCountFlag = "accountCount"
+    private static let agreedWithTermsFlag = "agreedWithTerms"
+    private static let firstPairingCompletedFlag = "firstPairingCompleted"
+    private static let reloadAccountsFlag = "reloadAccountsFlag"
+    private static let sortingPreferenceFlag = "sortingPreference"
+    private static let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
+    private static let lastRunVersionFlag = "lastRunVersionFlag"
+    private static let migratedFlag = "migratedFlag"
 
     static let termsOfUseVersion = 2
 

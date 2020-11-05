@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  Questionnaire.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import Foundation
 import PromiseKit
 
@@ -216,7 +219,7 @@ class Questionnaire: Codable {
         }
     }
 
-    static private func readFile(path: String) -> Questionnaire? {
+    private static func readFile(path: String) -> Questionnaire? {
         let filemgr = FileManager.default
         guard let data = filemgr.contents(atPath: path) else {
             return nil

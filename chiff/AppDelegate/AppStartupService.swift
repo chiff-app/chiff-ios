@@ -1,7 +1,9 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  AppStartupService.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
 
 import LocalAuthentication
 import UIKit
@@ -94,16 +96,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 }
             }
         }
-//        if BackupManager.hasKeys {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                StoreObserver.shared.updateSubscriptions { (result) in
-//                    if case let .failure(error) = result {
-//                        Logger.shared.error("Error updating subsription status", error: error)
-//                    }
-//                }
-//            }
-//
-//        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {

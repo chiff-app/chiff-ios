@@ -1,9 +1,8 @@
 //
 //  Logger.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 11/02/2019.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import Foundation

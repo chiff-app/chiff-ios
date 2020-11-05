@@ -1,10 +1,10 @@
 //
 //  SessionTests.swift
-//  keynTests
+//  chiffTests
 //
-//  Created by brandon maldonado alonso on 9/10/19.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
+
 import XCTest
 import LocalAuthentication
 import PromiseKit

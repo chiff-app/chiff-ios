@@ -2,8 +2,7 @@
 //  AccountViewController+TableView.swift
 //  chiff
 //
-//  Created by Bas Doorn on 23/10/2020.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

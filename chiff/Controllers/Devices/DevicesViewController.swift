@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  DevicesViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import PromiseKit
 
@@ -117,7 +120,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let destination = segue.destination.contents as? PairContainerViewController {
             destination.pairControllerDelegate = self
         } else if let destination = segue.destination.contents as? SessionDetailViewController {
-            guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { fatalError() }
+            guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { fatalError("Wrong type") }
             destination.session = sessions[indexPath.row]
         }
     }
