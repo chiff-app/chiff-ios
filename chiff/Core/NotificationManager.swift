@@ -1,7 +1,9 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  NotificationManager.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
 
 import UIKit
 import PromiseKit

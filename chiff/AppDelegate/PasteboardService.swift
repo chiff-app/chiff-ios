@@ -1,12 +1,13 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  PasteboardService.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 
-/*
- * Clears copied password from clipboard after a specified time.
- */
+/// Clears copied password from clipboard after a specified time.
 class PasteboardService: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -16,7 +17,7 @@ class PasteboardService: NSObject, UIApplicationDelegate {
 
     @objc private func handlePasteboardChangeNotification(notification: Notification) {
         let pasteboard = UIPasteboard.general
-        guard let text = pasteboard.string, text != "" else {
+        guard let text = pasteboard.string, !text.isEmpty else {
             return
         }
 

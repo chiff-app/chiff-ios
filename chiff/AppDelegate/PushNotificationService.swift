@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  PushNotificationService.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import Foundation
 import UIKit
 import UserNotifications
@@ -61,9 +64,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    /*
-     * Called whenever the app is in the foreground and notification comes in.
-     */
+    // Called whenever the app is in the foreground and notification comes in.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -87,7 +88,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
     /*
      * Parses the push notification then ends session or presents the requestview.
-     *
      * Only one calling function actually uses the returned presentation options.
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {

@@ -2,8 +2,7 @@
 //  AccountsTableViewController+UISearchBarDelegate.swift
 //  chiff
 //
-//  Created by Bas Doorn on 23/10/2020.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit
@@ -57,7 +56,7 @@ extension AccountsTableViewController: UISearchBarDelegate {
     }
 
     func searchAccounts(accounts: [Account]) -> [Account] {
-        return searchQuery == "" ? unfilteredAccounts : unfilteredAccounts.filter({ (account) -> Bool in
+        return searchQuery.isEmpty ? unfilteredAccounts : unfilteredAccounts.filter({ (account) -> Bool in
             return account.site.name.lowercased().contains(searchQuery.lowercased())
         })
     }

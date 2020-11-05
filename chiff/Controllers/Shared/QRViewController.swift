@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  QRViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import AVFoundation
 import LocalAuthentication
@@ -50,7 +53,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if metadataObjects.count > 0, let machineReadableCode = metadataObjects[0] as? AVMetadataMachineReadableCodeObject {
+        if !metadataObjects.isEmpty, let machineReadableCode = metadataObjects[0] as? AVMetadataMachineReadableCodeObject {
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true

@@ -1,9 +1,8 @@
 //
 //  Team.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 07/02/2020.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import Foundation

@@ -1,9 +1,8 @@
 //
 //  TabBarGradient.swift
-//  keynCredentialProvider
+//  chiffCredentialProvider
 //
-//  Created by Bas Doorn on 12/06/2019.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

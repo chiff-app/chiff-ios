@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  PasswordGeneratorTests.swift
+//  chiffTests
+//
+//  Copyright: see LICENSE.md
+//
+
 import XCTest
 import LocalAuthentication
 

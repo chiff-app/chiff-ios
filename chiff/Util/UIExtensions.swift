@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  UIExtensions.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import WebKit
 
@@ -263,7 +266,7 @@ extension UNNotificationContent {
 }
 
 extension UINavigationController {
-    open override var childForStatusBarStyle: UIViewController? {
+    override open var childForStatusBarStyle: UIViewController? {
         return visibleViewController
     }
 }

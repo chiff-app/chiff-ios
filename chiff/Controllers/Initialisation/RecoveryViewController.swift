@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  RecoveryViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import PromiseKit
 
@@ -198,7 +201,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func checkWord(for textField: UITextField) {
-        if let word = textField.text, word != "", (wordlists.contains { $0.contains(word) }) {
+        if let word = textField.text, !word.isEmpty, (wordlists.contains { $0.contains(word) }) {
             mnemonic[textField.tag] = word
             UIView.animate(withDuration: 0.1) {
                 textField.rightView?.alpha = 1.0

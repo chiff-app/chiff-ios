@@ -1,9 +1,8 @@
 //
 //  AddSiteAuthorizer.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 22/10/2020.
-//  Copyright © 2020 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import LocalAuthentication
@@ -67,7 +66,7 @@ class AddBulkSiteAuthorizer: Authorizer {
         }.map { (total, context) in
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
             startLoading?("requests.import_progress_5".localized)
-            if succeeded.count > 0 {
+            if !succeeded.isEmpty {
                 NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             }
             if failed > 0 {
@@ -76,7 +75,7 @@ class AddBulkSiteAuthorizer: Authorizer {
             }
             return nil
         }.ensure {
-            Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: succeeded.count > 0])
+            Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: !succeeded.isEmpty])
         }
     }
 

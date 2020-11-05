@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  PasswordValidator.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import Foundation
 
 class PasswordValidator {

@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  ManualOTPViewController.swift
+//  chiff
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import OneTimePassword
 import Base32
@@ -67,7 +70,7 @@ class ManualOTPViewController: KeynTableViewController, TokenController {
 
     @IBAction func save(_ sender: UIBarButtonItem) {
         do {
-            guard let secret = keyTextField.text, secret != "" else {
+            guard let secret = keyTextField.text, !secret.isEmpty else {
                 throw OTPError.empty
             }
             try add(secret: secret.replacingOccurrences(of: " ", with: "").localizedLowercase, timeBased: timeBasedSwitch.isOn)

@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  LoginViewController.swift
+//  chiffCredentialProvider
+//
+//  Copyright: see LICENSE.md
+//
+
 import UIKit
 import LocalAuthentication
 import AuthenticationServices

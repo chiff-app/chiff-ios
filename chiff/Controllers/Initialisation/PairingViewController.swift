@@ -1,9 +1,8 @@
 //
 //  PairingViewController.swift
-//  keyn
+//  chiff
 //
-//  Created by Bas Doorn on 25/03/2019.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import UIKit

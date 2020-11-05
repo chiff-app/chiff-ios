@@ -1,9 +1,8 @@
 //
 //  Keychain.swift
-//  keynTests
+//  chiffTests
 //
-//  Created by brandon maldonado alonso on 9/5/19.
-//  Copyright © 2019 keyn. All rights reserved.
+//  Copyright: see LICENSE.md
 //
 
 import XCTest

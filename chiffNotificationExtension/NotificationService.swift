@@ -1,7 +1,10 @@
-/*
- * Copyright © 2019 Keyn B.V.
- * All rights reserved.
- */
+//
+//  NotificationService.swift
+//  chiffNotificationExtension
+//
+//  Copyright: see LICENSE.md
+//
+
 import UserNotifications
 
 class NotificationService: UNNotificationServiceExtension {
