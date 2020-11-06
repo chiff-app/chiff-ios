@@ -67,11 +67,8 @@ struct WebAuthn: Codable, Equatable {
     func pubKey(accountId: String) throws -> String {
         switch algorithm {
         case .edDSA:
-            guard let dict = try Keychain.shared.attributes(id: accountId, service: .webauthn) else {
+            guard let pubKey = try Keychain.shared.attributes(id: accountId, service: .webauthn) else {
                 throw KeychainError.notFound
-            }
-            guard let pubKey = dict[kSecAttrGeneric as String] as? Data else {
-                throw CodingError.unexpectedData
             }
             return try Crypto.shared.convertToBase64(from: pubKey)
         case .ECDSA:

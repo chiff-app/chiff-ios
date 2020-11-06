@@ -27,7 +27,7 @@ class AboutViewController: UITableViewController {
         }
     }
 
-    // This gets overrided by willDisplayFooterView, but this sets the correct height
+    // This gets overridden by willDisplayFooterView, but this sets the correct height
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return section == 1 ? "settings.feedback_footer".localized : nil
     }

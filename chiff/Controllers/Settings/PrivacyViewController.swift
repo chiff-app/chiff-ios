@@ -30,6 +30,8 @@ class PrivacyViewController: UITableViewController {
         }
     }
 
+    // MARK: - UITableView
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "settings.privacy".localized : nil
     }
@@ -115,10 +117,11 @@ class PrivacyViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination.contents as? WebViewController {
-            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
-            destination.url = URL(fileURLWithPath: urlPath!)
+        guard let destination = segue.destination.contents as? WebViewController else {
+            return
         }
+        let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
+        destination.url = URL(fileURLWithPath: urlPath!)
     }
 
     // MARK: - Private functions
@@ -152,7 +155,7 @@ class PrivacyViewController: UITableViewController {
             UserAccount.deleteAll()
         }.then { _ in
             // Deleting endpoint relies on Seed being present
-            NotificationManager.shared.deleteEndpoint()
+            NotificationManager.shared.unregisterDevice()
         }.map {
             Seed.delete()
             Properties.purgePreferences()

@@ -131,7 +131,7 @@ class PasswordGenerator {
         })
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
     /// The password length. Depends on PPD or default value if no PPD is provided
     private func length(isCustomPassword: Bool) -> Int {
@@ -143,6 +143,7 @@ class PasswordGenerator {
         return length
     }
 
+    /// Generates a password candidate, for a given index.
     private func generatePasswordCandidate(index passwordIndex: Int, length: Int, offset: [Int]?) throws -> String {
         let chars = offset != nil ? PasswordValidator.allCharacterSet.sorted() : characters
         let key = try generateKey(index: passwordIndex)

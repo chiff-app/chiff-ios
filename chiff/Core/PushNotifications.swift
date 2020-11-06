@@ -11,6 +11,7 @@ import PromiseKit
 
 struct PushNotifications {
 
+    /// Register this devices for push notifications.
     static func register() -> Guarantee<Bool> {
         return firstly {
             requestAuthorization()
@@ -24,6 +25,7 @@ struct PushNotifications {
         }
     }
 
+    /// Request authorization at the user for sending push notifictions.
     static func requestAuthorization() -> Guarantee<Bool> {
         let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.passwordRequest,
                                                      actions: [],

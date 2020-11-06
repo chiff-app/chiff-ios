@@ -25,7 +25,7 @@ class WebAuthnRegistrationAuthorizer: Authorizer {
         return  String(format: "requests.add_site".localized, siteName)
     }
 
-    required init(request: KeynRequest, session: BrowserSession) throws {
+    required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         guard let browserTab = request.browserTab,
               let siteName = request.siteName,

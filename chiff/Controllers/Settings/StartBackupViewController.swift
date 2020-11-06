@@ -16,6 +16,8 @@ class StartBackupViewController: UIViewController {
         Logger.shared.analytics(.backupExplanationOpened)
     }
 
+    // MARK: - Actions
+
     @IBAction func startBackup(_ sender: UIButton) {
         firstly {
             Seed.mnemonic()
@@ -26,6 +28,8 @@ class StartBackupViewController: UIViewController {
             self.showAlert(message: error.localizedDescription)
         }
     }
+
+    // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "StartBackup", let destination = segue.destination.contents as? BackupWizardViewController {

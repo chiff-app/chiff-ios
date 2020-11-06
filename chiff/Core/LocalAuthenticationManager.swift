@@ -10,12 +10,18 @@ import LocalAuthentication
 import PromiseKit
 
 enum AuthenticationType {
-    case ifNeeded       // Only presents LocalAuthentication if needed. Uses the main context.
-    case override       // Always presents LocalAuthentication and cancels any current operations. Used without context, so a new one is created
+    /// Only presents LocalAuthentication if needed. Uses the main context.
+    case ifNeeded
+    /// Always presents LocalAuthentication and cancels any current operations. Used without context, so a new one is created
+    case override
 }
 
+/// Manages and queues the LocalAuthentication requests to prevent duplicate requests.
 class LocalAuthenticationManager {
+
     static let shared = LocalAuthenticationManager()
+
+    /// The main context. This generally should be authenticated when app is open and invalidated when the app is closed.
     var mainContext: LAContext = LAContext()
 
     private var localAuthenticationQueue: OperationQueue = {
@@ -26,10 +32,12 @@ class LocalAuthenticationManager {
         return queue
     }()
 
+    /// Checks if there is any authentication in progress.
     var authenticationInProgress: Bool {
         return localAuthenticationQueue.operationCount > 0
     }
 
+    /// Checks if the main context is autheenticated.
     var isAuthenticated: Bool {
         return mainContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
     }
@@ -53,6 +61,11 @@ class LocalAuthenticationManager {
         }
     }
 
+    /// Authenticate the user, creating an authenticated `LAContext` object.
+    /// - Parameters:
+    ///   - reason: The reason that should be presented to the user.
+    ///   - withMainContext: If this is false, a new context is created, effectively making sure the authentication popup is presented.
+    /// - Returns: The authenticated `LAContext` object.
     func authenticate(reason: String, withMainContext: Bool) -> Promise<LAContext> {
         return Promise { seal in
             do {
@@ -75,8 +88,12 @@ class LocalAuthenticationManager {
         }
     }
 
+    /// A helper function to determine if an `LAError` is actionable or not.
+    ///
+    /// Some errors indicate there may something wrong in the app, while others are throws when, for example, the user cancels the operation.
+    /// - Parameter error: The error that should be checked.
+    /// - Returns: A localized user-friendly error string.
     func handleError(error: Error) -> String? {
-
         switch error {
         case KeychainError.authenticationCancelled, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
             // Not interesting, do nothing.

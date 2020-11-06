@@ -43,6 +43,10 @@ extension Keychain {
     // MARK: - SecKey operations
 
     /// Stores a CryptoKit key in the keychain as a SecKey instance.
+    /// - Parameters:
+    ///   - identifier: The unique idenitfier
+    ///   - key: A `SecKeyConvertible` key.
+    /// - Throws: `KeychainError.createSecKey` when fails to creaate a key, unhandledErro otherwise
     @available(iOS 13.0, *)
     func saveKey<T: SecKeyConvertible>(id identifier: String, key: T) throws {
         // Describe the key.
@@ -73,6 +77,13 @@ extension Keychain {
     }
 
     /// Reads a CryptoKit key from the keychain as a SecKey instance.
+    /// - Parameters:
+    ///   - identifier: The item's unique identifier
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws:
+    ///   - `KeychainError.interactionNotAllowed` if the `LAContext` is not authenticated.
+    ///   - `KeychainError.unhandledError` for any other error.
+    /// - Returns: The key.
     @available(iOS 13.0, *)
     func getKey<T: SecKeyConvertible>(id identifier: String, context: LAContext?) throws -> T? {
 
@@ -101,6 +112,11 @@ extension Keychain {
         return try T(x963Representation: data)
     }
 
+    /// Deletes a key from the Keychain
+    /// - Parameter identifier: The item's unique identifier
+    /// - Throws:
+    ///   - `KeychainError.notFound` if the item is not found.
+    ///   - `KeychainError.unhandledError` for any other error.
     func deleteKey(id identifier: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassKey,
                                     kSecAttrApplicationLabel as String: identifier]

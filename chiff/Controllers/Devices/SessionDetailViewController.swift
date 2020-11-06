@@ -8,6 +8,7 @@
 import UIKit
 
 class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
+
     var session: Session! {
         didSet {
             sessionDetailHeader = session is TeamSession ? "devices.team_session_detail_header".localized : "devices.session_detail_header".localized
@@ -20,6 +21,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     }
     var sessionDetailHeader = "devices.session_detail_header".localized
     var sessionDetailFooter = "devices.session_detail_footer".localized
+
     @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var createdValueLabel: UILabel!
@@ -44,6 +46,8 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         nc.addObserver(self, selector: #selector(reloadData(notification:)), name: .sessionUpdated, object: nil)
         nc.addObserver(self, selector: #selector(dismiss(notification:)), name: .sessionEnded, object: nil)
     }
+
+    // MARK: - UITableView
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let session = session as? TeamSession, session.isAdmin {
@@ -95,6 +99,8 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         footer.textLabel?.text = sessionDetailFooter
     }
 
+    // MARK: - Actions
+
     @IBAction func deleteDevice(_ sender: UIButton) {
         let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -103,6 +109,8 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         }))
         self.present(alert, animated: true, completion: nil)
     }
+
+    // MARK: - Private functions
 
     @objc private func reloadData(notification: Notification) {
         guard let session = notification.userInfo?["session"] as? Session, session.id == self.session.id else {

@@ -14,12 +14,14 @@ enum NotificationExtensionError: Error {
     case decodeSessionId
 }
 
-/*
- * This class does processes push notifications before they appear to the user.
- * It gets called from the KeynNotificationExtension.
- */
+/// This class does processes push notifications before they appear to the user.
+/// It gets called from the KeynNotificationExtension.
 class NotificationProcessor {
 
+    /// Decrypts the request and sets the correct localized text for the notificaation.
+    /// - Parameter content: The content of the push message.
+    /// - Throws: May throw an error if decoding or decryption fails.
+    /// - Returns: Returns the updated content.
     static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
         guard let ciphertext = content.userInfo[NotificationContentKey.data.rawValue] as? String else {
             throw NotificationExtensionError.decodeCiphertext
@@ -33,14 +35,14 @@ class NotificationProcessor {
             throw SessionError.doesntExist
         }
 
-        let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)
-        let siteName = keynRequest.siteName ?? "Unknown"
+        let request: ChiffRequest = try session.decrypt(message: ciphertext)
+        let siteName = request.siteName ?? "Unknown"
         content.title = session.title
-        switch keynRequest.type {
+        switch request.type {
         case .add, .addAndLogin, .webauthnCreate:
             content.body = String(format: "notifications.add_account".localized, siteName)
         case .addBulk:
-            content.body = String(format: "notifications.add_accounts".localized, keynRequest.count!)
+            content.body = String(format: "notifications.add_accounts".localized, request.count!)
         case .end:
             content.body = "notifications.end_session".localized
         case .change:
@@ -54,15 +56,15 @@ class NotificationProcessor {
         case .adminLogin:
             content.body = String(format: "notifications.team_admin_login".localized, (try? TeamSession.all().first?.title) ?? "notifications.team".localized)
         case .createOrganisation:
-            content.body = String(format: "notifications.create_organisation".localized, keynRequest.organisationName!)
+            content.body = String(format: "notifications.create_organisation".localized, request.organisationName!)
         case .bulkLogin:
-            content.body = String(format: "notifications.bulk_login".localized, keynRequest.accountIDs!.count, session.title)
+            content.body = String(format: "notifications.bulk_login".localized, request.accountIDs!.count, session.title)
         default:
             content.body = "Unknown request"
         }
 
         content.userInfo[NotificationContentKey.type.rawValue] = NotificationType.browser.rawValue
-        content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
+        content.userInfo["chiffRequest"] = try PropertyListEncoder().encode(request)
         return content
     }
 

@@ -53,38 +53,36 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if !metadataObjects.isEmpty, let machineReadableCode = metadataObjects[0] as? AVMetadataMachineReadableCodeObject {
-            if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
-                if let urlString = machineReadableCode.stringValue, !qrFound {
-                    qrFound = true
-                    do {
-                        guard !self.recentlyScannedUrls.contains(urlString) else {
-                            throw CameraError.exists
-                        }
-                        guard let url = URL(string: urlString) else {
-                            throw CameraError.invalid
-                        }
-                        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.scanCheckmarkImageView.alpha = 1.0 })
-                        try self.handleURL(url: url)
-                    } catch {
-                        switch error {
-                        case is URLError:
-                            showAlert(message: "errors.undecodable_qr".localized)
-                        case SessionError.exists:
-                            showAlert(message: "errors.qr_scanned_twice".localized)
-                        case SessionError.invalid:
-                            Logger.shared.warning("Invalid QR code scanned", error: error)
-                            showAlert(message: "errors.undecodable_qr".localized)
-                        default:
-                            Logger.shared.error("Unhandled pairing error.", error: error)
-                            showAlert(message: "errors.generic_error".localized)
-                        }
-                        self.qrFound = false
-                    }
-                }
-            }
-        } else {
+        guard let machineReadableCode = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+              machineReadableCode.type == AVMetadataObject.ObjectType.qr,
+              let urlString = machineReadableCode.stringValue,
+              !qrFound else {
             return
+        }
+        qrFound = true
+        do {
+            guard !self.recentlyScannedUrls.contains(urlString) else {
+                throw CameraError.exists
+            }
+            guard let url = URL(string: urlString) else {
+                throw CameraError.invalid
+            }
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.scanCheckmarkImageView.alpha = 1.0 })
+            try self.handleURL(url: url)
+        } catch {
+            switch error {
+            case is URLError:
+                showAlert(message: "errors.undecodable_qr".localized)
+            case SessionError.exists:
+                showAlert(message: "errors.qr_scanned_twice".localized)
+            case SessionError.invalid:
+                Logger.shared.warning("Invalid QR code scanned", error: error)
+                showAlert(message: "errors.undecodable_qr".localized)
+            default:
+                Logger.shared.error("Unhandled pairing error.", error: error)
+                showAlert(message: "errors.generic_error".localized)
+            }
+            self.qrFound = false
         }
     }
 

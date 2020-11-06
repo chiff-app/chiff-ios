@@ -9,10 +9,13 @@ import UIKit
 import PromiseKit
 import DeviceCheck
 
+/// Handles registration of the device at the back-end
 struct NotificationManager {
 
     static let shared = NotificationManager()
 
+    /// Register this device at the back-end.
+    /// - Parameter pushToken: The `pushToken` as provided by the system.
     func registerDevice(token pushToken: Data) {
         let token = pushToken.hexEncodedString()
         guard let id = UIDevice.current.identifierForVendor?.uuidString else {
@@ -37,7 +40,8 @@ struct NotificationManager {
         }.catchLog("AWS cannot get arn.")
     }
 
-    func deleteEndpoint() -> Promise<Void> {
+    /// Unregister this device at the back-end aand delete the keys.
+    func unregisterDevice() -> Promise<Void> {
         guard let endpoint = Properties.endpoint, let id = UIDevice.current.identifierForVendor?.uuidString else {
             return .value(())
         }
@@ -52,9 +56,12 @@ struct NotificationManager {
         }.log("Failed to delete ARN @ AWS.")
     }
 
+    /// Delete the keys from the Keychain.
     func deleteKeys() {
         Keychain.shared.deleteAll(service: .aws)
     }
+
+    // MARK: - Private functions
 
     private func createEndpoint(pushToken: String, id: String) -> Promise<JSONObject> {
         return Promise<String?> { seal in

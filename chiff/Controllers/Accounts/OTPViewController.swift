@@ -47,9 +47,8 @@ class OTPViewController: QRViewController, TokenController {
             return
         }
         firstly {
-            try AuthorizationGuard.shared.addOTP(token: token!, account: account)
+            AuthorizationGuard.shared.addOTP(token: token!, account: account)
         }.done(on: .main) {
-            try self.account.setOtp(token: self.token!)
             self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
         }.catch(on: .main) { error in
             Logger.shared.error("Error adding OTP", error: error)

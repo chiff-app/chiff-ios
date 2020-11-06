@@ -238,9 +238,8 @@ struct UserAccount: Account, Equatable {
     }
 
     func delete() -> Promise<Void> {
-        return firstly {
-            Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
-        }.map { _ in
+        do {
+            try Keychain.shared.delete(id: id, service: .account)
             try self.webAuthn?.delete(accountId: self.id)
             try? Keychain.shared.delete(id: self.id, service: .notes)
             try? Keychain.shared.delete(id: self.id, service: .otp)
@@ -248,9 +247,10 @@ struct UserAccount: Account, Equatable {
             self.deleteFromToIdentityStore()
             Logger.shared.analytics(.accountDeleted)
             Properties.accountCount -= 1
-        }.then {
-            when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
-        }.log("Error deleting accounts")
+            return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
+        } catch {
+            return Promise(error: error)
+        }
     }
 
     func save(password: String?, keyPair: KeyPair?, offline: Bool = false) throws {

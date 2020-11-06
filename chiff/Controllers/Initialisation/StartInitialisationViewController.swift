@@ -12,6 +12,8 @@ class StartInitialisationViewController: UIViewController {
     private let showTermsSegue = "ShowTerms"
     private let startOnboardingSegue = "StartOnboarding"
 
+    // MARK: - Actions
+
     @IBAction func showTerms(_ sender: UIButton) {
         performSegue(withIdentifier: Properties.agreedWithTerms ? startOnboardingSegue : showTermsSegue, sender: self)
     }

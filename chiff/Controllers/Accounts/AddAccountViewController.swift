@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
+class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
 
     override var headers: [String?] {
         return [
@@ -63,6 +63,10 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         return indexPath.section == 2 ? UITableView.automaticDimension : 44
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // IMPORTANT: Override copy functionality
+    }
+
     // MARK: - Actions
 
     @IBAction func showPassword(_ sender: UIButton) {
@@ -75,23 +79,17 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         dismiss(animated: true, completion: nil)
     }
 
+    @IBAction func saveAccount(_ sender: Any) {
+        createAccount()
+    }
+
     // MARK: UITextFieldDelegate
 
     @objc func textFieldDidChange(textField: UITextField) {
         updateSaveButtonState()
     }
 
-    // MARK: - Actions
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // IMPORTANT: Override copy functionality
-    }
-
-    @IBAction func saveAccount(_ sender: Any) {
-        createAccount()
-    }
-
-    // MARK: - Private
+    // MARK: - Private functions
 
     private func updateSaveButtonState() {
         let siteName = siteNameField.text ?? ""

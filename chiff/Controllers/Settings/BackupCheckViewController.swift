@@ -116,7 +116,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         Logger.shared.analytics(.backupCompleted)
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
     private func checkWords(for textField: UITextField) {
         let index = textField == firstWordTextField ? firstWordIndex : secondWordIndex

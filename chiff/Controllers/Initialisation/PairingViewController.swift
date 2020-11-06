@@ -7,29 +7,9 @@
 
 import UIKit
 
-class PairingViewController: UIViewController, PairControllerDelegate, PairContainerDelegate {
+class PairingViewController: UIViewController {
 
     @IBOutlet weak var activityView: UIView!
-
-    func sessionCreated(session: Session) {
-        DispatchQueue.main.async {
-            self.start()
-        }
-    }
-
-    func startLoading() {
-        DispatchQueue.main.async {
-            self.activityView.isHidden = false
-        }
-    }
-
-    func finishLoading() {
-        func startLoading() {
-            DispatchQueue.main.async {
-                self.activityView.isHidden = true
-            }
-        }
-    }
 
     // MARK: - Actions
 
@@ -47,6 +27,8 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
         }
     }
 
+    // MARK: - Private functions
+
     private func start() {
         if Properties.environment == .beta {
             Properties.analyticsLogging = true
@@ -54,6 +36,34 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
             UIApplication.shared.showRootController()
         } else {
             self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
+        }
+    }
+
+}
+
+extension PairingViewController: PairControllerDelegate {
+
+    func sessionCreated(session: Session) {
+        DispatchQueue.main.async {
+            self.start()
+        }
+    }
+
+}
+
+extension PairingViewController: PairContainerDelegate {
+
+    func startLoading() {
+        DispatchQueue.main.async {
+            self.activityView.isHidden = false
+        }
+    }
+
+    func finishLoading() {
+        func startLoading() {
+            DispatchQueue.main.async {
+                self.activityView.isHidden = true
+            }
         }
     }
 

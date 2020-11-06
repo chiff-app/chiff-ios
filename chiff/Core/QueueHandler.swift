@@ -17,6 +17,7 @@ class QueueHandler {
 
     private var listening = false
 
+    /// Start listening locally for notifications to listen.
     func start() {
         guard !listening else {
             return
@@ -26,16 +27,10 @@ class QueueHandler {
         listening = true
     }
 
-    @objc func checkPersistentQueueListener(notification: Notification?) {
-        _ = self.checkPersistentQueue(notification: notification)
-    }
+    // MARK: - Private functions
 
-    func checkPersistentQueue(notification: Notification?) -> Promise<Void> {
-        return firstly {
-            when(fulfilled: try BrowserSession.all().map { session in
-                self.pollQueue(attempts: 1, session: session, shortPolling: true).asVoid()
-            })
-        }.log("Error checking persistent queue for messages")
+    @objc private func checkPersistentQueueListener(notification: Notification?) {
+        _ = self.checkPersistentQueue(notification: notification)
     }
 
     @objc private func waitForPasswordChangeConfirmation(notification: Notification) {
@@ -47,6 +42,14 @@ class QueueHandler {
         firstly {
             pollQueue(attempts: pollingAttempts, session: session, shortPolling: false)
         }.catchLog("Error getting password change confirmation from persistent queue.")
+    }
+
+    private func checkPersistentQueue(notification: Notification?) -> Promise<Void> {
+        return firstly {
+            when(fulfilled: try BrowserSession.all().map { session in
+                self.pollQueue(attempts: 1, session: session, shortPolling: true).asVoid()
+            })
+        }.log("Error checking persistent queue for messages")
     }
 
     private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool) -> Promise<[BulkAccount]?> {

@@ -96,7 +96,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
                 self.updateUi()
             }
         }
-//        updateSearchResults(for: searchController)
     }
 
     func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
@@ -150,7 +149,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
         }
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
     @objc private func showAddAccount() {
         performSegue(withIdentifier: "ShowAddAccount", sender: self)

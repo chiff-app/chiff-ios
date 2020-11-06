@@ -170,7 +170,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
     private func onSeedRecoverySuccess() {
         Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
@@ -245,7 +245,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 TeamSession.purgeSessionDataFromKeychain()
                 UserAccount.deleteAll()
                 Seed.delete()
-                return NotificationManager.shared.deleteEndpoint()
+                return NotificationManager.shared.unregisterDevice()
             }.catchLog("Error deleting data")
         }))
         self.present(alert, animated: true, completion: nil)

@@ -107,18 +107,18 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         if !content.isProcessed {
             content = reprocess(content: notification.request.content)
         }
-        guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
-            Logger.shared.error("Cannot find a KeynRequest in the push notification.")
+        guard let encodedChiffRequest: Data = content.userInfo["chiffRequest"] as? Data else {
+            Logger.shared.error("Cannot find a ChiffRequest in the push notification.")
             return []
         }
 
-        guard let keynRequest = try? PropertyListDecoder().decode(KeynRequest.self, from: encodedKeynRequest) else {
-            Logger.shared.error("Cannot decode the KeynRequest sent through a push notification.")
+        guard let chiffRequest = try? PropertyListDecoder().decode(ChiffRequest.self, from: encodedChiffRequest) else {
+            Logger.shared.error("Cannot decode the ChiffRequest sent through a push notification.")
             return []
         }
-        if keynRequest.type == .end {
+        if chiffRequest.type == .end {
             do {
-                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) {
+                if let sessionID = chiffRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) {
                     firstly {
                         session.delete(notify: false)
                     }.done {
@@ -140,11 +140,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
 
         DispatchQueue.main.async {
-            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
+            AuthorizationGuard.shared.launchRequestView(with: chiffRequest)
         }
 
         // This is disabled for now, because it causes requests to not appear if time of phone and device are not in sync
-//        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
+//        guard Date(timeIntervalSince1970: ChiffRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
 //            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
 //            return []
 //        }

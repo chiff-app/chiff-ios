@@ -108,9 +108,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
         if session is BrowserSession {
-            deleteSession(at: indexPath)
+            askToDeleteSession(at: indexPath)
         } else if let session = session as? TeamSession, !session.isAdmin {
-            deleteSession(at: indexPath)
+            askToDeleteSession(at: indexPath)
         }
     }
 
@@ -126,16 +126,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Actions
-
-    func deleteSession(at indexPath: IndexPath) {
-        let session = sessions[indexPath.row]
-        let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
-            self.deleteSession(session: session, indexPath: indexPath)
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
 
     @objc func addSession(_ notification: Notification) {
         guard let session = notification.userInfo?["session"] as? Session else {
@@ -219,6 +209,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     }
 
+    @objc private func showAddSession() {
+        performSegue(withIdentifier: "ShowAddSession", sender: self)
+        Logger.shared.analytics(.addSessionOpened)
+    }
+
     private func addAddButton() {
         guard self.navigationItem.rightBarButtonItem == nil else {
             return
@@ -230,9 +225,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.rightBarButtonItem = button.barButtonItem
     }
 
-    @objc private func showAddSession() {
-        performSegue(withIdentifier: "ShowAddSession", sender: self)
-        Logger.shared.analytics(.addSessionOpened)
+    private func askToDeleteSession(at indexPath: IndexPath) {
+        let session = sessions[indexPath.row]
+        let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
+            self.deleteSession(session: session, indexPath: indexPath)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
     private func deleteSession(session: Session, indexPath: IndexPath) {

@@ -77,7 +77,7 @@ extension Session {
 
     func decryptMessage<T: Decodable>(message: String) throws -> T {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
+        let data = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
@@ -147,12 +147,10 @@ extension Session {
     }
 
     static func get(id: String, context: LAContext?) throws -> Self? {
-        guard let sessionDict = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService, context: context) else {
+        guard let sessionData = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService, context: context) else {
             return nil
         }
-        guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
-            throw CodingError.unexpectedData
-        }
+
         let decoder = PropertyListDecoder()
         return try decoder.decode(Self.self, from: sessionData)
     }

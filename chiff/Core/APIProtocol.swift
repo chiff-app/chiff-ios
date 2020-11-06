@@ -44,10 +44,50 @@ extension URLSession {
 
 typealias JSONObject = [String: Any]
 
+/// Send requests to the Chiff back-end.
 protocol APIProtocol {
+    /// Sends a request to the back-end, signing the message with the provided private key.
+    /// The `timestamp` and `method` will be added to the message before signing, as they are required for all requests.
+    /// - Parameters:
+    ///   - path: The path that should be appended to the endpoint. Should *not* start with a slash.
+    ///   - method: The HTTP method.
+    ///   - privKey: The private key that will be used to sign the message.
+    ///   - message: Optionally, a dictionary of attributes that need to be signed. The `timestamp` and `method` will be added automatically to the message before signing.
+    ///   - body: Optionally, a message body. Will not be signed.
+    ///   - parameters: Optionally, additional query parameters.
+    /// - Returns: The promise of a JSONObject. Can be disregarded by using the the `asVoid()` method of PromiseKit.
     func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
+
+    /// Sends a request to the back-end, signing the message with the provided private key.
+    /// The `timestamp` and `method` will be added to the message before signing, as they are required for all requests.
+    /// - Parameters:
+    ///   - path: The path that should be appended to the endpoint. Should *not* start with a slash.
+    ///   - method: The HTTP method.
+    ///   - privKey: The private key that will be used to sign the message.
+    ///   - message: Optionally, a dictionary of attributes that need to be signed. The `timestamp` and `method` will be added automatically to the message before signing.
+    ///   - body: Optionally, a message body. Will not be signed.
+    ///   - parameters: Optionally, additional query parameters.
+    /// - Returns: The promise of a `T` object, where the result should be castable to `T`.
     func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<T>
+
+    /// Sends an unsigned request to the back-end.
+    /// - Parameters:
+    ///   - path: The path that should be appended to the endpoint. Should *not* start with a slash.
+    ///   - method: The HTTP method.
+    ///   - signature: Optionally, a signature may be provided.
+    ///   - body: Optionally, a message body. Calculating and providing the correct signature over the body, if needed, is the responsibility of the caller.
+    ///   - parameters: Optionally, additional query parameters.
+    /// - Returns: The promise of a JSONObject. Can be disregarded by using the the `asVoid()` method of PromiseKit.
     func request(path: String, method: APIMethod, signature: String?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
+
+    /// Sends an unsigned request to the back-end.
+    /// - Parameters:
+    ///   - path: The path that should be appended to the endpoint. Should *not* start with a slash.
+    ///   - method: The HTTP method.
+    ///   - signature: Optionally, a signature may be provided.
+    ///   - body: Optionally, a message body. Calculating and providing the correct signature over the body, if needed, is the responsibility of the caller.
+    ///   - parameters: Optionally, additional query parameters.
+    /// - Returns: The promise of a `T` object, where the result should be castable to `T`.
     func request<T>(path: String, method: APIMethod, signature: String?, body: Data?, parameters: [String: String]?) -> Promise<T>
 }
 

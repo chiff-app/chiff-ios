@@ -97,7 +97,7 @@ extension AccountViewController {
                           animations: { self.tableView.reloadData() })
     }
 
-    // MARK: - Private methods
+    // MARK: - Private functions
 
     private func updateUserAccount(account: UserAccount) throws {
         var account = account

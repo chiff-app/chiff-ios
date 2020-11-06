@@ -114,7 +114,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             TeamSession.purgeSessionDataFromKeychain()
             UserAccount.deleteAll()
             firstly {
-                NotificationManager.shared.deleteEndpoint()
+                NotificationManager.shared.unregisterDevice()
             }.done {
                 Seed.delete()
                 Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)

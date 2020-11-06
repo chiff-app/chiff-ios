@@ -19,7 +19,7 @@ class TeamAdminLoginAuthorizer: Authorizer {
         return String(format: "requests.login_to".localized, "requests.keyn_for_teams".localized)
     }
 
-    required init(request: KeynRequest, session: BrowserSession) throws {
+    required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         guard let browserTab = request.browserTab else {
             throw AuthorizationError.missingData
