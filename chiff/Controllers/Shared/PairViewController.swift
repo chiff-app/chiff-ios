@@ -57,12 +57,14 @@ class PairViewController: QRViewController {
         }
     }
 
+    // MARK: - Private functions
+
     private func pair(url: URL) -> Promise<Session> {
         guard let parameters = url.queryParameters, let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
             return Promise(error: SessionError.invalid)
         }
         return firstly {
-            AuthorizationGuard.shared.authorizePairing(parameters: parameters,
+            AuthorizationGuard.shared.pair(parameters: parameters,
                                                        reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).",
                                                        delegate: pairContainerDelegate)
         }

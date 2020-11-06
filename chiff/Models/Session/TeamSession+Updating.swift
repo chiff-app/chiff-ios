@@ -101,7 +101,7 @@ extension TeamSession {
         for (id, data) in accounts {
             currentAccounts.removeValue(forKey: id)
             let ciphertext = try Crypto.shared.convertFromBase64(from: data)
-            let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+            let accountData  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
             if var account = try SharedAccount.get(id: id, context: nil) {
                 if try account.sync(accountData: accountData, key: key) {
                     changed += 1
@@ -127,7 +127,7 @@ extension TeamSession {
             // This loops over all keys, chaining them from the initial key
             let (_, seeds) = try keys.reduce((try self.sharedKey(), nil)) { (data, ciphertext) -> (Data, TeamSessionSeeds) in
                 let ciphertextData = try Crypto.shared.convertFromBase64(from: ciphertext)
-                let newPubKey = try Crypto.shared.decrypt(ciphertextData, key: data.0, version: self.version).0
+                let newPubKey = try Crypto.shared.decrypt(ciphertextData, key: data.0, version: self.version)
                 let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: newPubKey, privKey: privKey)
                 let seeds = try TeamSessionSeeds(seed: sharedSeed)
                 return (seeds.encryptionKey, seeds)

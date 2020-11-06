@@ -149,7 +149,7 @@ class SessionTests: XCTestCase {
     func testDecrypt() {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash!, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        XCTAssertNoThrow(try session.decrypt(message: TestHelper.keynRequestEncrypted))
+        XCTAssertNoThrow(try session.decrypt(message: TestHelper.chiffRequestEncrypted))
     }
 
     func testCancelRequest() {

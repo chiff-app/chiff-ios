@@ -24,12 +24,6 @@ class LoginViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
 
-    @IBAction func touchID(_ sender: UIButton) {
-        AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
-    }
-
-    @IBAction func unwindToLoginViewController(sender: UIStoryboardSegue) { }
-
     func showDecodingError(error: DecodingError) {
         let alert = UIAlertController(title: "errors.corrupted_data".localized, message: "popups.questions.delete_corrupted".localized, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -60,12 +54,22 @@ class LoginViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    // MARK: - Actions
+
+    @IBAction func touchID(_ sender: UIButton) {
+        AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
+    }
+
+    @IBAction func unwindToLoginViewController(sender: UIStoryboardSegue) { }
+
+    // MARK: - Private functions
+
     private func deleteData() {
         _ = BrowserSession.deleteAll()
         TeamSession.purgeSessionDataFromKeychain()
         UserAccount.deleteAll()
         Seed.delete()
-        _ = NotificationManager.shared.deleteEndpoint()
+        _ = NotificationManager.shared.unregisterDevice()
         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
         AppDelegate.shared.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         AuthenticationGuard.shared.hideLockWindow()

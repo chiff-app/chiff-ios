@@ -26,7 +26,7 @@ class AddSiteAuthorizer: Authorizer {
         return  String(format: "requests.add_site".localized, siteName)
     }
 
-    required init(request: KeynRequest, session: BrowserSession) throws {
+    required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         self.type = request.type
         guard let browserTab = request.browserTab,

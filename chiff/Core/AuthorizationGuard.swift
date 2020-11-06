@@ -10,13 +10,19 @@ import OneTimePassword
 import LocalAuthentication
 import PromiseKit
 
+/// This class is responsible for launching the request UI when a request is received. Requests for which authorization is needed may originate from push messages,
+/// but also from scanning QR-codes, e.g. pairing with the browser.
 class AuthorizationGuard {
 
+    /// The `AuthorizationGuard` singleton.
     static let shared = AuthorizationGuard()
 
+    /// A variable to check the authorization of a request is currently in progress.
     var authorizationInProgress = false
 
-    func launchRequestView(with request: KeynRequest) {
+    /// Launch a the RequestViewController with the appropriate `Authorizer`.
+    /// - Parameter request: The `ChiffRequest` that has been received.
+    func launchRequestView(with request: ChiffRequest) {
         guard !authorizationInProgress else {
             return
         }
@@ -38,17 +44,31 @@ class AuthorizationGuard {
         }
     }
 
-    func addOTP(token: Token, account: UserAccount) throws -> Promise<Void> {
+    /// Add a OTP (HOTP or TOTP) token to an account.
+    /// - Parameters:
+    ///   - token: The `Token` object, which an usally be created from an URL.
+    ///   - account: The `UserAccount` to which the OTP should be added.
+    /// - Returns: A Promise when the OTP-code is added
+    func addOTP(token: Token, account: UserAccount) -> Promise<Void> {
         authorizationInProgress = true
+        var account = account
         let reason = account.hasOtp ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false)
+        }.map { _ in
+            try account.setOtp(token: token)
         }.asVoid().ensure {
             self.authorizationInProgress = false
         }
     }
 
-    func authorizePairing(parameters: [String: String], reason: String, delegate: PairContainerDelegate) -> Promise<Session> {
+    /// Pair with another device. This can be a BrowserSession or a TeamSession, depending on the parameters.
+    /// - Parameters:
+    ///   - parameters: The URL-parameters of the URL that was scanned.
+    ///   - reason: The authentication reason that is presented to the user.
+    ///   - delegate: The delegate to update the UI.
+    /// - Returns: The Promise of a Session.
+    func pair(parameters: [String: String], reason: String, delegate: PairContainerDelegate) -> Promise<Session> {
         guard !authorizationInProgress else {
             return Promise(error: AuthorizationError.inProgress)
         }
@@ -95,6 +115,12 @@ class AuthorizationGuard {
         }
     }
 
+    /// Create a new Team. This can be used to create a Team / Organization by scanning a QR-code.
+    /// - Parameters:
+    ///   - parameters: The URL-parameters of the URL that was scanned.
+    ///   - reason: The authentication reason that is presented to the user.
+    ///   - delegate: The delegate to update the UI.
+    /// - Returns: The Promise of a Session.
     func createTeam(parameters: [String: String], reason: String, delegate: PairContainerDelegate) -> Promise<Session> {
         guard !authorizationInProgress else {
             return Promise(error: AuthorizationError.inProgress)
@@ -115,6 +141,8 @@ class AuthorizationGuard {
         }
     }
 
+    /// Redirect the user to a ViewController that shows an error message. This is used only for errors that put the app in a state that cannot be fixed.
+    /// - Parameter errorMessage: The error message that should be displayed.
     func showError(errorMessage: String) {
         DispatchQueue.main.async {
             guard let viewController = UIStoryboard.main.instantiateViewController(withIdentifier: "ErrorViewController") as? ErrorViewController else {
@@ -129,7 +157,7 @@ class AuthorizationGuard {
 
     // MARK: - Private functions
 
-    private func createAuthorizer(request: KeynRequest, session: BrowserSession) throws -> Authorizer {
+    private func createAuthorizer(request: ChiffRequest, session: BrowserSession) throws -> Authorizer {
         switch request.type {
         case .add, .register, .addAndLogin:
             return try AddSiteAuthorizer(request: request, session: session)

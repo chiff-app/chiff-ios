@@ -9,6 +9,7 @@ import UIKit
 import PromiseKit
 
 extension AccountViewController: SitesDelegate {
+
     func updateAccount(account: UserAccount) {
         self.account = account
         loadAccountData(dismiss: false)
@@ -18,6 +19,7 @@ extension AccountViewController: SitesDelegate {
 }
 
 extension AccountViewController: UITextFieldDelegate {
+
     // Hide the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -31,6 +33,7 @@ extension AccountViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         view.removeGestureRecognizer(tap)
     }
+
 }
 
 extension AccountViewController: MultiLineTextInputTableViewCellDelegate {

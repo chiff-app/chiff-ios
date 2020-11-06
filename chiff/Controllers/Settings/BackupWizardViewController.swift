@@ -8,6 +8,7 @@
 import UIKit
 
 class BackupWizardViewController: UIViewController {
+
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var counterLabel: UILabel!
@@ -50,8 +51,6 @@ class BackupWizardViewController: UIViewController {
             }
         } else {
            performSegue(withIdentifier: "MnemonicCheck", sender: self)
-
-//            navigationController?.pushViewController(checkViewController, animated: true)
         }
     }
 

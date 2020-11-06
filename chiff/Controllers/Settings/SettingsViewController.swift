@@ -10,10 +10,11 @@ import PromiseKit
 
 class SettingsViewController: UITableViewController, UITextViewDelegate {
 
-    @IBOutlet weak var notificationSettingSwitch: UISwitch!
     var securityFooterText: String {
         return Seed.paperBackupCompleted ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
     }
+
+    @IBOutlet weak var notificationSettingSwitch: UISwitch!
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
@@ -28,6 +29,8 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         setJailbreakText()
         NotificationCenter.default.addObserver(self, selector: #selector(updateBackupFooter(notification:)), name: .backupCompleted, object: nil)
     }
+
+    // MARK: - UITableView
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "settings.settings".localized
@@ -62,13 +65,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.numberOfLines = 3
     }
 
-    private func updateSubscriptionStatus(notification: Notification) {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-
-    // MARK: - Actions
+    // MARK: - Navigation
 
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
         let completed = Seed.paperBackupCompleted
@@ -121,4 +118,5 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             .foregroundColor: UIColor.primary
         ]
     }
+
 }

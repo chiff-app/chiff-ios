@@ -22,7 +22,7 @@ class AddBulkSiteAuthorizer: Authorizer {
         return String(format: "requests.n_new_accounts".localized, count)
     }
 
-    required init(request: KeynRequest, session: BrowserSession) throws {
+    required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         guard let count = request.count,
               let browserTab = request.browserTab else {
@@ -78,6 +78,8 @@ class AddBulkSiteAuthorizer: Authorizer {
             Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: !succeeded.isEmpty])
         }
     }
+
+    // MARK: - Private functions
 
     private func getAccounts(startLoading: ((String?) -> Void)?) -> Promise<[(BulkAccount, PPD?)]> {
         startLoading?("requests.import_progress_1".localized)

@@ -21,7 +21,7 @@ class CreateOrganisationAuthorizer: Authorizer {
         return String(format: "requests.create_this".localized, organisationName)
     }
 
-    required init(request: KeynRequest, session: BrowserSession) throws {
+    required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         guard let browserTab = request.browserTab,
               let organisationName = request.organisationName,

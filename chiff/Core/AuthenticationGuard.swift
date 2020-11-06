@@ -10,8 +10,10 @@ import LocalAuthentication
 import OneTimePassword
 import PromiseKit
 
+/// This class is responsible for authenticating the user when opening the app and hiding and showing the lock screen.
 class AuthenticationGuard {
 
+    /// The `AuthenticationGuard` singleton instance.
     static let shared = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
@@ -42,6 +44,9 @@ class AuthenticationGuard {
 
     // MARK: - LocalAuthentication
 
+    /// Authenticate the user to unlock the app.
+    /// - Parameter cancelChecks: Set this parameter to `true` if authenticating should only happen if an authentication operation is not already in progress.
+    ///     If it is, Promise will be cancelled.
     func authenticateUser(cancelChecks: Bool) {
         firstly {
             after(seconds: 0.5)
@@ -87,6 +92,8 @@ class AuthenticationGuard {
 
     }
 
+    /// Hide the lock window, effectively putting the app in the *unlocked* state. Only makes sense if the user is really authenticated, otherwise the data from the Keychain is not loaded.
+    /// - Parameter delay: Optionally, a delay in milliseconds can be provided to make the UX more smooth.
     func hideLockWindow(delay: Double? = nil) {
         let duration = 0.25
         let animations = {
@@ -106,6 +113,8 @@ class AuthenticationGuard {
             UIView.animate(withDuration: duration, animations: animations, completion: completion)
         }
     }
+
+    // MARK: - Private functions
 
     private func showDataDeleted() {
         UIView.animate(withDuration: 0.25, animations: {

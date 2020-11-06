@@ -10,6 +10,20 @@ import PromiseKit
 
 extension AccountViewController {
 
+    func setAddToTeamButton() {
+        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
+            addToTeamButton.isHidden = false
+            addToTeamButton.isEnabled = true
+            addToTeamButton.setTitle(account is SharedAccount ? "accounts.move_from_team".localized : "accounts.add_to_team".localized, for: .normal)
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
+            self.session = session
+        } else {
+            addToTeamButton.isEnabled = false
+            addToTeamButton.isHidden = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 0)
+        }
+    }
+
     // MARK: - Actions
 
     @IBAction func addToTeam(_ sender: KeynButton) {
@@ -48,19 +62,7 @@ extension AccountViewController {
         }
     }
 
-    func setAddToTeamButton() {
-        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
-            addToTeamButton.isHidden = false
-            addToTeamButton.isEnabled = true
-            addToTeamButton.setTitle(account is SharedAccount ? "accounts.move_from_team".localized : "accounts.add_to_team".localized, for: .normal)
-            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
-            self.session = session
-        } else {
-            addToTeamButton.isEnabled = false
-            addToTeamButton.isHidden = true
-            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 0)
-        }
-    }
+    // MARK: - Private functions
 
     private func removeAccountFromTeam(session: TeamSession, account: SharedAccount) -> Promise<Void> {
         do {

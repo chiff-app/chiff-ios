@@ -16,7 +16,7 @@ enum OTPError: Error {
     case empty
 }
 
-class ManualOTPViewController: KeynTableViewController, TokenController {
+class ManualOTPViewController: ChiffTableViewController, TokenController {
 
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
@@ -28,6 +28,7 @@ class ManualOTPViewController: KeynTableViewController, TokenController {
     override var headers: [String?] {
         return ["accounts.secret".localized, "accounts.mode".localized]
     }
+
     override var footers: [String?] {
         return ["accounts.secret_description".localized, "accounts.mode_description".localized]
     }
@@ -58,9 +59,8 @@ class ManualOTPViewController: KeynTableViewController, TokenController {
         }
         self.token = Token(generator: generator)
         firstly {
-            try AuthorizationGuard.shared.addOTP(token: token!, account: account)
+            AuthorizationGuard.shared.addOTP(token: token!, account: account)
         }.done(on: .main) {
-            try self.account.setOtp(token: self.token!)
             self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
         }.catch(on: .main) { error in
             Logger.shared.error("Error adding OTP", error: error)

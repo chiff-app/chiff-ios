@@ -1,5 +1,5 @@
 //
-//  KeynNavigationController.swift
+//  ChiffNavigationController.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md
@@ -7,7 +7,7 @@
 
 import UIKit
 
-@IBDesignable class KeynNavigationController: UINavigationController {
+@IBDesignable class ChiffNavigationController: UINavigationController {
 
     private let height: CGFloat = 38
     private let imageTopMargin: CGFloat = 0
@@ -47,6 +47,8 @@ import UIKit
         addBackgroundLayer()
         gradientLayer.isHidden = !gradientEnabled
     }
+
+    // MARK: - Private functions
 
     private func addBackgroundLayer() {
         gradientLayer = CAGradientLayer()

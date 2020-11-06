@@ -12,7 +12,7 @@ protocol AccessControlDelegate: AnyObject {
     func setObjects(objects: [AccessControllable], type: AccessControlType)
 }
 
-class TeamAccountViewController: KeynTableViewController, AccessControlDelegate {
+class TeamAccountViewController: ChiffTableViewController, AccessControlDelegate {
 
     override var headers: [String?] {
         return [

@@ -85,14 +85,14 @@ struct SharedAccount: Account {
     }
 
     func delete() -> Promise<Void> {
-        firstly {
-            Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: String(format: "popups.questions.delete_x".localized, site.name), authenticationType: .ifNeeded)
-        }.map { _ in
+        do {
+            try Keychain.shared.delete(id: self.id, service: .sharedAccount)
             try? Keychain.shared.delete(id: self.id, service: .notes)
             self.deleteFromToIdentityStore()
-        }.then {
-            when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
-        }.log("Error deleting accounts")
+            return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) })).log("Error deleting accounts")
+        } catch {
+            return Promise(error: error)
+        }
     }
 
     func update(secret: Data?, backup: Bool = false) throws {

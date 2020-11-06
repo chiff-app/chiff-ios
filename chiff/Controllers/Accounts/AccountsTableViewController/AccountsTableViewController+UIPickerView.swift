@@ -8,6 +8,7 @@
 import UIKit
 
 extension AccountsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -26,4 +27,5 @@ extension AccountsTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
         prepareAccounts()
         tableView.reloadData()
     }
+
 }

@@ -1,5 +1,5 @@
 //
-//  KeynRequest.swift
+//  ChiffRequest.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md
@@ -12,7 +12,7 @@ import Foundation
  *
  * Direction: browser -> app
  */
-struct KeynRequest: Codable {
+struct ChiffRequest: Codable {
     let accountID: String?
     let accountIDs: [Int: String]?
     let browserTab: Int?

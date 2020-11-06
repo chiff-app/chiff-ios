@@ -16,6 +16,8 @@ class PushNotificationViewController: UIViewController {
         ("notifications.onboarding_reminder_title.third".localized, "notifications.onboarding_reminder_message.third".localized)
     ]
 
+    // MARK: - Actions
+
     @IBAction func enablePushNotifications(_ sender: UIButton) {
         firstly {
             PushNotifications.requestAuthorization()
@@ -33,6 +35,8 @@ class PushNotificationViewController: UIViewController {
         Properties.deniedPushNotifications = true
         self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
     }
+
+    // MARK: - Private functions
 
     private func registerForPushNotifications() {
         firstly {

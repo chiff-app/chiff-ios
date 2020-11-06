@@ -8,6 +8,7 @@
 import UIKit
 
 extension AccountsTableViewController: UISearchBarDelegate {
+
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         guard let filter = Filters(rawValue: selectedScope) else {
             return

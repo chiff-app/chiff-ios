@@ -562,7 +562,7 @@
         <!--Accounts-->
         <scene sceneID="dOy-5w-acO">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Accounts" image="accounts_tab" selectedImage="accounts_tab" id="acW-dT-cKf">
                         <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
@@ -1040,10 +1040,10 @@
             </objects>
             <point key="canvasLocation" x="813.60000000000002" y="-940.47976011994012"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="85X-Xm-p3i">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -1062,7 +1062,7 @@
         <!--Devices-->
         <scene sceneID="eQc-NM-rWF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Devices" image="devices_tab" selectedImage="devices_tab" id="GWP-vo-zZa">
                         <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <color key="badgeColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1254,7 +1254,7 @@
         <!--Settings-->
         <scene sceneID="zrt-ki-pMI">
             <objects>
-                <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="b4Q-ze-Q2f" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="b4Q-ze-Q2f" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="settings_tab" selectedImage="settings_tab" id="u7q-tf-p2Q">
                         <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
@@ -1468,10 +1468,10 @@
             </objects>
             <point key="canvasLocation" x="4924" y="-940"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="Fms-F8-WYy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KOU-AZ-ldj" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KOU-AZ-ldj" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="35T-wf-HP5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -2181,10 +2181,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="3167" y="-1776"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="Glk-z8-IBA">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MFW-eN-Fb7" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MFW-eN-Fb7" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rar-cj-hMh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -2199,10 +2199,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="2314" y="0.0"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="XCC-Je-edD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R8G-2M-pGS" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R8G-2M-pGS" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="c56-fr-BBb">
@@ -3108,10 +3108,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="4209" y="1923"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="fJs-Qj-E4r">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zZh-wq-ANU" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zZh-wq-ANU" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pUQ-lq-9RD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -3976,10 +3976,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="5133.6000000000004" y="18.440779610194905"/>
         </scene>
-        <!--Keyn Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="Lck-uf-dfN">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bBj-y4-bav" customClass="KeynNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bBj-y4-bav" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Q4G-RU-a06">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>

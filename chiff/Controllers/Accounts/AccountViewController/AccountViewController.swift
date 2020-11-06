@@ -11,7 +11,7 @@ import OneTimePassword
 import QuartzCore
 import PromiseKit
 
-class AccountViewController: KeynTableViewController {
+class AccountViewController: ChiffTableViewController {
 
     override var headers: [String?] {
         return [
@@ -199,7 +199,7 @@ class AccountViewController: KeynTableViewController {
         }
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
     @objc private func reloadAccount(notification: Notification) {
         DispatchQueue.main.async {

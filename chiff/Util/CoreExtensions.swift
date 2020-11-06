@@ -28,10 +28,6 @@ extension String {
         return try? Crypto.shared.hash(self)
     }
 
-    var sha1: String {
-        return Crypto.shared.sha1(from: self)
-    }
-
     var sha256: String {
         return Crypto.shared.sha256(from: self)
     }

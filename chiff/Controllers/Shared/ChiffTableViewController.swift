@@ -1,5 +1,5 @@
 //
-//  KeynTableViewController.swift
+//  ChiffTableViewController.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md
@@ -7,14 +7,14 @@
 
 import UIKit
 
-class KeynTableViewController: UITableViewController {
+class ChiffTableViewController: UITableViewController {
 
-    /// Set the header text for each section index and it will be automatically formatted in Keyn style
+    /// Set the header text for each section index and it will be automatically formatted in Chiff style.
     var headers: [String?] {
         return []
     }
 
-    /// Set the footer text for each section index and it will be automatically formatted in Keyn style
+    /// Set the footer text for each section index and it will be automatically formatted in Chiff style.
     var footers: [String?] {
         return []
     }

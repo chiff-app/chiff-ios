@@ -70,8 +70,8 @@ struct BrowserSession: Session {
 
     }
 
-    func decrypt(message message64: String) throws -> KeynRequest {
-        var message: KeynRequest = try decryptMessage(message: message64)
+    func decrypt(message message64: String) throws -> ChiffRequest {
+        var message: ChiffRequest = try decryptMessage(message: message64)
         message.sessionID = id
         return message
     }

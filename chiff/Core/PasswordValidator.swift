@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Validates a password against a set of rules, as specified in a `PPD`.
 class PasswordValidator {
 
     static let fallbackPasswordLength = 22
@@ -49,45 +50,50 @@ class PasswordValidator {
         }
     }
 
+
+    /// Validate a password against all rules, as specified in the `PPD`.
+    /// - Parameter password: The password that should be checked.
+    /// - Throws: May throw if there are inconsistencies in the `PPD`.
+    /// - Returns: True if valid, false otherwise
     func validate(password: String) throws -> Bool {
-        // Checks if password is less than or equal to maximum length. Relevant for custom passwords.
         guard validateMaxLength(password: password) else { return false }
 
-        // Checks if password is less than or equal to minimum length. Relevant for custom passwords.
         guard validateMinLength(password: password) else { return false }
 
-        // Checks if password doesn't contain unallowed characters.
         guard validateCharacters(password: password) else { return false }
 
-        // Max consecutive characters. This tests if n characters are the same.
         guard validateConsecutiveCharacters(password: password) else { return false }
 
-        // Max consecutive characters. This tests if n characters are an ordered sequence.
         guard validateConsecutiveOrderedCharacters(password: password) else { return false }
 
-        // CharacterSet restrictions.
         guard try validateCharacterSet(password: password) else { return false }
 
-        // Position restrictions.
         guard try validatePositionRestrictions(password: password) else { return false }
 
-        // Requirement groups.
         guard try validateRequirementGroups(password: password) else { return false }
 
         // All tests passed, password is valid.
         return true
     }
 
+    /// Checks if password is less than or equal to maximum length. Relevant for custom passwords.
+    /// - Parameter password: The password that should be checked.
     func validateMaxLength(password: String) -> Bool {
         let maxLength = ppd?.properties?.maxLength ?? PasswordValidator.maxPasswordLength
         return password.count <= maxLength
     }
 
+    /// Checks if password is less than or equal to minimum length. Relevant for custom passwords.
+    /// - Parameter password: The password that should be checked.
     func validateMinLength(password: String) -> Bool {
         let minLength = ppd?.properties?.minLength ?? PasswordValidator.minPasswordLength
         return password.count >= minLength
     }
 
+    /// Checks if password doesn't contain unallowed characters.
+    /// - Parameters:
+    ///   - password: The password that should be checked.
+    ///   - characters: Optionally, the characters can be overridden. Uses the objects characters otherwise.
     func validateCharacters(password: String, characters: String? = nil) -> Bool {
         let chars = characters ?? self.characters
         for char in password {
@@ -98,6 +104,8 @@ class PasswordValidator {
         return true
     }
 
+    /// Max consecutive characters. This tests if *n* characters are the same.
+    /// - Parameter password: The password that should be checked.
     func validateConsecutiveCharacters(password: String) -> Bool {
         if let maxConsecutive = ppd?.properties?.maxConsecutive, maxConsecutive > 0 {
             guard checkConsecutiveCharacters(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
@@ -107,6 +115,8 @@ class PasswordValidator {
         return true
     }
 
+    /// Max consecutive characters. This tests if *n* characters are in an ordered sequence.
+    /// - Parameter password: The password that should be checked.
     func validateConsecutiveOrderedCharacters(password: String) -> Bool {
         if let maxConsecutive = ppd?.properties?.maxConsecutive, maxConsecutive > 0 {
             guard checkConsecutiveCharactersOrder(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
@@ -116,6 +126,9 @@ class PasswordValidator {
         return true
     }
 
+    /// Validates the charcterSetSettings.
+    /// These may for example specifiy that the password should contains at least *n* characters of set *LowerLetters*.
+    /// - Parameter password: The password that should be checked.
     func validateCharacterSet(password: String) throws -> Bool {
         if let characterSetSettings = ppd?.properties?.characterSettings?.characterSetSettings {
             guard try checkCharacterSetSettings(password: password, characterSetSettings: characterSetSettings) else {
@@ -125,6 +138,9 @@ class PasswordValidator {
         return true
     }
 
+    /// Validates the position restrictions.
+    /// These may for example specifiy that the password should start with an *UpperCase* character.
+    /// - Parameter password: The password that should be checked.
     func validatePositionRestrictions(password: String) throws -> Bool {
         if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
             guard try checkPositionRestrictions(password: password, positionRestrictions: positionRestrictions) else {
@@ -134,6 +150,9 @@ class PasswordValidator {
         return true
     }
 
+    /// Validates the requirement groups.
+    /// These may specify combinations of characterSetSettings and positionRestrictions, where at least *n* of these rules should be valid.
+    /// - Parameter password: The password that should be checked.
     func validateRequirementGroups(password: String) throws -> Bool {
         if let requirementGroups = ppd?.properties?.characterSettings?.requirementGroups {
             guard try checkRequirementGroups(password: password, requirementGroups: requirementGroups) else {
@@ -143,36 +162,7 @@ class PasswordValidator {
         return true
     }
 
-//    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
-//        let hash = password.sha1.uppercased()
-//        let index = hash.index(hash.startIndex, offsetBy: 5)
-//        let prefix = hash.prefix(upTo: index).uppercased()
-//        let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//
-//        let task = URLSession.shared.dataTask(with: request) { (result) in
-//            switch result {
-//            case .failure(let error):
-//                Logger.shared.warning("Error querying HIBP", error: error)
-//                completionHandler(0)
-//            case .success(let response, let data):
-//                if response.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
-//                    var breachCount: Int? = nil
-//                    for line in responseString.lines {
-//                        let result = line.split(separator: ":")
-//                        if hash == prefix + result[0] {
-//                            breachCount = Int(result[1])
-//                        }
-//                    }
-//                    completionHandler(breachCount ?? 0)
-//                }
-//            }
-//        }
-//        task.resume()
-//    }
-
-    // MARK: - Private
+    // MARK: - Private functions
 
     private func checkConsecutiveCharacters(password: String, characters: String, maxConsecutive: Int) -> Bool {
         let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)

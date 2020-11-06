@@ -26,7 +26,6 @@ class RequestViewController: UIViewController {
 
     private var authorized = false
     private var accounts = [Account]()
-
     private var account: Account?
     private var otpCodeTimer: Timer?
     private var token: Token?
@@ -42,6 +41,37 @@ class RequestViewController: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
+    }
+
+    // MARK: - Actions
+
+    @IBAction func authenticate(_ sender: UIButton) {
+        if let factor = token?.generator.factor, case .counter = factor, let newToken = token?.updatedToken() {
+            self.token = newToken
+            var userAccount = account as? UserAccount
+            try? userAccount?.setOtp(token: newToken)
+            successTextLabel.text = newToken.currentPasswordSpaced
+        } else {
+            acceptRequest()
+        }
+    }
+
+    @IBAction func close(_ sender: UIButton) {
+        guard authorized else {
+            return firstly {
+                authorizer.rejectRequest()
+            }.done(on: .main) {
+                self.dismiss()
+            }.catchLog("Error rejecting request")
+        }
+        dismiss()
+        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+    }
+
+    // MARK: - Navigation
+
+    func dismiss() {
+        presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private functions
@@ -166,37 +196,6 @@ class RequestViewController: UIViewController {
         self.successView.alpha = 0.0
         self.successView.isHidden = false
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
-    }
-
-    // MARK: - Actions
-
-    @IBAction func authenticate(_ sender: UIButton) {
-        if let factor = token?.generator.factor, case .counter = factor, let newToken = token?.updatedToken() {
-            self.token = newToken
-            var userAccount = account as? UserAccount
-            try? userAccount?.setOtp(token: newToken)
-            successTextLabel.text = newToken.currentPasswordSpaced
-        } else {
-            acceptRequest()
-        }
-    }
-
-    @IBAction func close(_ sender: UIButton) {
-        guard authorized else {
-            return firstly {
-                authorizer.rejectRequest()
-            }.done(on: .main) {
-                self.dismiss()
-            }.catchLog("Error rejecting request")
-        }
-        dismiss()
-        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
-    }
-
-    // MARK: - Navigation
-
-    func dismiss() {
-        presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)
     }
 
 }

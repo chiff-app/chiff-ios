@@ -28,13 +28,16 @@ protocol Authorizer {
     var requestText: String { get }
     var successText: String { get }
 
-    init(request: KeynRequest, session: BrowserSession) throws
+    init(request: ChiffRequest, session: BrowserSession) throws
 
+    /// Start the authorization process to handle this request.
+    /// - Parameter startLoading: This callback can be used for requests that may take a while to inform the user about the progress.
     func authorize(startLoading: ((_ status: String?) -> Void)?) -> Promise<Account?>
 }
 
 extension Authorizer {
 
+    /// Notifies the session client that this request is rejected.
     func rejectRequest() -> Guarantee<Void> {
         return firstly {
             session.cancelRequest(reason: .reject, browserTab: browserTab)

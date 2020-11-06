@@ -86,11 +86,11 @@ extension Account {
 
     func oneTimePasswordToken() throws -> Token? {
         do {
-            guard let urlDataDict = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
+            guard let urlData = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
                 return nil
             }
             let secret = try Keychain.shared.get(id: id, service: .otp, context: nil)
-            guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
+            guard let urlString = String(data: urlData, encoding: .utf8),
                 let url = URL(string: urlString) else {
                     throw CodingError.unexpectedData
             }
@@ -169,15 +169,11 @@ extension Account {
     // MARK: - Private methods
 
     private static func get<T: Account>(id: String, context: LAContext?, service: KeychainService) throws -> T? {
-        guard let dict = try Keychain.shared.attributes(id: id, service: service, context: context) else {
+        guard let accountData = try Keychain.shared.attributes(id: id, service: service, context: context) else {
             return nil
         }
 
         let decoder = PropertyListDecoder()
-
-        guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-            throw CodingError.unexpectedData
-        }
 
         return try decoder.decode(T.self, from: accountData)
     }

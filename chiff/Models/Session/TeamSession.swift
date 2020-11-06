@@ -174,7 +174,7 @@ struct TeamSession: Session {
                 throw CodingError.unexpectedData
             }
             let ciphertext = try Crypto.shared.convertFromBase64(from: teamSeed)
-            let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+            let seed = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
             return seed
         }.log("Error getting admin seed")
     }
