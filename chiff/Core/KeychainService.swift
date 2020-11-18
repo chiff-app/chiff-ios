@@ -9,29 +9,74 @@ import Foundation
 import LocalAuthentication
 
 /// Groups keychain objects and determines classification.
-enum KeychainService: String {
-    case account = "io.keyn.account"
-    case sharedAccount = "io.keyn.sharedaccount"
-    case otp = "io.keyn.otp"
-    case webauthn = "io.keyn.webauthn"
-    case notes = "io.keyn.notes"
-    case seed = "io.keyn.seed"
-    case sharedSessionKey = "io.keyn.session.shared"
-    case signingSessionKey = "io.keyn.session.signing"
-    case sharedTeamSessionKey = "io.keyn.teamsession.shared"
-    case signingTeamSessionKey = "io.keyn.teamsession.signing"
-    case aws = "io.keyn.aws"
-    case backup = "io.keyn.backup"
+enum KeychainService {
+    case account(attribute: AccountAttribute? = nil)
+    case sharedAccount(attribute: AccountAttribute? = nil)
+    case seed
+    case browserSession(attribute: SessionAttribute)
+    case teamSession(attribute: SessionAttribute)
+    case aws
+    case backup
+
+    enum AccountAttribute: String {
+        case otp
+        case webauthn
+        case notes
+    }
+
+    enum SessionAttribute: String {
+        case sharedKey = "shared"
+        case signingKey = "signing"
+    }
+
+    enum Classification {
+        case restricted
+        case confidential
+        case secret
+        case topsecret
+    }
+
+    var service: String {
+        switch self {
+        case .account(let attribute):
+            if let attribute = attribute {
+                return "io.keyn.account.\(attribute)"
+            } else {
+                return "io.keyn.account"
+            }
+        case .sharedAccount(let attribute):
+            if let attribute = attribute {
+                return "io.keyn.sharedaccount.\(attribute)"
+            } else {
+                return "io.keyn.sharedaccount"
+            }
+        case .browserSession(let attribute):
+            return "io.keyn.session.\(attribute)"
+        case .teamSession(let attribute):
+            return "io.keyn.teamsession.\(attribute)"
+        case .seed:
+            return "io.keyn.seed"
+        case .aws:
+            return "io.keyn.aws"
+        case .backup:
+            return "io.keyn.backup"
+        }
+    }
 
     var classification: Classification {
         switch self {
-        case .sharedSessionKey, .signingSessionKey, .sharedTeamSessionKey, .signingTeamSessionKey:
+        case .browserSession, .teamSession:
             return .restricted
-        case .account, .sharedAccount, .webauthn:
-            return .confidential
+        case .account(let attribute), .sharedAccount(let attribute):
+            switch attribute {
+            case .otp, .notes:
+                return .topsecret
+            default:
+                return .confidential
+            }
         case .aws, .backup:
             return .secret
-        case .seed, .otp, .notes:
+        case .seed:
             return .topsecret
         }
     }
@@ -52,10 +97,4 @@ enum KeychainService: String {
         return (self.classification == .confidential || self.classification == .topsecret) ? LocalAuthenticationManager.shared.mainContext : nil
     }
 
-    enum Classification {
-        case restricted
-        case confidential
-        case secret
-        case topsecret
-    }
 }

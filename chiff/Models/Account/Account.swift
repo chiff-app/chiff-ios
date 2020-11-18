@@ -32,6 +32,9 @@ protocol Account: BaseAccount {
     var lastTimeUsed: Date? { get set }
 
     static var keychainService: KeychainService { get }
+    static var otpService: KeychainService { get }
+    static var notesService: KeychainService { get }
+    static var webAuthnService: KeychainService { get }
 
     func delete() -> Promise<Void>
     func update(secret: Data?, backup: Bool) throws
@@ -41,7 +44,7 @@ extension Account {
 
     /// Whether this account has an TOTP or HOTP code stored.
     var hasOtp: Bool {
-        return Keychain.shared.has(id: id, service: .otp)
+        return Keychain.shared.has(id: id, service: Self.otpService)
     }
 
     /// Retrieve the notes for this account.
@@ -49,7 +52,7 @@ extension Account {
     /// - Throws: May throw `KeychainError` or `CodingError.stringEncoding`.
     /// - Returns: The notes or nil if no notes are found.
     func notes(context: LAContext? = nil) throws -> String? {
-        guard let data = try Keychain.shared.get(id: id, service: .notes, context: context) else {
+        guard let data = try Keychain.shared.get(id: id, service: Self.notesService, context: context) else {
             return nil
         }
         guard let notes = String(data: data, encoding: .utf8) else {
@@ -105,10 +108,10 @@ extension Account {
     /// - Returns: The `Token` or nil if no token is found.
     func oneTimePasswordToken() throws -> Token? {
         do {
-            guard let urlData = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
+            guard let urlData = try Keychain.shared.attributes(id: id, service: Self.otpService, context: nil) else {
                 return nil
             }
-            let secret = try Keychain.shared.get(id: id, service: .otp, context: nil)
+            let secret = try Keychain.shared.get(id: id, service: Self.otpService, context: nil)
             guard let urlString = String(data: urlData, encoding: .utf8),
                 let url = URL(string: urlString) else {
                     throw CodingError.unexpectedData
@@ -136,12 +139,11 @@ extension Account {
     /// Get all accounts.
     /// - Parameters:
     ///   - context: Optionally, an `LAContext` object.
-    ///   - migrateVersion: Set to true if this should attempt to migrate accounts to the next version.
     ///   - label: Optionally, a label to filter the the Keychain query.
     /// - Throws: May throw `KeychainError`.
     /// - Returns: A dictionary, where the id is the account ids and the value the `Account`.
-    static func all(context: LAContext?, migrateVersion: Bool = false, label: String? = nil) throws -> [String: Self] {
-        return try all(context: context, service: Self.keychainService, migrateVersion: migrateVersion, label: label)
+    static func all(context: LAContext?, label: String? = nil) throws -> [String: Self] {
+        return try all(context: context, service: Self.keychainService, label: label)
     }
 
     /// Get a single account.
@@ -154,29 +156,32 @@ extension Account {
         return try get(id: id, context: context, service: Self.keychainService)
     }
 
-    func deleteSync() throws {
-        try Keychain.shared.delete(id: id, service: Self.keychainService)
-        try? Keychain.shared.delete(id: id, service: .webauthn)
-        try? Keychain.shared.delete(id: id, service: .notes)
-        try? Keychain.shared.delete(id: id, service: .otp)
-        try BrowserSession.all().forEach({ _ = $0.deleteAccount(accountId: id) })
-        self.deleteFromToIdentityStore()
+    func deleteFromKeychain() -> Promise<Void> {
+        do {
+            try Keychain.shared.delete(id: id, service: Self.keychainService)
+            try? Keychain.shared.delete(id: id, service: Self.notesService)
+            try? Keychain.shared.delete(id: id, service: Self.otpService)
+            self.deleteFromToIdentityStore()
+            return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
+        } catch {
+            return Promise(error: error)
+        }
     }
 
     static func deleteAll() {
         Keychain.shared.deleteAll(service: Self.keychainService)
-        Keychain.shared.deleteAll(service: .webauthn)
-        Keychain.shared.deleteAll(service: .notes)
-        Keychain.shared.deleteAll(service: .otp)
+        Keychain.shared.deleteAll(service: Self.webAuthnService) // TODO: This does not delete WebAuthn if ECDSA algorithm is used
+        Keychain.shared.deleteAll(service: Self.notesService)
+        Keychain.shared.deleteAll(service: Self.otpService)
         if #available(iOS 12.0, *) {
             ASCredentialIdentityStore.shared.removeAllCredentialIdentities(nil)
         }
     }
 
     static func getAny(id: String, context: LAContext?) throws -> Account? {
-        if let userAccount: UserAccount = try get(id: id, context: context, service: .account) {
+        if let userAccount: UserAccount = try get(id: id, context: context, service: .account()) {
             return userAccount
-        } else if let sharedAccount: SharedAccount = try get(id: id, context: context, service: .sharedAccount) {
+        } else if let sharedAccount: SharedAccount = try get(id: id, context: context, service: .sharedAccount()) {
             return sharedAccount
         } else {
             return nil
@@ -188,15 +193,18 @@ extension Account {
     }
 
     static func allCombined(context: LAContext?, migrateVersion: Bool = false) throws -> [String: Account] {
-        let userAccounts: [String: Account] = try all(context: context, service: .account, migrateVersion: migrateVersion) as [String: UserAccount]
-        let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount, migrateVersion: migrateVersion) as [String: SharedAccount]
-        return userAccounts.merging(sharedAccounts, uniquingKeysWith: { (userAccount, _) -> Account in
-            guard var account = userAccount as? UserAccount else {
-                return userAccount
+        let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount()) as [String: SharedAccount]
+        let userAccounts: [String: Account] = try all(context: context, service: .account()).mapValues({ (account: UserAccount) -> Account in
+            var account = account
+            if migrateVersion, account.version <= 1 {
+                account.updateVersion(context: context)
             }
-            account.shadowing = true
-            return account
+            if sharedAccounts[account.id] != nil {
+                account.shadowing = true
+            }
+            return account as Account
         })
+        return userAccounts.merging(sharedAccounts) { (userAccount, _) in userAccount }
     }
 
     // MARK: - Private methods
@@ -211,7 +219,7 @@ extension Account {
         return try decoder.decode(T.self, from: accountData)
     }
 
-    private static func all<T: Account>(context: LAContext?, service: KeychainService, migrateVersion: Bool = false, label: String? = nil) throws -> [String: T] {
+    private static func all<T: Account>(context: LAContext?, service: KeychainService, label: String? = nil) throws -> [String: T] {
         guard let dataArray = try Keychain.shared.all(service: service, context: context, label: label) else {
             return [:]
         }
@@ -223,9 +231,6 @@ extension Account {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(T.self, from: accountData)
-            if migrateVersion, var account = account as? UserAccount, account.version == 0 {
-                account.updateVersion(context: context)
-            }
             return (account.id, account)
         })
     }

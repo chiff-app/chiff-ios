@@ -169,7 +169,7 @@ enum KeyIdentifier: String, Codable {
     case endpoint
 
     func identifier(for keychainService: KeychainService) -> String {
-        return "\(keychainService.rawValue).\(self.rawValue)"
+        return "\(keychainService.service).\(self.rawValue)"
     }
 }
 

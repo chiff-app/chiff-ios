@@ -774,11 +774,11 @@
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
 				496869352420FAE800B9BEE9 /* Account+AuthenticationServices.swift */,
+				496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */,
 				496869312420F89B00B9BEE9 /* BaseAccount.swift */,
 				49E5FA162302E9DE009C964E /* SharedAccount.swift */,
 				49E5FA122302E529009C964E /* UserAccount.swift */,
 				4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */,
-				496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
