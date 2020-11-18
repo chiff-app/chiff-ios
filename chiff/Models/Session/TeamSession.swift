@@ -50,8 +50,8 @@ struct TeamSession: Session {
     }
 
     static let cryptoContext = "keynteam"
-    static var signingService: KeychainService = .signingTeamSessionKey
-    static var encryptionService: KeychainService = .sharedTeamSessionKey
+    static var signingService: KeychainService = .teamSession(attribute: .signingKey)
+    static var encryptionService: KeychainService = .teamSession(attribute: .sharedKey)
     static var sessionCountFlag: String = "teamSessionCount"
 
     init(id: String, teamId: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
@@ -138,14 +138,14 @@ struct TeamSession: Session {
 
     func delete(backup: Bool = true) throws {
         SharedAccount.deleteAll(for: self.id)
-        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
-        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: id), service: TeamSession.signingService)
-        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
-        try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
-        try Keychain.shared.delete(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: id), service: Self.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: Self.signingService)
         TeamSession.count -= 1
         if backup {
-            try deleteBackup()
+            _ = deleteBackup()
         }
     }
 
@@ -158,7 +158,7 @@ struct TeamSession: Session {
     }
 
     func passwordSeed() throws -> Data {
-        guard let seed = try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService) else {
+        guard let seed = try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService) else {
             throw KeychainError.notFound
         }
         return seed

@@ -51,7 +51,7 @@ struct Keychain {
         }
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecAttrAccessGroup as String: service.accessGroup]
         if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
@@ -102,7 +102,7 @@ struct Keychain {
     func get(id identifier: String, service: KeychainService, context: LAContext? = nil) throws -> Data? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnData as String: true,
                                     kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
@@ -139,7 +139,7 @@ struct Keychain {
     func has(id identifier: String, service: KeychainService, context: LAContext? = nil) -> Bool {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
 
@@ -165,7 +165,7 @@ struct Keychain {
     func update(id identifier: String, service: KeychainService, secretData: Data? = nil, objectData: Data? = nil, context: LAContext? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
 
         if let defaultContext = service.defaultContext {
@@ -210,7 +210,7 @@ struct Keychain {
     /// - Returns: The data, or nil if item was not found.
     func all(service: KeychainService, context: LAContext? = nil, label: String? = nil) throws -> [[String: Any]]? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true,
                                     kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
@@ -253,7 +253,7 @@ struct Keychain {
     func attributes(id identifier: String, service: KeychainService, context: LAContext? = nil) throws -> Data? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnAttributes as String: true,
                                     kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
@@ -291,7 +291,7 @@ struct Keychain {
     func delete(id identifier: String, service: KeychainService) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue]
+                                    kSecAttrService as String: service.service]
 
         switch SecItemDelete(query as CFDictionary) {
         case errSecSuccess: break
@@ -308,7 +308,7 @@ struct Keychain {
     /// - Throws: `KeychainError.notFound` when item is not found.
     func deleteAll(service: KeychainService, label: String? = nil) {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: service.rawValue]
+                                    kSecAttrService as String: service.service]
         if let label = label {
             query[kSecAttrLabel as String] = label
         }
@@ -334,7 +334,7 @@ struct Keychain {
     func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType) -> Promise<Data?> {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnData as String: true,
                                     kSecUseOperationPrompt as String: reason]

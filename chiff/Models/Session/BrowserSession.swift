@@ -32,8 +32,8 @@ struct BrowserSession: Session {
     }
     var lastRequest: Date?
 
-    static var signingService: KeychainService = .signingSessionKey
-    static var encryptionService: KeychainService = .sharedSessionKey
+    static var signingService: KeychainService = .browserSession(attribute: .signingKey)
+    static var encryptionService: KeychainService = .browserSession(attribute: .sharedKey)
     static var sessionCountFlag = "sessionCount"
 
     init(id: String, signingPubKey: Data, browser: Browser, title: String, version: Int) {
@@ -56,8 +56,8 @@ struct BrowserSession: Session {
             do {
                 BrowserSession.count -= 1
                 Logger.shared.analytics(.sessionDeleted)
-                try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
-                try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+                try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
+                try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService)
             } catch {
                 Logger.shared.error("Error deleting session", error: error)
             }

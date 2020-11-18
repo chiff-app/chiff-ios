@@ -70,8 +70,9 @@ extension TeamSession: Syncable {
         return true
     }
 
-    func deleteSync() throws {
-        // TeamSession shouldn't be deleted based on user backup sync, so this is not implemented.
+    /// Default empty implementation, because TeamSessions are not deleted by syncing.
+    func deleteFromKeychain() -> Promise<Void> {
+        return .value(())
     }
 
     func backup() -> Promise<Void> {

@@ -112,7 +112,7 @@ extension TeamSession {
             }
         }
         for account in currentAccounts.values {
-            try account.deleteSync()
+            _ = account.deleteFromKeychain()
             changed += 1
         }
         Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)

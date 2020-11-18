@@ -34,7 +34,10 @@ struct SharedAccount: Account {
         return true
     }
 
-    static let keychainService: KeychainService = .sharedAccount
+    static let keychainService: KeychainService = .sharedAccount()
+    static let otpService: KeychainService = .sharedAccount(attribute: .otp)
+    static let notesService: KeychainService = .sharedAccount(attribute: .notes)
+    static let webAuthnService: KeychainService = .sharedAccount(attribute: .webauthn)
 
     init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionId: String) {
         self.id = id
@@ -53,19 +56,20 @@ struct SharedAccount: Account {
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
         var notesChanged = false
         if let notes = backupAccount.notes {
-            if Keychain.shared.has(id: id, service: .notes) {
+            if Keychain.shared.has(id: id, service: .sharedAccount(attribute: .notes)) {
                 if notes.isEmpty {
                     notesChanged = true
-                    try Keychain.shared.delete(id: id, service: .notes)
+                    try Keychain.shared.delete(id: id, service: .sharedAccount(attribute: .notes))
                 } else {
                     notesChanged = true
-                    try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                    try Keychain.shared.update(id: id, service: .sharedAccount(attribute: .notes), secretData: notes.data, objectData: nil)
                 }
             } else if !notes.isEmpty {
                 notesChanged = true
-                try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                try Keychain.shared.save(id: id, service: .sharedAccount(attribute: .notes), secretData: notes.data, objectData: nil)
             }
         }
+        // TODO: OTP isn't updated here.
         guard notesChanged
                 || passwordIndex != backupAccount.passwordIndex
                 || passwordOffset != backupAccount.passwordOffset
@@ -86,8 +90,8 @@ struct SharedAccount: Account {
 
     func delete() -> Promise<Void> {
         do {
-            try Keychain.shared.delete(id: self.id, service: .sharedAccount)
-            try? Keychain.shared.delete(id: self.id, service: .notes)
+            try Keychain.shared.delete(id: self.id, service: .sharedAccount())
+            try? Keychain.shared.delete(id: self.id, service: .sharedAccount(attribute: .notes))
             self.deleteFromToIdentityStore()
             return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) })).log("Error deleting accounts")
         } catch {
@@ -128,23 +132,23 @@ struct SharedAccount: Account {
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
             let tokenData = tokenURL.absoluteString.data
-            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData, label: sessionId)
+            try Keychain.shared.save(id: id, service: Self.otpService, secretData: tokenSecret, objectData: tokenData, label: sessionId)
         }
         if let notes = backupAccount.notes {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil, label: sessionId)
+            try Keychain.shared.save(id: id, service: Self.notesService, secretData: notes.data, objectData: nil, label: sessionId)
         }
         try account.save(password: password, sessionId: sessionId)
     }
 
     static func deleteAll(for sessionId: String) {
-        if let accounts = try? all(context: nil, migrateVersion: false, label: sessionId), let sessions = try? BrowserSession.all() {
+        if let accounts = try? all(context: nil, label: sessionId), let sessions = try? BrowserSession.all() {
             for id in accounts.keys {
                 sessions.forEach({ _ = $0.deleteAccount(accountId: id) })
             }
         }
-        Keychain.shared.deleteAll(service: Self.keychainService, label: sessionId)
-        Keychain.shared.deleteAll(service: .otp, label: sessionId)
-        Keychain.shared.deleteAll(service: .notes, label: sessionId)
+        Keychain.shared.deleteAll(service: .sharedAccount(), label: sessionId)
+        Keychain.shared.deleteAll(service: .sharedAccount(attribute: .notes), label: sessionId)
+        Keychain.shared.deleteAll(service: .sharedAccount(attribute: .otp), label: sessionId)
         NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true

@@ -19,7 +19,7 @@ extension UserAccount: Syncable {
     }
 
     static func all(context: LAContext?) throws -> [String: UserAccount] {
-        return try all(context: context, migrateVersion: false, label: nil)
+        return try all(context: context)
     }
 
     static func create(backupObject: BackupUserAccount, context: LAContext?) throws {
@@ -77,7 +77,7 @@ extension UserAccount: Syncable {
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupObject.tokenSecret, let tokenURL = backupObject.tokenURL {
             let tokenData = tokenURL.absoluteString.data
-            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
+            try Keychain.shared.save(id: id, service: .account(attribute: .otp), secretData: tokenSecret, objectData: tokenData)
         }
 
         // Webauthn
@@ -85,7 +85,7 @@ extension UserAccount: Syncable {
             let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
             switch webAuthn.algorithm {
             case .edDSA:
-                try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+                try Keychain.shared.save(id: id, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
             case .ECDSA:
                 guard #available(iOS 13.0, *) else {
                     throw WebAuthnError.notSupported
@@ -96,7 +96,7 @@ extension UserAccount: Syncable {
         }
 
         if let notes = backupObject.notes, !notes.isEmpty {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            try Keychain.shared.save(id: id, service: .account(attribute: .notes), secretData: notes.data, objectData: nil)
         }
 
         let data = try PropertyListEncoder().encode(self)
@@ -205,12 +205,12 @@ extension UserAccount: Syncable {
         }
         if let newTokenSecret = backupAccount.tokenSecret, let newTokenURLData = backupAccount.tokenURL?.absoluteString.data {
             if tokenSecret != nil {
-                try Keychain.shared.update(id: id, service: .otp, secretData: newTokenSecret, objectData: newTokenURLData)
+                try Keychain.shared.update(id: id, service: .account(attribute: .otp), secretData: newTokenSecret, objectData: newTokenURLData)
             } else {
-                try Keychain.shared.save(id: id, service: .otp, secretData: newTokenSecret, objectData: newTokenURLData)
+                try Keychain.shared.save(id: id, service: .account(attribute: .otp), secretData: newTokenSecret, objectData: newTokenURLData)
             }
         } else if tokenSecret != nil {
-            try Keychain.shared.delete(id: id, service: .otp)
+            try Keychain.shared.delete(id: id, service: .account(attribute: .otp))
         }
         return true
     }
@@ -227,7 +227,7 @@ extension UserAccount: Syncable {
                 let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
                 switch webAuthn.algorithm {
                 case .edDSA:
-                    try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+                    try Keychain.shared.save(id: id, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
                 case .ECDSA:
                     guard #available(iOS 13.0, *) else {
                         throw WebAuthnError.notSupported
@@ -242,7 +242,7 @@ extension UserAccount: Syncable {
             // And delete if necessary.
             switch webAuthn.algorithm {
             case .edDSA:
-                try Keychain.shared.delete(id: id, service: .webauthn)
+                try Keychain.shared.delete(id: id, service: .account(attribute: .webauthn))
             case .ECDSA:
                 try Keychain.shared.deleteKey(id: id)
             }
@@ -258,13 +258,13 @@ extension UserAccount: Syncable {
         }
         if let newNotes = backupAccount.notes {
             if currentNotes != nil {
-                try Keychain.shared.update(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+                try Keychain.shared.update(id: id, service: .account(attribute: .notes), secretData: newNotes.data, objectData: nil)
             } else {
-                try Keychain.shared.save(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+                try Keychain.shared.save(id: id, service: .account(attribute: .notes), secretData: newNotes.data, objectData: nil)
             }
         } else {
             if currentNotes != nil {
-                try Keychain.shared.delete(id: id, service: .notes)
+                try Keychain.shared.delete(id: id, service: .account(attribute: .notes))
             }
         }
         return true

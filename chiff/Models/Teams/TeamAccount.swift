@@ -14,7 +14,7 @@ struct TeamAccount: BaseAccount {
     var passwordOffset: [Int]?
     var passwordIndex: Int
     var sites: [Site]
-    let version: Int
+    var version: Int
     let users: Set<String>
     let roles: Set<String>
     let compromised: Bool

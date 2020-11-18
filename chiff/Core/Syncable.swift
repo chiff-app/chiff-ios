@@ -63,7 +63,7 @@ protocol Syncable {
     func backup() throws -> Promise<Void>
 
     /// Delete this object from persistent storage and the related remote session data. Does not try to delete the backup.
-    func deleteSync() throws
+    func deleteFromKeychain() -> Promise<Void>
 
     /// Update the object with the data from the backupObject.
     /// Only updates attributes that have changed.
@@ -155,7 +155,7 @@ extension Syncable {
             }
             // Remove accounts that were not present
             for object in current.values {
-                try object.deleteSync()
+                promises.append(object.deleteFromKeychain())
                 changed = true
             }
             if changed {
@@ -219,13 +219,13 @@ extension Syncable {
 
     /// Delete a backup objects.
     /// - Throws: `KeychainError.notFound` if one of the keys cannot be not found.
-    func deleteBackup() throws {
-        API.shared.signedRequest(path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)",
-                                 method: .delete,
-                                 privKey: try Self.privateKey(),
-                                 message: ["id": self.id])
-            .asVoid()
-            .catchLog("Cannot delete backup.")
+    func deleteBackup() -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)",
+                                     method: .delete,
+                                     privKey: try Self.privateKey(),
+                                     message: ["id": self.id])
+        }.asVoid().log("Cannot delete backup.")
     }
 
     // MARK: - Private functions

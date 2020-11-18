@@ -32,7 +32,10 @@ struct UserAccount: Account, Equatable {
     var lastChange: Timestamp
     var shadowing: Bool = false // This is set when loading accounts if there exists a team account with the same ID.
 
-    static let keychainService: KeychainService = .account
+    static let keychainService: KeychainService = .account()
+    static let otpService: KeychainService = .account(attribute: .otp)
+    static let notesService: KeychainService = .account(attribute: .notes)
+    static let webAuthnService: KeychainService = .account(attribute: .webauthn)
 
     init(username: String,
          sites: [Site],
@@ -49,7 +52,7 @@ struct UserAccount: Account, Equatable {
         self.id = id
         self.sites = sites
         self.username = username
-        self.version = 1
+        self.version = 2
         self.askToChange = askToChange
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
@@ -71,7 +74,7 @@ struct UserAccount: Account, Equatable {
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
         if let notes = notes, !notes.isEmpty {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            try Keychain.shared.save(id: id, service: Self.notesService, secretData: notes.data, objectData: nil)
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
         self.lastChange = Date.now
@@ -100,7 +103,7 @@ struct UserAccount: Account, Equatable {
         let (newPassword, index) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex + 1, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: nil, objectData: accountData)
         return newPassword
     }
 
@@ -109,30 +112,30 @@ struct UserAccount: Account, Equatable {
         let tokenData = try token.toURL().absoluteString.data
         self.lastChange = Date.now
         if self.hasOtp {
-            try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
+            try Keychain.shared.update(id: id, service: Self.otpService, secretData: secret, objectData: tokenData)
         } else {
-            try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
+            try Keychain.shared.save(id: id, service: Self.otpService, secretData: secret, objectData: tokenData)
         }
         _ = try backup()
     }
 
     mutating func updateNotes(notes: String) throws {
         self.lastChange = Date.now
-        if Keychain.shared.has(id: id, service: .notes) {
+        if Keychain.shared.has(id: id, service: Self.notesService) {
             if notes.isEmpty {
-                try Keychain.shared.delete(id: id, service: .notes)
+                try Keychain.shared.delete(id: id, service: Self.notesService)
             } else {
-                try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                try Keychain.shared.update(id: id, service: Self.notesService, secretData: notes.data, objectData: nil)
             }
         } else if !notes.isEmpty {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            try Keychain.shared.save(id: id, service: Self.notesService, secretData: notes.data, objectData: nil)
         }
         _ = try backup()
     }
 
     mutating func deleteOtp() throws {
         self.lastChange = Date.now
-        try Keychain.shared.delete(id: id, service: .otp)
+        try Keychain.shared.delete(id: id, service: Self.otpService)
         _ = try backup()
         try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
@@ -156,7 +159,7 @@ struct UserAccount: Account, Equatable {
         }
         switch webAuthn.algorithm {
         case .edDSA:
-            try Keychain.shared.delete(id: id, service: .webauthn)
+            try Keychain.shared.delete(id: id, service: Self.webAuthnService)
         case .ECDSA:
             try Keychain.shared.deleteKey(id: id)
         }
@@ -232,22 +235,20 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
 
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: newPassword.data, objectData: accountData)
         _ = try backup()
         NotificationCenter.default.postMain(Notification(name: .accountUpdated, object: self, userInfo: ["account": self]))
     }
 
     func delete() -> Promise<Void> {
         do {
-            try Keychain.shared.delete(id: id, service: .account)
             try self.webAuthn?.delete(accountId: self.id)
-            try? Keychain.shared.delete(id: self.id, service: .notes)
-            try? Keychain.shared.delete(id: self.id, service: .otp)
-            try self.deleteBackup()
-            self.deleteFromToIdentityStore()
-            Logger.shared.analytics(.accountDeleted)
-            Properties.accountCount -= 1
-            return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
+            return firstly {
+                when(fulfilled: [self.deleteBackup(), self.deleteFromKeychain()])
+            }.done {
+                Logger.shared.analytics(.accountDeleted)
+                Properties.accountCount -= 1
+            }
         } catch {
             return Promise(error: error)
         }

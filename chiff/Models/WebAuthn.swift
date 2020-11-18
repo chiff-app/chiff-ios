@@ -67,7 +67,7 @@ struct WebAuthn: Codable, Equatable {
     func pubKey(accountId: String) throws -> String {
         switch algorithm {
         case .edDSA:
-            guard let pubKey = try Keychain.shared.attributes(id: accountId, service: .webauthn) else {
+            guard let pubKey = try Keychain.shared.attributes(id: accountId, service: .account(attribute: .webauthn)) else {
                 throw KeychainError.notFound
             }
             return try Crypto.shared.convertToBase64(from: pubKey)
@@ -84,7 +84,7 @@ struct WebAuthn: Codable, Equatable {
 
     func save(accountId: String, keyPair: KeyPair) throws {
         switch algorithm {
-        case .edDSA: try Keychain.shared.save(id: accountId, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+        case .edDSA: try Keychain.shared.save(id: accountId, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
         case .ECDSA:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -96,7 +96,7 @@ struct WebAuthn: Codable, Equatable {
 
     func delete(accountId: String) throws {
         switch algorithm {
-        case .edDSA: try Keychain.shared.delete(id: accountId, service: .webauthn)
+        case .edDSA: try Keychain.shared.delete(id: accountId, service: .account(attribute: .webauthn))
         case .ECDSA:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -113,7 +113,7 @@ struct WebAuthn: Codable, Equatable {
         let data = try createAuthenticatorData() + challengeData
         switch algorithm {
         case .edDSA:
-            guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .webauthn) else {
+            guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .account(attribute: .webauthn)) else {
                 throw KeychainError.notFound
             }
             let signature = try Crypto.shared.signature(message: data, privKey: privKey)
