@@ -50,7 +50,6 @@ class PasswordValidator {
         }
     }
 
-
     /// Validate a password against all rules, as specified in the `PPD`.
     /// - Parameter password: The password that should be checked.
     /// - Throws: May throw if there are inconsistencies in the `PPD`.

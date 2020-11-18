@@ -75,7 +75,9 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as? AccountTableViewCell else {
+            fatalError("Wrong UITableViewCell type.")
+        }
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
         cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
