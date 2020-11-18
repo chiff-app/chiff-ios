@@ -68,7 +68,7 @@ class AuthenticationGuard {
             self.authenticationInProgress = true
             return LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
         }.map(on: .main) { (context) -> LAContext in
-            let accounts = try UserAccount.allCombined(context: context, sync: true)
+            let accounts = try UserAccount.allCombined(context: context, migrateVersion: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
                 Properties.reloadAccounts = false

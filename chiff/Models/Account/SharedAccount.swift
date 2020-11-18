@@ -137,7 +137,7 @@ struct SharedAccount: Account {
     }
 
     static func deleteAll(for sessionId: String) {
-        if let accounts = try? all(context: nil, sync: false, label: sessionId), let sessions = try? BrowserSession.all() {
+        if let accounts = try? all(context: nil, migrateVersion: false, label: sessionId), let sessions = try? BrowserSession.all() {
             for id in accounts.keys {
                 sessions.forEach({ _ = $0.deleteAccount(accountId: id) })
             }

@@ -39,10 +39,15 @@ protocol Account: BaseAccount {
 
 extension Account {
 
+    /// Whether this account has an TOTP or HOTP code stored.
     var hasOtp: Bool {
         return Keychain.shared.has(id: id, service: .otp)
     }
 
+    /// Retrieve the notes for this account.
+    /// - Parameter context: Optionally, an authenticated `LAContext`.
+    /// - Throws: May throw `KeychainError` or `CodingError.stringEncoding`.
+    /// - Returns: The notes or nil if no notes are found.
     func notes(context: LAContext? = nil) throws -> String? {
         guard let data = try Keychain.shared.get(id: id, service: .notes, context: context) else {
             return nil
@@ -53,6 +58,10 @@ extension Account {
         return notes
     }
 
+    /// Retrieve the password for this account.
+    /// - Parameter context: Optionally, an authenticated `LAContext`.
+    /// - Throws: May throw `KeychainError` or `CodingError.stringEncoding`.
+    /// - Returns: The password or nil if no password is found.
     func password(context: LAContext? = nil) throws -> String? {
         do {
             guard let data = try Keychain.shared.get(id: id, service: Self.keychainService, context: context) else {
@@ -70,6 +79,13 @@ extension Account {
         }
     }
 
+    /// Retrieve the password using the Keychain's async method.
+    /// This method will prompt the user for authentication if the `LAContext` is not valid.
+    /// - Parameters:
+    ///   - reason: The reason that will be presented to the user in case authentication is needed.
+    ///   - context: Optionally, an `LAContext` object
+    ///   - type: The `AuthenticationType`, which determines if prompting for authentication is forced.
+    /// - Returns: The password or nil if no password is found.
     func password(reason: String, context: LAContext? = nil, type: AuthenticationType) -> Promise<String?> {
         return firstly {
             Keychain.shared.get(id: id, service: Self.keychainService, reason: reason, with: context, authenticationType: type)
@@ -84,6 +100,9 @@ extension Account {
         }
     }
 
+    /// Retrieve the OTP-token.
+    /// - Throws: May throw `KeychainError` or `CodingError.unexpectedData`.
+    /// - Returns: The `Token` or nil if no token is found.
     func oneTimePasswordToken() throws -> Token? {
         do {
             guard let urlData = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
@@ -101,6 +120,7 @@ extension Account {
         }
     }
 
+    /// Call this to update the usage counter, which is used to sort accounts by *last use* or *most used* in the account overview.
     mutating func increaseUse() {
         do {
             lastTimeUsed = Date()
@@ -113,10 +133,23 @@ extension Account {
 
     // MARK: - Static functions
 
-    static func all(context: LAContext?, sync: Bool = false, label: String? = nil) throws -> [String: Self] {
-        return try all(context: context, service: Self.keychainService, sync: sync, label: label)
+    /// Get all accounts.
+    /// - Parameters:
+    ///   - context: Optionally, an `LAContext` object.
+    ///   - migrateVersion: Set to true if this should attempt to migrate accounts to the next version.
+    ///   - label: Optionally, a label to filter the the Keychain query.
+    /// - Throws: May throw `KeychainError`.
+    /// - Returns: A dictionary, where the id is the account ids and the value the `Account`.
+    static func all(context: LAContext?, migrateVersion: Bool = false, label: String? = nil) throws -> [String: Self] {
+        return try all(context: context, service: Self.keychainService, migrateVersion: migrateVersion, label: label)
     }
 
+    /// Get a single account.
+    /// - Parameters:
+    ///   - id: The account id.
+    ///   - context: Optionally, an `LAContext` object.
+    /// - Throws: May throw `KeychainError`.
+    /// - Returns: The account or nil of no account with this id is found.
     static func get(id: String, context: LAContext?) throws -> Self? {
         return try get(id: id, context: context, service: Self.keychainService)
     }
@@ -154,9 +187,9 @@ extension Account {
         return try allCombined(context: context).mapValues { SessionAccount(account: $0) }
     }
 
-    static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
-        let userAccounts: [String: Account] = try all(context: context, service: .account, sync: sync) as [String: UserAccount]
-        let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount, sync: sync) as [String: SharedAccount]
+    static func allCombined(context: LAContext?, migrateVersion: Bool = false) throws -> [String: Account] {
+        let userAccounts: [String: Account] = try all(context: context, service: .account, migrateVersion: migrateVersion) as [String: UserAccount]
+        let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount, migrateVersion: migrateVersion) as [String: SharedAccount]
         return userAccounts.merging(sharedAccounts, uniquingKeysWith: { (userAccount, _) -> Account in
             guard var account = userAccount as? UserAccount else {
                 return userAccount
@@ -178,7 +211,7 @@ extension Account {
         return try decoder.decode(T.self, from: accountData)
     }
 
-    private static func all<T: Account>(context: LAContext?, service: KeychainService, sync: Bool = false, label: String? = nil) throws -> [String: T] {
+    private static func all<T: Account>(context: LAContext?, service: KeychainService, migrateVersion: Bool = false, label: String? = nil) throws -> [String: T] {
         guard let dataArray = try Keychain.shared.all(service: service, context: context, label: label) else {
             return [:]
         }
@@ -190,7 +223,7 @@ extension Account {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(T.self, from: accountData)
-            if sync, var account = account as? UserAccount, account.version == 0 {
+            if migrateVersion, var account = account as? UserAccount, account.version == 0 {
                 account.updateVersion(context: context)
             }
             return (account.id, account)

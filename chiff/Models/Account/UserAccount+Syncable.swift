@@ -19,7 +19,7 @@ extension UserAccount: Syncable {
     }
 
     static func all(context: LAContext?) throws -> [String: UserAccount] {
-        return try all(context: context, sync: false, label: nil)
+        return try all(context: context, migrateVersion: false, label: nil)
     }
 
     static func create(backupObject: BackupUserAccount, context: LAContext?) throws {

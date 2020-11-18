@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Shared properties for accounts
+/// Contains the shared properties for accounts
 protocol BaseAccount: Codable {
     var id: String { get }
     var username: String { get set }
