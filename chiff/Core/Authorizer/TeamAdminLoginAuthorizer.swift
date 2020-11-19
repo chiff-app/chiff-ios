@@ -10,7 +10,7 @@ import PromiseKit
 
 class TeamAdminLoginAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.adminLogin
+    let type = ChiffMessageType.adminLogin
     let browserTab: Int
 
     let requestText = "requests.confirm_login".localized.capitalizedFirstLetter

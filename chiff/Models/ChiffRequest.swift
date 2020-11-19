@@ -8,7 +8,7 @@
 import Foundation
 
 /**
- * Keyn Requests.
+ * Chiff requests.
  *
  * Direction: browser -> app
  */
@@ -24,7 +24,7 @@ struct ChiffRequest: Codable {
     let newSiteName: String?
     let siteURL: String?
     let notes: String?
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let relyingPartyId: String?
     let algorithms: [WebAuthnAlgorithm]?
     let username: String?

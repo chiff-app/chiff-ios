@@ -10,7 +10,7 @@ import PromiseKit
 
 class BulkLoginAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.bulkLogin
+    let type = ChiffMessageType.bulkLogin
     let browserTab: Int
     let count: Int
     let accountIds: [Int: String]

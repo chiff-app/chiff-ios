@@ -20,6 +20,7 @@ enum Browser: String, Codable {
     case opera
 }
 
+/// The session with a browser. Can actually also be with CLI.
 struct BrowserSession: Session {
     let browser: Browser
     let creationDate: Date
@@ -36,6 +37,13 @@ struct BrowserSession: Session {
     static var encryptionService: KeychainService = .browserSession(attribute: .sharedKey)
     static var sessionCountFlag = "sessionCount"
 
+    /// Initiate a BrowserSession.
+    /// - Parameters:
+    ///   - id: The session ID.
+    ///   - signingPubKey: The session signing pubkey.
+    ///   - browser: The type of browser.
+    ///   - title: The session title. Just used internally.
+    ///   - version: The session version.
     init(id: String, signingPubKey: Data, browser: Browser, title: String, version: Int) {
         self.creationDate = Date()
         self.id = id
@@ -45,11 +53,13 @@ struct BrowserSession: Session {
         self.version = version
     }
 
+    // Documentation in protocol
     func update(makeBackup: Bool = false) throws {
         let sessionData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
     }
 
+    // Documentation in protocol
     func delete(notify: Bool) -> Promise<Void> {
 
         func deleteSession() {
@@ -63,38 +73,45 @@ struct BrowserSession: Session {
             }
         }
         return firstly {
-            notify ? sendByeToPersistentQueue() : deleteQueuesAtAWS()
+            notify ? sendByeToPersistentQueue() : deleteQueues()
         }.map {
             deleteSession()
         }
 
     }
 
+    /// Decrypt a message into a `ChiffRequest`.
+    /// - Parameter message64: The base64-encoded cihertext.
+    /// - Throws: Decryption, decoding or Keychain errors.
+    /// - Returns: The `ChiffRequest`.
     func decrypt(message message64: String) throws -> ChiffRequest {
         var message: ChiffRequest = try decryptMessage(message: message64)
         message.sessionID = id
         return message
     }
 
-    func cancelRequest(reason: KeynMessageType, browserTab: Int) -> Promise<[String: Any]> {
+    /// Send a simple message to the client that the request was cancelled.
+    /// - Parameters:
+    ///   - reason: The cancellation reason.
+    ///   - browserTab: The browserTab in the client.
+    func cancelRequest(reason: ChiffMessageType, browserTab: Int) -> Promise<Void> {
         do {
             let response = KeynCredentialsResponse(type: reason, browserTab: browserTab)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
-            return try sendToVolatileQueue(ciphertext: ciphertext)
+            return try sendToVolatileQueue(ciphertext: ciphertext).asVoid()
         } catch {
             return Promise(error: error)
         }
     }
 
-    /// This sends the credentials back to the browser extension.
-    ///
+    /// This responds to a request accordingly.
     /// - Parameters:
     ///   - account: The account
     ///   - browserTab: The browser tab
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
-    mutating func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext, newPassword: String?) throws {
+    mutating func sendCredentials(account: Account, browserTab: Int, type: ChiffMessageType, context: LAContext, newPassword: String?) throws {
         var response: KeynCredentialsResponse = KeynCredentialsResponse(type: type, browserTab: browserTab)
         switch type {
         case .getDetails:
@@ -126,7 +143,11 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    // Simply acknowledge that the request is received
+    /// Respond the a request to add multiple acounts. Simply acknowledges that the request is received
+    /// - Parameters:
+    ///   - browserTab: The browser tab in the client.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Encoding, encryption or network errors.
     mutating func sendBulkAddResponse(browserTab: Int, context: LAContext?) throws {
         let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .addBulk, browserTab: browserTab))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
@@ -134,6 +155,12 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
+    /// Respond to a request to log into multiple tabs.
+    /// - Parameters:
+    ///   - browserTab: This is constant in this case, but not relevant here anyway.
+    ///   - accounts: A dictionary of account, where the key is the browser tab.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Encoding, encryption or network errors.
     mutating func sendBulkLoginResponse(browserTab: Int, accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
         let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .bulkLogin, browserTab: browserTab, accounts: accounts))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
@@ -141,6 +168,14 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
+    /// Send the team seed to the client.
+    /// - Parameters:
+    ///   - id: The team session id.
+    ///   - teamId: The team ID.
+    ///   - seed: The team seed.
+    ///   - browserTab: The browserTab
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    ///   - organisationKey: The organisation key, used to retrieve organisation PPDs.
     mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext, organisationKey: String?) -> Promise<Void> {
         do {
             let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .createOrganisation,
@@ -157,9 +192,18 @@ struct BrowserSession: Session {
         }
     }
 
+    /// Respond to a WebAuthn response.
+    /// - Parameters:
+    ///   - account: The `UserAccount` that has WebAuthn enabled.
+    ///   - browserTab: The browser tab for the client.
+    ///   - type: The `ChiffMessageType`, which is either WebAuthn registration or login request.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    ///   - signature: The signature, relevant.
+    ///   - counter: The counter, if relecant.
+    /// - Throws: Encoding, encryption or network errors.
     mutating func sendWebAuthnResponse(account: UserAccount,
                                        browserTab: Int,
-                                       type: KeynMessageType,
+                                       type: ChiffMessageType,
                                        context: LAContext,
                                        signature: String?,
                                        counter: Int?) throws {
@@ -186,7 +230,11 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    func getPersistentQueueMessages(shortPolling: Bool) -> Promise<[KeynPersistentQueueMessage]> {
+    /// Retrieve persistent queue message.
+    /// These are used if we must be sured that the message is delivered, for example with password confirmtion messages.
+    /// - Parameter shortPolling: Whether we just check once, with a short timeout, or wait for 20 seconds (the maximum) to simulate a push message.
+    /// - Returns: An array of `ChiffPersistentQueueMessage`
+    func getPersistentQueueMessages(shortPolling: Bool) -> Promise<[ChiffPersistentQueueMessage]> {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
         ]
@@ -200,13 +248,15 @@ struct BrowserSession: Session {
                 guard let body = message[MessageParameter.body], let receiptHandle = message[MessageParameter.receiptHandle] else {
                     throw CodingError.missingData
                 }
-                var keynMessage: KeynPersistentQueueMessage = try self.decrypt(message: body)
+                var keynMessage: ChiffPersistentQueueMessage = try self.decrypt(message: body)
                 keynMessage.receiptHandle = receiptHandle
                 return keynMessage
             }
         }
     }
 
+    /// Delete a message from the persistent queue, after it has been received.
+    /// - Parameter receiptHandle: The receiptHandle which is used to identity the messaage on the queue.
     func deleteFromPersistentQueue(receiptHandle: String) -> Promise<Void> {
         let message = [
             "receiptHandle": receiptHandle
@@ -216,15 +266,20 @@ struct BrowserSession: Session {
         }.asVoid().log("Failed to delete password change confirmation from queue.")
     }
 
+    /// Save this session to the Keychain.
+    /// - Parameters:
+    ///   - key: The encryption key
+    ///   - signingKeyPair: The private key
+    /// - Throws: Encoding or Keychain errors.
     func save(key: Data, signingKeyPair: KeyPair) throws {
         let sessionData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: SessionIdentifier.sharedKey.identifier(for: id), service: BrowserSession.encryptionService, secretData: key, objectData: sessionData)
         try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
     }
 
-    // MARK: - Private
+    // MARK: - Private functions
 
-    private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
+    private func decrypt(message message64: String) throws -> ChiffPersistentQueueMessage {
         return try decryptMessage(message: message64)
     }
 
@@ -237,7 +292,7 @@ struct BrowserSession: Session {
 
     private func sendByeToPersistentQueue() -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil,
+            let message = try JSONEncoder().encode(ChiffPersistentQueueMessage(passwordSuccessfullyChanged: nil,
                                                                               accountID: nil,
                                                                               type: .end,
                                                                               askToLogin: nil,

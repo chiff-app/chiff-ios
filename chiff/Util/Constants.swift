@@ -137,7 +137,7 @@ enum NotificationContentKey: String {
  * They always have a type so the app/browser can determine course of action.
  * There is one struct for requests, there are multiple for responses.
  */
-enum KeynMessageType: Int, Codable {
+enum ChiffMessageType: Int, Codable {
     case pair = 0
     case login = 1
     case register = 2

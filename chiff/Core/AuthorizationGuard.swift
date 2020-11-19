@@ -84,7 +84,7 @@ class AuthorizationGuard {
                   let os = parameters["o"]?.capitalizedFirstLetter else {
                 throw SessionError.invalid
             }
-            guard let hash = browserPubKey.hash, try !BrowserSession.exists(id: hash) else {
+            guard let hash = browserPubKey.hash, !BrowserSession.exists(id: hash) else {
                 throw SessionError.exists
             }
             var version: Int = 0

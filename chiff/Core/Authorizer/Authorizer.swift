@@ -23,7 +23,7 @@ enum AuthorizationError: Error {
 protocol Authorizer {
     var session: BrowserSession { get set }
     var browserTab: Int { get }
-    var type: KeynMessageType { get }
+    var type: ChiffMessageType { get }
     var authenticationReason: String { get }
     var requestText: String { get }
     var successText: String { get }
@@ -41,7 +41,7 @@ extension Authorizer {
     func rejectRequest() -> Guarantee<Void> {
         return firstly {
             session.cancelRequest(reason: .reject, browserTab: browserTab)
-        }.asVoid().ensure {
+        }.ensure {
             AuthorizationGuard.shared.authorizationInProgress = false
         }.recover { error in
             Logger.shared.error("Reject message could not be sent.", error: error)

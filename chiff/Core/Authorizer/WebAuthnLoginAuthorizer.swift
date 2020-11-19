@@ -10,7 +10,7 @@ import PromiseKit
 
 class WebAuthnLoginAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.webauthnLogin
+    let type = ChiffMessageType.webauthnLogin
     let browserTab: Int
     let siteName: String
     let relyingPartyId: String

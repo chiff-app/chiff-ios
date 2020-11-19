@@ -35,10 +35,10 @@ struct BulkAccount: Codable {
     }
 }
 
-struct KeynPersistentQueueMessage: Codable {
+struct ChiffPersistentQueueMessage: Codable {
     let passwordSuccessfullyChanged: Bool?
     let accountID: String?
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let askToLogin: Bool?
     let askToChange: Bool?
     let accounts: [BulkAccount]?
@@ -102,7 +102,7 @@ struct BackupSharedAccount: Codable, Equatable {
 }
 
 struct KeynCredentialsResponse: Codable {
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let browserTab: Int
     var username: String?
     var password: String?

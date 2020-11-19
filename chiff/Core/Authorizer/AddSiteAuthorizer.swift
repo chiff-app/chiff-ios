@@ -10,7 +10,7 @@ import PromiseKit
 
 class AddSiteAuthorizer: Authorizer {
     var session: BrowserSession
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let browserTab: Int
     let siteName: String
     let siteURL: String

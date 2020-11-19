@@ -37,6 +37,18 @@ struct UserAccount: Account, Equatable {
     static let notesService: KeychainService = .account(attribute: .notes)
     static let webAuthnService: KeychainService = .account(attribute: .webauthn)
 
+    /// Create a `UserAccount`. This generates passwords or offset and saves the account to the Keychain as well.
+    /// - Parameters:
+    ///   - username: The username
+    ///   - sites: An array of websites, where the first in the array will be used as the primary website.
+    ///   - password: Optionally, a password. If no password is provided, it will be generated. If it is provided, an offset will be calculated and saved.
+    ///   - rpId: A WebAuthn relying party ID
+    ///   - algorithms: A set of algorithms used for WebAuthn.
+    ///   - notes: Notes to save with the account.
+    ///   - askToChange: Whether clients should ask to change the password.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    ///   - offline: If this is true, no remote calls should be made (creating the backup and the session accounts).
+    /// - Throws: Keychain or password generation errors.
     init(username: String,
          sites: [Site],
          password: String?,
@@ -81,6 +93,19 @@ struct UserAccount: Account, Equatable {
         try save(password: generatedPassword, keyPair: keyPair, offline: offline)
     }
 
+    /// Create a `UserAccount`, without saving to the Keychain or generating passwords.
+    /// - Parameters:
+    ///   - id: The account id.
+    ///   - username: The username.
+    ///   - sites: An array of websites, where the first in the array will be used as the primary website
+    ///   - passwordIndex: The password index to start generating passwords.
+    ///   - lastPasswordTryIndex: The last index that has been used to generate a password.
+    ///   - passwordOffset: The offset to generate a user-chosen password.
+    ///   - askToLogin: Whether the client should ask to log in.
+    ///   - askToChange: Whether the client should ask to change the password.
+    ///   - version: The account version.
+    ///   - webAuthn: A `WebAuthn` object.
+    ///   - notes: Notes for this account.
     init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int,
          passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, version: Int, webAuthn: WebAuthn?, notes: String?) {
         self.id = id
@@ -97,6 +122,11 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
     }
 
+    /// Generate a new password. Uses the PPD if present.
+    /// - Note: Does not save the password yet. Only updated the `lastPasswordUpdateTryIndex`.
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Keychain or encoding errors.
+    /// - Returns: The new password.
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
         let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
@@ -107,6 +137,32 @@ struct UserAccount: Account, Equatable {
         return newPassword
     }
 
+    /// After saving a new (generated) password in the browser we place a message
+    /// on the queue stating that it succeeded. We call this function to
+    /// confirm the new password and store it in the account.
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Keychain, encoding or password generation errors.
+    mutating func updatePasswordAfterConfirmation(context: LAContext?) throws {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
+        let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+        let (newPassword, newIndex) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex, offset: offset)
+
+        self.passwordIndex = newIndex
+        self.lastPasswordUpdateTryIndex = newIndex
+        passwordOffset = offset
+        askToChange = false
+        self.lastChange = Date.now
+
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: newPassword.data, objectData: accountData)
+        _ = try backup()
+        NotificationCenter.default.postMain(Notification(name: .accountUpdated, object: self, userInfo: ["account": self]))
+    }
+
+    /// Set an OTP token for this account.
+    /// - Parameter token: The `Token`.
+    /// - Throws: Keychain or decoding errors.
     mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
         let tokenData = try token.toURL().absoluteString.data
@@ -119,6 +175,9 @@ struct UserAccount: Account, Equatable {
         _ = try backup()
     }
 
+    /// Update the notes for this account.
+    /// - Parameter notes: The notes
+    /// - Throws: Keychain or decoding errors.
     mutating func updateNotes(notes: String) throws {
         self.lastChange = Date.now
         if Keychain.shared.has(id: id, service: Self.notesService) {
@@ -133,6 +192,8 @@ struct UserAccount: Account, Equatable {
         _ = try backup()
     }
 
+    /// Delete the OTP token from this account.
+    /// - Throws: Keychain or decoding errors.
     mutating func deleteOtp() throws {
         self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: Self.otpService)
@@ -141,18 +202,26 @@ struct UserAccount: Account, Equatable {
         saveToIdentityStore()
     }
 
+    /// Add a website to the array of sites.
+    /// - Parameter site: The site to add.
+    /// - Throws: Keychain errors.
     mutating func addSite(site: Site) throws {
         self.sites.append(site)
         self.lastChange = Date.now
         try update(secret: nil)
     }
 
+    /// Remove a website from the array of sites.
+    /// - Parameter index: The index of the website to remove.
+    /// - Throws: Keychain errors.
     mutating func removeSite(forIndex index: Int) throws {
         self.sites.remove(at: index)
         self.lastChange = Date.now
         try update(secret: nil)
     }
 
+    /// Remove the `WebAuthn` object from this account, if it exists.
+    /// - Throws: Keychain errors
     mutating func removeWebAuthn() throws {
         guard let webAuthn = webAuthn else {
             return
@@ -168,12 +237,18 @@ struct UserAccount: Account, Equatable {
         try update(secret: nil)
     }
 
+    /// Update the URL of website in the array of sites.
+    /// - Parameters:
+    ///   - url: The new URL.
+    ///   - index: The index of the site that should be updated.
+    /// - Throws: Keychain errors.
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
         self.lastChange = Date.now
         try update(secret: nil)
     }
 
+    // Documentation in protocol
     func update(secret: Data?, backup: Bool = true) throws {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
@@ -184,6 +259,16 @@ struct UserAccount: Account, Equatable {
         saveToIdentityStore()
     }
 
+    /// Update attributes of this account. Each element is optional and only will be updated if it is provided.
+    /// - Parameters:
+    ///   - newUsername: The new username.
+    ///   - newPassword: The new password.
+    ///   - siteName: The new site name for the main site.
+    ///   - url: The new URL for the main site.
+    ///   - askToLogin: Whether the client should ask to log in.
+    ///   - askToChange: Whether the client should ask to change.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Keychain and password generation errors.
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
@@ -217,29 +302,6 @@ struct UserAccount: Account, Equatable {
         try update(secret: newPassword?.data)
     }
 
-    /*
-     * After saving a new (generated) password in the browser we place a message
-     * on the queue stating that it succeeded. We can then call this function to
-     * confirm the new password and store it in the account.
-     */
-    mutating func updatePasswordAfterConfirmation(context: LAContext?) throws {
-        let offset: [Int]? = nil // Will it be possible to change to custom password?
-
-        let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-        let (newPassword, newIndex) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex, offset: offset)
-
-        self.passwordIndex = newIndex
-        self.lastPasswordUpdateTryIndex = newIndex
-        passwordOffset = offset
-        askToChange = false
-        self.lastChange = Date.now
-
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: newPassword.data, objectData: accountData)
-        _ = try backup()
-        NotificationCenter.default.postMain(Notification(name: .accountUpdated, object: self, userInfo: ["account": self]))
-    }
-
     func delete() -> Promise<Void> {
         do {
             try self.webAuthn?.delete(accountId: self.id)
@@ -254,7 +316,37 @@ struct UserAccount: Account, Equatable {
         }
     }
 
-    func save(password: String?, keyPair: KeyPair?, offline: Bool = false) throws {
+    // MARK: - WebAuthn functions
+
+    /// Sign a WebAuthn challenge.
+    /// - Parameters:
+    ///   - challenge: The challenge that should be signed.
+    ///   - rpId: The relying party id.
+    /// - Throws: Keychain or cryptography errors.
+    /// - Returns: A tuple of the signature and counter.
+    mutating func webAuthnSign(challenge: String, rpId: String) throws -> (String, Int) {
+        guard webAuthn != nil else {
+            throw AccountError.noWebAuthn
+        }
+        let (signature, counter) = try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId)
+        self.lastChange = Date.now
+        try update(secret: nil)
+        return (signature, counter)
+    }
+
+    /// Return the WebAuthn public key.
+    /// - Throws: Keychain or cryptography errors.
+    /// - Returns: The public key, base64 encoded.
+    func webAuthnPubKey() throws -> String {
+        guard let webAuthn = webAuthn else {
+            throw AccountError.noWebAuthn
+        }
+        return try webAuthn.pubKey(accountId: self.id)
+    }
+
+    // MARK: - Private functions
+
+    private func save(password: String?, keyPair: KeyPair?, offline: Bool = false) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
         if let keyPair = keyPair {
@@ -266,25 +358,6 @@ struct UserAccount: Account, Equatable {
         }
         saveToIdentityStore()
         Properties.accountCount += 1
-    }
-
-    // MARK: - WebAuthn functions
-
-    mutating func webAuthnSign(challenge: String, rpId: String) throws -> (String, Int) {
-        guard webAuthn != nil else {
-            throw AccountError.noWebAuthn
-        }
-        let (signature, counter) = try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId)
-        self.lastChange = Date.now
-        try update(secret: nil)
-        return (signature, counter)
-    }
-
-    func webAuthnPubKey() throws -> String {
-        guard let webAuthn = webAuthn else {
-            throw AccountError.noWebAuthn
-        }
-        return try webAuthn.pubKey(accountId: self.id)
     }
 
 }

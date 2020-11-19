@@ -36,7 +36,14 @@ protocol Account: BaseAccount {
     static var notesService: KeychainService { get }
     static var webAuthnService: KeychainService { get }
 
+    /// Delete this account
     func delete() -> Promise<Void>
+
+    /// Update the secret data
+    /// - Parameters:
+    ///   - secret: The secret data.
+    ///   - backup: Whether a backup should be made.
+    /// - Throws: Keychain or encoding errors.
     func update(secret: Data?, backup: Bool) throws
 }
 
@@ -156,6 +163,9 @@ extension Account {
         return try get(id: id, context: context, service: Self.keychainService)
     }
 
+    /// Delete data from Keychain. This method deleted the account, notes and OTP if they exist. In addition, it deletes the accounts from the session and
+    /// the identity store.
+    /// - Important: It does **not** delete the backup, nor WebAuthn data.
     func deleteFromKeychain() -> Promise<Void> {
         do {
             try Keychain.shared.delete(id: id, service: Self.keychainService)
@@ -168,9 +178,11 @@ extension Account {
         }
     }
 
+    /// Delete all accounts and related to from the Keychain and identity store.
     static func deleteAll() {
         Keychain.shared.deleteAll(service: Self.keychainService)
-        Keychain.shared.deleteAll(service: Self.webAuthnService) // TODO: This does not delete WebAuthn if ECDSA algorithm is used
+        Keychain.shared.deleteAll(service: Self.webAuthnService)
+        Keychain.shared.deleteAllKeys() // This deletes ECDSA keys for WebAuthn
         Keychain.shared.deleteAll(service: Self.notesService)
         Keychain.shared.deleteAll(service: Self.otpService)
         if #available(iOS 12.0, *) {
@@ -178,6 +190,17 @@ extension Account {
         }
     }
 
+    /// Get an `Account`, without caring whether it is a `UserAccount` or `SharedAccount`.
+    /// - Note: `UserAccount` prevails over `SharedAccount`.
+    /// - ToDo: This method is a bit weird, since it is called on `UserAccount` or `SharedAccount`, but can return both.
+    /// The most logical way would be to call `Account.get()` to get either a `SharedAccount` or
+    /// `UserAccount`, and `UserAccount.get()` / `SharedAccount.get()` to respectively get a `UserAccount` or `SharedAccount`,
+    /// but we cannot call a method directly on the protocol.
+    /// - Parameters:
+    ///   - id: The account identifier
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: May throw Keychain errors or decoding errors.
+    /// - Returns: The account, if found.
     static func getAny(id: String, context: LAContext?) throws -> Account? {
         if let userAccount: UserAccount = try get(id: id, context: context, service: .account()) {
             return userAccount
@@ -188,10 +211,25 @@ extension Account {
         }
     }
 
+    /// Get the `SessionAccount`, which can be used to inform the session client which accounts are available.
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: May throw Keychain errors or decoding errors.May throw Keychain errors or decoding errors.
+    /// - Returns: A dictionary of `SessionAccount`s, where the keys are the ids.
     static func combinedSessionAccounts(context: LAContext? = nil) throws -> [String: SessionAccount] {
         return try allCombined(context: context).mapValues { SessionAccount(account: $0) }
     }
 
+    /// Get a dictionary of accounts, both `UserAccount` and `SharedAccount`.
+    /// - ToDo: This method is a bit weird, since it is called on `UserAccount` or `SharedAccount`, but returns both.
+    /// The most logical way would be to call `Account.all()` to get a combination of `SharedAccount`s and `UserAccount`s,
+    /// and `UserAccount.all()` / `SharedAccount.all()` to respectively get a dictionary of `UserAccount`s or `SharedAccount`s,
+    /// but we cannot call a method directly on the protocol.
+    /// - Parameters:
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    ///   - migrateVersion: If this is true, we try to check if there are outdated accounts that should be updated.
+    /// - Throws: May throw Keychain errors or decoding errors.May throw Keychain errors or decoding errors.
+    /// - Note: If a `UserAccount` and a `SharedAccount` exists with the same ID, they `UserAccount` is returned, but with the `shadowing` attribute set.
+    /// - Returns: A dictionary of `Account`s, where the keys are the ids.
     static func allCombined(context: LAContext?, migrateVersion: Bool = false) throws -> [String: Account] {
         let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount()) as [String: SharedAccount]
         let userAccounts: [String: Account] = try all(context: context, service: .account()).mapValues({ (account: UserAccount) -> Account in

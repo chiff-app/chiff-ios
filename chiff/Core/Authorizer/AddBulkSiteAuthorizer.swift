@@ -10,7 +10,7 @@ import PromiseKit
 
 class AddBulkSiteAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.addBulk
+    let type = ChiffMessageType.addBulk
     let browserTab: Int
     let count: Int
 
@@ -85,7 +85,7 @@ class AddBulkSiteAuthorizer: Authorizer {
         startLoading?("requests.import_progress_1".localized)
         return firstly {
             return self.session.getPersistentQueueMessages(shortPolling: true)
-        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]> in
+        }.then { (messages: [ChiffPersistentQueueMessage]) -> Promise<[BulkAccount]> in
             if let message = messages.first(where: { $0.type == .addBulk }), let receiptHandle = message.receiptHandle {
                 return self.session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
                     message.accounts!

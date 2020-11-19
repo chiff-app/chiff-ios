@@ -10,6 +10,7 @@ import AuthenticationServices
 
 extension Account {
 
+    /// Save this account to the IdentityStore, so it is available for AutoFill.
     func saveToIdentityStore() {
         if #available(iOS 12.0, *) {
             ASCredentialIdentityStore.shared.getState { (state) in
@@ -30,6 +31,7 @@ extension Account {
         }
     }
 
+    /// Delete this account from the IdentityStore, so it is no longer available for Autofill
     func deleteFromToIdentityStore() {
         if #available(iOS 12.0, *) {
             ASCredentialIdentityStore.shared.getState { (state) in
@@ -46,6 +48,7 @@ extension Account {
         }
     }
 
+    /// Reload all accounts into the identity store.
     @available(iOS 12.0, *)
     static func reloadIdentityStore() {
         ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in

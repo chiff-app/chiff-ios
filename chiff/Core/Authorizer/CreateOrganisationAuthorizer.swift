@@ -10,7 +10,7 @@ import PromiseKit
 
 class CreateOrganisationAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.createOrganisation
+    let type = ChiffMessageType.createOrganisation
     let browserTab: Int
     let organisationName: String
     let orderKey: String
