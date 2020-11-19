@@ -10,7 +10,7 @@ import PromiseKit
 
 class ChangeAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.change
+    let type = ChiffMessageType.change
     let browserTab: Int
     let siteName: String
     let siteURL: String

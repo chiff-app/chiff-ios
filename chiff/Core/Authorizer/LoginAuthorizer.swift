@@ -10,7 +10,7 @@ import PromiseKit
 
 class LoginAuthorizer: Authorizer {
     var session: BrowserSession
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let browserTab: Int
     let siteName: String
     let accountId: String

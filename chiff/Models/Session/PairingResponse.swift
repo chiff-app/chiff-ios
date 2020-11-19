@@ -13,7 +13,7 @@ protocol PairingResponse: Encodable {
     var browserPubKey: String { get }
     var userID: String { get }
     var environment: String { get }
-    var type: KeynMessageType { get }
+    var type: ChiffMessageType { get }
     var version: Int { get }
     var arn: String { get }
 }
@@ -29,7 +29,7 @@ struct BrowserPairingResponse: PairingResponse {
     let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
     let userID: String
     let environment: String
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let version: Int
     let arn: String
     let accounts: [String: SessionAccount]
@@ -80,7 +80,7 @@ struct TeamPairingResponse: PairingResponse {
     let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
     let userID: String
     let environment: String
-    let type: KeynMessageType
+    let type: ChiffMessageType
     let version: Int
     let arn: String
     let userPubKey: String

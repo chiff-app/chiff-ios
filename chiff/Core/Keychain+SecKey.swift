@@ -130,4 +130,13 @@ extension Keychain {
         }
     }
 
+    /// Delete all keys from the Keychain.
+    /// - Throws:
+    ///   - `KeychainError.notFound` if the item is not found.
+    ///   - `KeychainError.unhandledError` for any other error.
+    func deleteAllKeys() {
+        let query: [String: Any] = [kSecClass as String: kSecClassKey]
+        SecItemDelete(query as CFDictionary)
+    }
+
 }

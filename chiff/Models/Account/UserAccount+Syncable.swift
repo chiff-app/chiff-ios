@@ -18,18 +18,23 @@ extension UserAccount: Syncable {
         return .accounts
     }
 
+    // Documentation in protocol.
     static func all(context: LAContext?) throws -> [String: UserAccount] {
         return try all(context: context)
     }
 
+    // Documentation in protocol.
     static func create(backupObject: BackupUserAccount, context: LAContext?) throws {
         _ = try UserAccount(backupObject: backupObject, context: context)
     }
 
+    // Documentation in protocol.
     static func notifyObservers() {
         NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
     }
 
+    /// Backup multiple accounts at once.
+    /// - Parameter accounts: A dictionary of tuples that consist of an account and the notes.
     static func backup(accounts: [String: (UserAccount, String?)]) -> Promise<Void> {
         do {
             let encryptedAccounts: [String: String] = try accounts.mapValues {
@@ -53,6 +58,11 @@ extension UserAccount: Syncable {
 
     // MARK: - Init
 
+    /// Intialize a `UserAccount` from backup data.
+    /// - Parameters:
+    ///   - backupObject: The backup data object.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Keychain, decoding or password generating errors.
     init(backupObject: BackupUserAccount, context: LAContext?) throws {
         id = backupObject.id
         username = backupObject.username
@@ -104,6 +114,7 @@ extension UserAccount: Syncable {
         saveToIdentityStore()
     }
 
+    // Documentation in protocol
     func backup() throws -> Promise<Void> {
         var tokenURL: URL?
         var tokenSecret: Data?
@@ -116,6 +127,7 @@ extension UserAccount: Syncable {
         }.log("Error setting account sync info")
     }
 
+    // Documentation in protocol.
     mutating func update(with backupObject: BackupUserAccount, context: LAContext? = nil) throws -> Bool {
         // Attributes
         var (changed, updatePassword) = updateAttributes(with: backupObject)

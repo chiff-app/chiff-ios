@@ -21,10 +21,12 @@ protocol BaseAccount: Codable {
 
 extension BaseAccount {
 
+    /// Get the first site from the sites array.
     var site: Site {
         return sites.first!
     }
 
+    /// Whether this account has a password.
     var hasPassword: Bool {
         return passwordIndex >= 0
     }

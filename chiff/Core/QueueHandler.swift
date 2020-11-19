@@ -55,7 +55,7 @@ class QueueHandler {
     private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool) -> Promise<[BulkAccount]?> {
         return firstly {
             session.getPersistentQueueMessages(shortPolling: shortPolling)
-        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]?> in
+        }.then { (messages: [ChiffPersistentQueueMessage]) -> Promise<[BulkAccount]?> in
             if messages.isEmpty {
                 return attempts > 1 ? self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling) : .value(nil)
             } else {
@@ -75,7 +75,7 @@ class QueueHandler {
 
     }
 
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession) throws -> Promise<[BulkAccount]?> {
+    private func handlePersistentQueueMessage(keynMessage: ChiffPersistentQueueMessage, session: BrowserSession) throws -> Promise<[BulkAccount]?> {
         guard let receiptHandle = keynMessage.receiptHandle else {
             throw CodingError.missingData
         }

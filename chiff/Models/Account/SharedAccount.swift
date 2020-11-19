@@ -11,9 +11,7 @@ import LocalAuthentication
 import AuthenticationServices
 import PromiseKit
 
-/*
- * An account belongs to the user and can have one Site.
- */
+/// `SharedAccount`s are managed by a `TeamSession`.
 struct SharedAccount: Account {
     let id: String
     var username: String
@@ -51,26 +49,20 @@ struct SharedAccount: Account {
         self.timesUsed = 0
     }
 
+    /// Updated the local account to reflect the remote data.
+    /// - Parameters:
+    ///   - accountData: The remote account data.
+    ///   - key: The seed from the `TeamSession` that is used to generate the passwords.
+    ///   - context: Optionally, an authenticated `LAContext`.
+    /// - Throws: Keychain and decoding related errors.
+    /// - Returns: A boolean whether something has been updated.
     mutating func sync(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
-        var notesChanged = false
-        if let notes = backupAccount.notes {
-            if Keychain.shared.has(id: id, service: .sharedAccount(attribute: .notes)) {
-                if notes.isEmpty {
-                    notesChanged = true
-                    try Keychain.shared.delete(id: id, service: .sharedAccount(attribute: .notes))
-                } else {
-                    notesChanged = true
-                    try Keychain.shared.update(id: id, service: .sharedAccount(attribute: .notes), secretData: notes.data, objectData: nil)
-                }
-            } else if !notes.isEmpty {
-                notesChanged = true
-                try Keychain.shared.save(id: id, service: .sharedAccount(attribute: .notes), secretData: notes.data, objectData: nil)
-            }
-        }
-        // TODO: OTP isn't updated here.
+        let notesChanged = try updateNotes(notes: backupAccount.notes)
+        let otpChanged = try updateToken(tokenSecret: backupAccount.tokenSecret, tokenURL: backupAccount.tokenURL)
         guard notesChanged
+                || otpChanged
                 || passwordIndex != backupAccount.passwordIndex
                 || passwordOffset != backupAccount.passwordOffset
                 || username != backupAccount.username
@@ -88,10 +80,11 @@ struct SharedAccount: Account {
         return true
     }
 
+    // Documentation in protocol
     func delete() -> Promise<Void> {
         do {
             try Keychain.shared.delete(id: self.id, service: .sharedAccount())
-            try? Keychain.shared.delete(id: self.id, service: .sharedAccount(attribute: .notes))
+            try? Keychain.shared.delete(id: self.id, service: Self.notesService)
             self.deleteFromToIdentityStore()
             return when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) })).log("Error deleting accounts")
         } catch {
@@ -99,6 +92,7 @@ struct SharedAccount: Account {
         }
     }
 
+    // Documentation in protocol
     func update(secret: Data?, backup: Bool = false) throws {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
@@ -106,15 +100,16 @@ struct SharedAccount: Account {
         saveToIdentityStore()
     }
 
-    func save(password: String, sessionId: String) throws {
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionId)
-        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
-        saveToIdentityStore()
-    }
-
     // MARK: - Static functions
 
+    /// Create a new `SharedAccount`.
+    /// - Parameters:
+    ///   - accountData: The acount data.
+    ///   - id: The account identifier
+    ///   - key: The seed used to generate the password.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    ///   - sessionId: The `TeamSession` that manages this account.
+    /// - Throws: Keychain, encoding, or password generation errors.
     static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionId: String) throws {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
@@ -140,6 +135,8 @@ struct SharedAccount: Account {
         try account.save(password: password, sessionId: sessionId)
     }
 
+    /// Delete all `SharedAccount`s for a `TeamSession`.
+    /// - Parameter sessionId: The `TeamSession` id.
     static func deleteAll(for sessionId: String) {
         if let accounts = try? all(context: nil, label: sessionId), let sessions = try? BrowserSession.all() {
             for id in accounts.keys {
@@ -152,6 +149,54 @@ struct SharedAccount: Account {
         NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true
+        }
+    }
+
+    // MARK: - Private functions
+
+    private func save(password: String, sessionId: String) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionId)
+        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
+        saveToIdentityStore()
+    }
+
+    private func updateNotes(notes: String?) throws -> Bool {
+        guard let notes = notes else {
+            return false
+        }
+        if Keychain.shared.has(id: id, service: Self.notesService) {
+            if notes.isEmpty {
+                try Keychain.shared.delete(id: id, service: Self.notesService)
+            } else {
+                try Keychain.shared.update(id: id, service: Self.notesService, secretData: notes.data, objectData: nil)
+            }
+        } else if !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: Self.notesService, secretData: notes.data, objectData: nil)
+        }
+        return true
+    }
+
+    private func updateToken(tokenSecret: Data?, tokenURL: URL?) throws -> Bool {
+        if let tokenSecret = tokenSecret, let tokenURL = tokenURL {
+            let tokenData = tokenURL.absoluteString.data
+            if let currentToken = try oneTimePasswordToken() {
+                guard try currentToken.generator.secret != tokenSecret || currentToken.toURL() != tokenURL else {
+                    return false
+                }
+                // The token has been updated
+                try Keychain.shared.update(id: id, service: Self.otpService, secretData: tokenSecret, objectData: tokenData)
+                return true
+            } else {
+                // Save token
+                try Keychain.shared.save(id: id, service: Self.otpService, secretData: tokenSecret, objectData: tokenData, label: sessionId)
+                return true
+            }
+        } else if Keychain.shared.has(id: id, service: Self.otpService) {
+            try Keychain.shared.delete(id: id, service: Self.otpService)
+            return true
+        } else {
+            return false
         }
     }
 

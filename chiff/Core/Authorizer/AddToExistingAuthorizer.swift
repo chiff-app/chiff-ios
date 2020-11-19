@@ -10,7 +10,7 @@ import PromiseKit
 
 class AddToExistingAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.addToExisting
+    let type = ChiffMessageType.addToExisting
     let browserTab: Int
     let siteName: String
     let siteURL: String

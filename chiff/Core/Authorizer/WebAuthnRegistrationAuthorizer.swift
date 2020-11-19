@@ -10,7 +10,7 @@ import PromiseKit
 
 class WebAuthnRegistrationAuthorizer: Authorizer {
     var session: BrowserSession
-    let type = KeynMessageType.webauthnCreate
+    let type = ChiffMessageType.webauthnCreate
     let browserTab: Int
     let siteName: String
     let siteURL: String

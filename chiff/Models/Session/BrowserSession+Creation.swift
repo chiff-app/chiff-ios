@@ -10,6 +10,14 @@ import PromiseKit
 
 extension BrowserSession {
 
+    /// Initite a new browser session after scanning a QR-code.
+    /// - Parameters:
+    ///   - pairingQueueSeed: The pairing queue seed.
+    ///   - browserPubKey: The client's public key.
+    ///   - browser: The type of client.
+    ///   - os: The operating OS, just used for the display name.
+    ///   - version: The session version.
+    /// - Returns: The `Session` object.
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: Browser, os: String, version: Int = 0) -> Promise<Session> {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()

@@ -11,6 +11,8 @@ import LocalAuthentication
 // Version migration
 extension UserAccount {
 
+    /// Migrate outdated accounts to the current version
+    /// - Parameter context: Optionally, an `LAContext`.
     mutating func updateVersion(context: LAContext?) {
         var save = false
         do {
