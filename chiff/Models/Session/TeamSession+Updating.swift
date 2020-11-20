@@ -12,49 +12,60 @@ extension TeamSession {
 
     // MARK: - Static methods
 
+    /// Update all team sessions, syncing with the current state of the team.
     static func updateAllTeamSessions() -> Promise<Void> {
-        return firstly {
-            when(fulfilled: try TeamSession.all().map { updateTeamSession(session: $0) })
-        }.then { (results) -> Promise<Void> in
-            if results.reduce(false, { $0 ? $0 : $1 }) {
-                let teamSessions = try TeamSession.all()
-                let organisationKey = teamSessions.first?.organisationKey
-                let organisationType = teamSessions.first?.type
-                let isAdmin = teamSessions.contains(where: { $0.isAdmin })
-                return BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
-            } else {
-                return .value(())
+        do {
+            let teamSessions = try TeamSession.all()
+            let wasAdmin = teamSessions.contains(where: { $0.isAdmin })
+            let organisationKey = teamSessions.first?.organisationKey
+            let organisationType = teamSessions.first?.type
+            return firstly {
+                when(fulfilled: teamSessions.map { $0.update() })
+            }.then { (sessions) -> Promise<Void> in
+                let isAdmin = sessions.contains(where: { $0.isAdmin })
+                if sessions.first?.organisationKey != organisationKey
+                        || sessions.first?.type != organisationType
+                        || isAdmin != wasAdmin {
+                    return BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+                } else {
+                    return .value(())
+                }
             }
+        } catch {
+            return Promise(error: error)
         }
+
     }
 
-    static func updateTeamSession(session: TeamSession) -> Promise<Bool> {
-        var session = session
+    /// Update this `TeamSession` to the current team state. Returns an updated copy.
+    /// - Returns: A Promise of an updated copy of this `TeamSession`, or this session if nothing was updated.
+    func update() -> Promise<TeamSession> {
         return firstly {
             when(fulfilled:
-                    session.getOrganisationData(),
-                    API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get, privKey: try session.signingPrivKey()))
+                    self.getOrganisationData(),
+                 API.shared.signedRequest(path: "teams/users/\(self.teamId)/\(self.id)", method: .get, privKey: try self.signingPrivKey()))
         }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
             if let keys = result["keys"] as? [String] {
-                return session.updateKeys(keys: keys).map { (type, result, $0) }
+                return self.updateKeys(keys: keys).map { (type, result, $0) }
             } else {
                 return .value((type, result, nil))
             }
         }.map { (type, result, pubKey) in
-            try session.update(type: type, result: result, pubKey: pubKey)
-        }.recover { (error) -> Promise<Bool> in
+            var session = self
+            return try session.update(type: type, result: result, pubKey: pubKey) ? session : self
+        }.recover { (error) -> Promise<TeamSession> in
             if case APIError.statusCode(404) = error {
-                try? session.delete()
-                NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionID.rawValue: session.id])
+                try? self.delete()
+                NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionID.rawValue: self.id])
                 NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
-                return .value(true)
+                return .value(self)
             } else {
                 throw error
             }
         }
     }
 
-    mutating func update(type: OrganisationType?, result: JSONObject, pubKey: String?) throws -> Bool {
+    private mutating func update(type: OrganisationType?, result: JSONObject, pubKey: String?) throws -> Bool {
         var changed = false
         var makeBackup = false
         if let pubKey = pubKey {
@@ -91,7 +102,7 @@ extension TeamSession {
         return changed
     }
 
-    mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
+    private mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
         guard LocalAuthenticationManager.shared.isAuthenticated else {
             return 0 // We're probably in the background, so updating accounts will fail. We'll sync next app is launched.
         }
@@ -119,7 +130,7 @@ extension TeamSession {
         return changed
     }
 
-    func updateKeys(keys: [String]) -> Promise<String?> {
+    private func updateKeys(keys: [String]) -> Promise<String?> {
         do {
             guard let privKey = try Keychain.shared.get(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService) else {
                 throw KeychainError.notFound
@@ -154,7 +165,7 @@ extension TeamSession {
         }
     }
 
-    func getOrganisationData() -> Promise<OrganisationType?> {
+    private func getOrganisationData() -> Promise<OrganisationType?> {
         let filemgr = FileManager.default
         guard let path = logoPath else {
             return Promise(error: TeamSessionError.logoPathNotFound)

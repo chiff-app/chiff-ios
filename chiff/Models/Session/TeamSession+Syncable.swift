@@ -17,17 +17,20 @@ extension TeamSession: Syncable {
         return .sessions
     }
 
+    // Documentation in protocol
     static func all(context: LAContext?) throws -> [String: TeamSession] {
         return try Dictionary(uniqueKeysWithValues: all().map { ($0.id, $0) })
     }
 
+    // Documentation in protocol
     static func create(backupObject: BackupTeamSession, context: LAContext?) throws {
         let session = try TeamSession(from: backupObject, context: context)
-        _ = updateTeamSession(session: session).catch { error in
+        _ = session.update().catch { error in
             Logger.shared.warning("Failed to update shared accounts after creating team session from backup", error: error)
         }
     }
 
+    // Documentation in protocol
     static func notifyObservers() {
         NotificationCenter.default.postMain(name: .sessionUpdated, object: self)
     }
@@ -48,6 +51,7 @@ extension TeamSession: Syncable {
         try save(keys: seeds, privKey: backupSession.privKey)
     }
 
+    // Documentation in protocol
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
         var newSeed: Data?
         if let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: Self.signingService), !Crypto.shared.equals(first: backupObject.seed, second: seed) {
@@ -75,6 +79,7 @@ extension TeamSession: Syncable {
         return .value(())
     }
 
+    // Documentation in protocol
     func backup() -> Promise<Void> {
         do {
             guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: TeamSession.signingService), created else {

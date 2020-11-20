@@ -134,8 +134,9 @@ class TeamAccountViewController: ChiffTableViewController, AccessControlDelegate
             }.then { _ in
                 self.account.delete()
             }.then { _ in
-                TeamSession.updateTeamSession(session: self.session).asVoid()
-            }.done(on: .main) {
+                self.session.update() // returns an updated copy
+            }.done(on: .main) { session in
+                self.session = session
                 self.performSegue(withIdentifier: "DeleteUserAccount", sender: self)
             }.catch(on: .main) { error in
                 barButtonItem?.hideLoading()

@@ -18,11 +18,7 @@ protocol PairingResponse: Encodable {
     var arn: String { get }
 }
 
-/*
- * Keyn Responses.
- *
- * Direction: app -> browser
- */
+/// Pairing response for browser session. Direction app -> browser.
 struct BrowserPairingResponse: PairingResponse {
     let sessionID: String
     let pubKey: String
@@ -69,11 +65,7 @@ struct BrowserPairingResponse: PairingResponse {
     }
 }
 
-/*
- * Keyn Responses.
- *
- * Direction: app -> browser
- */
+/// Pairing response for team session. Direction app -> browser.
 struct TeamPairingResponse: PairingResponse {
     let sessionID: String
     let pubKey: String

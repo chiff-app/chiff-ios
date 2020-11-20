@@ -22,8 +22,8 @@ enum OrganisationType: Int, Codable {
     case enterprise
 }
 
+/// A session with a Chiff Team.
 struct TeamSession: Session {
-    var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let creationDate: Date
     let id: String
     var signingPubKey: String
@@ -54,6 +54,19 @@ struct TeamSession: Session {
     static var encryptionService: KeychainService = .teamSession(attribute: .sharedKey)
     static var sessionCountFlag: String = "teamSessionCount"
 
+    /// Initialize a `TeamSession`.
+    /// - Parameters:
+    ///   - id: The session id.
+    ///   - teamId: The team id.
+    ///   - signingPubKey: The signing pubkey.
+    ///   - title: The title of the session. Just for internal display.
+    ///   - version: The session version.
+    ///   - isAdmin: Whether this user is admin of this team.
+    ///   - created: Whether the session has been remotely created.
+    ///         During the pairing process, the QR-code is scanned, at which the session is created at the phone.
+    ///         However, it may still be be cancelled there in the UI.
+    ///   - lastChange: A timestamp of the last change, used for syncing.
+    ///   - organisationKey: The organisation key that this teams belongs to. Used to retrieve organisation PPDs and logo.
     init(id: String, teamId: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
         self.creationDate = Date()
         self.id = id
@@ -69,6 +82,16 @@ struct TeamSession: Session {
 
     // MARK: - Static functions
 
+    /// Primary function to intiate a team session, usually called by scanning a QR-code.
+    /// - Parameters:
+    ///   - pairingQueueSeed: The pairing queue seed.
+    ///   - teamId: The team id.
+    ///   - browserPubKey: The team's public key to establish the shared key.
+    ///   - role: The role this user has in the team.
+    ///   - team: The name of the team / organisation.
+    ///   - version: The session version
+    ///   - organisationKey: The organisation key of the organisation this team belongs to.
+    /// - Returns: A Promise of the session that is created.
     static func initiate(pairingQueueSeed: String, teamId: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
         do {
             let keys = try TeamSessionKeys(browserPubKey: browserPubKey)
@@ -103,6 +126,9 @@ struct TeamSession: Session {
         }
     }
 
+    /// Return the organisation `KeyPair`.
+    /// - Throws: Crypto or Keychain errors.
+    /// - Returns: The organisation `KeyPair`.
     static func organisationKeyPair() throws -> KeyPair? {
         guard let organisationKey = try TeamSession.all().first?.organisationKey else {
             return nil
@@ -110,6 +136,9 @@ struct TeamSession: Session {
         return try Crypto.shared.createSigningKeyPair(seed: organisationKey)
     }
 
+    /// Save this session to the Keychain and update remotely, if necessary.
+    /// - Parameter makeBackup: Whether a remote backup should be made.
+    /// - Throws: Encoding or Keychain errors.
     mutating func update(makeBackup: Bool) throws {
         if makeBackup {
             lastChange = Date.now
@@ -121,6 +150,7 @@ struct TeamSession: Session {
         }
     }
 
+    // Documentation in protocol.
     func delete(notify: Bool) -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(path: "teams/users/\(teamId)/\(id)", method: .delete, privKey: try signingPrivKey())
@@ -136,6 +166,9 @@ struct TeamSession: Session {
         }.log("Error deleting arn for team session")
     }
 
+    /// Delete data from the Keychain.
+    /// - Parameter backup: If this is true (default), backup will be deleted as well.
+    /// - Throws: Keychain errors.
     func delete(backup: Bool = true) throws {
         SharedAccount.deleteAll(for: self.id)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
@@ -149,14 +182,25 @@ struct TeamSession: Session {
         }
     }
 
+    /// Save the team session keys to the Keychain.
+    /// - Parameter keys: The `TeamSessionKeys`.
+    /// - Throws: Keychain or encoding errors.
     func save(keys: TeamSessionKeys) throws {
         try keys.save(id: self.id, data: PropertyListEncoder().encode(self))
     }
 
+    /// Save the team seeds.
+    /// - Parameters:
+    ///   - keys: The team seeds that should be saved.
+    ///   - privKey: The private key, only used in case of admin revocation.
+    /// - Throws: Keychain errors.
     func save(keys: TeamSessionSeeds, privKey: Data) throws {
         try keys.save(id: self.id, privKey: privKey, data: PropertyListEncoder().encode(self))
     }
 
+    /// Retrieve the password seed from the Keychain.
+    /// - Throws: Keychain errors
+    /// - Returns: The password seed.
     func passwordSeed() throws -> Data {
         guard let seed = try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService) else {
             throw KeychainError.notFound
@@ -166,6 +210,8 @@ struct TeamSession: Session {
 
     // MARK: - Admin functions
 
+    /// Retrieve the team seed remotely aand decrypt it.
+    /// - Returns: A promise of the team seed.
     func getTeamSeed() -> Promise<Data> {
         return firstly {
             API.shared.signedRequest(path: "teams/users/\(teamId)/\(id)/admin", method: .get, privKey: try signingPrivKey())
@@ -179,6 +225,8 @@ struct TeamSession: Session {
         }.log("Error getting admin seed")
     }
 
+    /// Get an instance of the `Team` that corresponds to this session.
+    /// - Returns: A Promise of the `Team`.
     func getTeam() -> Promise<Team> {
         return firstly {
             getTeamSeed()
@@ -207,7 +255,6 @@ extension TeamSession: Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.id = try values.decode(String.self, forKey: .id)
         self.teamId = try values.decode(String.self, forKey: .teamId)
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
