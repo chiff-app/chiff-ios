@@ -42,11 +42,16 @@ struct PPDDescriptor: Codable {
 
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
-    let properties: PPDProperties? // Required. Represents the properties of the password.
-    let service: PPDService? // Holds information related to the service the password is used for.
-    let version: PPDVersion // The current version of the PPD.
-    let timestamp: Int? // Timestamp when this PPD was created/updated.
-    let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
+    /// Required. Represents the properties of the password.
+    let properties: PPDProperties?
+    /// Holds information related to the service the password is used for.
+    let service: PPDService?
+    /// The current version of the PPD.
+    let version: PPDVersion
+    /// Timestamp when this PPD was created/updated.
+    let timestamp: Int?
+    /// Relative path of the webpage where this PPD will be used.
+    let url: String
     let redirect: String?
     let name: String
 

@@ -8,23 +8,23 @@
 import Foundation
 import PromiseKit
 
-class TeamSessionSeeds {
+protocol TeamSessionSeedsProtocol {
     /// The shared seed for this admin session.
-    let seed: Data
+    var seed: Data { get }
     /// Used to generate passwords
-    let passwordSeed: Data
+    var passwordSeed: Data { get }
     /// Used to encrypt messages for this session
-    let encryptionKey: Data
+    var encryptionKey: Data { get }
     /// Used to sign messages for the server
-    let signingKeyPair: KeyPair
+    var signingKeyPair: KeyPair { get }
 
-    static let cryptoContext = "keynteam"
+    static var cryptoContext: String { get }
+}
 
-    init(seed: Data) throws {
-        self.seed = seed
-        self.passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 0) // Used to generate passwords
-        self.encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 1) // Used to encrypt messages for this session
-        self.signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 2)) // Used to sign messages for the server
+extension TeamSessionSeedsProtocol {
+
+    static var cryptoContext: String {
+        return "keynteam"
     }
 
     /// Updates team session seeds in the Keychain.
@@ -53,13 +53,39 @@ class TeamSessionSeeds {
         try Keychain.shared.save(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService, secretData: privKey)
     }
 
+    // MARK: - Private functions
+
+    fileprivate static func deriveKeys(seed: Data) throws -> (Data, Data, KeyPair) {
+        let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 0) // Used to generate passwords
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 1) // Used to encrypt messages for this session
+        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: Self.cryptoContext, index: 2)) // Used to sign messages for the server
+        return (passwordSeed, encryptionKey, signingKeyPair)
+    }
+}
+
+/// A simple container for the different cryptgraphic keys of a `TeamSession`.
+struct TeamSessionSeeds: TeamSessionSeedsProtocol {
+    let seed: Data
+    let passwordSeed: Data
+    let encryptionKey: Data
+    let signingKeyPair: KeyPair
+
+    init(seed: Data) throws {
+        let (passwordSeed, encryptionKey, signingKeyPair) = try Self.deriveKeys(seed: seed)
+        self.seed = seed
+        self.passwordSeed = passwordSeed
+        self.encryptionKey = encryptionKey
+        self.signingKeyPair = signingKeyPair
+    }
 }
 
 /// This is a container for the admin session keys. Used when bootstraping a new team.
-class TeamSessionKeys: TeamSessionSeeds {
-    /// The 'browser' keypair pubkey for generating the shared seed
+struct TeamSessionKeys: TeamSessionSeedsProtocol {
+    let seed: Data
+    let passwordSeed: Data
+    let encryptionKey: Data
+    let signingKeyPair: KeyPair
     let browserPubKey: Data
-    /// The 'app' keypair for generating the shared seed
     let sharedKeyKeyPair: KeyPair
 
     var sessionId: String {
@@ -70,26 +96,18 @@ class TeamSessionKeys: TeamSessionSeeds {
         return sharedKeyKeyPair.pubKey.base64
     }
 
-    private init(browserPubKey: Data) throws {
-        self.browserPubKey = browserPubKey
-        self.sharedKeyKeyPair = try Crypto.shared.createSessionKeyPair()
-        let seed = try Crypto.shared.generateSharedKey(pubKey: self.browserPubKey, privKey: sharedKeyKeyPair.privKey)
-        try super.init(seed: seed)
-    }
-
-    convenience init(browserPubKey: String) throws {
-        try self.init(browserPubKey: Crypto.shared.convertFromBase64(from: browserPubKey))
-    }
-
-    convenience init() throws {
-        let browserKeyPair = try Crypto.shared.createSessionKeyPair()
-        try self.init(browserPubKey: browserKeyPair.pubKey)
-    }
-
+    /// Encrypt the seed with the encryption key.
+    /// - Parameter seed: The seed
+    /// - Throws: Crypto errors.
+    /// - Returns: The base64-encoded encrypted seed.
     func encrypt(seed: Data) throws -> String {
         return (try Crypto.shared.encrypt(seed, key: encryptionKey)).base64
     }
 
+    /// Create an admin `TeamUser` with the public key of the backup seed set
+    /// as this user's `userSyncPubkey`.
+    /// - Throws: Keychain errors
+    /// - Returns: The `TeamUser`.
     func createAdmin() throws -> TeamUser {
         return TeamUser(pubkey: signingKeyPair.pubKey.base64,
                             userPubkey: sharedKeyKeyPair.pubKey.base64,
@@ -101,8 +119,42 @@ class TeamSessionKeys: TeamSessionSeeds {
                             name: "devices.admin".localized)
     }
 
+    /// Save to datta to the Keychain, optionally providing attribute data.
+    /// - Parameters:
+    ///   - id: The id for the Keychain.
+    ///   - data: Optionally, attribute data.
+    /// - Throws: Keychain errors.
     func save(id: String, data: Data?) throws {
-        try super.save(id: id, privKey: sharedKeyKeyPair.privKey, data: data)
+        try save(id: id, privKey: sharedKeyKeyPair.privKey, data: data)
+    }
+
+}
+
+extension TeamSessionKeys {
+
+    /// Initialize the `TeamSessionKey` from a `browserPubKey`. Our keypair will be generated.
+    /// - Parameter browserPubKey: Their public key.
+    /// - Throws: Crypto or Keychain errors.
+    init(browserPubKey: Data) throws {
+        let sharedKeyKeyPair = try Crypto.shared.createSessionKeyPair()
+        let seed = try Crypto.shared.generateSharedKey(pubKey: browserPubKey, privKey: sharedKeyKeyPair.privKey)
+        let (passwordSeed, encryptionKey, signingKeyPair) = try Self.deriveKeys(seed: seed)
+        self.init(seed: seed, passwordSeed: passwordSeed, encryptionKey: encryptionKey, signingKeyPair: signingKeyPair, browserPubKey: browserPubKey, sharedKeyKeyPair: sharedKeyKeyPair)
+    }
+
+    /// Initialize the `TeamSessionKey` from a `browserPubKey`. Our keypair will be generated.
+    ///     Convencience initializer that decodes the public key from base64.
+    /// - Parameter browserPubKey: Their base64-encoded public key.
+    /// - Throws: Crypto or Keychain errors.
+    init(browserPubKey: String) throws {
+        try self.init(browserPubKey: Crypto.shared.convertFromBase64(from: browserPubKey))
+    }
+
+    /// Initialize the `TeamSessionKey`, where both their keypair and our keypair will be generated.
+    /// - Throws: Crypto or Keychain errors.
+    init() throws {
+        let browserKeyPair = try Crypto.shared.createSessionKeyPair()
+        try self.init(browserPubKey: browserKeyPair.pubKey)
     }
 
 }

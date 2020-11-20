@@ -73,7 +73,7 @@ extension AccountViewController {
             }.then {
                 $0.deleteAccount(id: account.id)
             }.then {
-                TeamSession.updateTeamSession(session: session).asVoid()
+                session.update().asVoid()
             }.map(on: .main) {
                 guard try SharedAccount.get(id: account.id, context: nil) == nil else {
                     throw KeychainError.storeKey

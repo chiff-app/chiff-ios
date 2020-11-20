@@ -10,14 +10,9 @@ import PromiseKit
 
 extension BrowserSession {
 
-    // MARK: - Static methods
-
-    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) -> Promise<Void> {
-        return firstly {
-            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin) })
-        }.asVoid().log("Failed to update session data.")
-    }
-
+    /// Update a single `SessionAccount` in this session.
+    /// - Parameter account: The updated account.
+    /// - Throws: Encoding or encryption errors.
     func updateSessionAccount(account: Account) throws -> Promise<Void> {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
@@ -33,6 +28,8 @@ extension BrowserSession {
             .log("Failed to update session account")
     }
 
+    /// Update multiple session accounts for this session.
+    /// - Parameter accounts: A dictionary of accounts, where the key is the id.
     func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
         do {
             let encryptedAccounts: [String: String] = try accounts.mapValues {
@@ -54,18 +51,13 @@ extension BrowserSession {
         }
     }
 
-    func updateSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> Promise<Void> {
-        let message = [
-            "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
-        ]
-        return API.shared.signedRequest(path: "sessions/\(signingPubKey)",
-                                        method: .put,
-                                        privKey: try signingPrivKey(),
-                                        message: message)
-            .asVoid()
-            .log("Failed to update session data.")
-    }
-
+    /// Encrypt the data for this session with the session's shared key.
+    /// - Parameters:
+    ///   - organisationKey: The organisation key to add to data.
+    ///   - organisationType: The orgaanisation type to add to the data.
+    ///   - isAdmin: Whether this user is admin in at least one team.
+    ///   - migrated: Whether this beta user has been migrated to productioon.
+    /// - Throws: Encryption errors.
     func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
         var data: [String: Any] = [
             "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
@@ -83,9 +75,39 @@ extension BrowserSession {
         return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
     }
 
+    /// Delete a single session account from this session.
+    /// - Parameter accountId: The account id.
     func deleteAccount(accountId: String) -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(accountId)", method: .delete, privKey: try signingPrivKey(), message: ["id": accountId])
         }.asVoid().log("Failed to delete session account.")
     }
+
+    // MARK: - Static methods
+
+    /// Update the session data for all sessions.
+    /// - Parameters:
+    ///   - organisationKey: The organisation key to add.
+    ///   - organisationType: The organisation type to add.
+    ///   - isAdmin: Whether this user is admin in at least one team.
+    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) -> Promise<Void> {
+        return firstly {
+            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin) })
+        }.asVoid().log("Failed to update session data.")
+    }
+
+    // MARK: - Private functions
+
+    private func updateSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> Promise<Void> {
+        let message = [
+            "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+        ]
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)",
+                                        method: .put,
+                                        privKey: try signingPrivKey(),
+                                        message: message)
+            .asVoid()
+            .log("Failed to update session data.")
+    }
+
 }

@@ -7,11 +7,7 @@
 
 import Foundation
 
-/**
- * Chiff requests.
- *
- * Direction: browser -> app
- */
+/// Request received from clients. Direction browser -> app.
 struct ChiffRequest: Codable {
     let accountID: String?
     let accountIDs: [Int: String]?
