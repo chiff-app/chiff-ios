@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A team user.
 struct TeamUser: Codable, AccessControllable {
     var pubkey: String!
     let userPubkey: String
@@ -19,12 +20,22 @@ struct TeamUser: Codable, AccessControllable {
 
     static let cryptoContext = "keynteam"
 
+    /// Encrypt this user with a given key.
+    /// - Parameter key: The encryption key.
+    /// - Throws: Encryption or coding errors.
+    /// - Returns: The base64 encoded ciphertext.
     func encrypt(key: Data) throws -> String {
         let data = try JSONEncoder().encode(self)
         let ciphertext = try Crypto.shared.encryptSymmetric(data, secretKey: key)
         return try Crypto.shared.convertToBase64(from: ciphertext)
     }
 
+    /// Encrypt a team account with this user's key.
+    /// - Parameters:
+    ///   - account: The team account to encrypt.
+    ///   - teamPasswordSeed: The team password seed to generate the password
+    /// - Throws: Encryption or encoding errors.
+    /// - Returns: The base64 encoded ciphertext.
     func encryptAccount(account: TeamAccount, teamPasswordSeed: Data) throws -> String {
         guard let site = account.sites.first else {
             throw CodingError.missingData

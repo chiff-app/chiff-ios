@@ -31,6 +31,8 @@ struct Logger {
         crashlytics.setCustomValue(Properties.environment.rawValue, forKey: "environment")
     }
 
+    /// Enable / disable analytics logging.
+    /// - Parameter value: True to enable, false to disable.
     func setAnalyticsLogging(value: Bool) {
         if !value {
             // Uploading setting change before opting out.
@@ -44,6 +46,8 @@ struct Logger {
         }
     }
 
+    /// Set the user id for analytics and error logging.
+    /// - Parameter userId: The user id.
     func setUserId(userId: String?) {
         if let userId = userId {
             crashlytics.setUserID(userId)
@@ -51,10 +55,16 @@ struct Logger {
         }
     }
 
+    /// Immediately upload analytics events.
     func uploadAnalytics() {
         amplitude.uploadEvents()
     }
 
+    /// Log an error with the warning level.
+    /// - Parameters:
+    ///   - message: The message
+    ///   - error: Optionally, an error object.
+    ///   - userInfo: Optionally, additional information
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
         #if DEBUG
         print("--------- ⚠️ WARNING: \(String(describing: error)). \(message) ---------")
@@ -70,6 +80,12 @@ struct Logger {
         crashlytics.record(error: error ?? KeynError())
     }
 
+    /// Log an error with the error level.
+    /// - Parameters:
+    ///   - message: The message
+    ///   - error: Optionally, an error object.
+    ///   - userInfo: Optionally, additional information
+    ///   - override: Override the user preference.
     func error(_ message: String,
                error: Error? = nil,
                userInfo: [String: Any]? = nil,
@@ -91,22 +107,17 @@ struct Logger {
         crashlytics.record(error: error ?? KeynError())
     }
 
+    /// Submit an analytics event.
+    /// - Parameters:
+    ///   - event: The analytics event.
+    ///   - properties: Additional properties
+    ///   - override: Override the user preference.
     func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil, override: Bool = false) {
         print("ℹ️ EVENT: \(event)")
         guard Properties.analyticsLogging || override else {
             return
         }
         amplitude.logEvent(event: event, properties: properties)
-    }
-
-    func revenue(productId: String, price: NSDecimalNumber) {
-        guard Properties.analyticsLogging else {
-            return
-        }
-        let revenue = AMPRevenue()
-        revenue.setProductIdentifier(productId)
-        revenue.setPrice(price)
-        amplitude.logRevenueV2(revenue)
     }
 
 }

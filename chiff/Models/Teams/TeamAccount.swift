@@ -8,6 +8,7 @@
 import Foundation
 import OneTimePassword
 
+/// A team account in the context of a team. Not to be confused with a shared account, which is the team account in the context of the team member.
 struct TeamAccount: BaseAccount {
     let id: String
     var username: String
@@ -61,11 +62,19 @@ struct TeamAccount: BaseAccount {
         }
     }
 
+    /// Generate a password for the provided user's password seed.
+    /// - Parameter seed: The user's password seed.
+    /// - Throws: Password generation errors.
+    /// - Returns: The password
     func password(for seed: Data) throws -> String {
         let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: seed)
         return (try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)).0
     }
 
+    /// Encrypt this account with a given key.
+    /// - Parameter key: The encryption key.
+    /// - Throws: Enryption or coding errors.
+    /// - Returns: The base64-encoded ciphertext.
     func encrypt(key: Data) throws -> String {
         let data = try JSONEncoder().encode(self)
         let ciphertext = try Crypto.shared.encryptSymmetric(data, secretKey: key)

@@ -55,6 +55,12 @@ struct PPD: Codable {
     let redirect: String?
     let name: String
 
+
+    /// Get a PPD for site ID. Return nil if there is not PPD for this site ID.
+    /// - Parameters:
+    ///   - id: The site ID.
+    ///   - organisationKeyPair: Optionnally, an organisation keypair if organisational PPDs should be checked as well.
+    /// - Returns: A PPD, if it exists.
     static func get(id: String, organisationKeyPair: KeyPair?) -> Guarantee<PPD?> {
         let parameters = ["v": PPDVersion.v1_1.rawValue]
         return firstly { () -> Promise<JSONObject> in
@@ -84,6 +90,9 @@ struct PPD: Codable {
         }
     }
 
+    /// Get a list of PPD decriptors.
+    /// - Parameter organisationKeyPair: Optionnally, an organisation keypair if organisational PPDs should be checked as well.
+    /// - Returns: A list of PPD decriptors.
     static func getDescriptors(organisationKeyPair: KeyPair?) -> Promise<[PPDDescriptor]> {
         return firstly { () -> Promise<[JSONObject]> in
             if let keyPair = organisationKeyPair {
@@ -143,8 +152,11 @@ struct PPD: Codable {
 }
 
 struct PPDCharacterSet: Codable {
+    /// The character set base characters
     let base: PPDBaseCharacterSet?
-    let characters: String? // String containing all characters that will be added to the character set.
+    /// String containing all characters that will be added to the character set.
+    let characters: String?
+    /// The name of the character set.
     let name: String
 
     init(base: PPDBaseCharacterSet?, characters: String?, name: String) {
@@ -236,6 +248,7 @@ struct PPDPositionRestriction: Codable {
 struct PPDRequirementGroup: Codable {
     /// Minimum number of rules that must be fulfilled.
     let minRules: Int
+    /// A list of requirement rules.
     let requirementRules: [PPDRequirementRule]
 
     init(minRules: Int = 1, requirementRules: [PPDRequirementRule]) {
@@ -251,6 +264,7 @@ struct PPDRequirementRule: Codable {
     let minOccurs: Int
     /// Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
     let maxOccurs: Int?
+    /// A reference to the character set this rule applies to.
     let characterSet: String
 
     init(positions: String?, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
@@ -262,7 +276,9 @@ struct PPDRequirementRule: Codable {
 }
 
 struct PPDService: Codable {
+    /// PPD login service, not implemented here.
     let login: PPDLogin
+    /// PPD password change service, not implemented here.
     let passwordChange: PPDPasswordChange?
 }
 

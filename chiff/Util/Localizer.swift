@@ -86,10 +86,12 @@ private class Localizer {
 
 extension String {
 
+    /// The localized string for this key. Should be in the format `"group.key"`.
     var localized: String {
         return Localizer.shared.localize(string: self)
     }
 
+    /// The attributed string for this key, optionnaly overrding the font. The letters to color should be in the localization file.
     func attributedLocalized(color: UIColor, font: UIFont?, attributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString {
         return Localizer.shared.localize(string: self, accentColor: color, font: font, attributes: attributes)
     }

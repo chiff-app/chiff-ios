@@ -20,14 +20,21 @@ enum WebAuthnAlgorithm: Int, Codable, Equatable {
     case ECDSA = -7
 }
 
+/// A WebAuthn for an account.
 struct WebAuthn: Codable, Equatable {
-    let id: String // rpId
+    /// This is the RPid (relying party id) in WebAuthn definition.
+    let id: String
     let algorithm: WebAuthnAlgorithm
     let salt: UInt64
     var counter: Int = 0
 
     static let cryptoContext = "webauthn"
 
+    /// Create a new WebAuthn object.
+    /// - Parameters:
+    ///   - id: The relying party id (RPid)
+    ///   - algorithms: The algorithms should be provided in order of preference.
+    /// - Throws: Crypto errors if no accepted algorithm is found.
     init(id: String, algorithms: [WebAuthnAlgorithm]) throws {
         var algorithm: WebAuthnAlgorithm?
         if #available(iOS 13.0, *) {
@@ -45,6 +52,12 @@ struct WebAuthn: Codable, Equatable {
         self.salt = salt
     }
 
+    /// Generate a WebAuthn signing keypair.
+    /// - Parameters:
+    ///   - accountId: The account id.
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Crypto or Keychain errors.
+    /// - Returns: The signing keypair.
     func generateKeyPair(accountId: String, context: LAContext?) throws -> KeyPair {
         var value: UInt64 = 0
         _ = withUnsafeMutableBytes(of: &value, { id.sha256Data.copyBytes(to: $0, from: 0..<8) })
@@ -64,6 +77,10 @@ struct WebAuthn: Codable, Equatable {
         return keyPair
     }
 
+    /// Return the base64 encoded public key of the signing keypair.
+    /// - Parameter accountId: The account id.
+    /// - Throws: Crypto or Keychain errors.
+    /// - Returns: The base64 encoded public key.
     func pubKey(accountId: String) throws -> String {
         switch algorithm {
         case .edDSA:
@@ -82,6 +99,11 @@ struct WebAuthn: Codable, Equatable {
         }
     }
 
+    /// Save the keypair to the Keychain.
+    /// - Parameters:
+    ///   - accountId: The account id to use as an identifier.
+    ///   - keyPair: The keypair.
+    /// - Throws: Crypto or Keychain errors.    
     func save(accountId: String, keyPair: KeyPair) throws {
         switch algorithm {
         case .edDSA: try Keychain.shared.save(id: accountId, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
@@ -94,6 +116,9 @@ struct WebAuthn: Codable, Equatable {
         }
     }
 
+    /// Delete this WebAuthn keypair from the Keychain.
+    /// - Parameter accountId: The account id.
+    /// - Throws: Keyhain errors.
     func delete(accountId: String) throws {
         switch algorithm {
         case .edDSA: try Keychain.shared.delete(id: accountId, service: .account(attribute: .webauthn))
@@ -105,6 +130,13 @@ struct WebAuthn: Codable, Equatable {
         }
     }
 
+    /// Sign a WebAuthn challenge.
+    /// - Parameters:
+    ///   - accountId: The account id.
+    ///   - challenge: The challenge to be signed.
+    ///   - rpId: The relying party id.
+    /// - Throws: Keychain, Crypto or WebAuthn errors.
+    /// - Returns: A tuplle with the signature and the used counter.
     mutating func sign(accountId: String, challenge: String, rpId: String) throws -> (String, Int) {
         guard rpId == id else {
             throw WebAuthnError.wrongRpId
