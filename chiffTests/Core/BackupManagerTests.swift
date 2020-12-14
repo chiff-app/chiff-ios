@@ -139,7 +139,7 @@ class SyncableTests: XCTestCase {
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
-            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
+            try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: accountData)
             firstly {
                 try account.backup()
             }.done { _ in
@@ -147,7 +147,7 @@ class SyncableTests: XCTestCase {
                     throw KeychainError.notFound
                 }
                 let originalSize = mockAPI.mockData[pubKey.base64]!.count
-                try account.deleteBackup()
+                account.deleteBackup()
                 XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
             }.catch { error in
                 XCTFail("Error: \(error)")
@@ -166,11 +166,11 @@ class SyncableTests: XCTestCase {
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
-            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
+            try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: accountData)
             firstly {
                 try account.backup()
             }.done { _ in
-                try account.deleteBackup()
+                account.deleteBackup()
             }.catch { error in
                 XCTFail("Error: \(error)")
             }.finally {
@@ -190,11 +190,11 @@ class SyncableTests: XCTestCase {
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
-            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
+            try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: accountData)
             firstly {
                 try account.backup()
             }.map { _ in
-                try Keychain.shared.delete(id: account.id, service: .account)
+                try Keychain.shared.delete(id: account.id, service: .account())
             }.then { _ -> Promise<RecoveryResult>  in
                 UserAccount.restore(context: Self.context)
             }.done { result in
@@ -226,7 +226,7 @@ class SyncableTests: XCTestCase {
             let site = TestHelper.sampleSite
             let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
             let data = try PropertyListEncoder().encode(account)
-            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
+            try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: data)
             firstly {
                 try account.backup()
             }.then { (result) -> Promise<RecoveryResult>  in

@@ -338,7 +338,7 @@ class SessionTests: XCTestCase {
         let session = TestHelper.createSessionInKeychain()
         let encoder = PropertyListEncoder()
         do {
-            try Keychain.shared.save(id: "\(notASession.id)-fake", service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
+            try Keychain.shared.save(id: "\(notASession.id)-fake", service: .browserSession(attribute: .sharedKey), secretData: "secret".data, objectData: encoder.encode(notASession))
             let sessions = try BrowserSession.all()
             XCTAssertEqual(sessions.count, 1)
             XCTAssertEqual(sessions.first!.id, session.id)
@@ -357,7 +357,7 @@ class SessionTests: XCTestCase {
         let keychainId = "\(notASession.id)-fake"
         let encoder = PropertyListEncoder()
         do {
-            try Keychain.shared.save(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
+            try Keychain.shared.save(id: keychainId, service: .browserSession(attribute: .sharedKey), secretData: "secret".data, objectData: encoder.encode(notASession))
             XCTAssertNil(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
@@ -374,7 +374,7 @@ class SessionTests: XCTestCase {
         let keychainId = "\(notASession.id)-shared"
         let encoder = PropertyListEncoder()
         do {
-            try Keychain.shared.save(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
+            try Keychain.shared.save(id: keychainId, service: .browserSession(attribute: .sharedKey), secretData: "secret".data, objectData: encoder.encode(notASession))
             XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
@@ -390,7 +390,7 @@ class SessionTests: XCTestCase {
         let notASession = NotASession(id: "ihaveanidea", cookie: "oreo")
         let keychainId = "\(notASession.id)-shared"
         do {
-            try saveWrongDataInKeychain(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: 42)
+            try saveWrongDataInKeychain(id: keychainId, service: .browserSession(attribute: .sharedKey), secretData: "secret".data, objectData: 42)
             XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
@@ -406,7 +406,7 @@ class SessionTests: XCTestCase {
         let notASession = NotASession(id: "ihaveanidea", cookie: "oreo")
         let encoder = PropertyListEncoder()
         do {
-            try saveWrongDataInKeychain(id: 4, service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
+            try saveWrongDataInKeychain(id: 4, service: .browserSession(attribute: .sharedKey), secretData: "secret".data, objectData: encoder.encode(notASession))
             let sessions = try BrowserSession.all()
             XCTAssertEqual(sessions.count, 0)
             print(sessions)
@@ -420,7 +420,7 @@ class SessionTests: XCTestCase {
     private func saveWrongDataInKeychain(id identifier: Any, service: KeychainService, secretData: Data, objectData: Any) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
+                                    kSecAttrService as String: service.service,
                                     kSecAttrAccessGroup as String: service.accessGroup,
                                     kSecValueData as String: secretData]
         query[kSecAttrGeneric as String] = objectData

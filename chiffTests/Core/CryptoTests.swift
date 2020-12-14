@@ -310,7 +310,7 @@ class CryptoTests: XCTestCase {
                 return XCTFail("Error getting data from base64 string")
         }
         do {
-            let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 0)
+            let decryptedText = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 0)
             XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
             XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: "sharedKey".data, version: 0))
         } catch {
@@ -327,7 +327,7 @@ class CryptoTests: XCTestCase {
                 return XCTFail("Error getting data from base64 string")
         }
         do {
-            let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 1)
+            let decryptedText = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 1)
             XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
         } catch {
             XCTFail("Error decrypting: \(error)")
@@ -341,11 +341,6 @@ class CryptoTests: XCTestCase {
                 return XCTFail("Error getting data from base64 string")
         }
          XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 0))
-    }
-    
-    func testSha1() {
-        let hash = Crypto.shared.sha1(from: "String")
-        XCTAssertEqual(hash, "3df63b7acb0522da685dad5fe84b81fdd7b25264")
     }
     
     func testSha256String() {
