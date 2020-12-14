@@ -25,6 +25,9 @@ extension Team {
         self.roles = Set([TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [user.id])])
     }
 
+    /// Bootstrap a new team.
+    /// - Parameter orderKey: The order key for this team.
+    /// - Returns: The admin team session to access the team.
     func create(orderKey: String) -> Promise<Session> {
         do {
             let orderKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: orderKey))

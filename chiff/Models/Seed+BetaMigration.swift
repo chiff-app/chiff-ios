@@ -10,6 +10,7 @@ import PromiseKit
 
 extension Seed {
 
+    /// Move this seed from the betaa environment to the production environment.
     static func moveToProduction() -> Promise<Void> {
         do {
             guard Properties.environment == .beta && !Properties.migrated else {
@@ -39,6 +40,7 @@ extension Seed {
         }
     }
 
+    /// Determine whether this seed already has been migrated or not.
     static func setMigrated() -> Promise<Void> {
         guard Properties.environment == .beta else {
             return .value(())

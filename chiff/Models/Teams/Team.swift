@@ -58,6 +58,10 @@ struct Team {
         })
     }
 
+    /// Retrieve a list of objects with accounts encrypted for each user that is allowed to see this account.
+    /// - Parameter account: The team account.
+    /// - Throws: Encryption or encoding errors.
+    /// - Returns: A list of objects with accounts encrypted for each user that is allowed to see this account.
     func usersForAccount(account: TeamAccount) throws -> [[String: Any]] {
         let roleUsers = Set(self.roles.filter({ account.roles.contains($0.id) }).flatMap({ $0.users }))
         let ids = roleUsers.union(account.users)
@@ -70,6 +74,8 @@ struct Team {
         ]})
     }
 
+    /// Remove an account from this team.
+    /// - Parameter id: The ID of the account that should be removed.
     func deleteAccount(id: String) -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(path: "teams/\(self.id)/accounts/\(id)", method: .delete, privKey: keyPair.privKey, message: ["id": id])
@@ -78,6 +84,11 @@ struct Team {
 
     // MARK: - Static methods
 
+    /// Get this team from the server.
+    /// - Parameters:
+    ///   - id: The team ID.
+    ///   - seed: The team seed.
+    /// - Returns: The team.
     static func get(id: String, seed: Data) -> Promise<Team> {
         do {
             let teamBackupKey = try Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 1)
@@ -92,6 +103,10 @@ struct Team {
         }
     }
 
+    /// Derive subkeys from the team seed.
+    /// - Parameter seed: The team seed.
+    /// - Throws: Decryption errors.
+    /// - Returns: A triple with the team encryption key, team keypair and the team password seed.
     static func createTeamSeeds(seed: Data) throws -> (Data, KeyPair, Data) {
         let teamPasswordSeed = try Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 0)
         let teamBackupKey = try Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 1)

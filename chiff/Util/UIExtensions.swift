@@ -8,7 +8,6 @@
 import UIKit
 import WebKit
 
-// Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
     var contents: UIViewController {
         if let navigationController = self as? UINavigationController {

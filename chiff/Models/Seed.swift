@@ -16,12 +16,14 @@ enum SeedError: Error {
     case notFound
 }
 
+/// The seed from which passwords and keys are derived.
 struct Seed {
 
     private static let seedCryptoContext = "keynseed"
     private static let paperBackupCompletedFlag = "paperBackupCompleted"
     private static let backupCryptoContext = "keynback"
 
+    /// Whether this seed has been initialized and subkeys saved to the Keychain.
     static var hasKeys: Bool {
         return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
         Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed) &&
@@ -31,6 +33,7 @@ struct Seed {
         Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
 
+    /// Whether the paper backup check has been completed.
     static var paperBackupCompleted: Bool {
         get {
             return UserDefaults.standard.bool(forKey: paperBackupCompletedFlag)
@@ -45,6 +48,8 @@ struct Seed {
 
     // MARK: - Create and restore
 
+    /// Create a new seed.
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
     static func create(context: LAContext?) -> Promise<Void> {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
@@ -69,6 +74,7 @@ struct Seed {
         }
     }
 
+    /// Recreate the backup remotely, after it has been deleted from another device.
     static func recreateBackup() -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(path: "users/\(try publicKey())", method: .post, privKey: try privateKey(), message: ["userId": Properties.userId as Any])
@@ -86,6 +92,11 @@ struct Seed {
         }
     }
 
+    /// Recover a seed from a mnemonic.
+    /// - Parameters:
+    ///   - context: An authenticated `LAContext` object.
+    ///   - mnemonic: The 12 word mnemonic.
+    /// - Returns: A tuple with information about how many accounts and how many team sessions were successfully recovered.
     static func recover(context: LAContext, mnemonic: [String]) -> Promise<(RecoveryResult, RecoveryResult)> {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
@@ -123,6 +134,10 @@ struct Seed {
         }
     }
 
+    /// Retrieve the password seed from the Keychain
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: `SeedError` if the item is not found.
+    /// - Returns: The seed data.
     static func getPasswordSeed(context: LAContext?) throws -> Data {
         guard let seed = try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context) else {
             throw SeedError.notFound
@@ -130,6 +145,10 @@ struct Seed {
         return seed
     }
 
+    /// Retrieve the backup seed from the Keychain
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: `SeedError` if the item is not found.
+    /// - Returns: The seed data.
     static func getBackupSeed(context: LAContext?) throws -> Data {
         guard let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context) else {
             throw SeedError.notFound
@@ -137,6 +156,10 @@ struct Seed {
         return seed
     }
 
+    /// Retrieve the webauthn seed from the Keychain
+    /// - Parameter context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: `SeedError` if the item is not found.
+    /// - Returns: The seed data.
     static func getWebAuthnSeed(context: LAContext?) throws -> Data {
         guard let seed = try Keychain.shared.get(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, context: context) else {
             guard let masterSeed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context) else {
@@ -149,18 +172,21 @@ struct Seed {
         return seed
     }
 
+    /// Delete all seeds from the Keychain.
     static func delete() {
         UserDefaults.standard.removeObject(forKey: paperBackupCompletedFlag)
         Keychain.shared.deleteAll(service: .seed)
         Keychain.shared.deleteAll(service: .backup)
     }
 
+    /// Delete the backup data from the server.
     static func deleteBackupData() -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(path: "/users/\(try publicKey())", method: .delete, privKey: try privateKey())
         }.asVoid().log("BackupManager cannot delete account.")
     }
 
+    /// Get the base64-encoded public key of the signing keypair for this seed.
     static func publicKey() throws -> String {
         guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
             throw KeychainError.notFound
@@ -169,6 +195,7 @@ struct Seed {
         return base64PubKey
     }
 
+    /// Get the private key of the signing keypair for this seed.
     static func privateKey() throws -> Data {
         guard let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) else {
             throw KeychainError.notFound
@@ -178,6 +205,8 @@ struct Seed {
 
     // MARK: - Mnemonic
 
+    /// Convert the seed to a 12-word mnemonic.
+    /// - Returns: A list of 12 words.
     static func mnemonic() -> Promise<[String]> {
         return firstly {
             Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded)
@@ -192,6 +221,9 @@ struct Seed {
         }
     }
 
+    /// Validate whether the checksum is correct for this mnemonic.
+    /// - Parameter mnemonic: The 12-word mnemonic
+    /// - Returns: True if the checksum is correct.
     static func validate(mnemonic: [String]) -> Bool {
         guard let (checksum, seed) = try? generateSeedFromMnemonic(mnemonic: mnemonic) else {
             return false

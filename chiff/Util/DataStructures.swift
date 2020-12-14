@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Used for bulk login actions.
 struct BulkLoginAccount: Codable {
     let username: String
     let password: String
@@ -17,6 +18,7 @@ struct BulkLoginAccount: Codable {
     }
 }
 
+/// Account object when importing from a CSV file.
 struct BulkAccount: Codable {
     let username: String
     let password: String
@@ -35,6 +37,7 @@ struct BulkAccount: Codable {
     }
 }
 
+/// Message retrieved from a persistent queue.
 struct ChiffPersistentQueueMessage: Codable {
     let passwordSuccessfullyChanged: Bool?
     let accountID: String?
@@ -55,6 +58,7 @@ struct ChiffPersistentQueueMessage: Codable {
     }
 }
 
+/// The account object that is shared with the session.
 struct SessionAccount: Codable {
     let id: String
     let askToLogin: Bool?
@@ -77,6 +81,7 @@ struct SessionAccount: Codable {
     }
 }
 
+/// The site object that is shared with the session.
 struct SessionSite: Codable {
     let id: String
     let url: String
@@ -89,6 +94,7 @@ struct SessionSite: Codable {
     }
 }
 
+/// The account object that is stored as a backup.
 struct BackupSharedAccount: Codable, Equatable {
     let id: String
     var username: String
@@ -101,6 +107,7 @@ struct BackupSharedAccount: Codable, Equatable {
     var notes: String?
 }
 
+/// The response sent back to the sessin when a request is received.
 struct KeynCredentialsResponse: Codable {
     let type: ChiffMessageType
     let browserTab: Int
@@ -109,8 +116,10 @@ struct KeynCredentialsResponse: Codable {
     var signature: String?
     var counter: Int?
     var algorithm: WebAuthnAlgorithm?
-    var newPassword: String?          // For reset only! When registering p will be set)
-    var accountId: String?            // Only used with changePasswordRequests
+    /// For password change only. When registering `password` should be set.
+    var newPassword: String?
+    /// Only used with changePasswordRequests
+    var accountId: String?
     var otp: String?
     var pubKey: String?
     var accounts: [Int: BulkLoginAccount?]?
