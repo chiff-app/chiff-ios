@@ -95,10 +95,10 @@ class TestHelper {
             let secret = token.generator.secret
             let tokenData = try token.toURL().absoluteString.data
             
-            if Keychain.shared.has(id: id, service: .otp) {
-                try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: includeData ? tokenData : nil)
+            if Keychain.shared.has(id: id, service: .account(attribute: .otp)) {
+                try Keychain.shared.update(id: id, service: .account(attribute: .otp), secretData: secret, objectData: includeData ? tokenData : nil)
             } else {
-                try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: includeData ? tokenData : nil)
+                try Keychain.shared.save(id: id, service: .account(attribute: .otp), secretData: secret, objectData: includeData ? tokenData : nil)
             }
         } catch {
             fatalError("Failed to set the OTP token")
@@ -113,7 +113,7 @@ class TestHelper {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: KeyIdentifier.master.identifier(for: .seed),
-            kSecAttrService as String: KeychainService.seed.rawValue,
+            kSecAttrService as String: KeychainService.seed.service,
             kSecAttrAccessGroup as String: KeychainService.seed.accessGroup,
             kSecAttrAccessControl as String: access as Any]
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -154,8 +154,8 @@ class TestHelper {
         }
         do {
             // This inserts an invalid entry in the Keychain, because there is no objectData
-            try Keychain.shared.save(id: sharedKeyID, service: .sharedSessionKey, secretData: sharedKey)
-            try Keychain.shared.save(id: signingPrivKeyID, service: .signingSessionKey, secretData: privKey)
+            try Keychain.shared.save(id: sharedKeyID, service: .browserSession(attribute: .sharedKey), secretData: sharedKey)
+            try Keychain.shared.save(id: signingPrivKeyID, service: .browserSession(attribute: .signingKey), secretData: privKey)
             return (sharedKey, privKey, pubKey)
         } catch {
             fatalError(error.localizedDescription)
@@ -169,8 +169,8 @@ class TestHelper {
         do {
             let session = BrowserSession(id: sessionID, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
             let encoder = PropertyListEncoder()
-            try Keychain.shared.save(id: sharedKeyID, service: .sharedSessionKey, secretData: sharedKey, objectData: encoder.encode(session))
-            try Keychain.shared.save(id: signingPrivKeyID, service: .signingSessionKey, secretData: privKey)
+            try Keychain.shared.save(id: sharedKeyID, service: .browserSession(attribute: .sharedKey), secretData: sharedKey, objectData: encoder.encode(session))
+            try Keychain.shared.save(id: signingPrivKeyID, service: .browserSession(attribute: .signingKey), secretData: privKey)
             return session
         } catch {
             fatalError(error.localizedDescription)

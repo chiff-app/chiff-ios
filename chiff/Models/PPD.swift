@@ -63,13 +63,18 @@ struct PPD: Codable {
             } else {
                 return API.shared.request(path: "ppd/\(id)", method: .get, parameters: parameters)
             }
-        }.map { result -> PPD? in
-            guard let ppd = result["ppds"] as? [Any] else {
+        }.then { result -> Guarantee<PPD?> in
+            guard let ppdData = result["ppds"] as? [Any] else {
                 Logger.shared.error("Failed to decode PPD")
-                return nil
+                return .value(nil)
             }
-            let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
-            return try JSONDecoder().decode(PPD.self, from: jsonData)
+            let jsonData = try JSONSerialization.data(withJSONObject: ppdData[0], options: [])
+            let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
+            if let redirect = ppd.redirect {
+                return PPD.get(id: redirect.sha256, organisationKeyPair: organisationKeyPair)
+            } else {
+                return .value(ppd)
+            }
         }.recover { error in
             guard case APIError.statusCode(404) = error else {
                 Logger.shared.error("PPD retrieval problem", error: error)

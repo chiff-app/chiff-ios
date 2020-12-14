@@ -90,7 +90,8 @@ class MockAPI: APIProtocol {
     }
     
     private func ppdCall(id: String?) -> Promise<JSONObject> {
-        if id == "1" {
+        switch id {
+        case "1":
             if let path = Bundle(for: type(of: self)).path(forResource: "samplePPD", ofType: "json") {
                 do {
                     let fileUrl = URL(fileURLWithPath: path)
@@ -102,10 +103,24 @@ class MockAPI: APIProtocol {
             } else {
                 return .value(JSONObject())
             }
-        } else if id == "2" {
+        case "2":
             return .value(["ppds":[["wrong":"data"]]])
-        } else {
+        case "3":
             return .value(["nothing":[]])
+        case "4":
+            if let path = Bundle(for: type(of: self)).path(forResource: "sampleRedirectPPD", ofType: "json") {
+                do {
+                    let fileUrl = URL(fileURLWithPath: path)
+                    let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
+                    return .value(try JSONSerialization.jsonObject(with: data) as! JSONObject)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            } else {
+                return .value(JSONObject())
+            }
+        default:
+            return Promise(error: MockAPIError.notImplemented)
         }
     }
 
