@@ -20,7 +20,8 @@ extension UserAccount: Syncable {
 
     // Documentation in protocol.
     static func all(context: LAContext?) throws -> [String: UserAccount] {
-        return try all(context: context)
+        // If label is not provided, this method tries to call itself and crashes..
+        return try all(context: context, label: nil)
     }
 
     // Documentation in protocol.

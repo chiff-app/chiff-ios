@@ -1,0 +1,27 @@
+Chiff allows you to log in to any website using your phone, making logging in safer and simpler.
+
+In order to be secure, you must use LONG, COMPLEX and UNIQUE passwords for all your accounts. But how can you remember this? 
+
+With Chiff you can easily log in to any website using TouchID or FaceID on both your mobile phone and desktop. You never have to remember a single password, not even a master password. Chiff can be paired with your browser, so you can simply authorize logins with your fingerprint or face.
+
+So, say goodbye to forgetting passwords, say hello to Chiff.
+
+Chiff features: 
+-	Log in with your phone
+-	Remember 0 passwords
+-	Securely store all your accounts
+-	Passwords are only stored on your phone
+-	Use long, complex and unique passwords for all accounts
+-	Pair with browsers to authorize logins on your computer
+-	Easily restore your accounts with a paper back-up
+-	Add 2FA codes
+
+Chiff never has the key to your sensitive data. Your passwords are only stored locally on your phone and every message between the app and browser is end-to-end encrypted, so even we cannot decrypt it. Besides very secure, it makes Chiff also very privacy-friendly.
+
+You can now use Chiff for FREE for personal use. 
+
+This project has received funding from the European Union's Horizon2020 research and innovation programme under the NGI_TRUST grant agreement no 825618.
+
+Terms of use: https://chiff.app/terms
+Privacy policy: https://chiff.app/privacy
+

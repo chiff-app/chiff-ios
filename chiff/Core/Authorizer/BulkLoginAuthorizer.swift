@@ -24,12 +24,11 @@ class BulkLoginAuthorizer: Authorizer {
     required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
         guard let browserTab = request.browserTab,
-              let count = request.count,
               let accountIds = request.accountIDs else {
             throw AuthorizationError.missingData
         }
         self.browserTab = browserTab
-        self.count = count
+        self.count = accountIds.count
         self.accountIds = accountIds
         Logger.shared.analytics(.bulkLoginRequestOpened)
     }
