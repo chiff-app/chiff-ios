@@ -6,8 +6,10 @@ provisioning
 vendor
 fastlane/report.xml
 fastlane/test_output
+fastlane/metadata/review_information
 *.dSYM.zip
 *.ipa
 *.mobileprovision
 *.cer
 .ruby-version
+

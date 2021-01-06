@@ -22,27 +22,18 @@ default_platform(:ios)
 project = 'keyn.xcodeproj'
 scheme = 'keyn'
 
-def analytics(message)
-    uri = URI.parse("https://api.keyn.io/logging/analytics")
-    header = {'Content-Type': 'application/json; charset=utf-8'}
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.request_uri, header)
-    request.body = message.to_json
-    response = http.request(request)
-end
-
-def invitation_sent(email_address)
-    message = {
-        message: 'Beta invitation for user sent.',
-        device: 'APP',
-        debug: false,
-        code: 'INVITATION_SENT',
-        email: email_address
-    }
-    analytics(message)
-end
-
 platform :ios do
+
+    desc 'Login to App Store connect'
+    lane :login do
+        app_store_connect_api_key(
+            key_id: "2262F6NJS5",
+            issuer_id: "69a6de96-28e6-47e3-e053-5b8c7c11a4d1",
+            key_content: `chiff get -n -i 972d3b1517b161f5d33e5250f774cf82cb47696842a43b37124a97fbe65b9b31`,
+            is_key_content_base64: true
+          )
+    end
+
     desc 'Run tests'
     lane :test do
         scan(
@@ -52,6 +43,7 @@ platform :ios do
 
     desc 'Upload dSYMs to Crashlytics'
     lane :upload_symbols do |options|
+        login
         download_dsyms(
           version: 'latest'
         )
@@ -65,13 +57,18 @@ platform :ios do
 
     desc 'Build app'
     lane :build do
+        login
         test
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
         sigh(app_identifier: 'io.keyn.keyn.keynCredentialProvider')
         sigh(app_identifier: 'io.keyn.keyn')
+        build_num = app_store_build_number(
+            api_key: api_key,
+            live: false,
+        )
         increment_build_number({
-          build_number: latest_testflight_build_number + 1
+          build_number: build_num + 1
         })
         gym(scheme: scheme)
     end
@@ -106,11 +103,25 @@ platform :ios do
 
     desc 'Beta release'
     lane :beta_release do
+        login
         version = get_version_number(target: scheme)
         build
         upload_to_testflight()
         upload_symbols
-        slack(message: "New version of Keyn released! #{version}")
+        slack(message: "New Testflight version of Chiff released! #{version}")
+    end
+
+    desc "Submit Chiff to the App Store"
+    lane :release do |options|
+      login
+      version = get_version_number(target: scheme)
+      build
+      deliver(
+        app_version: version,
+        platform: 'ios',
+      )
+      upload_symbols
+      slack(message: "New version of Chiff released! #{version}")
     end
 
 end
