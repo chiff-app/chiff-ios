@@ -817,6 +817,8 @@ settings:
   settings:
     comment: The word for settings
     value: Settings
+  share:
+    value: Tell a friend
   share_analytics:
     value: Share analytical data
   share_errors:
