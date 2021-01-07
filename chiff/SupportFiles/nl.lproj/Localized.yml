@@ -814,6 +814,8 @@ settings:
   settings:
     comment: The word for settings
     value: Instellingen
+  share:
+    value: Vertel een vriend
   share_analytics:
     value: Deel gebruiksstatistieken
   share_errors:

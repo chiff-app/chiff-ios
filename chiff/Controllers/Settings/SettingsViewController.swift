@@ -8,6 +8,7 @@
 import UIKit
 import PromiseKit
 import ChiffCore
+import LinkPresentation
 
 class SettingsViewController: UITableViewController, UITextViewDelegate {
 
@@ -64,6 +65,28 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = securityFooterText
         footer.textLabel?.numberOfLines = 3
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 3, #available(iOS 13.0, *) {
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "action"))
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 {
+            if #available(iOS 13.0, *) {
+                let metadata = LPLinkMetadata()
+                metadata.originalURL = URL(string: "https://apps.apple.com/app/id1361749715")
+                metadata.url = metadata.originalURL
+                metadata.title = "Chiff"
+                metadata.imageProvider =
+                    NSItemProvider.init(contentsOf:
+                    Bundle.main.url(forResource: "logo", withExtension: "png"))
+                let activityViewController = UIActivityViewController(activityItems: [metadata], applicationActivities: nil)
+                present(activityViewController, animated: true, completion: nil)
+            }
+        }
     }
 
     // MARK: - Navigation
