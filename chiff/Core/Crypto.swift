@@ -24,6 +24,7 @@ enum CryptoError: Error {
     case signing
     case indexOutOfRange
     case contextOverflow
+    case wrongSigningFunction
 }
 
 /// The Crypto singleton, that handles are cryptography-related operations. Uses libosodium (swift-sodium) under the hood.
@@ -152,6 +153,29 @@ class Crypto {
     ///   - keyData: The key to be used as the source.
     ///   - context: The context, which should be exactly 8 characters.
     ///   - index: The index, as a UInt64.
+    /// - Throws:
+    ///     - `CryptoError.contextOverflow` if the context is not 8 characters.
+    ///     - `CryptoError.keyDerivation` if key derivation operation fails.
+    /// - Precondition: The context must be *exactly* 8 characters.
+    /// - Returns: The derived key (256 bit).
+    func deriveKey(keyData: Data, context: String, index: Data) throws ->  Data {
+        var indexData: UInt64 = 0
+        _ = withUnsafeMutableBytes(of: &indexData, { index.copyBytes(to: $0, from: 0..<8) })
+        guard context.count <= 8 else {
+            throw CryptoError.contextOverflow
+        }
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: indexData, length: keySize, context: context) else {
+            throw CryptoError.keyDerivation
+        }
+
+        return key.data
+    }
+
+    /// Derive a key from another key.
+    /// - Parameters:
+    ///   - keyData: The key to be used as the source.
+    ///   - context: The context, which should be exactly 8 characters.
+    ///   - index: The index, as Data.
     /// - Throws:
     ///     - `CryptoError.contextOverflow` if the context is not 8 characters.
     ///     - `CryptoError.keyDerivation` if key derivation operation fails.
@@ -383,14 +407,25 @@ extension Crypto {
     /// Create a ECDSA signing keypair. This is used for WebAuthn.
     /// - Parameter seed: Optionally, the seed to use for the private key. Will be randomly generated if not provided.
     /// - Returns: The keypair.
-    func createECDSASigningKeyPair(seed: Data?) throws -> KeyPair {
-        var privKey: P256.Signing.PrivateKey
+    func createECDSASigningKeyPair(seed: Data?, algorithm: WebAuthnAlgorithm) throws -> KeyPair {
+        var seedData: Data?
         if let seed = seed {
-            privKey = try P256.Signing.PrivateKey(rawRepresentation: seed)
-        } else {
-            privKey = P256.Signing.PrivateKey()
+            seedData = try deterministicRandomBytes(seed: seed, length: algorithm.keyLength)
         }
-        return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+        switch algorithm {
+        case .ECDSA256:
+            let privKey = seedData != nil ? try P256.Signing.PrivateKey(rawRepresentation: seedData!) : P256.Signing.PrivateKey()
+            return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+        case .ECDSA384:
+            let privKey = seedData != nil ? try P384.Signing.PrivateKey(rawRepresentation: seedData!) : P384.Signing.PrivateKey()
+            return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+        case .ECDSA512:
+            // 65 bytes are generated and prepended with 1 bytes of zeroes
+            let privKey = seedData != nil ? try P521.Signing.PrivateKey(rawRepresentation: Data(count: 1) + seedData!) : P521.Signing.PrivateKey()
+            return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+        default:
+            throw CryptoError.wrongSigningFunction
+        }
     }
 
 }

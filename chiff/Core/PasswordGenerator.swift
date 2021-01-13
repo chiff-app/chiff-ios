@@ -164,10 +164,7 @@ class PasswordGenerator {
     }
 
     private func generateKey(index passwordIndex: Int) throws -> Data {
-        var value: UInt64 = 0
-        _ = withUnsafeMutableBytes(of: &value, { version == 0 ? siteId.sha256.data.copyBytes(to: $0, from: 0..<8) : siteId.sha256Data.copyBytes(to: $0, from: 0..<8) })
-
-        let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.cryptoContext, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.cryptoContext, index: version == 0 ? siteId.sha256.data : siteId.sha256Data)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(version == 0 ? username.sha256.prefix(8) : username.sha256Data.base64.prefix(8)), index: UInt64(passwordIndex))
         return key
     }
