@@ -91,6 +91,7 @@ class MockAPI: APIProtocol {
     
     private func ppdCall(id: String?) -> Promise<JSONObject> {
         switch id {
+        // TODO: SHA256 hashes should be used here.
         case "1":
             if let path = Bundle(for: type(of: self)).path(forResource: "samplePPD", ofType: "json") {
                 do {

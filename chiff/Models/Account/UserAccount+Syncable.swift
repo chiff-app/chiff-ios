@@ -93,17 +93,7 @@ extension UserAccount: Syncable {
 
         // Webauthn
         if let webAuthn = webAuthn {
-            let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
-            switch webAuthn.algorithm {
-            case .edDSA:
-                try Keychain.shared.save(id: id, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
-            case .ECDSA:
-                guard #available(iOS 13.0, *) else {
-                    throw WebAuthnError.notSupported
-                }
-                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                try Keychain.shared.saveKey(id: id, key: privKey)
-            }
+            try saveWebAuthn(webAuthn: webAuthn, context: context)
         }
 
         if let notes = backupObject.notes, !notes.isEmpty {
@@ -237,17 +227,7 @@ extension UserAccount: Syncable {
                 /*  The WebAuthn specification doesn't allow updating the keys, so doesn't make sense to support it here.
                  *  Only create the keys if they don't exist.
                  */
-                let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
-                switch webAuthn.algorithm {
-                case .edDSA:
-                    try Keychain.shared.save(id: id, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
-                case .ECDSA:
-                    guard #available(iOS 13.0, *) else {
-                        throw WebAuthnError.notSupported
-                    }
-                    let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                    try Keychain.shared.saveKey(id: id, key: privKey)
-                }
+                try saveWebAuthn(webAuthn: webAuthn, context: context)
             }
             // But always update the object, as the counter is updated frequently.
             self.webAuthn = webAuthn
@@ -256,7 +236,7 @@ extension UserAccount: Syncable {
             switch webAuthn.algorithm {
             case .edDSA:
                 try Keychain.shared.delete(id: id, service: .account(attribute: .webauthn))
-            case .ECDSA:
+            default:
                 try Keychain.shared.deleteKey(id: id)
             }
             self.webAuthn = nil
@@ -281,6 +261,32 @@ extension UserAccount: Syncable {
             }
         }
         return true
+    }
+
+    private func saveWebAuthn(webAuthn: WebAuthn, context: LAContext?) throws {
+        let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
+        switch webAuthn.algorithm {
+        case .edDSA:
+            try Keychain.shared.save(id: id, service: .account(attribute: .webauthn), secretData: keyPair.privKey, objectData: keyPair.pubKey)
+        case .ECDSA256:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+            try Keychain.shared.saveKey(id: id, key: privKey)
+        case .ECDSA384:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            let privKey = try P384.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+            try Keychain.shared.saveKey(id: id, key: privKey)
+        case .ECDSA512:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            let privKey = try P521.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+            try Keychain.shared.saveKey(id: id, key: privKey)
+        }
     }
 
 }

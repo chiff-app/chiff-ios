@@ -7,6 +7,7 @@
 
 import XCTest
 import Sodium
+import CryptoKit
 
 @testable import chiff
 
@@ -358,5 +359,48 @@ class CryptoTests: XCTestCase {
         let base64String = "VGVzdCBzdHJpbmcgbm90IGVuY29kZWQ"
         XCTAssertTrue(Crypto.shared.equals(first: try Crypto.shared.convertFromBase64(from: base64String), second: try Crypto.shared.fromHex(hexString)))
     }
+
+    @available(iOS 13.0, *)
+    func testECDSA256KeyPair() {
+        do {
+            guard let seed = "9UOiqnsOWeOi2BQxp3upjjWEBbs-s015PCaWthwxSQM".fromBase64 else {
+                throw CryptoError.base64Decoding
+            }
+            let keypair = try Crypto.shared.createECDSASigningKeyPair(seed: seed, algorithm: .ECDSA256)
+            XCTAssertEqual("5ilW_l14-8ItmcAbNE3jVQCtBPFcVSq3Vi8T4-97C2gk2CGID_KJ_wRryGFL-NvoAYL4opY0pVy8kowZXwKUuA", keypair.pubKey.base64)
+        } catch {
+            XCTFail("Error creating keypair: \(error)")
+        }
+
+    }
+
+    @available(iOS 13.0, *)
+    func testECDSA384KeyPair() {
+        do {
+            guard let seed = "9UOiqnsOWeOi2BQxp3upjjWEBbs-s015PCaWthwxSQM".fromBase64 else {
+                throw CryptoError.base64Decoding
+            }
+            let keypair = try Crypto.shared.createECDSASigningKeyPair(seed: seed, algorithm: .ECDSA384)
+            XCTAssertEqual("4od8MJRgZsYpNhnb7ZoOBXUFoGKrl7J_WtkOppuJzfck9L3nD7mgJ6PsJmHoxyLr9oEi8RLQcyiVGk3ihN8x6xeTQA4n8WMmoAl28hwTIS2kVWiqLO_5QpMbfnzRysQe", keypair.pubKey.base64)
+        } catch {
+            XCTFail("Error creating keypair: \(error)")
+        }
+
+    }
+
+    @available(iOS 13.0, *)
+    func testECDSA512KeyPair() {
+        do {
+            guard let seed = "9UOiqnsOWeOi2BQxp3upjjWEBbs-s015PCaWthwxSQM".fromBase64 else {
+                throw CryptoError.base64Decoding
+            }
+            let keypair = try Crypto.shared.createECDSASigningKeyPair(seed: seed, algorithm: .ECDSA512)
+            XCTAssertEqual("Aey5qFDh7qpwpXcUymujRDcIyqEfG5utEzIAsyEVNxof01zY0myiV8EU25yi-rE4i9nBfA5MX67xq9qDxMZj4Hy0ACdPfI4Keo8KS4D0avEEX3jeQ6Iub-0XRo4H2YcavwiaYz0tMb1WjGmiybs1JYCaxo0gba3dA1Pe4xjAtXn6h0hd", keypair.pubKey.base64)
+        } catch {
+            XCTFail("Error creating keypair: \(error)")
+        }
+    }
+
+
 
 }
