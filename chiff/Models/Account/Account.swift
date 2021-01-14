@@ -234,7 +234,7 @@ extension Account {
         let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount()) as [String: SharedAccount]
         let userAccounts: [String: Account] = try all(context: context, service: .account()).mapValues({ (account: UserAccount) -> Account in
             var account = account
-            if migrateVersion, account.version <= 1 {
+            if migrateVersion, account.version < 1 {
                 account.updateVersion(context: context)
             }
             if sharedAccounts[account.id] != nil {

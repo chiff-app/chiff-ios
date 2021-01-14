@@ -55,7 +55,6 @@ struct PPD: Codable {
     let redirect: String?
     let name: String
 
-
     /// Get a PPD for site ID. Return nil if there is not PPD for this site ID.
     /// - Parameters:
     ///   - id: The site ID.
