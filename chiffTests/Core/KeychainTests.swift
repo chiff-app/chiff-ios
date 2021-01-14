@@ -94,15 +94,9 @@ class KeychainTests: XCTestCase {
         XCTAssertThrowsError(try Keychain.shared.all(service: .seed, context: context))
     }
     
-    func testAttributesDoesntThrow() {
+    func testAttributesThrows() {
         TestHelper.createSeed()
-        XCTAssertNoThrow(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: Self.context))
-    }
-    
-    func testAttributesNotNil() {
-        TestHelper.createSeed()
-        XCTAssertNotNil(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: Self.context))
-        
+        XCTAssertThrowsError(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: Self.context))
     }
     
     func testAttributesNilIfNoSeed() {

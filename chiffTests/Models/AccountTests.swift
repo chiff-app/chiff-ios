@@ -81,7 +81,15 @@ class AccountTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token!.currentPassword!, "876735")                   // First HOTP password
             XCTAssertEqual(token!.updatedToken().currentPassword!, "086479")    // Second HOTP password
-            TestHelper.deleteLocalData()
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+
+    func testOneTimePasswordTokenIsNil() {
+        let site = TestHelper.sampleSite
+        do {
+            let account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil, notes: nil, askToChange: nil)
             TestHelper.saveHOTPToken(id: account.id, includeData: false)
             XCTAssertThrowsError(try account.oneTimePasswordToken())
         } catch {

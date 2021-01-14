@@ -119,12 +119,11 @@ class SessionTests: XCTestCase {
     }
 
     func testExists() {
-        XCTAssertNoThrow(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
-        XCTAssertFalse(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
+        XCTAssertFalse(BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
-            XCTAssertTrue(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
+            XCTAssertTrue(BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash!))
         }.catch { error in
             XCTFail(error.localizedDescription)
         }.finally {
