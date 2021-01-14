@@ -73,6 +73,7 @@ class AuthenticationGuard {
                 UserAccount.reloadIdentityStore()
                 Properties.reloadAccounts = false
             }
+            Keychain.shared.migrate(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
             self.hideLockWindow()
             return context

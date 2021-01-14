@@ -30,8 +30,6 @@ struct Properties {
     private static let errorLoggingFlag = "errorLogging"
     private static let analyticsLoggingFlag = "analyticsLogging"
     private static let userIdFlag = "userID"
-    private static let subscriptionExiryDateFlag = "subscriptionExiryDate"
-    private static let subscriptionProductFlag = "subscriptionProduct"
     private static let accountCountFlag = "accountCount"
     private static let teamAccountCountFlag = "accountCount"
     private static let agreedWithTermsFlag = "agreedWithTerms"
@@ -41,7 +39,9 @@ struct Properties {
     private static let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
     private static let lastRunVersionFlag = "lastRunVersionFlag"
     private static let migratedFlag = "migratedFlag"
+    private static let keychainVersionFlag = "keychainVersionFlag"
 
+    static let latestKeychainVersion = 1
     static let termsOfUseVersion = 2
 
     /// Whether this is the first time the app is launched.
@@ -102,7 +102,6 @@ struct Properties {
         set { UserDefaults.standard.set(newValue, forKey: errorLoggingFlag) }
     }
 
-
     /// Wheter the user allows analytics messages.
     static var analyticsLogging: Bool {
         get { return environment == .beta || UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
@@ -119,6 +118,12 @@ struct Properties {
             guard environment == .beta else { return }
             UserDefaults.standard.set(newValue, forKey: migratedFlag)
         }
+    }
+
+    /// The version of this keychain
+    static var currentKeychainVersion: Int {
+        get { UserDefaults.standard.integer(forKey: keychainVersionFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: keychainVersionFlag) }
     }
 
     /// The user ID for this user.
@@ -138,7 +143,6 @@ struct Properties {
 
     /// Whether this phone has been detected as being jailbroken.
     static var isJailbroken = false
-
 
     /// The number of accounts, shadowed because Keychain access is authenticated.
     static var accountCount: Int {
@@ -172,8 +176,8 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: userIdFlag)
         UserDefaults.standard.removeObject(forKey: sortingPreferenceFlag)
         UserDefaults.standard.removeObject(forKey: migratedFlag)
+        // Don't purge keychainVersion here, since new / recovered seed will be saved with latest version.
     }
-
 
     /// Whether this user denied push notifications.
     static var deniedPushNotifications = false {

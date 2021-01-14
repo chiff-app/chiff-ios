@@ -219,5 +219,5 @@ extension TimeInterval {
 
     /// The number of seconds in a day.
     static let oneDay: TimeInterval = 3600 * 24
-    
+
 }

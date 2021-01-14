@@ -250,6 +250,10 @@
 		49B2A98D25434734001BA6EE /* Seed+BetaMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */; };
 		49B2A99325434735001BA6EE /* Seed+BetaMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		49B846DA25AF5DDD00DDB861 /* Keychain+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B846D925AF5DDD00DDB861 /* Keychain+Migration.swift */; };
+		49B846E825B0539E00DDB861 /* Crypto+ECDSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B846E725B0539E00DDB861 /* Crypto+ECDSA.swift */; };
+		49B846ED25B053B600DDB861 /* Crypto+ECDSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B846E725B0539E00DDB861 /* Crypto+ECDSA.swift */; };
+		49B846F225B053B600DDB861 /* Crypto+ECDSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B846E725B0539E00DDB861 /* Crypto+ECDSA.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
@@ -513,6 +517,8 @@
 		49B2A973254345F3001BA6EE /* Team+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Creation.swift"; sourceTree = "<group>"; };
 		49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seed+BetaMigration.swift"; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
+		49B846D925AF5DDD00DDB861 /* Keychain+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Migration.swift"; sourceTree = "<group>"; };
+		49B846E725B0539E00DDB861 /* Crypto+ECDSA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Crypto+ECDSA.swift"; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
@@ -958,8 +964,10 @@
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				49057730221AE04B006D98C0 /* AuthorizationGuard.swift */,
 				491968041FC0DC6400206B75 /* Crypto.swift */,
+				49B846E725B0539E00DDB861 /* Crypto+ECDSA.swift */,
 				49B1CD7C24360BFE0097DBBD /* Syncable.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
+				49B846D925AF5DDD00DDB861 /* Keychain+Migration.swift */,
 				49B2A8B225430666001BA6EE /* Keychain+SecKey.swift */,
 				4904A7712555B79B0086787D /* KeychainService.swift */,
 				49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */,
@@ -1453,6 +1461,7 @@
 				49A218BA25498F750036D42B /* PairingResponse.swift in Sources */,
 				4904A7732555B79B0086787D /* KeychainService.swift in Sources */,
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
+				49B846ED25B053B600DDB861 /* Crypto+ECDSA.swift in Sources */,
 				49B2A98D25434734001BA6EE /* Seed+BetaMigration.swift in Sources */,
 				49B1CD7E243623960097DBBD /* Syncable.swift in Sources */,
 				49B2A95E25433502001BA6EE /* TeamAccount.swift in Sources */,
@@ -1534,6 +1543,7 @@
 				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				497B4E90231027F400ED7E4A /* LocalizableTextField.swift in Sources */,
+				49B846E825B0539E00DDB861 /* Crypto+ECDSA.swift in Sources */,
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				4931BC3A2541906C0015277D /* TeamAdminLoginAuthorizer.swift in Sources */,
 				49B2A8F925432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift in Sources */,
@@ -1609,6 +1619,7 @@
 				4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				49B2A90525432A5F001BA6EE /* AccountsTableViewController+UIPickerView.swift in Sources */,
+				49B846DA25AF5DDD00DDB861 /* Keychain+Migration.swift in Sources */,
 				4968694D242102AE00B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
@@ -1720,6 +1731,7 @@
 				49B1CD7F243623970097DBBD /* Syncable.swift in Sources */,
 				49686951242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
+				49B846F225B053B600DDB861 /* Crypto+ECDSA.swift in Sources */,
 				49B2A96D2543350B001BA6EE /* TeamSessionKeys.swift in Sources */,
 				4904A76C25558C500086787D /* AccountTableViewCell.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
