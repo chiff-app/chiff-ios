@@ -32,12 +32,10 @@ class Crypto {
 
     /// The `Crypto` singleton instance.
     static let shared = Crypto()
-
     private let seedSize = 16
     private let keySize = 32
     private let contextSize = 8
     private let paddingBlockSize = 200
-
     private let sodium = Sodium()
 
     private init() {}

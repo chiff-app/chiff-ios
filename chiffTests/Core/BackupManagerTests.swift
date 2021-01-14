@@ -61,6 +61,7 @@ class SyncableTests: XCTestCase {
     }
 
     func testDeleteAccount() {
+        let expectation = XCTestExpectation(description: "Finish testDeleteAccount")
         do {
             guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
                 throw KeychainError.notFound
@@ -69,14 +70,21 @@ class SyncableTests: XCTestCase {
             API.shared = mockAPI
             let originalSize = mockAPI.mockData[pubKey.base64]!.count
             let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
-            try account.deleteBackup()
+            account.deleteBackup().catch { error in
+                XCTFail(error.localizedDescription)
+            }.finally {
+                expectation.fulfill()
+            }
             XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
         } catch {
             XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testDeleteAccountFailsIfAPIFails() {
+        let expectation = XCTestExpectation(description: "Finish testDeleteAccountFailsIfAPIFails")
         do {
             guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
                 throw KeychainError.notFound
@@ -85,11 +93,17 @@ class SyncableTests: XCTestCase {
             API.shared = mockAPI
             let originalSize = mockAPI.mockData[pubKey.base64]!.count
             let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, version: 1, webAuthn: nil, notes: nil)
-            XCTAssertNoThrow(try account.deleteBackup())
+            _ = account.deleteBackup().done { _ in
+                XCTFail("Should fail")
+            }.ensure {
+                expectation.fulfill()
+            }
             XCTAssertFalse(mockAPI.mockData[pubKey.base64]!.count < originalSize)
         } catch {
             XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testGetBackupData() {
@@ -142,12 +156,13 @@ class SyncableTests: XCTestCase {
             try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: accountData)
             firstly {
                 try account.backup()
-            }.done { _ in
+            }.then { (_) -> Promise<(Data, Int)> in
                 guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
                     throw KeychainError.notFound
                 }
                 let originalSize = mockAPI.mockData[pubKey.base64]!.count
-                account.deleteBackup()
+                return account.deleteBackup().map { (pubKey, originalSize) }
+            }.done { (pubKey, originalSize) in
                 XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
             }.catch { error in
                 XCTFail("Error: \(error)")
@@ -169,7 +184,7 @@ class SyncableTests: XCTestCase {
             try Keychain.shared.save(id: account.id, service: .account(), secretData: "somepassword".data, objectData: accountData)
             firstly {
                 try account.backup()
-            }.done { _ in
+            }.then { _ in
                 account.deleteBackup()
             }.catch { error in
                 XCTFail("Error: \(error)")
@@ -213,6 +228,7 @@ class SyncableTests: XCTestCase {
             }
         } catch {
             XCTFail("Error: \(error)")
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 300.0)
