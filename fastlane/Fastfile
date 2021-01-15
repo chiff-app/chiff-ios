@@ -19,8 +19,8 @@ fastlane_require 'json'
 
 default_platform(:ios)
 
-project = 'keyn.xcodeproj'
-scheme = 'keyn'
+project = 'chiff.xcodeproj'
+scheme = 'chiff'
 
 platform :ios do
 
@@ -49,7 +49,7 @@ platform :ios do
         )
     
         upload_symbols_to_crashlytics(
-          gsp_path: "./keyn/SupportFiles/GoogleService-Info.plist"
+          gsp_path: "./chiff/SupportFiles/GoogleService-Info.plist"
         )
     
         clean_build_artifacts()
