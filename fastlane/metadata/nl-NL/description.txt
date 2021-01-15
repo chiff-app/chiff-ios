@@ -1,24 +1,23 @@
-Met Chiff kun je op elke website inloggen met je telefoon, wat het makkelijker en veiliger maakt.
-
-Om veilig te zijn moet je LANGE, COMPLEXE en UNIEKE wachtwoorden bedenken voor al je accounts. Maar hoe onthoud je dit?
-
 Met Chiff gebruik je TouchID of FaceID om in te loggen op elke website, zowel op je telefoon als op je computer. Je hoeft geen enkel wachtwoord meer te onthouden, zelfs geen hoofdwachtwoord. Je kan Chiff koppelen met je computer, zodat je elke inlogpoging kan autoriseren met je vingerafdruk of gezicht.
 
-Kenmerken van Chiff:
--	Inloggen met je telefoon
--	Geen enkel wachtwoord meer onthouden
--	Al je accounts veilig opslagen
--	Wachtwoorden staan alleen lokaal op je telefoon opgeslagen
--	Gebruik gemakkelijk lange, complexe en unieke wachtwoorden voor al je accounts
--	Koppel met je browser om logins to autoriseren op je computer
--	Herstel je wachtwoorden met een paper back-up
--	Voeg 2FA codes toe
+Waarom Chiff?
 
-Chiff is zo ontworpen dat we nooit toegang hebben tot je wachtwoorden en andere gevoeligee informatie. Je wachtwoorden worden alleen lokaal opgeslagen op je telefoon en elke bericht tussen de app en de browser is end-to-end versleuteld, dus niemand kan die lezen, ook wij niet. Dit maakt Chiff niet alleen veilig, maar ook privacy-vriendelijk.
+Al sinds het begin van het internet loggen we in met wachtwoorden, maar dit wordt een steeds groter probleem. Om veilig te zijn, moeten we voor elke website een uniek en complex wachtwoord gebruiken, die we óók nog regelmatig moeten veranderen. Maar waarom loggen we nog in met wachtwoorden, terwijl we bijvoorbeeld moeiteloos onze mobiel ontgrendelen met onze vinger? Het is tijd voor een andere manier van inloggen. Het is tijd voor Chiff.
 
-Chiff is helemaal gratis voor persoonlijk gebruik!
+Wat is Chiff?
 
-Dit project wordt gesubsidieerd door het Horizon2020 onderzoeks- en innovatieprogramma van de Europese Unie, onder de NGI_TRUST subsidieovereenkomst nr 825618.
+- Log altijd gemakkelijk in met je gezicht of vingerafdruk door een pushbericht op je telefon te autoriseren.
+- Gratis voor persoonlijk gebruik.
+- Gebruik lange, complexe en unieke wachtwoorden voor al je accounts.
+- Wachtwoorden staan veilig op je telefoon opgeslagen.
+- Ondersteunt meerdere authenticatiemethoden zoals One Time Passwords (OTP) en WebAuthn.
+- De nieuwe manier van inloggen.
 
-Algemene voorwaarden: https://chiff.app/voorwaarden
-Privacy policy: https://chiff.app/privacy
+Veiligheid is onze hoogste prioriteit. De app en extensie zijn uitgebreid getest door een onafhankelijke derde partij. Bovendien is Chiff ontworpen dat we nooit toegang hebben tot je wachtwoorden en andere gevoelige informatie. Je wachtwoorden worden veilig opgeslagen op je telefoon en elk bericht tussen de app en de browser is end-to-end versleuteld. Niemand kan deze lezen, dus ook wij niet. Dit maakt Chiff niet alleen veilig, maar ook privacy-vriendelijk.
+
+Dit project heeft financiering ontvangen van het onderzoeks- en innovatieprogramma Horizon2020 van de Europese Unie in het kader van NGI_TRUST subsidieovereenkomst nr. 825618.
+
+Heb je vragen over Chiff? Kijk op https://chiff.app/nl of stuur een email. We vinden het altijd leuk om wat van je te horen!
+
+Algemene voorwaarden: https://chiff.app/nl/voorwaarden
+Privacy policy: https://chiff.app/nl/privacy
