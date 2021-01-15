@@ -1,26 +1,23 @@
-Chiff allows you to log in to any website using your phone, making logging in safer and simpler.
-
-In order to be secure, you must use LONG, COMPLEX and UNIQUE passwords for all your accounts. But how can you remember this? 
-
 With Chiff you can easily log in to any website using TouchID or FaceID on both your mobile phone and desktop. You never have to remember a single password, not even a master password. Chiff can be paired with your browser, so you can simply authorize logins with your fingerprint or face.
 
-So, say goodbye to forgetting passwords, say hello to Chiff.
+Why Chiff?
 
-Chiff features: 
--	Log in with your phone
--	Remember 0 passwords
--	Securely store all your accounts
--	Passwords are only stored on your phone
--	Use long, complex and unique passwords for all accounts
--	Pair with browsers to authorize logins on your computer
--	Easily restore your accounts with a paper back-up
--	Add 2FA codes
+Since the start of the Internet we've been logging in with passwords, but this is a growing problem. To be safe, we must use unique and complex passwords for each website, which we also have to change regularly. But why do we still log in with passwords, while we can unlock our mobile phones with just our fingerprint? It's time for a different way of logging in. It's time for Chiff.
 
-Chiff never has the key to your sensitive data. Your passwords are only stored locally on your phone and every message between the app and browser is end-to-end encrypted, so even we cannot decrypt it. Besides very secure, it makes Chiff also very privacy-friendly.
+What is Chiff?
 
-You can now use Chiff for FREE for personal use. 
+- Log in to every website with your fingerprint or face by authorizing a push notification on your phone.
+- Free for personal use.
+- Use long, complex and unique passwords for all accounts.
+- Passwords are securely stored on your phone.
+- Supports multiple authentication methods such as One Time Passwords (OTP) and WebAuthn. 
+- The new way of logging in.
+
+Security is our top priority. The security of the app and extension have been extensively tested by an independent third party. Moreover, Chiff never has access to your sensitive data. Your passwords are securely stored on your phone and every message between the app and browser is end-to-end encrypted, so even we cannot decrypt it. Besides being very secure, it makes Chiff also privacy-friendly.
 
 This project has received funding from the European Union's Horizon2020 research and innovation programme under the NGI_TRUST grant agreement no 825618.
+
+Do you have any questions regarding Chiff? Visit https://chiff.app or send us an email. We always like to hear from you!
 
 Terms of use: https://chiff.app/terms
 Privacy policy: https://chiff.app/privacy
