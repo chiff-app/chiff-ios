@@ -50,8 +50,8 @@ struct TeamSession: Session {
     }
 
     static let cryptoContext = "keynteam"
-    static var signingService: KeychainService = .teamSession(attribute: .signingKey)
-    static var encryptionService: KeychainService = .teamSession(attribute: .sharedKey)
+    static var signingService: KeychainService = .teamSession(attribute: .signing)
+    static var encryptionService: KeychainService = .teamSession(attribute: .shared)
     static var sessionCountFlag: String = "teamSessionCount"
 
     /// Initialize a `TeamSession`.
