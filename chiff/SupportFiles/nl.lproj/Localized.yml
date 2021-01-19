@@ -616,7 +616,7 @@ notifications:
   add_account:
     value: Wil je %@ toevoegen?
   add_accounts:
-    value: Wil je %d accounts toevoegen %@?
+    value: Wil je %d accounts toevoegen?
   bulk_login:
     value: Wil je inloggen op %d accounts?
   change_password:

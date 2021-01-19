@@ -1,6 +1,7 @@
 .DS_Store
 chiff.xcodeproj/xcuserdata/*.xcuserdatad
 chiff.xcodeproj/project.xcworkspace/xcuserdata/*
+chiff.xcworkspace/xcuserdata/*.xcuserdatad
 Pods
 provisioning
 vendor

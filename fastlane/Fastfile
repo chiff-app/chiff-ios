@@ -119,6 +119,7 @@ platform :ios do
       deliver(
         app_version: version,
         platform: 'ios',
+        skip_screenshots: true
       )
       upload_symbols
       slack(message: "New version of Chiff released! #{version}")
