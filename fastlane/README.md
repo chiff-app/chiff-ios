@@ -16,6 +16,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
+### ios login
+```
+fastlane ios login
+```
+Login to App Store connect
 ### ios test
 ```
 fastlane ios test
@@ -56,6 +61,11 @@ Start hotfix version
 fastlane ios beta_release
 ```
 Beta release
+### ios release
+```
+fastlane ios release
+```
+Submit Chiff to the App Store
 
 ----
 

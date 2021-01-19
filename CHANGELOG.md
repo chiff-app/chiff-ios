@@ -5,7 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.9.0] - 2021-01-15
+
+### Added
+
+- Added support for Opera browser.
+- Added SwiftLint config file.
+- Added LICENSE.
+- Added documentation.
+- Added support for P384 and P521 curves for WebAuthn
+- Keychain versioning
+
+### Changed
+
+- Moved to SPM from CocoaPods.
+- Update README text.
+- Code refactoring to comply with SwiftLint.
+- Create seperate KeychainService for shared account TOTP & notes.
+
+### Removed
+
+- Removed unused code.
+
+### Fixed
+
+- Fixed team background color
+- Fixed issue where team user couldn't be deleted when creation was cancelled
+
+## [3.8.2] - 2020-08-25
+
+### Added
+
+- Add feedback about progress for CSV import request.
+
+### Changed
+
+- Removed the 'synced' attribute in Account.
+
+### Fixed
+
+- Fix issue where CSV import did not work properly
+
+## [3.8.1] - 2020-09-21
+
+### Fixed
+
+- Fix issue with creating organization.
+- Fix issue where session names were switched.
 
 ## [3.8.0] - 2020-08-11
 
