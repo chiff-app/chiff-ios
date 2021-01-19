@@ -33,8 +33,8 @@ struct BrowserSession: Session {
     }
     var lastRequest: Date?
 
-    static var signingService: KeychainService = .browserSession(attribute: .signingKey)
-    static var encryptionService: KeychainService = .browserSession(attribute: .sharedKey)
+    static var signingService: KeychainService = .browserSession(attribute: .signing)
+    static var encryptionService: KeychainService = .browserSession(attribute: .shared)
     static var sessionCountFlag = "sessionCount"
 
     /// Initiate a BrowserSession.

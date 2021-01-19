@@ -35,6 +35,8 @@ class RequestViewController: UIViewController {
         if Properties.hasFaceID {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         requestLabel.text = authorizer.requestText
         acceptRequest()
     }
@@ -195,7 +197,11 @@ class RequestViewController: UIViewController {
     private func showSuccessView() {
         self.successView.alpha = 0.0
         self.successView.isHidden = false
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear]) { self.successView.alpha = 1.0 }
+    }
+
+    @objc private func applicationDidEnterBackground(notification: Notification) {
+       dismiss()
     }
 
 }

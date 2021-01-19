@@ -67,18 +67,23 @@ class AuthenticationGuard {
             }
             self.authenticationInProgress = true
             return LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
-        }.map(on: .main) { (context) -> LAContext in
+        }.map(on: .main ) { (context) -> LAContext in
+            NotificationCenter.default.post(name: .authenticated, object: self, userInfo: nil)
+            return context
+        }.map { (context) -> ([String: Account], LAContext) in
+            Keychain.shared.migrate(context: context)
             let accounts = try UserAccount.allCombined(context: context, migrateVersion: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
                 Properties.reloadAccounts = false
             }
-            Keychain.shared.migrate(context: context)
-            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
+            return (accounts, context)
+        }.map(on: .main) { (accounts, context) -> LAContext in
+            NotificationCenter.default.post(name: .accountsLoaded, object: self, userInfo: accounts)
             self.hideLockWindow()
             return context
         }.then { (context) -> Promise<Void> in
-            when(fulfilled: TeamSession.updateAllTeamSessions(), UserAccount.sync(context: context), TeamSession.sync(context: context), self.updateNews())
+            return when(fulfilled: TeamSession.updateAllTeamSessions(), UserAccount.sync(context: context), TeamSession.sync(context: context), self.updateNews())
         }.catch(on: .main) { error in
             if case SyncError.dataDeleted = error {
                 self.showDataDeleted()
@@ -96,6 +101,9 @@ class AuthenticationGuard {
     /// Hide the lock window, effectively putting the app in the *unlocked* state. Only makes sense if the user is really authenticated, otherwise the data from the Keychain is not loaded.
     /// - Parameter delay: Optionally, a delay in milliseconds can be provided to make the UX more smooth.
     func hideLockWindow(delay: Double? = nil) {
+        guard LocalAuthenticationManager.shared.isAuthenticated else {
+            return
+        }
         let duration = 0.25
         let animations = {
             self.lockWindow.alpha = 0.0

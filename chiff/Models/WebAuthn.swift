@@ -48,7 +48,7 @@ struct WebAuthn: Equatable {
     init(id: String, algorithms: [WebAuthnAlgorithm]) throws {
         var algorithm: WebAuthnAlgorithm?
         if #available(iOS 13.0, *) {
-            algorithm = algorithms[2]
+            algorithm = algorithms.first
         } else if algorithms.contains(.edDSA) {
             algorithm = .edDSA
         }
