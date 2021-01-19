@@ -1,13 +1,44 @@
-disabled_rules: # rule identifiers to exclude from running
-  # - colon
-included: # paths to include during linting. `--path` is ignored if present.
-  - keyn
-  # - keynTests
-  - keynCredentialProvider
-  - keynNotificationExtension
-excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Pods
+disabled_rules:
+  - reduce_boolean
+included:
+  - chiff
+  - chiffCredentialProvider
+  - chiffNotificationExtension
+opt_in_rules:
+  - empty_count
+  - file_header
+  - empty_string
+  - fatal_error_message
+  - first_where
+  - modifier_order
+  - toggle_bool
 force_cast: warning
 force_try: warning
-identifier_name: warning
+identifier_name:
+  excluded:
+    - id
+    - 'n'
+    - m
+    - nc
+    - 'v1_0'
+    - 'v1_1'
+    - os
+    - a4
+cyclomatic_complexity:
+  warning: 12
+  ignores_case_statements: true
+large_tuple:
+  warning: 3
+  error: 4
+function_parameter_count:
+  warning: 7
 line_length: 200
+
+file_header:
+  required_pattern: |
+    \/\/
+    \/\/  (.+).swift
+    \/\/  chiff(\w+)?
+    \/\/
+    \/\/  Copyright: see LICENSE.md
+    \/\/

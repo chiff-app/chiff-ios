@@ -1,0 +1,23 @@
+Met Chiff gebruik je TouchID of FaceID om in te loggen op elke website, zowel op je telefoon als op je computer. Je hoeft geen enkel wachtwoord meer te onthouden, zelfs geen hoofdwachtwoord. Je kan Chiff koppelen met je computer, zodat je elke inlogpoging kan autoriseren met je vingerafdruk of gezicht.
+
+Waarom Chiff?
+
+Al sinds het begin van het internet loggen we in met wachtwoorden, maar dit wordt een steeds groter probleem. Om veilig te zijn, moeten we voor elke website een uniek en complex wachtwoord gebruiken, die we óók nog regelmatig moeten veranderen. Maar waarom loggen we nog in met wachtwoorden, terwijl we bijvoorbeeld moeiteloos onze mobiel ontgrendelen met onze vinger? Het is tijd voor een andere manier van inloggen. Het is tijd voor Chiff.
+
+Wat is Chiff?
+
+- Log altijd gemakkelijk in met je gezicht of vingerafdruk door een pushbericht op je telefon te autoriseren.
+- Gratis voor persoonlijk gebruik.
+- Gebruik lange, complexe en unieke wachtwoorden voor al je accounts.
+- Wachtwoorden staan veilig op je telefoon opgeslagen.
+- Ondersteunt meerdere authenticatiemethoden zoals One Time Passwords (OTP) en WebAuthn.
+- De nieuwe manier van inloggen.
+
+Veiligheid is onze hoogste prioriteit. De app en extensie zijn uitgebreid getest door een onafhankelijke derde partij. Bovendien is Chiff ontworpen dat we nooit toegang hebben tot je wachtwoorden en andere gevoelige informatie. Je wachtwoorden worden veilig opgeslagen op je telefoon en elk bericht tussen de app en de browser is end-to-end versleuteld. Niemand kan deze lezen, dus ook wij niet. Dit maakt Chiff niet alleen veilig, maar ook privacy-vriendelijk.
+
+Dit project heeft financiering ontvangen van het onderzoeks- en innovatieprogramma Horizon2020 van de Europese Unie in het kader van NGI_TRUST subsidieovereenkomst nr. 825618.
+
+Heb je vragen over Chiff? Kijk op https://chiff.app/nl of stuur een email. We vinden het altijd leuk om wat van je te horen!
+
+Algemene voorwaarden: https://chiff.app/nl/voorwaarden
+Privacy policy: https://chiff.app/nl/privacy
