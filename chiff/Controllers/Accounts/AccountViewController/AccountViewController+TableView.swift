@@ -88,7 +88,7 @@ extension AccountViewController {
         }
 
         let pasteBoard = UIPasteboard.general
-        pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text
+        pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
 
         let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "accounts.copied".localized
