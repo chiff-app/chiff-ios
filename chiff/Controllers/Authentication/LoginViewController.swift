@@ -12,12 +12,16 @@ import PromiseKit
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var authenticateButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         if Properties.hasFaceID {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(startLoading), name: .authenticated, object: nil)
+        nc.addObserver(self, selector: #selector(stopLoading), name: .accountsLoaded, object: nil)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -65,6 +69,7 @@ class LoginViewController: UIViewController {
     // MARK: - Private functions
 
     private func deleteData() {
+        activityIndicator.startAnimating()
         _ = BrowserSession.deleteAll()
         TeamSession.purgeSessionDataFromKeychain()
         UserAccount.deleteAll()
@@ -73,6 +78,15 @@ class LoginViewController: UIViewController {
         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
         AppDelegate.shared.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         AuthenticationGuard.shared.hideLockWindow()
+        activityIndicator.stopAnimating()
+    }
+
+    @objc private func startLoading() {
+        activityIndicator.startAnimating()
+    }
+
+    @objc private func stopLoading() {
+        activityIndicator.stopAnimating()
     }
 
 }

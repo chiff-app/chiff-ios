@@ -83,6 +83,7 @@ extension Notification.Name {
     static let sessionUpdated = Notification.Name("SessionUpdated")
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
+    static let authenticated = Notification.Name("Authenticated")
     static let sharedAccountsChanged = Notification.Name("SharedAccountsChanged")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
