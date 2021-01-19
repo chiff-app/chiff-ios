@@ -68,12 +68,12 @@ class AuthenticationGuard {
             self.authenticationInProgress = true
             return LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
         }.map(on: .main) { (context) -> LAContext in
+            Keychain.shared.migrate(context: context)
             let accounts = try UserAccount.allCombined(context: context, migrateVersion: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
                 Properties.reloadAccounts = false
             }
-            Keychain.shared.migrate(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
             self.hideLockWindow()
             return context

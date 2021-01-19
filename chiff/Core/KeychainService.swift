@@ -25,8 +25,8 @@ enum KeychainService {
     }
 
     enum SessionAttribute: String {
-        case sharedKey = "shared"
-        case signingKey = "signing"
+        case shared
+        case signing
     }
 
     enum Classification {
@@ -40,20 +40,20 @@ enum KeychainService {
         switch self {
         case .account(let attribute):
             if let attribute = attribute {
-                return "io.keyn.account.\(attribute)"
+                return "io.keyn.account.\(attribute.rawValue)"
             } else {
                 return "io.keyn.account"
             }
         case .sharedAccount(let attribute):
             if let attribute = attribute {
-                return "io.keyn.sharedaccount.\(attribute)"
+                return "io.keyn.sharedaccount.\(attribute.rawValue)"
             } else {
                 return "io.keyn.sharedaccount"
             }
         case .browserSession(let attribute):
-            return "io.keyn.session.\(attribute)"
+            return "io.keyn.session.\(attribute.rawValue)"
         case .teamSession(let attribute):
-            return "io.keyn.teamsession.\(attribute)"
+            return "io.keyn.teamsession.\(attribute.rawValue)"
         case .seed:
             return "io.keyn.seed"
         case .aws:
