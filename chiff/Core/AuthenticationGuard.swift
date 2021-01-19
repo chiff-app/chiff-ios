@@ -101,6 +101,9 @@ class AuthenticationGuard {
     /// Hide the lock window, effectively putting the app in the *unlocked* state. Only makes sense if the user is really authenticated, otherwise the data from the Keychain is not loaded.
     /// - Parameter delay: Optionally, a delay in milliseconds can be provided to make the UX more smooth.
     func hideLockWindow(delay: Double? = nil) {
+        guard LocalAuthenticationManager.shared.isAuthenticated else {
+            return
+        }
         let duration = 0.25
         let animations = {
             self.lockWindow.alpha = 0.0
