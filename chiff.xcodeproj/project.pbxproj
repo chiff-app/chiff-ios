@@ -15,7 +15,6 @@
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
-		249EFFDEE49ED4D58122DF33 /* Pods_chiffCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E62457B587C3B422C76D1B92 /* Pods_chiffCredentialProvider.framework */; };
 		4240A4072325EAB4002EBD4E /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4062325EAB4002EBD4E /* SeedTests.swift */; };
 		4240A4092325EAC2002EBD4E /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4082325EAC2002EBD4E /* AccountTests.swift */; };
 		42481A4823293ADE00EA3C3C /* PPDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42481A4723293ADD00EA3C3C /* PPDTests.swift */; };
@@ -117,6 +116,9 @@
 		4941AFFB25406C1600CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFFA25406C1600CEFDE9 /* Kronos */; };
 		4941B00225406C3200CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00125406C3200CEFDE9 /* Kronos */; };
 		4941B00925406C3E00CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00825406C3E00CEFDE9 /* Kronos */; };
+		4943101025B9EE0D0097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943100F25B9EE0D0097D917 /* Sodium */; };
+		4943101625B9EE4D0097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943101525B9EE4D0097D917 /* Sodium */; };
+		4943101825B9EE550097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943101725B9EE550097D917 /* Sodium */; };
 		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
@@ -330,9 +332,6 @@
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		692C53B121DCB6B25B9A32A0 /* Pods_chiffNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B45EAC7F0D8362506E9311B /* Pods_chiffNotificationExtension.framework */; };
-		C70C4177A0C0186B22D67D3B /* Pods_chiffTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B1CC9395EEB4EC9D9C1C5C /* Pods_chiffTests.framework */; };
-		CA3720AC69EBFE6873C66D3D /* Pods_chiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C88AFC3527D42C8CA63D72 /* Pods_chiff.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -383,10 +382,6 @@
 		01839A701FACA93A00698B69 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01B79AEE202C8E8000425BD5 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
-		1A7D39D8EB806CDDF22A777F /* Pods-chiff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiff.release.xcconfig"; path = "Target Support Files/Pods-chiff/Pods-chiff.release.xcconfig"; sourceTree = "<group>"; };
-		279F2EC5D7FB238A13B84A86 /* Pods-chiffTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffTests.debug.xcconfig"; path = "Target Support Files/Pods-chiffTests/Pods-chiffTests.debug.xcconfig"; sourceTree = "<group>"; };
-		34A7F901FD18468A10EA3B58 /* Pods-chiffTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffTests.release.xcconfig"; path = "Target Support Files/Pods-chiffTests/Pods-chiffTests.release.xcconfig"; sourceTree = "<group>"; };
-		3B45EAC7F0D8362506E9311B /* Pods_chiffNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chiffNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4240A4062325EAB4002EBD4E /* SeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
 		4240A4082325EAC2002EBD4E /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		42481A4723293ADD00EA3C3C /* PPDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPDTests.swift; sourceTree = "<group>"; };
@@ -553,7 +548,6 @@
 		49F45E872424DBA30080B248 /* ChiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChiffTableViewController.swift; sourceTree = "<group>"; };
 		49F6F23223EDA60D0093AD56 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSession.swift; sourceTree = "<group>"; };
-		547A0C80B787A1758BFC3B6E /* Pods-chiff.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiff.debug.xcconfig"; path = "Target Support Files/Pods-chiff/Pods-chiff.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
@@ -573,13 +567,6 @@
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
-		63C88AFC3527D42C8CA63D72 /* Pods_chiff.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chiff.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		76B941BED3C6F4E6806F0E96 /* Pods-chiffCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffCredentialProvider.debug.xcconfig"; path = "Target Support Files/Pods-chiffCredentialProvider/Pods-chiffCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		A9A754BE51183296CDA0F541 /* Pods-chiffNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-chiffNotificationExtension/Pods-chiffNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		D47FC89A2F0D799C849624F6 /* Pods-chiffNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffNotificationExtension.release.xcconfig"; path = "Target Support Files/Pods-chiffNotificationExtension/Pods-chiffNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
-		E3B1CC9395EEB4EC9D9C1C5C /* Pods_chiffTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chiffTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E62457B587C3B422C76D1B92 /* Pods_chiffCredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chiffCredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDB6AB46008043EF8E99FCDA /* Pods-chiffCredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chiffCredentialProvider.release.xcconfig"; path = "Target Support Files/Pods-chiffCredentialProvider/Pods-chiffCredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -592,11 +579,11 @@
 				4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */,
 				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
+				4943101625B9EE4D0097D917 /* Sodium in Frameworks */,
 				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
 				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
 				4941AF7725403C2A00CEFDE9 /* DataCompression in Frameworks */,
 				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
-				692C53B121DCB6B25B9A32A0 /* Pods_chiffNotificationExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,9 +602,9 @@
 				4941AF4C2540399F00CEFDE9 /* DataCompression in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */,
+				4943101025B9EE0D0097D917 /* Sodium in Frameworks */,
 				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
-				CA3720AC69EBFE6873C66D3D /* Pods_chiff.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,7 +612,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C70C4177A0C0186B22D67D3B /* Pods_chiffTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,7 +630,7 @@
 				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */,
-				249EFFDEE49ED4D58122DF33 /* Pods_chiffCredentialProvider.framework in Frameworks */,
+				4943101825B9EE550097D917 /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,10 +654,6 @@
 				49A01CD922609C5E001794B8 /* WebKit.framework */,
 				49C8B895225383D300639663 /* StoreKit.framework */,
 				4906BDAF20E3C41300183664 /* AuthenticationServices.framework */,
-				63C88AFC3527D42C8CA63D72 /* Pods_chiff.framework */,
-				E62457B587C3B422C76D1B92 /* Pods_chiffCredentialProvider.framework */,
-				3B45EAC7F0D8362506E9311B /* Pods_chiffNotificationExtension.framework */,
-				E3B1CC9395EEB4EC9D9C1C5C /* Pods_chiffTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -915,7 +897,6 @@
 				611F4B472146B47300B35A89 /* chiffCredentialProvider */,
 				49E766511F7E6F420022C042 /* Products */,
 				2A4E92B609DDA515653F86DA /* Frameworks */,
-				6A5BD001E4BC7EAB908CABB5 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1090,21 +1071,6 @@
 			path = Devices;
 			sourceTree = "<group>";
 		};
-		6A5BD001E4BC7EAB908CABB5 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				547A0C80B787A1758BFC3B6E /* Pods-chiff.debug.xcconfig */,
-				1A7D39D8EB806CDDF22A777F /* Pods-chiff.release.xcconfig */,
-				76B941BED3C6F4E6806F0E96 /* Pods-chiffCredentialProvider.debug.xcconfig */,
-				EDB6AB46008043EF8E99FCDA /* Pods-chiffCredentialProvider.release.xcconfig */,
-				A9A754BE51183296CDA0F541 /* Pods-chiffNotificationExtension.debug.xcconfig */,
-				D47FC89A2F0D799C849624F6 /* Pods-chiffNotificationExtension.release.xcconfig */,
-				279F2EC5D7FB238A13B84A86 /* Pods-chiffTests.debug.xcconfig */,
-				34A7F901FD18468A10EA3B58 /* Pods-chiffTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1112,7 +1078,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "chiffNotificationExtension" */;
 			buildPhases = (
-				522903290B83635F518CC95B /* [CP] Check Pods Manifest.lock */,
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
 				4919DAE220123FE50048B060 /* Resources */,
@@ -1133,6 +1098,7 @@
 				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
 				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
 				4941B00125406C3200CEFDE9 /* Kronos */,
+				4943101525B9EE4D0097D917 /* Sodium */,
 			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
@@ -1142,14 +1108,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiff" */;
 			buildPhases = (
-				F3FDF0DFD0372F979309A91C /* [CP] Check Pods Manifest.lock */,
 				4931BBF7254174990015277D /* SwiftLint */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4967F423225CBF950069330D /* Compile localized YAML files to PLIST */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
-				F65830507CA32A89E02D71FE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1170,6 +1134,7 @@
 				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
 				4941AFA32540423200CEFDE9 /* PMKFoundation */,
 				4941AFFA25406C1600CEFDE9 /* Kronos */,
+				4943100F25B9EE0D0097D917 /* Sodium */,
 			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
@@ -1179,7 +1144,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffTests" */;
 			buildPhases = (
-				ABA488FAEF9F26AA102FB43E /* [CP] Check Pods Manifest.lock */,
 				49E766621F7E6F420022C042 /* Sources */,
 				49E766631F7E6F420022C042 /* Frameworks */,
 				49E766641F7E6F420022C042 /* Resources */,
@@ -1198,7 +1162,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "chiffCredentialProvider" */;
 			buildPhases = (
-				469146345215A4C2E9DAF88B /* [CP] Check Pods Manifest.lock */,
 				611F4B412146B47300B35A89 /* Sources */,
 				611F4B422146B47300B35A89 /* Frameworks */,
 				611F4B432146B47300B35A89 /* Resources */,
@@ -1220,6 +1183,7 @@
 				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
 				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
 				4941B00825406C3E00CEFDE9 /* Kronos */,
+				4943101725B9EE550097D917 /* Sodium */,
 			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
@@ -1318,6 +1282,7 @@
 				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
 				4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */,
+				4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */,
 			);
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
 			projectDirPath = "";
@@ -1389,28 +1354,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		469146345215A4C2E9DAF88B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chiffCredentialProvider-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4931BBF7254174990015277D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1485,90 +1428,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n\n";
-		};
-		522903290B83635F518CC95B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chiffNotificationExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ABA488FAEF9F26AA102FB43E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chiffTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F3FDF0DFD0372F979309A91C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chiff-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F65830507CA32A89E02D71FE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chiff/Pods-chiff-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chiff/Pods-chiff-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1933,7 +1792,6 @@
 /* Begin XCBuildConfiguration section */
 		4919DAEC20123FE50048B060 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9A754BE51183296CDA0F541 /* Pods-chiffNotificationExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = chiffNotificationExtension/chiffNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1948,6 +1806,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1962,7 +1821,6 @@
 		};
 		4919DAED20123FE50048B060 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D47FC89A2F0D799C849624F6 /* Pods-chiffNotificationExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = chiffNotificationExtension/chiffNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1977,6 +1835,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2108,7 +1967,6 @@
 		};
 		49E7667B1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 547A0C80B787A1758BFC3B6E /* Pods-chiff.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = chiff/SupportFiles/chiff.entitlements;
@@ -2124,6 +1982,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2161,7 +2020,6 @@
 		};
 		49E7667C1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A7D39D8EB806CDDF22A777F /* Pods-chiff.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = chiff/SupportFiles/chiff.entitlements;
@@ -2176,6 +2034,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2213,7 +2072,6 @@
 		};
 		49E7667E1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 279F2EC5D7FB238A13B84A86 /* Pods-chiffTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2238,7 +2096,6 @@
 		};
 		49E7667F1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 34A7F901FD18468A10EA3B58 /* Pods-chiffTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2262,7 +2119,6 @@
 		};
 		611F4B522146B47300B35A89 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76B941BED3C6F4E6806F0E96 /* Pods-chiffCredentialProvider.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2279,6 +2135,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
@@ -2293,7 +2150,6 @@
 		};
 		611F4B532146B47300B35A89 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EDB6AB46008043EF8E99FCDA /* Pods-chiffCredentialProvider.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2310,6 +2166,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.9.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2450,6 +2307,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.1.1;
+			};
+		};
+		4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/junelife/swift-sodium";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -2604,6 +2469,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
 			productName = Kronos;
+		};
+		4943100F25B9EE0D0097D917 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+		4943101525B9EE4D0097D917 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+		4943101725B9EE550097D917 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
