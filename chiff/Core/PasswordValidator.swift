@@ -89,7 +89,7 @@ class PasswordValidator {
         return password.count >= minLength
     }
 
-    /// Checks if password doesn't contain unallowed characters.
+    /// Checks if password doesn't contain forbidden characters.
     /// - Parameters:
     ///   - password: The password that should be checked.
     ///   - characters: Optionally, the characters can be overridden. Uses the objects characters otherwise.
@@ -125,7 +125,7 @@ class PasswordValidator {
         return true
     }
 
-    /// Validates the charcterSetSettings.
+    /// Validates the characterSetSettings.
     /// These may for example specifiy that the password should contains at least *n* characters of set *LowerLetters*.
     /// - Parameter password: The password that should be checked.
     func validateCharacterSet(password: String) throws -> Bool {
@@ -138,7 +138,7 @@ class PasswordValidator {
     }
 
     /// Validates the position restrictions.
-    /// These may for example specifiy that the password should start with an *UpperCase* character.
+    /// These may for example specify that the password should start with an *UpperCase* character.
     /// - Parameter password: The password that should be checked.
     func validatePositionRestrictions(password: String) throws -> Bool {
         if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {

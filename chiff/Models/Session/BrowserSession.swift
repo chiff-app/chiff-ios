@@ -107,10 +107,11 @@ struct BrowserSession: Session {
 
     /// This responds to a request accordingly.
     /// - Parameters:
-    ///   - account: The account
+    ///   - account: The account.
     ///   - browserTab: The browser tab
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
+    ///   - newPassword: Optionally, the new password in case of a change response.
     mutating func sendCredentials(account: Account, browserTab: Int, type: ChiffMessageType, context: LAContext, newPassword: String?) throws {
         var response: KeynCredentialsResponse = KeynCredentialsResponse(type: type, browserTab: browserTab)
         switch type {
@@ -199,7 +200,7 @@ struct BrowserSession: Session {
     ///   - type: The `ChiffMessageType`, which is either WebAuthn registration or login request.
     ///   - context: Optionally, an authenticated `LAContext` object.
     ///   - signature: The signature, relevant.
-    ///   - counter: The counter, if relecant.
+    ///   - counter: The counter, if relevant.
     /// - Throws: Encoding, encryption or network errors.
     mutating func sendWebAuthnResponse(account: UserAccount,
                                        browserTab: Int,
@@ -230,7 +231,7 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    /// Retrieve persistent queue message.
+    /// Retrieve persistent queue messages.
     /// These are used if we must be sured that the message is delivered, for example with password confirmtion messages.
     /// - Parameter shortPolling: Whether we just check once, with a short timeout, or wait for 20 seconds (the maximum) to simulate a push message.
     /// - Returns: An array of `ChiffPersistentQueueMessage`
@@ -256,7 +257,7 @@ struct BrowserSession: Session {
     }
 
     /// Delete a message from the persistent queue, after it has been received.
-    /// - Parameter receiptHandle: The receiptHandle which is used to identity the messaage on the queue.
+    /// - Parameter receiptHandle: The receiptHandle which is used to identity the messsage on the queue.
     func deleteFromPersistentQueue(receiptHandle: String) -> Promise<Void> {
         let message = [
             "receiptHandle": receiptHandle
