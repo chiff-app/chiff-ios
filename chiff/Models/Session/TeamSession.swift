@@ -89,7 +89,7 @@ struct TeamSession: Session {
     ///   - browserPubKey: The team's public key to establish the shared key.
     ///   - role: The role this user has in the team.
     ///   - team: The name of the team / organisation.
-    ///   - version: The session version
+    ///   - version: The session version.
     ///   - organisationKey: The organisation key of the organisation this team belongs to.
     /// - Returns: A Promise of the session that is created.
     static func initiate(pairingQueueSeed: String, teamId: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {

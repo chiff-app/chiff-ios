@@ -105,7 +105,7 @@ class PasswordGenerator {
         - index: The index that is used to generate the password.
         - password: The password.
 
-     - Returns: The password offset as list of numbers, where each number is byte: `0 <= n <= 255`.
+     - Returns: The password offset as list of numbers, where each number is a byte: `0 <= n <= 255`.
      */
     func calculateOffset(index passwordIndex: Int, password: String) throws -> [Int] {
         let chars = PasswordValidator.allCharacterSet.sorted()

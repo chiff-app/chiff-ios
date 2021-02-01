@@ -12,9 +12,6 @@ import AuthenticationServices
 import CryptoKit
 import PromiseKit
 
-/*
- * An account belongs to the user and can have one Site.
- */
 struct UserAccount: Account, Equatable {
 
     let id: String

@@ -27,7 +27,7 @@ enum CryptoError: Error {
     case wrongSigningFunction
 }
 
-/// The Crypto singleton, that handles are cryptography-related operations. Uses libosodium (swift-sodium) under the hood.
+/// The Crypto singleton, that handles are cryptography-related operations. Uses libsodium (swift-sodium) under the hood.
 class Crypto {
 
     /// The `Crypto` singleton instance.
@@ -277,9 +277,9 @@ class Crypto {
     /// - Note: Uses [libsodium secretbox](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretbox) under the hood.
     /// - Parameters:
     ///   - ciphertext: The data that should be decrypted.
-    ///   - secretKey: The key that should be used for encryption.
+    ///   - secretKey: The key that should be used for decryption.
     /// - Throws: `CryptoError.encryption` when libsodium fails to encrypt or if authentication tag is incorrect.
-    /// - Returns: The ciphertext with a prepended authentication tag.
+    /// - Returns: The plaintext.
     func decryptSymmetric(_ ciphertext: Data, secretKey: Data) throws -> Data {
         guard let plaintext: Bytes = sodium.secretBox.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, secretKey: secretKey.bytes) else {
             throw CryptoError.decryption
