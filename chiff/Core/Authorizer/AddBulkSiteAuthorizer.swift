@@ -94,7 +94,7 @@ class AddBulkSiteAuthorizer: Authorizer {
                 throw CodingError.missingData
             }
         }.then { (accounts) in
-            try PPD.getDescriptors(organisationKeyPair: TeamSession.organisationKeyPair()).map { (accounts, $0) }
+            try PPDDescriptor.get(organisationKeyPair: TeamSession.organisationKeyPair()).map { (accounts, $0) }
         }.then { (accounts, ppdDescriptors: [PPDDescriptor]) -> Promise<[(BulkAccount, PPD?)]> in
             startLoading?("requests.import_progress_2".localized)
             return when(fulfilled: accounts.map { self.getPPD(account: $0, ppdDescriptors: ppdDescriptors )})

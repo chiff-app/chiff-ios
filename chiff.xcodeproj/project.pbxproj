@@ -134,6 +134,9 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
+		496566E525C95FA700E61470 /* PPDDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496566E425C95FA700E61470 /* PPDDescriptor.swift */; };
+		496566E625C95FA700E61470 /* PPDDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496566E425C95FA700E61470 /* PPDDescriptor.swift */; };
+		496566E725C95FA700E61470 /* PPDDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496566E425C95FA700E61470 /* PPDDescriptor.swift */; };
 		4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
 		4966FF1823FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
 		4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
@@ -451,6 +454,7 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		496566E425C95FA700E61470 /* PPDDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDDescriptor.swift; sourceTree = "<group>"; };
 		4966FF1623FEDAF300D7C232 /* WebAuthn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthn.swift; sourceTree = "<group>"; };
 		49677ADD2514FD0B0074C224 /* QueueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueHandler.swift; sourceTree = "<group>"; };
 		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
@@ -783,10 +787,10 @@
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
 				496869352420FAE800B9BEE9 /* Account+AuthenticationServices.swift */,
-				496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */,
 				496869312420F89B00B9BEE9 /* BaseAccount.swift */,
 				49E5FA162302E9DE009C964E /* SharedAccount.swift */,
 				49E5FA122302E529009C964E /* UserAccount.swift */,
+				496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */,
 				4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */,
 			);
 			path = Account;
@@ -946,6 +950,7 @@
 				4968693F2420FF4800B9BEE9 /* Session */,
 				4968696224211EF700B9BEE9 /* ChiffRequest.swift */,
 				4908103520598AC700C770F1 /* PPD.swift */,
+				496566E425C95FA700E61470 /* PPDDescriptor.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
 				49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
@@ -1469,6 +1474,7 @@
 				493A35B32215660E002EB043 /* Constants.swift in Sources */,
 				49062C5B221449D200A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				49B2A92625432E75001BA6EE /* UIExtensions.swift in Sources */,
+				496566E625C95FA700E61470 /* PPDDescriptor.swift in Sources */,
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				42497C13231EF4AF00ECBDB4 /* APIProtocol.swift in Sources */,
 				49B2A956254334ED001BA6EE /* TeamRole.swift in Sources */,
@@ -1543,6 +1549,7 @@
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				49F6F23323EDA60D0093AD56 /* Team.swift in Sources */,
 				49B2A974254345F3001BA6EE /* Team+Creation.swift in Sources */,
+				496566E525C95FA700E61470 /* PPDDescriptor.swift in Sources */,
 				49A218B925498F750036D42B /* PairingResponse.swift in Sources */,
 				49B2A92025432CEC001BA6EE /* CoreExtensions.swift in Sources */,
 				49B2A8B325430666001BA6EE /* Keychain+SecKey.swift in Sources */,
@@ -1706,6 +1713,7 @@
 				49A218BB25498F750036D42B /* PairingResponse.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				4904A7742555B79B0086787D /* KeychainService.swift in Sources */,
+				496566E725C95FA700E61470 /* PPDDescriptor.swift in Sources */,
 				49B2A96B25433507001BA6EE /* Team.swift in Sources */,
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
 				49B1CD7F243623970097DBBD /* Syncable.swift in Sources */,
