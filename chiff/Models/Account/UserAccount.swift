@@ -29,6 +29,7 @@ struct UserAccount: Account, Equatable {
     var lastChange: Timestamp
     var shadowing: Bool = false // This is set when loading accounts if there exists a team account with the same ID.
 
+    static let currentVersion = 1
     static let keychainService: KeychainService = .account()
     static let otpService: KeychainService = .account(attribute: .otp)
     static let notesService: KeychainService = .account(attribute: .notes)
@@ -36,7 +37,7 @@ struct UserAccount: Account, Equatable {
 
     /// Create a `UserAccount`. This generates passwords or offset and saves the account to the Keychain as well.
     /// - Parameters:
-    ///   - username: The username
+    ///   - username: The username.
     ///   - sites: An array of websites, where the first in the array will be used as the primary website.
     ///   - password: Optionally, a password. If no password is provided, it will be generated. If it is provided, an offset will be calculated and saved.
     ///   - rpId: A WebAuthn relying party ID
@@ -61,7 +62,7 @@ struct UserAccount: Account, Equatable {
         self.id = id
         self.sites = sites
         self.username = username
-        self.version = 2
+        self.version = Self.currentVersion
         self.askToChange = askToChange
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)

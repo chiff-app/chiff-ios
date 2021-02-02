@@ -33,13 +33,6 @@ enum PPDVersion: String, Codable {
     case v1_1 = "1.1"
 }
 
-struct PPDDescriptor: Codable {
-    let id: String
-    let url: String
-    let name: String
-    let redirects: [String]
-}
-
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
     /// Required. Represents the properties of the password.
@@ -50,7 +43,7 @@ struct PPD: Codable {
     let version: PPDVersion
     /// Timestamp when this PPD was created/updated.
     let timestamp: Int?
-    /// Relative path of the webpage where this PPD will be used.
+    /// URL of the webpage where this PPD will be used.
     let url: String
     let redirect: String?
     let name: String
@@ -86,24 +79,6 @@ struct PPD: Codable {
                 return .value(nil)
             }
             return .value(nil)
-        }
-    }
-
-    /// Get a list of PPD decriptors.
-    /// - Parameter organisationKeyPair: Optionnally, an organisation keypair if organisational PPDs should be checked as well.
-    /// - Returns: A list of PPD decriptors.
-    static func getDescriptors(organisationKeyPair: KeyPair?) -> Promise<[PPDDescriptor]> {
-        return firstly { () -> Promise<[JSONObject]> in
-            if let keyPair = organisationKeyPair {
-                return API.shared.signedRequest(path: "organisations/\(keyPair.pubKey.base64)/ppd", method: .get, privKey: keyPair.privKey)
-            } else {
-                return API.shared.request(path: "ppd", method: .get)
-            }
-        }.map { result -> [PPDDescriptor] in
-            return try result.map {
-                let jsonData = try JSONSerialization.data(withJSONObject: $0, options: [])
-                return try JSONDecoder().decode(PPDDescriptor.self, from: jsonData)
-            }
         }
     }
 
@@ -185,7 +160,7 @@ struct PPDCharacterSet: Codable {
 struct PPDProperties: Codable {
     /// Parent node for character settings. If the node is omitted,
     /// all characters defined in the characterSets element are treated
-    /// as available for use with no restrictions on minimum and maximum ocurrences.
+    /// as available for use with no restrictions on minimum and maximum occurrences.
     let characterSettings: PPDCharacterSettings?
     /// Indicates whether consecutive characters are allowed or not.
     /// A omitted value or 0 inidaces no limitation on consecutive characters.
@@ -231,7 +206,7 @@ struct PPDPositionRestriction: Codable {
      * A value in the interval (0,1) can be used to specify a position by ratio. E.g. 0.5 refers to the center position of the password.
      */
     let positions: String
-    /// Minimum occurences of the character set for the given positions. A value of 0 means no restrictions of minimum occurences.
+    /// Minimum occurrences of the character set for the given positions. A value of 0 means no restrictions of minimum occurrences.
     let minOccurs: Int
     let maxOccurs: Int?
     let characterSet: String

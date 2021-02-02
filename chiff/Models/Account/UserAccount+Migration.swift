@@ -19,6 +19,7 @@ extension UserAccount {
                 return
             }
             try updatePassword(context: context)
+            // Next version should be 3, because 2 has been burnt -.-.
             version = 1
             self.lastChange = Date.now
             let accountData = try PropertyListEncoder().encode(self)
