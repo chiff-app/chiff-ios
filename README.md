@@ -74,7 +74,7 @@ Furthermore, the build process assumes that *Ruby* is present.
 
 ### Build with Xcode
 Open `chiff.xcodeproj` with *XCode*. We use SPM for dependencies, so Xcode should automatically resolve those as soon as the project is opened.
-Simply build by clicking the  *build* button.
+Simply build by clicking the *build* button.
 
 ### Build with Fastlane
 We also have fastlane scripts to build from commandline. To use these, you should first install Fastlane. This can be installed through various methods, but the easiest is to run `bundle` in the project folder to install via the *Gemfile*. Note that you also still need the *Xcode additional components*.
@@ -84,7 +84,7 @@ To build Chiff, run
 bundle exec fastlane build
 ```
 
-## Contributing
+<!-- ## Contributing
 To contribute, follow these steps:
 
 1. Fork this repository.
@@ -94,7 +94,7 @@ To contribute, follow these steps:
 5. Create the pull request to the `dev` branch.
 
 Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
-
+ -->
 
 ## License
-This project is licensed under the terms of the GNU GPLv3.
+For now: all rights reserved. 
