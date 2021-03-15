@@ -622,6 +622,12 @@ popups:
       value: >-
         This moves your backup data to the production database. Use this if you
         want to switch to the App Store version of Chiff.
+    move_to_team_message:
+      value: >-
+        Do you want to add this account to your team? Other team members may get
+        access to this account's password.
+    move_to_team_title:
+      value: Add to team
     move_to_user_account_message:
       value: >-
         Do you want to move this account from the team to your personal
