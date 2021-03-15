@@ -127,4 +127,28 @@ extension TeamSession {
             Team.get(id: self.teamId, seed: seed)
         }
     }
+
+    /// Convert a shared account to a user account, effectively removing it from the team.
+    /// - Parameter account: The shared account.
+    /// - Returns: A Promise of the UserAccount that has been added to the Keychain.
+    func convertSharedToUserAccount(account: SharedAccount) -> Promise<UserAccount> {
+        do {
+            let password = try account.password()
+            let notes = try account.notes()
+            return firstly {
+                getTeam()
+            }.then {
+                $0.deleteAccount(id: account.id)
+            }.then {
+                update().asVoid()
+            }.map(on: .main) {
+                guard try SharedAccount.get(id: account.id, context: nil) == nil else {
+                    throw KeychainError.storeKey
+                }
+                return try UserAccount(username: account.username, sites: account.sites, password: password, rpId: nil, algorithms: nil, notes: notes, askToChange: nil, context: nil)
+            }
+        } catch {
+            return Promise(error: error)
+        }
+    }
 }
