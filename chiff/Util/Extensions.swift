@@ -10,6 +10,7 @@ import UserNotifications
 import OneTimePassword
 import Amplitude
 import PromiseKit
+import ChiffCore
 
 extension Amplitude {
     func set(userProperties: [AnalyticsUserProperty: Any]) {

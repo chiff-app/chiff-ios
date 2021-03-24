@@ -8,6 +8,7 @@
 import UIKit
 import OneTimePassword
 import QuartzCore
+import ChiffCore
 
 extension AccountViewController {
 

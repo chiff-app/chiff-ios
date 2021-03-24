@@ -9,6 +9,7 @@ import UIKit
 import LocalAuthentication
 import OneTimePassword
 import PromiseKit
+import ChiffCore
 
 /// This class is responsible for authenticating the user when opening the app and hiding and showing the lock screen.
 class AuthenticationGuard {

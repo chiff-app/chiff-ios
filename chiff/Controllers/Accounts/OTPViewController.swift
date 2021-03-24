@@ -10,6 +10,7 @@ import AVFoundation
 import LocalAuthentication
 import OneTimePassword
 import PromiseKit
+import ChiffCore
 
 protocol TokenController {
     var token: Token? { get }

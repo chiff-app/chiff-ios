@@ -9,8 +9,9 @@ import Foundation
 import FirebaseCrashlytics
 import Amplitude
 import FirebaseCore
+import ChiffCore
 
-struct Logger {
+struct Logger: LoggerProtocol {
 
     static let shared = Logger()
     private let crashlytics = Crashlytics.crashlytics()

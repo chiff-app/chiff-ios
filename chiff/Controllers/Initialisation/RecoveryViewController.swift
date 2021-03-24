@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import ChiffCore
 
 enum RecoveryError: Error {
     case unauthenticated
@@ -244,7 +245,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             }.then { (_) -> Promise<Void> in
                 TeamSession.purgeSessionDataFromKeychain()
                 UserAccount.deleteAll()
-                Seed.delete()
+                Seed.delete(includeSeed: true)
                 return NotificationManager.shared.unregisterDevice()
             }.catchLog("Error deleting data")
         }))

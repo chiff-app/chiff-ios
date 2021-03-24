@@ -7,6 +7,7 @@
 
 import XCTest
 import PromiseKit
+import ChiffCore
 
 @testable import chiff
 
