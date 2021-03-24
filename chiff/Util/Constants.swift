@@ -6,115 +6,7 @@
 //
 
 import Foundation
-
-enum AnalyticsUserProperty: String {
-    case accountCount = "Number of accounts"
-    case pairingCount = "Number of pairings"
-    case subscribed = "Subscribed"
-    case infoNotifications = "Notifications enabled"
-    case backupCompleted = "Backup completed"
-    case installTime = "Installed on"
-    case requestSum = "Request sum"
-    case sessionSum = "Session sum" // = Amplitude sessions, as in: times the app was used
-}
-
-enum AnalyticsEvent: String {
-    // Onboarding
-    case appFirstOpened = "AppFirstOpened"
-    case restoreBackupOpened = "RecoverAccountOpened"
-    case backupRestored = "BackupRestored"
-    case learnMoreClicked = "LearnMoreClicked"
-    case seedCreated = "SeedCreated"
-    case notificationPermission = "NotificationPermission"
-    case cameraPermission = "CameraPermission"
-    case tryLaterClicked = "Try later clicked"
-
-    // Requests
-    case loginRequestOpened = "LoginRequestOpened"
-    case loginRequestAuthorized = "LoginRequestAuthorized"
-    case bulkLoginRequestOpened = "BulkLoginRequestOpened"
-    case bulkLoginRequestAuthorized = "BulkLoginRequestAuthorized"
-    case addSiteRequestOpened = "AddSiteRequestOpened"
-    case addSiteRequestAuthorized = "AddSiteRequestAuthorized"
-    case addSiteToExistingRequestOpened = "AddSiteToExistingRequestOpened"
-    case addSiteToExistingRequestAuthorized = "AddSiteToExistingRequestAuthorized"
-    case addBulkSitesRequestOpened = "AddBulkSiteRequestOpened"
-    case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
-    case changePasswordRequestOpened = "ChangePasswordRequestOpened"
-    case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
-    case fillPasswordRequestOpened = "FillPasswordRequestOpened"
-    case fillPasswordRequestAuthorized = "FillPasswordRequestAuthorized"
-    case getDetailsRequestOpened = "GetDetailsRequestOpened"
-    case getDetailsRequestAuthorized = "GetDetailsRequestAuthorized"
-    case createOrganisationRequestOpened = "CreateOrganisationRequestOpened"
-    case createOrganisationRequestAuthorized = "CreateOrganisationRequestAuthorized"
-    case adminLoginRequestOpened = "adminLoginRequestOpened"
-    case adminLoginRequestAuthorized = "adminLoginRequestAuthorized"
-    case webAuthnCreateRequestOpened = "WebAuthnCreateRequestOpened"
-    case webAuthnLoginRequestOpened = "WebAuthnLoginRequestOpened"
-    case webAuthnCreateRequestAuthorized = "WebAuthnCreateRequestAuthorized"
-    case webAuthnLoginRequestAuthorized = "WebAuthnLoginRequestAuthorized"
-    case updateAccountRequestOpened = "UpdateAccountRequestOpened"
-    case updateAccountRequestAuthorized = "UpdateAccountRequestAuthorized"
-
-    // Local login
-    case passwordCopied = "PasswordCopied"
-    case otpCopied = "OneTimePasswordCopied"
-    case localLoginOpened = "LocalLoginOpened"
-    case localLoginCompleted = "LocalLoginCompleted"
-
-    // Local updates
-    case accountUpdated = "AccountUpdated"
-    case accountDeleted = "AccountDeleted"
-    case accountAddedLocal = "AccountAddedLocal"
-    case addAccountOpened = "AddAccountOpened"
-
-    // Backup
-    case backupExplanationOpened = "BackupExplanationOpened"
-    case backupProcessStarted = "BackupProcessStarted"
-    case backupCheckOpened = "BackupCheckOpened"
-    case backupCompleted = "BackupCompleted"
-
-    // Devices
-    case addSessionOpened = "AddSessionOpened"
-    case qrCodeScanned = "QRCodeScanned"
-    case paired = "Paired"
-    case sessionDeleted = "SessionDeleted"
-
-    // Settings
-    case resetKeyn = "ResetKeyn"
-    case deleteData = "DeleteData"
-    case analytics = "Analytics"
-}
-
-enum AnalyticsEventProperty: String {
-    case timestamp = "Timestamp"
-    case value = "Value" // True or false
-    case scheme = "Scheme" // Of QR-code
-    case username = "Username"
-    case password = "Password"
-    case url = "URL"
-    case siteName = "SiteName"
-}
-
-enum MessageParameter {
-    static let body = "body"
-    static let receiptHandle = "receiptHandle"
-    static let type = "type"
-}
-
-enum NotificationType: String {
-    case sync = "SYNC"
-    case deleteTeamSession = "DELETE_TEAM_SESSION" // Deprecated
-    case browser = "BROWSER"
-}
-
-enum NotificationCategory {
-    static let passwordRequest = "PASSWORD_REQUEST"
-    static let endSession = "END_SESSION"
-    static let changeConfirmation = "CHANGE_CONFIRMATION"
-    static let onboardingNudge = "ONBOARDING_NUDGE"
-}
+import ChiffCore
 
 enum NotificationContentKey: String {
     case browserTab
@@ -131,33 +23,71 @@ enum NotificationContentKey: String {
     case sessions
 }
 
-/**
- * Keyn messages go app <-> browser
- *
- * They always have a type so the app/browser can determine course of action.
- * There is one struct for requests, there are multiple for responses.
- */
-enum ChiffMessageType: Int, Codable {
-    case pair = 0
-    case login = 1
-    case register = 2
-    case change = 3
-    case add = 4
-    case addBulk = 5
-    case addAndLogin = 6 // Can be used for something else in time, does the same as add.
-    case end = 7
-    case confirm = 8
-    case fill = 9
-    case reject = 10
-    case expired = 11
-    case preferences = 12
-    case addToExisting = 13
-    case disabled = 14
-    case adminLogin = 15
-    case webauthnCreate = 16
-    case webauthnLogin = 17
-    case bulkLogin = 18
-    case getDetails = 19
-    case updateAccount = 20
-    case createOrganisation = 21
+enum NotificationType: String {
+    case sync = "SYNC"
+    case deleteTeamSession = "DELETE_TEAM_SESSION" // Deprecated
+    case browser = "BROWSER"
+}
+
+enum NotificationCategory {
+    static let passwordRequest = "PASSWORD_REQUEST"
+    static let endSession = "END_SESSION"
+    static let changeConfirmation = "CHANGE_CONFIRMATION"
+    static let onboardingNudge = "ONBOARDING_NUDGE"
+}
+
+extension Properties {
+
+    private static let sortingPreferenceFlag = "sortingPreference"
+
+    /// The token for amplitude.
+    static var amplitudeToken: String {
+        switch environment {
+        case .dev:
+            return "a6c7cba5e56ef0084e4b61a930a13c84"
+        case .beta:
+            return "1d56fb0765c71d09e73b68119cfab32d"
+        case .prod:
+            return "081d54cf687bdf40799532a854b9a9b6"
+        }
+    }
+
+    /// The number of seconds after which the pasteboard should be cleared.
+    static let pasteboardTimeout = 60.0 // seconds
+
+    /// The sorting preference of the accounts.
+    static var sortingPreference: SortingValue {
+        get { return SortingValue(rawValue: UserDefaults.standard.integer(forKey: sortingPreferenceFlag)) ?? SortingValue.alphabetically }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: sortingPreferenceFlag) }
+    }
+    
+    /// Notification identifiers nudges.
+    static let nudgeNotificationIdentifiers = [
+        "io.keyn.keyn.first_nudge",
+        "io.keyn.keyn.second_nudge",
+        "io.keyn.keyn.third_nudge"
+    ]
+}
+
+enum SortingValue: Int {
+    case alphabetically
+    case mostly
+    case recently
+
+    static var all: [SortingValue] {
+        return [.alphabetically, .mostly, .recently]
+    }
+
+    var text: String {
+        switch self {
+        case .alphabetically: return "accounts.alphabetically".localized
+        case .mostly: return "accounts.mostly".localized
+        case .recently: return "accounts.recently".localized
+        }
+    }
+}
+
+enum TypeError: Error {
+    case wrongViewControllerType
+    case wrongViewType
 }

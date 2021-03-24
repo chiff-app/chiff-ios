@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import PromiseKit
 import Kronos
+import ChiffCore
 
 /*
  * Code related to starting up the app in different ways.
@@ -117,7 +118,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             firstly {
                 NotificationManager.shared.unregisterDevice()
             }.done {
-                Seed.delete()
+                Seed.delete(includeSeed: true)
                 Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             }.catchLog("Failed to purge keychain on launch")
         }

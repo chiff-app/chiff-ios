@@ -7,6 +7,7 @@
 
 import Foundation
 import OneTimePassword
+import ChiffCore
 
 /// A team account in the context of a team. Not to be confused with a shared account, which is the team account in the context of the team member.
 struct TeamAccount: BaseAccount {

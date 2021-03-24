@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ChiffCore
 
 /// A team role.
 struct TeamRole: Codable, AccessControllable {

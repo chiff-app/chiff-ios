@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import PromiseKit
+import ChiffCore
 
 struct PushNotifications {
 

@@ -9,6 +9,7 @@ import UIKit
 import LocalAuthentication
 import AuthenticationServices
 import PromiseKit
+import ChiffCore
 
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var touchIDButton: UIButton!
