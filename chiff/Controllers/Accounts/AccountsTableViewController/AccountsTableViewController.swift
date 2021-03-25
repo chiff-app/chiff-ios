@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import ChiffCore
 
 enum Filters: Int {
     case all

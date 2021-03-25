@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import LocalAuthentication
+import ChiffCore
 
 enum CameraError: Error {
     case noCamera

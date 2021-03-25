@@ -7,6 +7,7 @@
 
 import AuthenticationServices
 import LocalAuthentication
+import ChiffCore
 
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
 

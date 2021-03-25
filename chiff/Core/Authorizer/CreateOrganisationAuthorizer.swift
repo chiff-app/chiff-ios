@@ -7,6 +7,7 @@
 
 import LocalAuthentication
 import PromiseKit
+import ChiffCore
 
 class CreateOrganisationAuthorizer: Authorizer {
     var session: BrowserSession

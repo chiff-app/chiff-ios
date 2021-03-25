@@ -9,6 +9,7 @@ import UIKit
 import OneTimePassword
 import Base32
 import PromiseKit
+import ChiffCore
 
 enum OTPError: Error {
     case invalidSecret

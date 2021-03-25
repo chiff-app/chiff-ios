@@ -9,6 +9,7 @@ import UIKit
 import LocalAuthentication
 import OneTimePassword
 import PromiseKit
+import ChiffCore
 
 class RequestViewController: UIViewController {
 

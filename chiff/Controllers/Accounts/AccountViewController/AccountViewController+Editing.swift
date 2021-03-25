@@ -10,6 +10,7 @@ import MBProgressHUD
 import OneTimePassword
 import QuartzCore
 import PromiseKit
+import ChiffCore
 
 extension AccountViewController {
 

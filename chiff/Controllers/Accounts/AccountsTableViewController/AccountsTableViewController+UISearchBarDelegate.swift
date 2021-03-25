@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 extension AccountsTableViewController: UISearchBarDelegate {
 

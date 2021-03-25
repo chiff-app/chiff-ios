@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import ChiffCore
 
 protocol AccessControlDelegate: AnyObject {
     func setObjects(objects: [AccessControllable], type: AccessControlType)

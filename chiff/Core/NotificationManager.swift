@@ -8,6 +8,7 @@
 import UIKit
 import PromiseKit
 import DeviceCheck
+import ChiffCore
 
 /// Handles registration of the device at the back-end
 struct NotificationManager {

@@ -10,14 +10,10 @@ import AVFoundation
 import LocalAuthentication
 import OneTimePassword
 import PromiseKit
+import ChiffCore
 
 protocol PairControllerDelegate: AnyObject {
     func sessionCreated(session: Session)
-}
-
-protocol PairContainerDelegate: AnyObject {
-    func startLoading()
-    func finishLoading()
 }
 
 enum URLError: Error {

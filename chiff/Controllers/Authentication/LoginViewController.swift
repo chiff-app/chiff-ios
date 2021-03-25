@@ -8,6 +8,7 @@
 import UIKit
 import LocalAuthentication
 import PromiseKit
+import ChiffCore
 
 class LoginViewController: UIViewController {
 
@@ -73,7 +74,7 @@ class LoginViewController: UIViewController {
         _ = BrowserSession.deleteAll()
         TeamSession.purgeSessionDataFromKeychain()
         UserAccount.deleteAll()
-        Seed.delete()
+        Seed.delete(includeSeed: true)
         _ = NotificationManager.shared.unregisterDevice()
         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
         AppDelegate.shared.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")

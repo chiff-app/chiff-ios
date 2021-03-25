@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 /// Clears copied password from clipboard after a specified time.
 class PasteboardService: NSObject, UIApplicationDelegate {
