@@ -138,9 +138,6 @@
 		49B2A8F925432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8F825432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift */; };
 		49B2A90525432A5F001BA6EE /* AccountsTableViewController+UIPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A90425432A5F001BA6EE /* AccountsTableViewController+UIPickerView.swift */; };
 		49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91025432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift */; };
-		49B2A91925432CD2001BA6EE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91825432CD2001BA6EE /* UIExtensions.swift */; };
-		49B2A92625432E75001BA6EE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91825432CD2001BA6EE /* UIExtensions.swift */; };
-		49B2A92C25432E76001BA6EE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91825432CD2001BA6EE /* UIExtensions.swift */; };
 		49B2A93B25433478001BA6EE /* TeamSessionKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */; };
 		49B2A955254334ED001BA6EE /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
 		49B2A956254334ED001BA6EE /* TeamRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968695A2421046200B9BEE9 /* TeamRole.swift */; };
@@ -156,6 +153,9 @@
 		49B2A97A25434608001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
+		49CEB504260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
+		49CEB505260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
+		49CEB506260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
 		49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */; };
 		49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2FE0A22D390B3001AA622 /* ProductIds.plist */; };
@@ -325,11 +325,11 @@
 		49B2A8F825432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTableViewController+UITableViewDataSource.swift"; sourceTree = "<group>"; };
 		49B2A90425432A5F001BA6EE /* AccountsTableViewController+UIPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTableViewController+UIPickerView.swift"; sourceTree = "<group>"; };
 		49B2A91025432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTableViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
-		49B2A91825432CD2001BA6EE /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSessionKeys.swift; sourceTree = "<group>"; };
 		49B2A973254345F3001BA6EE /* Team+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Creation.swift"; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		49CEB503260CC50900FEF356 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccountViewController.swift; sourceTree = "<group>"; };
 		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
@@ -528,9 +528,9 @@
 			children = (
 				49F2A0F422142EB900429875 /* Extensions.swift */,
 				498B6045260B9DE5009259E8 /* Constants.swift */,
+				49CEB503260CC50900FEF356 /* Properties.swift */,
 				498B6035260B9A0D009259E8 /* ChiffLogger.swift */,
 				498B603D260B9A14009259E8 /* Localizer.swift */,
-				49B2A91825432CD2001BA6EE /* UIExtensions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1134,7 +1134,7 @@
 				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
 				49B2A96C2543350A001BA6EE /* TeamSessionKeys.swift in Sources */,
 				49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */,
-				49B2A92625432E75001BA6EE /* UIExtensions.swift in Sources */,
+				49CEB505260CC50900FEF356 /* Properties.swift in Sources */,
 				498B6037260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49B2A956254334ED001BA6EE /* TeamRole.swift in Sources */,
 				49B2A96A25433506001BA6EE /* Team.swift in Sources */,
@@ -1150,6 +1150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
+				49CEB504260CC50900FEF356 /* Properties.swift in Sources */,
 				49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */,
 				49F45E882424DBA30080B248 /* ChiffTableViewController.swift in Sources */,
 				490D96362445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift in Sources */,
@@ -1159,7 +1160,6 @@
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
-				49B2A91925432CD2001BA6EE /* UIExtensions.swift in Sources */,
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
@@ -1265,7 +1265,6 @@
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
-				49B2A92C25432E76001BA6EE /* UIExtensions.swift in Sources */,
 				49B2A957254334EF001BA6EE /* TeamUser.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */,
 				498B6040260B9A14009259E8 /* Localizer.swift in Sources */,
@@ -1275,6 +1274,7 @@
 				49B2A96D2543350B001BA6EE /* TeamSessionKeys.swift in Sources */,
 				4904A76C25558C500086787D /* AccountTableViewCell.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
+				49CEB506260CC50900FEF356 /* Properties.swift in Sources */,
 				49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
 			);

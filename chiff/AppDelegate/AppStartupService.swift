@@ -24,15 +24,13 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // AuthenticationGuard and Logger must be initialized first
-        Logger.shared = ChiffLogger()
+        ChiffCore.initialize(logger: ChiffLogger(), localizer: ChiffLocalizer())
         _ = AuthenticationGuard.shared
 
         UIFixes()
 
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
-
-        Date.sync()
 
         // Start listening for password change notifications
         QueueHandler.shared.start()
