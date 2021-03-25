@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 import Down
+import ChiffCore
 
 class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 protocol Localizable {
     var localized: String { get }

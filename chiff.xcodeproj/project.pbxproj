@@ -48,7 +48,6 @@
 		4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF212540371A00CEFDE9 /* TrustKit */; };
 		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
 		4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF432540395C00CEFDE9 /* PromiseKit */; };
-		4941AF4C2540399F00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF4B2540399F00CEFDE9 /* DataCompression */; };
 		4941AF5425403A5B00CEFDE9 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF5325403A5B00CEFDE9 /* Down */; };
 		4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF5B25403AA600CEFDE9 /* MBProgressHUD */; };
 		4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6A25403C2A00CEFDE9 /* FirebaseCore */; };
@@ -56,13 +55,11 @@
 		4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6E25403C2A00CEFDE9 /* TrustKit */; };
 		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
 		4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7425403C2A00CEFDE9 /* PromiseKit */; };
-		4941AF7725403C2A00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7625403C2A00CEFDE9 /* DataCompression */; };
 		4941AF7B25403C3E00CEFDE9 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7A25403C3E00CEFDE9 /* FirebaseCore */; };
 		4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */; };
 		4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7E25403C3E00CEFDE9 /* TrustKit */; };
 		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
 		4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8425403C3E00CEFDE9 /* PromiseKit */; };
-		4941AF8725403C3E00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8625403C3E00CEFDE9 /* DataCompression */; };
 		4941AF8925403C3E00CEFDE9 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8825403C3E00CEFDE9 /* MBProgressHUD */; };
 		4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9225403DCF00CEFDE9 /* OneTimePassword */; };
 		4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9925403E0200CEFDE9 /* OneTimePassword */; };
@@ -70,9 +67,6 @@
 		4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFA32540423200CEFDE9 /* PMKFoundation */; };
 		4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAA2540425700CEFDE9 /* PMKFoundation */; };
 		4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAC2540425F00CEFDE9 /* PMKFoundation */; };
-		4941AFFB25406C1600CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFFA25406C1600CEFDE9 /* Kronos */; };
-		4941B00225406C3200CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00125406C3200CEFDE9 /* Kronos */; };
-		4941B00925406C3E00CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00825406C3E00CEFDE9 /* Kronos */; };
 		4943101025B9EE0D0097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943100F25B9EE0D0097D917 /* Sodium */; };
 		4943101625B9EE4D0097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943101525B9EE4D0097D917 /* Sodium */; };
 		4943101825B9EE550097D917 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4943101725B9EE550097D917 /* Sodium */; };
@@ -110,9 +104,9 @@
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
-		498B6036260B9A0D009259E8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* Logger.swift */; };
-		498B6037260B9A0D009259E8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* Logger.swift */; };
-		498B6038260B9A0D009259E8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* Logger.swift */; };
+		498B6036260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
+		498B6037260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
+		498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
 		498B603E260B9A14009259E8 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B603D260B9A14009259E8 /* Localizer.swift */; };
 		498B603F260B9A14009259E8 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B603D260B9A14009259E8 /* Localizer.swift */; };
 		498B6040260B9A14009259E8 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B603D260B9A14009259E8 /* Localizer.swift */; };
@@ -307,7 +301,7 @@
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
-		498B6035260B9A0D009259E8 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		498B6035260B9A0D009259E8 /* ChiffLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChiffLogger.swift; sourceTree = "<group>"; };
 		498B603D260B9A14009259E8 /* Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		498B6045260B9DE5009259E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		498FF17B22B0F3490072C3AE /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
@@ -377,7 +371,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4941B00225406C3200CEFDE9 /* Kronos in Frameworks */,
 				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */,
 				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
@@ -386,7 +379,6 @@
 				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
 				49B26B56260B961000B713B9 /* ChiffCore in Frameworks */,
 				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
-				4941AF7725403C2A00CEFDE9 /* DataCompression in Frameworks */,
 				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,7 +387,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4941AFFB25406C1600CEFDE9 /* Kronos in Frameworks */,
 				49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */,
 				4941AF5425403A5B00CEFDE9 /* Down in Frameworks */,
 				4941AF1A2540365B00CEFDE9 /* FirebaseCore in Frameworks */,
@@ -403,7 +394,6 @@
 				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
 				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
-				4941AF4C2540399F00CEFDE9 /* DataCompression in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */,
 				4943101025B9EE0D0097D917 /* Sodium in Frameworks */,
@@ -428,10 +418,8 @@
 				4941AF7B25403C3E00CEFDE9 /* FirebaseCore in Frameworks */,
 				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
 				4941AF8925403C3E00CEFDE9 /* MBProgressHUD in Frameworks */,
-				4941AF8725403C3E00CEFDE9 /* DataCompression in Frameworks */,
 				49B26B54260B960600B713B9 /* ChiffCore in Frameworks */,
 				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
-				4941B00925406C3E00CEFDE9 /* Kronos in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
 				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
@@ -540,7 +528,7 @@
 			children = (
 				49F2A0F422142EB900429875 /* Extensions.swift */,
 				498B6045260B9DE5009259E8 /* Constants.swift */,
-				498B6035260B9A0D009259E8 /* Logger.swift */,
+				498B6035260B9A0D009259E8 /* ChiffLogger.swift */,
 				498B603D260B9A14009259E8 /* Localizer.swift */,
 				49B2A91825432CD2001BA6EE /* UIExtensions.swift */,
 			);
@@ -806,10 +794,8 @@
 				4941AF6E25403C2A00CEFDE9 /* TrustKit */,
 				4941AF7025403C2A00CEFDE9 /* Amplitude */,
 				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
-				4941AF7625403C2A00CEFDE9 /* DataCompression */,
 				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
 				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
-				4941B00125406C3200CEFDE9 /* Kronos */,
 				4943101525B9EE4D0097D917 /* Sodium */,
 				49B26B55260B961000B713B9 /* ChiffCore */,
 			);
@@ -841,12 +827,10 @@
 				4941AF212540371A00CEFDE9 /* TrustKit */,
 				4941AF292540377300CEFDE9 /* Amplitude */,
 				4941AF432540395C00CEFDE9 /* PromiseKit */,
-				4941AF4B2540399F00CEFDE9 /* DataCompression */,
 				4941AF5325403A5B00CEFDE9 /* Down */,
 				4941AF5B25403AA600CEFDE9 /* MBProgressHUD */,
 				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
 				4941AFA32540423200CEFDE9 /* PMKFoundation */,
-				4941AFFA25406C1600CEFDE9 /* Kronos */,
 				4943100F25B9EE0D0097D917 /* Sodium */,
 				49B26B4D260B95CE00B713B9 /* ChiffCore */,
 			);
@@ -892,11 +876,9 @@
 				4941AF7E25403C3E00CEFDE9 /* TrustKit */,
 				4941AF8025403C3E00CEFDE9 /* Amplitude */,
 				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
-				4941AF8625403C3E00CEFDE9 /* DataCompression */,
 				4941AF8825403C3E00CEFDE9 /* MBProgressHUD */,
 				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
 				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
-				4941B00825406C3E00CEFDE9 /* Kronos */,
 				4943101725B9EE550097D917 /* Sodium */,
 				49B26B53260B960600B713B9 /* ChiffCore */,
 			);
@@ -991,12 +973,10 @@
 				4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */,
 				4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
 				4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */,
 				4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */,
 				4941AF5A25403AA600CEFDE9 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
-				4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */,
 				4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */,
 				49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */,
 			);
@@ -1155,7 +1135,7 @@
 				49B2A96C2543350A001BA6EE /* TeamSessionKeys.swift in Sources */,
 				49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */,
 				49B2A92625432E75001BA6EE /* UIExtensions.swift in Sources */,
-				498B6037260B9A0D009259E8 /* Logger.swift in Sources */,
+				498B6037260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49B2A956254334ED001BA6EE /* TeamRole.swift in Sources */,
 				49B2A96A25433506001BA6EE /* Team.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
@@ -1192,7 +1172,7 @@
 				49B2A8F2254328A4001BA6EE /* AccountViewController+Teams.swift in Sources */,
 				4931BC56254190B70015277D /* CreateOrganisationAuthorizer.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
-				498B6036260B9A0D009259E8 /* Logger.swift in Sources */,
+				498B6036260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49B2A93B25433478001BA6EE /* TeamSessionKeys.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				496869412421008500B9BEE9 /* TeamAccount.swift in Sources */,
@@ -1278,7 +1258,7 @@
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				49B2A96425433502001BA6EE /* TeamAccount.swift in Sources */,
-				498B6038260B9A0D009259E8 /* Logger.swift in Sources */,
+				498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
 				498B6048260B9DE5009259E8 /* Constants.swift in Sources */,
 				49B2A958254334EF001BA6EE /* TeamRole.swift in Sources */,
@@ -1831,14 +1811,6 @@
 				minimumVersion = 6.13.3;
 			};
 		};
-		4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mw99/DataCompression.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.6.0;
-			};
-		};
 		4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iwasrobbed/Down.git";
@@ -1869,14 +1841,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.3.4;
-			};
-		};
-		4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lyft/Kronos.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.1;
 			};
 		};
 		4943100E25B9EE0C0097D917 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
@@ -1923,11 +1887,6 @@
 			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
 		};
-		4941AF4B2540399F00CEFDE9 /* DataCompression */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
-			productName = DataCompression;
-		};
 		4941AF5325403A5B00CEFDE9 /* Down */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */;
@@ -1963,11 +1922,6 @@
 			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
 		};
-		4941AF7625403C2A00CEFDE9 /* DataCompression */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
-			productName = DataCompression;
-		};
 		4941AF7A25403C3E00CEFDE9 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -1992,11 +1946,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
-		};
-		4941AF8625403C3E00CEFDE9 /* DataCompression */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
-			productName = DataCompression;
 		};
 		4941AF8825403C3E00CEFDE9 /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -2032,21 +1981,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
 			productName = PMKFoundation;
-		};
-		4941AFFA25406C1600CEFDE9 /* Kronos */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
-			productName = Kronos;
-		};
-		4941B00125406C3200CEFDE9 /* Kronos */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
-			productName = Kronos;
-		};
-		4941B00825406C3E00CEFDE9 /* Kronos */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
-			productName = Kronos;
 		};
 		4943100F25B9EE0D0097D917 /* Sodium */ = {
 			isa = XCSwiftPackageProductDependency;
