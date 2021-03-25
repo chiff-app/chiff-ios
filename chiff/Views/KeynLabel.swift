@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 @IBDesignable class KeynLabel: UILabel, XIBLocalizable {
 
@@ -39,16 +40,6 @@ import UIKit
         }
     }
 
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        sharedInit()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        sharedInit()
-//    }
-//
     override func prepareForInterfaceBuilder() {
         decorate()
     }

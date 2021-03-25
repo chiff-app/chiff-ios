@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import ChiffCore
 
 enum TeamError: Error {
     case inconsistent
@@ -113,4 +114,17 @@ struct Team {
         return (teamEncryptionKey, teamKeyPair, teamPasswordSeed)
     }
 
+}
+
+extension TeamSession {
+
+    /// Get an instance of the `Team` that corresponds to this session.
+    /// - Returns: A Promise of the `Team`.
+    func getTeam() -> Promise<Team> {
+        return firstly {
+            getTeamSeed()
+        }.then { seed in
+            Team.get(id: self.teamId, seed: seed)
+        }
+    }
 }

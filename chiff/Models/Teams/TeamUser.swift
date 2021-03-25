@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ChiffCore
 
 /// A team user.
 struct TeamUser: Codable, AccessControllable {

@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/amplitude/Amplitude-iOS.git",
         "state": {
           "branch": null,
-          "revision": "4f6c93759068225549b4b3fc614a036bfa958a75",
-          "version": "7.2.2"
+          "revision": "b8fd7cce6708fe49b7d07c0a777b72f231b4b919",
+          "version": "7.3.0"
         }
       },
       {
@@ -34,6 +34,15 @@
         "state": {
           "branch": null,
           "revision": "897ffb6fbb5a5ea149216d664ce8b04d77e3df22",
+          "version": null
+        }
+      },
+      {
+        "package": "ChiffCore",
+        "repositoryURL": "/Users/bas/Projects/keyn/ChiffCore",
+        "state": {
+          "branch": "dev",
+          "revision": "9d8dee929df66a6b826dc4f976d413cd3c625c51",
           "version": null
         }
       },
@@ -60,8 +69,8 @@
         "repositoryURL": "https://github.com/iwasrobbed/Down.git",
         "state": {
           "branch": null,
-          "revision": "731f6bbab24ab208ea2d6a944e3f8a8a9d5273c7",
-          "version": "0.9.4"
+          "revision": "0bcd20dc56ad7fd47bbb99a1d2302a8bfa43b6d0",
+          "version": "0.10.0"
         }
       },
       {
@@ -105,8 +114,8 @@
         "repositoryURL": "https://github.com/lyft/Kronos.git",
         "state": {
           "branch": null,
-          "revision": "fca6a28088028c709df921307032ccb7fcab4bc0",
-          "version": "4.1.1"
+          "revision": "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
+          "version": "4.2.1"
         }
       },
       {

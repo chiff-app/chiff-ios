@@ -9,14 +9,14 @@ import Foundation
 import FirebaseCrashlytics
 import Amplitude
 import FirebaseCore
+import ChiffCore
 
-struct Logger {
+struct ChiffLogger: LoggerProtocol {
 
-    static let shared = Logger()
     private let crashlytics = Crashlytics.crashlytics()
     private let amplitude = Amplitude.instance()
 
-    private init() {
+    init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         amplitude.initializeApiKey(Properties.amplitudeToken)

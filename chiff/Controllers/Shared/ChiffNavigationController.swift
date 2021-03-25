@@ -1,5 +1,5 @@
 //
-//  ChiffNavigationController.swift
+//  chiffNavigationController.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md

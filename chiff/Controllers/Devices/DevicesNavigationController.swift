@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 class DevicesNavigationController: UINavigationController {
     override func viewDidLoad() {
