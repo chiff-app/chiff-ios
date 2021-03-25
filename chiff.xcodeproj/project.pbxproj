@@ -12,19 +12,10 @@
 		013438CD220C583F000685B2 /* PasteboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438CC220C583F000685B2 /* PasteboardService.swift */; };
 		0153C8B222119276001B6853 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0153C8B122119276001B6853 /* ErrorViewController.swift */; };
 		0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155742A202B173F00F97DA2 /* TestHelper.swift */; };
-		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
-		4240A4072325EAB4002EBD4E /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4062325EAB4002EBD4E /* SeedTests.swift */; };
-		4240A4092325EAC2002EBD4E /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4082325EAC2002EBD4E /* AccountTests.swift */; };
-		42481A4823293ADE00EA3C3C /* PPDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42481A4723293ADD00EA3C3C /* PPDTests.swift */; };
-		42481A4A23293AE600EA3C3C /* samplePPD.json in Resources */ = {isa = PBXBuildFile; fileRef = 42481A4923293AE600EA3C3C /* samplePPD.json */; };
-		42481A4E23294F7B00EA3C3C /* questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 42481A4D23294F7B00EA3C3C /* questionnaire.json */; };
-		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
 		4275BC2323D898090060506D /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275BC2223D898090060506D /* SessionDetailViewController.swift */; };
 		428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D22321ACBA00DC70DF /* KeychainTests.swift */; };
 		42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */; };
-		42F203A42327E52A00F7B62E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F203A32327E52A00F7B62E /* SessionTests.swift */; };
 		4904A76C25558C500086787D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
-		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
 		49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49057730221AE04B006D98C0 /* AuthorizationGuard.swift */; };
 		4905E09B230ECD3B00EE380E /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
 		490D96362445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */; };
@@ -118,7 +109,6 @@
 		497C85E22315737100DC4F91 /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 497C85DD2315737100DC4F91 /* Request.storyboard */; };
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
-		49848D462587B0A400B400AB /* sampleRedirectPPD.json in Resources */ = {isa = PBXBuildFile; fileRef = 49848D452587B0A400B400AB /* sampleRedirectPPD.json */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
 		498B6036260B9A0D009259E8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* Logger.swift */; };
 		498B6037260B9A0D009259E8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* Logger.swift */; };
@@ -136,7 +126,6 @@
 		4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */; };
 		4995D48D23995CF900267E6A /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48C23995CF900267E6A /* PushNotificationViewController.swift */; };
 		4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */; };
-		49983445232131680007BF12 /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49983444232131680007BF12 /* MockAPI.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49AC6E7723604BDC0010AC32 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC6E7623604BDC0010AC32 /* PushNotifications.swift */; };
 		49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
@@ -195,8 +184,6 @@
 		49F6F23323EDA60D0093AD56 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
-		611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */; };
-		611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */; };
 		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
 		611F4B512146B47300B35A89 /* chiffCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -258,17 +245,9 @@
 		013438CC220C583F000685B2 /* PasteboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardService.swift; sourceTree = "<group>"; };
 		0153C8B122119276001B6853 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		0155742A202B173F00F97DA2 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
-		01B79AEE202C8E8000425BD5 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
-		4240A4062325EAB4002EBD4E /* SeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
-		4240A4082325EAC2002EBD4E /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
-		42481A4723293ADD00EA3C3C /* PPDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPDTests.swift; sourceTree = "<group>"; };
-		42481A4923293AE600EA3C3C /* samplePPD.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = samplePPD.json; sourceTree = "<group>"; };
-		42481A4D23294F7B00EA3C3C /* questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = questionnaire.json; sourceTree = "<group>"; };
-		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		4275BC2223D898090060506D /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		428178D22321ACBA00DC70DF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsPickerButton.swift; sourceTree = "<group>"; };
-		42F203A32327E52A00F7B62E /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
 		4905E09A230ECD3B00EE380E /* KeynLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynLabel.swift; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -294,10 +273,8 @@
 		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
 		4931BC55254190B70015277D /* CreateOrganisationAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrganisationAuthorizer.swift; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
-		4933536D230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/wordlist.txt; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		494AA2AF24266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/privacy_policy.md; sourceTree = "<group>"; };
-		494AA2B024266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/wordlist.txt; sourceTree = "<group>"; };
 		494AA2B124266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = en; path = en.lproj/Localized.yml; sourceTree = "<group>"; };
 		494AA2B324266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		4950262D22BBA2DC00545118 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
@@ -329,7 +306,6 @@
 		497C85DD2315737100DC4F91 /* Request.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
-		49848D452587B0A400B400AB /* sampleRedirectPPD.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleRedirectPPD.json; sourceTree = "<group>"; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
 		498B6035260B9A0D009259E8 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		498B603D260B9A14009259E8 /* Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
@@ -341,7 +317,6 @@
 		4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartInitialisationViewController.swift; sourceTree = "<group>"; };
 		4995D48C23995CF900267E6A /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
 		4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
-		49983444232131680007BF12 /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49AC6E7623604BDC0010AC32 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
@@ -380,8 +355,6 @@
 		49F6F23223EDA60D0093AD56 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
-		611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidatorTests.swift; sourceTree = "<group>"; };
 		611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = chiffCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		611F4B4D2146B47300B35A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -491,17 +464,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4240A4052325EAB4002EBD4E /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				42481A4723293ADD00EA3C3C /* PPDTests.swift */,
-				4240A4082325EAC2002EBD4E /* AccountTests.swift */,
-				4240A4062325EAB4002EBD4E /* SeedTests.swift */,
-				42F203A32327E52A00F7B62E /* SessionTests.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		4919DAE520123FE50048B060 /* chiffNotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,16 +533,6 @@
 				490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		495398F223298BA200567044 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				42481A4D23294F7B00EA3C3C /* questionnaire.json */,
-				42481A4923293AE600EA3C3C /* samplePPD.json */,
-				49848D452587B0A400B400AB /* sampleRedirectPPD.json */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		495E72B9221186DA003132ED /* Util */ = {
@@ -718,11 +670,8 @@
 		49E766691F7E6F420022C042 /* chiffTests */ = {
 			isa = PBXGroup;
 			children = (
-				495398F223298BA200567044 /* Resources */,
-				4240A4052325EAB4002EBD4E /* Models */,
 				611733D2215D06D900F37B2A /* Core */,
 				0155742A202B173F00F97DA2 /* TestHelper.swift */,
-				49983444232131680007BF12 /* MockAPI.swift */,
 				49E7666C1F7E6F420022C042 /* Info.plist */,
 			);
 			path = chiffTests;
@@ -755,7 +704,6 @@
 				49235FF823152686003C4A0F /* WebView.bundle */,
 				49235FF523151BC3003C4A0F /* privacy_policy.md */,
 				49236002231534F2003C4A0F /* terms_of_use.md */,
-				4905772D2215BA5C006D98C0 /* wordlist.txt */,
 				4967F424225CC7100069330D /* Localized.yml */,
 				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
 				49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */,
@@ -805,10 +753,6 @@
 		611733D2215D06D900F37B2A /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				01B79AEE202C8E8000425BD5 /* CryptoTests.swift */,
-				611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */,
-				611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */,
-				42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */,
 				428178D22321ACBA00DC70DF /* KeychainTests.swift */,
 			);
 			path = Core;
@@ -1085,7 +1029,6 @@
 				49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */,
 				497C85E22315737100DC4F91 /* Request.storyboard in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
-				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
@@ -1104,9 +1047,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49848D462587B0A400B400AB /* sampleRedirectPPD.json in Resources */,
-				42481A4A23293AE600EA3C3C /* samplePPD.json in Resources */,
-				42481A4E23294F7B00EA3C3C /* questionnaire.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1325,17 +1265,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42481A4823293ADE00EA3C3C /* PPDTests.swift in Sources */,
-				42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */,
-				611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */,
-				01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */,
-				42F203A42327E52A00F7B62E /* SessionTests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
-				49983445232131680007BF12 /* MockAPI.swift in Sources */,
-				611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */,
 				428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */,
-				4240A4072325EAB4002EBD4E /* SeedTests.swift in Sources */,
-				4240A4092325EAC2002EBD4E /* AccountTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1390,15 +1321,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		4905772D2215BA5C006D98C0 /* wordlist.txt */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4933536D230D8D0600549DA5 /* nl */,
-				494AA2B024266A400068FD46 /* en */,
-			);
-			name = wordlist.txt;
-			sourceTree = "<group>";
-		};
 		49191EE5239AA2430034EEE7 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
