@@ -38,15 +38,6 @@
         }
       },
       {
-        "package": "ChiffCore",
-        "repositoryURL": "/Users/bas/Projects/keyn/ChiffCore",
-        "state": {
-          "branch": "dev",
-          "revision": "9d8dee929df66a6b826dc4f976d413cd3c625c51",
-          "version": null
-        }
-      },
-      {
         "package": "Clibsodium",
         "repositoryURL": "https://github.com/junelife/clibsodium-xcframework",
         "state": {
