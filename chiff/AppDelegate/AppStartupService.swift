@@ -9,7 +9,6 @@ import LocalAuthentication
 import UIKit
 import UserNotifications
 import PromiseKit
-import Kronos
 import ChiffCore
 
 /*
@@ -25,7 +24,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // AuthenticationGuard and Logger must be initialized first
-        _ = Logger.shared
+        Logger.shared = ChiffLogger()
         _ = AuthenticationGuard.shared
 
         UIFixes()
@@ -33,7 +32,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
 
-        Clock.sync()
+        Date.sync()
 
         // Start listening for password change notifications
         QueueHandler.shared.start()

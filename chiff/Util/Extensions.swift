@@ -11,6 +11,7 @@ import OneTimePassword
 import Amplitude
 import PromiseKit
 import ChiffCore
+import Kronos
 
 extension Amplitude {
     func set(userProperties: [AnalyticsUserProperty: Any]) {

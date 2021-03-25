@@ -60,7 +60,7 @@ extension Properties {
         get { return SortingValue(rawValue: UserDefaults.standard.integer(forKey: sortingPreferenceFlag)) ?? SortingValue.alphabetically }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: sortingPreferenceFlag) }
     }
-    
+
     /// Notification identifiers nudges.
     static let nudgeNotificationIdentifiers = [
         "io.keyn.keyn.first_nudge",
