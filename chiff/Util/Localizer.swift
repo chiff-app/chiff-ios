@@ -8,18 +8,7 @@
 import UIKit
 import ChiffCore
 
-protocol Localizable {
-    var localized: String { get }
-    func attributedLocalized(color: UIColor) -> NSAttributedString
-}
-
-protocol XIBLocalizable {
-    var localizationKey: String? { get set }
-}
-
-private class Localizer {
-
-    static let shared = Localizer()
+class ChiffLocalizer: LocalizerProtocol {
 
     lazy var localizableDictionary: NSDictionary! = {
         #if !TARGET_INTERFACE_BUILDER
