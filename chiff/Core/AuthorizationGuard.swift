@@ -95,6 +95,8 @@ extension AuthorizationGuard {
             return try WebAuthnRegistrationAuthorizer(request: request, session: session)
         case .webauthnLogin:
             return try WebAuthnLoginAuthorizer(request: request, session: session)
+        case .addWebauthnToExisting:
+            return try AddWebAuthnToExistingAuthorizer(request: request, session: session)
         case .updateAccount:
             return try UpdateAccountAuthorizer(request: request, session: session)
         case .createOrganisation:
