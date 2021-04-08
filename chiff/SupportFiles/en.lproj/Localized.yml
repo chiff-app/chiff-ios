@@ -625,6 +625,15 @@ popups:
       comment: 'yes'
       value: 'yes'
 requests:
+  authorize_credential_disclosure:
+    allow:
+      value: 'Yes'
+    deny:
+      value: 'No'
+    message:
+      value: 'You have an account for %@, do you want the website to know this?'
+    title:
+      value: Account exists
   create_team:
     value: Create team
   create_this:

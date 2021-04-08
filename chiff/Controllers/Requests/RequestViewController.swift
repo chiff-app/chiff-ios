@@ -92,8 +92,8 @@ class RequestViewController: UIViewController {
             }
         }.ensure {
             AuthorizationGuard.shared.authorizationInProgress = false
-        }.done(on: .main) { account in
             self.activityIndicator.stopAnimating()
+        }.done(on: .main) { account in
             self.progressLabel.isHidden = true
             if var account = account {
                 account.increaseUse()
@@ -107,9 +107,33 @@ class RequestViewController: UIViewController {
             } else {
                 self.success()
             }
+        }.recover(on: .main) { (error) -> Guarantee<Void> in
+            guard let errorResponse = error as? ChiffErrorResponse else {
+                throw error
+            }
+            return self.handleChiffErrorResponse(error: errorResponse, siteName: "TODO")
         }.catch(on: .main) { error in
-            self.activityIndicator.stopAnimating()
             self.handleError(error: error)
+            _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+        }
+    }
+
+    private func handleChiffErrorResponse(error: ChiffErrorResponse, siteName: String) -> Guarantee<Void> {
+        return Guarantee<ChiffErrorResponse> { seal in
+            let alert = UIAlertController(title: "requests.authorize_credential_disclosure.title".localized,
+                                          message: String(format: "requests.authorize_credential_disclosure.message".localized, siteName),
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.allow".localized, style: .default) { _ in
+                seal(.discloseAccountExists)
+            })
+            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.deny".localized, style: .cancel) { _ in
+                seal(.accountExists)
+            })
+            self.present(alert, animated: true, completion: nil)
+        }.then { response in
+            return self.authorizer.cancelRequest(reason: .error, error: response)
+        }.map {
+            self.dismiss()
         }
     }
 
