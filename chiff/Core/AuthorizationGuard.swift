@@ -102,6 +102,9 @@ extension AuthorizationGuard {
         case .createOrganisation:
             return try CreateOrganisationAuthorizer(request: request, session: session)
         default:
+            if let browserTab = request.browserTab {
+                _ = session.cancelRequest(reason: .error, browserTab: browserTab, error: nil)
+            }
             throw AuthorizationError.unknownType
         }
     }

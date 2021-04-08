@@ -627,6 +627,15 @@ popups:
       comment: ja
       value: 'yes'
 requests:
+  authorize_credential_disclosure:
+    allow:
+      value: Ja
+    deny:
+      value: Nee
+    message:
+      value: 'Je hebt een account voor  %@, wil je dat laten weten aan de website?'
+    title:
+      value: Account bestaat
   create_team:
     value: Creëer team
   create_this:
