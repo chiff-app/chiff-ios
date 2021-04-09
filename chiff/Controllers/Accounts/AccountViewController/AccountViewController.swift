@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MBProgressHUD
 import OneTimePassword
 import QuartzCore
 import PromiseKit
@@ -51,6 +50,7 @@ class AccountViewController: ChiffTableViewController {
     var account: Account!
     var passwordLoaded = false
     var tap: UITapGestureRecognizer!
+    var passwordPopup: UIView? = nil
     var qrEnabled: Bool = true
     var editingMode: Bool = false
     var token: Token?
@@ -239,20 +239,50 @@ class AccountViewController: ChiffTableViewController {
         updateOTPUI()
     }
 
+    @objc func hidePasswordPopup() {
+        if let popup = self.passwordPopup {
+            UIView.transition(with: self.tableView.superview!, duration: 0.1, options: .transitionCrossDissolve) {
+                popup.isHidden = true
+            } completion: { _ in
+                popup.removeFromSuperview()
+                self.passwordPopup = nil
+            }
+        }
+    }
+
     private func showHiddenPasswordPopup(password: String) {
-        let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
-        showPasswordHUD.mode = .text
-        showPasswordHUD.bezelView.color = .black
-        showPasswordHUD.label.text = password
-        showPasswordHUD.label.textColor = .white
-        showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
-        showPasswordHUD.margin = 10
-        showPasswordHUD.label.numberOfLines = 0
-        showPasswordHUD.removeFromSuperViewOnHide = true
-        showPasswordHUD.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: showPasswordHUD,
-                action: #selector(showPasswordHUD.hide(animated:)))
-        )
+        let passwordPopup = UIView()
+        passwordPopup.backgroundColor = .primaryDark
+        passwordPopup.layer.cornerRadius = 5
+        passwordPopup.layer.masksToBounds = true
+        passwordPopup.translatesAutoresizingMaskIntoConstraints = false
+        passwordPopup.isHidden = true
+
+        let textView = UILabel()
+        textView.text = password
+        textView.font = UIFont(name: "Courier New", size: 24)
+        textView.textColor = .white
+        textView.lineBreakMode = .byCharWrapping
+        textView.numberOfLines = 0
+        textView.textAlignment = .center
+        textView.translatesAutoresizingMaskIntoConstraints = false
+
+        passwordPopup.addSubview(textView)
+        self.tableView.superview?.addSubview(passwordPopup)
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalTo: passwordPopup.topAnchor, constant: 8),
+            textView.bottomAnchor.constraint(equalTo: passwordPopup.bottomAnchor, constant: -8),
+            textView.leadingAnchor.constraint(equalTo: passwordPopup.leadingAnchor, constant: 8),
+            textView.trailingAnchor.constraint(equalTo: passwordPopup.trailingAnchor, constant: -8),
+            passwordPopup.centerYAnchor.constraint(equalTo: self.tableView.superview!.centerYAnchor),
+            passwordPopup.centerXAnchor.constraint(equalTo: self.tableView.superview!.centerXAnchor),
+            passwordPopup.leadingAnchor.constraint(greaterThanOrEqualTo: self.tableView!.leadingAnchor, constant: 32),
+            passwordPopup.trailingAnchor.constraint(greaterThanOrEqualTo: self.tableView.superview!.trailingAnchor, constant: -32)
+        ])
+        passwordPopup.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hidePasswordPopup)))
+        self.passwordPopup = passwordPopup
+        UIView.transition(with: self.tableView.superview!, duration: 0.1, options: .transitionCrossDissolve) {
+            passwordPopup.isHidden = false
+        }
     }
 }
