@@ -11,6 +11,8 @@ import ChiffCore
 extension Properties {
 
     private static let sortingPreferenceFlag = "sortingPreference"
+    private static let loginCountFlag = "loginCountFlag"
+    private static let hasBeenPromptedReviewFlag = "hasBeenPromptedReviewFlag"
     private static let deniedAutofillFlag = "deniedAutofillFlag"
 
     /// The token for amplitude.
@@ -32,6 +34,16 @@ extension Properties {
     static var sortingPreference: SortingValue {
         get { return SortingValue(rawValue: UserDefaults.standard.integer(forKey: sortingPreferenceFlag)) ?? SortingValue.alphabetically }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: sortingPreferenceFlag) }
+    }
+
+    static var loginCount: Int {
+        get { return UserDefaults.standard.integer(forKey: loginCountFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: loginCountFlag) }
+    }
+
+    static var hasBeenPromptedReview: Bool {
+        get { return UserDefaults.standard.string(forKey: hasBeenPromptedReviewFlag) == version }
+        set { UserDefaults.standard.setValue(newValue ? version : "", forKey: hasBeenPromptedReviewFlag) }
     }
 
     static var deniedAutofill: Bool {

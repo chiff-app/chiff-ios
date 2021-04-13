@@ -10,6 +10,7 @@ import LocalAuthentication
 import OneTimePassword
 import PromiseKit
 import ChiffCore
+import StoreKit
 
 class RequestViewController: UIViewController {
 
@@ -100,6 +101,9 @@ class RequestViewController: UIViewController {
                 NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
             }
             self.authenticateButton.isHidden = true
+            if self.authorizer.type == .login {
+                Properties.loginCount += 1
+            }
             if let account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
                 self.token = token
                 self.account = account
@@ -214,8 +218,15 @@ class RequestViewController: UIViewController {
         self.authorized = true
         self.showSuccessView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
-            AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
-            self.dismiss()
+            if self.authorizer.type == .login &&
+                !Properties.hasBeenPromptedReview &&
+                (Properties.loginCount % 30 == 0 || Properties.accountCount > 15) {
+                SKStoreReviewController.requestReview()
+                Properties.hasBeenPromptedReview = true
+            } else {
+                AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+                self.dismiss()
+            }
         }
     }
 

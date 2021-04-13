@@ -287,7 +287,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTI-0m-FmI" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="109.5" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="96.5" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="rma-50-tsq"/>
                                                             </constraints>
@@ -300,7 +300,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="aBY-9F-oUb" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="121.5" y="0.0" width="252.5" height="44"/>
+                                                            <rect key="frame" x="108.5" y="0.0" width="265.5" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" textContentType="organization"/>
@@ -380,7 +380,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJf-sl-XIp" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="123.5" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="XRI-ka-87L"/>
                                                             </constraints>
@@ -393,7 +393,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="kEx-9H-lCk" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="152" y="0.0" width="222" height="44"/>
+                                                            <rect key="frame" x="135.5" y="0.0" width="238.5" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" textContentType="username"/>
@@ -424,8 +424,8 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="FnL-sC-E1m">
                                                     <rect key="frame" x="20" y="0.0" width="354" height="44"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcA-YB-fo1" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="134.5" height="44"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcA-YB-fo1" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="123" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="udY-Tc-2Li"/>
                                                             </constraints>
@@ -437,8 +437,8 @@
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.password"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UjY-yl-E7J" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="146.5" y="0.0" width="207.5" height="44"/>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UjY-yl-E7J" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="135" y="0.0" width="219" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
@@ -560,31 +560,31 @@
     </scenes>
     <designables>
         <designable name="UjY-yl-E7J">
-            <size key="intrinsicContentSize" width="207.5" height="18"/>
+            <size key="intrinsicContentSize" width="185" height="17"/>
         </designable>
         <designable name="XCw-sA-dzt">
-            <size key="intrinsicContentSize" width="87" height="17.5"/>
+            <size key="intrinsicContentSize" width="77.5" height="16.5"/>
         </designable>
         <designable name="Xqo-f6-qwf">
             <size key="intrinsicContentSize" width="219" height="14"/>
         </designable>
         <designable name="aBY-9F-oUb">
-            <size key="intrinsicContentSize" width="109.5" height="19"/>
+            <size key="intrinsicContentSize" width="96.5" height="18"/>
         </designable>
         <designable name="dcA-YB-fo1">
-            <size key="intrinsicContentSize" width="136.5" height="17.5"/>
+            <size key="intrinsicContentSize" width="123" height="16.5"/>
         </designable>
         <designable name="jTI-0m-FmI">
-            <size key="intrinsicContentSize" width="109.5" height="17.5"/>
+            <size key="intrinsicContentSize" width="96.5" height="16.5"/>
         </designable>
         <designable name="kEx-9H-lCk">
-            <size key="intrinsicContentSize" width="140" height="19"/>
+            <size key="intrinsicContentSize" width="123.5" height="18"/>
         </designable>
         <designable name="mUg-wC-BHE">
-            <size key="intrinsicContentSize" width="87" height="19"/>
+            <size key="intrinsicContentSize" width="77.5" height="18"/>
         </designable>
         <designable name="tJf-sl-XIp">
-            <size key="intrinsicContentSize" width="140" height="17.5"/>
+            <size key="intrinsicContentSize" width="123.5" height="16.5"/>
         </designable>
         <designable name="z1U-Mq-NMo">
             <size key="intrinsicContentSize" width="81" height="16.5"/>
