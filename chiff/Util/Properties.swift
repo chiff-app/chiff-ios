@@ -11,6 +11,7 @@ import ChiffCore
 extension Properties {
 
     private static let sortingPreferenceFlag = "sortingPreference"
+    private static let deniedAutofillFlag = "deniedAutofillFlag"
 
     /// The token for amplitude.
     static var amplitudeToken: String {
@@ -31,6 +32,11 @@ extension Properties {
     static var sortingPreference: SortingValue {
         get { return SortingValue(rawValue: UserDefaults.standard.integer(forKey: sortingPreferenceFlag)) ?? SortingValue.alphabetically }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: sortingPreferenceFlag) }
+    }
+
+    static var deniedAutofill: Bool {
+        get { return UserDefaults.standard.bool(forKey: deniedAutofillFlag)  }
+        set { UserDefaults.standard.setValue(newValue, forKey: deniedAutofillFlag) }
     }
 
     /// Notification identifiers nudges.

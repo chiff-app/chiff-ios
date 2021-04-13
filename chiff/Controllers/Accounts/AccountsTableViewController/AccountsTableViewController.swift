@@ -8,20 +8,7 @@
 import UIKit
 import PromiseKit
 import ChiffCore
-
-enum Filters: Int {
-    case all
-    case team
-    case personal
-
-    func text() -> String {
-        switch self {
-        case .all: return "accounts.all".localized
-        case .team: return "accounts.team".localized
-        case .personal: return "accounts.personal".localized
-        }
-    }
-}
+import AuthenticationServices
 
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScrollViewDelegate {
 
@@ -35,6 +22,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     @IBOutlet weak var sortLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var buttonHeight: NSLayoutConstraint!
+    @IBOutlet weak var topButtonConstraint: NSLayoutConstraint!
+    @IBOutlet weak var enableAutofillButton: KeynButton!
 
     var sortingButton: AccountsPickerButton!
     var addAccountButton: KeynBarButton?
@@ -136,17 +126,34 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
-        } else if sender.identifier == "DeleteAccount",
-                  let sourceViewController = sender.source as? AccountViewController,
-                  let account = sourceViewController.account,
-                  let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-            let indexPath = IndexPath(row: index, section: 0)
-            deleteAccount(account: account, filteredIndexPath: indexPath)
-        } else if sender.identifier == "DeleteUserAccount", let sourceViewController = sender.source as? TeamAccountViewController,
-                  let account = sourceViewController.account,
-                  let index = filteredAccounts.firstIndex(where: { sourceViewController.account.id == $0.id && $0 is UserAccount }) {
-            let indexPath = IndexPath(row: index, section: 0)
-            deleteAccountFromTable(indexPath: indexPath, id: account.id)
+        } else {
+            switch sender.identifier {
+            case "DeleteAccount":
+                guard let sourceViewController = sender.source as? AccountViewController,
+                   let account = sourceViewController.account,
+                   let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) else {
+                    return
+                }
+                let indexPath = IndexPath(row: index, section: 0)
+                deleteAccount(account: account, filteredIndexPath: indexPath)
+            case "DeleteUserAccount":
+                guard let sourceViewController = sender.source as? TeamAccountViewController,
+                      let account = sourceViewController.account,
+                      let index = filteredAccounts.firstIndex(where: { sourceViewController.account.id == $0.id && $0 is UserAccount }) else {
+                    return
+                }
+                let indexPath = IndexPath(row: index, section: 0)
+                deleteAccountFromTable(indexPath: indexPath, id: account.id)
+            case "DenyAutofill":
+                Properties.deniedAutofill = true
+                updateUi()
+            default:
+                guard let sourceViewController = sender.source as? AddAccountViewController,
+                      let account = sourceViewController.account else {
+                    return
+                }
+                addAccount(account: account)
+            }
         }
     }
 
@@ -186,8 +193,33 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             addBarButtons()
+            func hideAutofillButton() {
+                if !self.enableAutofillButton.isHidden {
+                    self.enableAutofillButton.isHidden = true
+                    self.buttonHeight.constant = 0
+                    self.topButtonConstraint.constant = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+            guard !Properties.deniedAutofill else {
+                hideAutofillButton()
+                return
+            }
+            ASCredentialIdentityStore.shared.getState { (state) in
+                DispatchQueue.main.async {
+                    if !state.isEnabled {
+                        self.enableAutofillButton.isHidden = false
+                        self.buttonHeight.constant = 44.0
+                        self.topButtonConstraint.constant = 10.0
+                        self.view.layoutIfNeeded()
+                    } else {
+                        hideAutofillButton()
+                    }
+                }
+            }
         } else {
             navigationItem.rightBarButtonItem = nil
+            navigationItem.leftBarButtonItem = nil
             tableViewContainer.isHidden = true
             addAccountContainerView.isHidden = false
         }

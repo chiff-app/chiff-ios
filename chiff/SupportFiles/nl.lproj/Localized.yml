@@ -32,6 +32,19 @@ accounts:
     value: Alfabetisch
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
+  autofill:
+    confirm:
+      value: Ik snap het
+    deny:
+      value: Ik wil dit nooit
+    first:
+      value: Ga naar 'Wachtwoorden' in de instellingen van je telefoon.
+    second:
+      value: Kies Chiff onder 'Vul automatisch in'.
+    third:
+      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken  \U0001F389."
+    title:
+      value: Inloggen op je telefoon
   choose:
     value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
   code:
@@ -53,6 +66,8 @@ accounts:
     value: Verwijder account
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen.
+  enable_autofill:
+    value: Zet autofill aan
   enabled:
     value: Ingeschakeld
   footer:
@@ -69,6 +84,8 @@ accounts:
       Upgrade naar Chiff Premium om met alle accounts in te loggen.
   footer_unlimited:
     value: Je kunt zoveel accounts toevoegen als je wilt.
+  generate_password:
+    value: Genereer automatisch
   mode:
     value: Type
   mode_description:
@@ -521,6 +538,11 @@ notifications:
     value: Wil je inloggen bij %@?
   update_account:
     value: Wil je %@ wijzigen?
+numbers:
+  one:
+    value: '1'
+  two:
+    value: '2'
 popups:
   questions:
     agree_terms:
@@ -732,14 +754,7 @@ settings:
     value: Juridisch
   mobile:
     value: Mobiel
-  mobile_instruction_<iOS12:
-    first:
-      value: Open Chiff om in te loggen op je telefoon.
-    second:
-      value: Kopieer je wachtwoord door er op te tikken.
-    third:
-      value: Keer terug naar de website en plak je wachtwoord.
-  mobile_instruction_iOS12:
+  mobile_instruction:
     first:
       value: 'Om Chiff op je telefoon te gebruiken, moet je toestemming geven bij iOS.'
     second:

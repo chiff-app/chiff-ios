@@ -21,6 +21,20 @@ enum NotificationCategory {
     static let onboardingNudge = "ONBOARDING_NUDGE"
 }
 
+enum Filters: Int {
+    case all
+    case team
+    case personal
+
+    func text() -> String {
+        switch self {
+        case .all: return "accounts.all".localized
+        case .team: return "accounts.team".localized
+        case .personal: return "accounts.personal".localized
+        }
+    }
+}
+
 enum SortingValue: Int {
     case alphabetically
     case mostly

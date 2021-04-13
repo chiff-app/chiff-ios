@@ -9,40 +9,49 @@ import AuthenticationServices
 import LocalAuthentication
 import ChiffCore
 
-class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
+class CredentialProviderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
     var credentialExtensionContext: ASCredentialProviderExtensionContext!
-//    let searchController = UISearchController(searchResultsController: nil)
+    var serviceIdentifiers: [ASCredentialServiceIdentifier]!
+    var addAccountButton: KeynBarButton?
+    var sortingButton: AccountsPickerButton!
+    var currentFilter = Filters.all
+    var currentSortingValue = Properties.sortingPreference
+    var searchQuery = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().isTranslucent = true
-        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage =  UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primary,
-                                                             .font: UIFont.primaryBold!], for: UIControl.State.normal)
-        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
-        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
-        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
-        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
-                                                             .font: UIFont.primaryBold!], for: UIControl.State.disabled)
-
+        updateUI()
         filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         tableView.delegate = self
         tableView.dataSource = self
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.searchBarStyle = .minimal
-//        searchController.hidesNavigationBarDuringPresentation = true
-//        searchController.dimsBackgroundDuringPresentation = false
+
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-//        navigationItem.searchController = searchController
+
+        searchBar.placeholder = "accounts.search".localized
+        searchBar.setScopeBarButtonTitleTextAttributes([
+            NSAttributedString.Key.font: UIFont.primaryMediumNormal as Any,
+            NSAttributedString.Key.foregroundColor: UIColor.primary
+        ], for: .normal)
+        searchBar.scopeButtonTitles = [
+            Filters.all.text(),
+            Filters.team.text(),
+            Filters.personal.text()
+        ]
+        searchBar.delegate = self
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowAddAccount", let destination = segue.destination as? AddAccountViewController {
+            destination.credentialExtensionContext = self.credentialExtensionContext
+            destination.serviceIdentifiers = self.serviceIdentifiers
+        }
     }
 
     // MARK: - Actions
@@ -51,18 +60,8 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
     }
 
-    // MARK: - SearchController
-
-    func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
-                return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { $0.site.name < $1.site.name })
-        } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
-        }
-
-        tableView.reloadData()
+    @objc private func showAddAccount() {
+        performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
 
     // MARK: - Table view data source
@@ -103,6 +102,29 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
                 credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
             }
         }
+    }
+
+    // MARK: - Private functions
+
+    private func updateUI() {
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage =  UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                             .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
+        UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
+        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                             .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        if addAccountButton == nil {
+            addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            addAccountButton!.setImage(UIImage(named: "add_button"), for: .normal)
+        }
+        addAccountButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
     }
 
 }

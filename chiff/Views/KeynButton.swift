@@ -75,6 +75,12 @@ enum KeynButtonType: String {
 
     override func prepareForInterfaceBuilder() {
         sharedInit()
+        super.prepareForInterfaceBuilder()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = frame.size.height / 2
     }
 
     func sharedInit() {

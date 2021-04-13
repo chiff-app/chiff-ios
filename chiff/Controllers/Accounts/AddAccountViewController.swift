@@ -96,9 +96,8 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
         let siteName = siteNameField.text ?? ""
         let siteURL = siteURLField.text ?? ""
         let username = usernameField.text ?? ""
-        let password = passwordField.text ?? ""
 
-        if siteName.isEmpty || siteURL.isEmpty || username.isEmpty || password.isEmpty {
+        if siteName.isEmpty || siteURL.isEmpty || username.isEmpty {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
@@ -108,8 +107,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
     private func createAccount() {
         guard let websiteName = siteNameField.text,
            let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
-           let username = usernameField.text,
-           let password = passwordField.text else {
+           let username = usernameField.text else {
             self.showAlert(message: "errors.save_account" + ".")
             return
         }
@@ -119,7 +117,9 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
             }
             let id = url.absoluteString.lowercased().sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
-            self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
+            self.account = try UserAccount(username: username, sites: [site],
+                                           password: (passwordField.text ?? "").isEmpty ? nil : passwordField.text,
+                                           rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
             self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
             Logger.shared.analytics(.accountAddedLocal)
         } catch KeychainError.duplicateItem {

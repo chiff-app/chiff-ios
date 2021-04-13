@@ -50,7 +50,7 @@ class AccountViewController: ChiffTableViewController {
     var account: Account!
     var passwordLoaded = false
     var tap: UITapGestureRecognizer!
-    var passwordPopup: UIView? = nil
+    var passwordPopup: UIView?
     var qrEnabled: Bool = true
     var editingMode: Bool = false
     var token: Token?
