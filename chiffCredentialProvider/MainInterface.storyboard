@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G43-hy-fNq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G43-hy-fNq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -24,6 +25,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2Sf-OS-gmr">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -32,7 +34,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EUf-WC-OKE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="390" y="8"/>
+            <point key="canvasLocation" x="345" y="7"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="yWJ-Yl-xdW">
@@ -81,7 +83,8 @@
                     <connections>
                         <outlet property="requestLabel" destination="GP2-kH-lYh" id="QA5-xp-nHA"/>
                         <outlet property="touchIDButton" destination="Klg-x4-VLc" id="Tdr-Ue-OfY"/>
-                        <segue destination="ARh-Qd-XRa" kind="presentation" identifier="showAccounts" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="Ndo-uf-3nN"/>
+                        <segue destination="ARh-Qd-XRa" kind="presentation" identifier="ShowAccounts" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="Ndo-uf-3nN"/>
+                        <segue destination="bHf-CV-fbs" kind="presentation" identifier="ShowAddAccount" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="7aO-Cv-IGv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9P3-Yt-e3w" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -100,10 +103,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="vIp-NN-Owy">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="318.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="362.5"/>
                                         <subviews>
+                                            <searchBar contentMode="redraw" searchBarStyle="minimal" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSm-zN-uhM">
+                                                <rect key="frame" x="10" y="5" width="392" height="51"/>
+                                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="barTintColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <scopeButtonTitles>
+                                                    <string>Title</string>
+                                                    <string>Title</string>
+                                                </scopeButtonTitles>
+                                            </searchBar>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1U-Mq-NMo" customClass="KeynLabel" customModule="keynCredentialProvider">
-                                                <rect key="frame" x="29" y="20" width="365" height="16.5"/>
+                                                <rect key="frame" x="29" y="64" width="365" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -113,12 +126,12 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="374" placeholderIntrinsicHeight="204" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="48" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="H4U-r5-c9F" customClass="SelfSizingTableView" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="44.5" width="374" height="204"/>
+                                                <rect key="frame" x="20" y="88.5" width="374" height="204"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="AccountCell" id="Ss3-8F-m3f" customClass="AccountTableViewCell" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="28" width="374" height="48"/>
+                                                        <rect key="frame" x="0.0" y="24.5" width="374" height="48"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ss3-8F-m3f" id="YyQ-Ux-RxQ">
                                                             <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
@@ -176,7 +189,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an account to fill the credentials." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xqo-f6-qwf" customClass="KeynLabel" customModule="keynCredentialProvider">
-                                                <rect key="frame" x="22" y="254.5" width="372" height="14"/>
+                                                <rect key="frame" x="22" y="298.5" width="372" height="14"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                                 <color key="textColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -189,14 +202,17 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="H4U-r5-c9F" firstAttribute="top" secondItem="z1U-Mq-NMo" secondAttribute="bottom" constant="8" id="418-5F-ftM"/>
-                                            <constraint firstItem="z1U-Mq-NMo" firstAttribute="top" secondItem="vIp-NN-Owy" secondAttribute="top" constant="20" id="697-oP-G7p"/>
+                                            <constraint firstItem="wSm-zN-uhM" firstAttribute="top" secondItem="vIp-NN-Owy" secondAttribute="top" constant="5" id="7qs-gf-2VW"/>
                                             <constraint firstAttribute="trailing" secondItem="H4U-r5-c9F" secondAttribute="trailing" constant="20" id="ASp-TE-Tds"/>
+                                            <constraint firstItem="wSm-zN-uhM" firstAttribute="leading" secondItem="vIp-NN-Owy" secondAttribute="leading" constant="10" id="D3d-4g-a2q"/>
                                             <constraint firstItem="z1U-Mq-NMo" firstAttribute="trailing" secondItem="H4U-r5-c9F" secondAttribute="trailing" id="GdW-t9-cMJ"/>
                                             <constraint firstItem="Xqo-f6-qwf" firstAttribute="trailing" secondItem="H4U-r5-c9F" secondAttribute="trailing" id="Lmv-Te-3l6"/>
+                                            <constraint firstItem="z1U-Mq-NMo" firstAttribute="top" secondItem="wSm-zN-uhM" secondAttribute="bottom" constant="8" id="Mhd-zm-Go3"/>
                                             <constraint firstAttribute="bottom" secondItem="Xqo-f6-qwf" secondAttribute="bottom" constant="50" id="SDB-AR-lCz"/>
                                             <constraint firstItem="Xqo-f6-qwf" firstAttribute="leading" secondItem="H4U-r5-c9F" secondAttribute="leading" constant="2" id="Sr9-NP-jU6"/>
                                             <constraint firstItem="Xqo-f6-qwf" firstAttribute="top" secondItem="H4U-r5-c9F" secondAttribute="bottom" constant="6" id="fTd-Rj-1xf"/>
                                             <constraint firstItem="z1U-Mq-NMo" firstAttribute="leading" secondItem="H4U-r5-c9F" secondAttribute="leading" constant="9" id="ipb-IW-sOb"/>
+                                            <constraint firstAttribute="trailing" secondItem="wSm-zN-uhM" secondAttribute="trailing" constant="12" id="lud-OY-nEp"/>
                                             <constraint firstItem="H4U-r5-c9F" firstAttribute="leading" secondItem="vIp-NN-Owy" secondAttribute="leading" constant="20" id="tCR-mJ-p35"/>
                                         </constraints>
                                     </view>
@@ -231,7 +247,8 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="3z4-fw-WxX">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="gPT-YK-CQJ">
+                        <barButtonItem key="backBarButtonItem" title=" " id="mkq-TT-YLC"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="gPT-YK-CQJ">
                             <connections>
                                 <action selector="cancel:" destination="KYR-ng-Qeu" id="3fc-Ps-XCO"/>
                             </connections>
@@ -239,27 +256,352 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="searchBar" destination="wSm-zN-uhM" id="IFk-rU-Cjn"/>
                         <outlet property="tableView" destination="H4U-r5-c9F" id="rVc-f8-VqP"/>
+                        <segue destination="pOa-WL-RMC" kind="show" identifier="ShowAddAccount" id="Vhf-Lt-8h6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPS-XZ-t4j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1279" y="8"/>
         </scene>
+        <!--Add Account-->
+        <scene sceneID="tyO-fb-EWX">
+            <objects>
+                <tableViewController title="Add Account" id="pOa-WL-RMC" customClass="AddAccountViewController" customModule="chiffCredentialProvider" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CX7-fV-xzO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection headerTitle="Accounts details" id="PIF-Ov-EBk">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Yc8-dV-DWK">
+                                        <rect key="frame" x="0.0" y="49.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yc8-dV-DWK" id="wXJ-dq-2im">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jGA-jg-GCE">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTI-0m-FmI" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="109.5" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="rma-50-tsq"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.name"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="aBY-9F-oUb" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="121.5" y="0.0" width="252.5" height="44"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" textContentType="organization"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.name"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="jGA-jg-GCE" secondAttribute="bottom" id="81B-qT-Mev"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="jGA-jg-GCE" secondAttribute="trailing" id="9Zq-bu-NNq"/>
+                                                <constraint firstItem="jGA-jg-GCE" firstAttribute="top" secondItem="wXJ-dq-2im" secondAttribute="top" id="p2g-Ua-no0"/>
+                                                <constraint firstItem="jGA-jg-GCE" firstAttribute="leading" secondItem="wXJ-dq-2im" secondAttribute="leadingMargin" id="rsI-gJ-JCt"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="BP9-4e-Qyb">
+                                        <rect key="frame" x="0.0" y="93.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BP9-4e-Qyb" id="EyK-q5-HVm">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="aTk-c3-c7U">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCw-sA-dzt" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="I9a-kX-o8H"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.url"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="mUg-wC-BHE" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="104" y="0.0" width="270" height="44"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.url"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="aTk-c3-c7U" firstAttribute="leading" secondItem="EyK-q5-HVm" secondAttribute="leadingMargin" id="Fg2-rL-asN"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="aTk-c3-c7U" secondAttribute="trailing" id="Kky-ti-zTc"/>
+                                                <constraint firstItem="aTk-c3-c7U" firstAttribute="top" secondItem="EyK-q5-HVm" secondAttribute="top" id="WHZ-7x-EzJ"/>
+                                                <constraint firstAttribute="bottom" secondItem="aTk-c3-c7U" secondAttribute="bottom" id="Wco-OV-zpM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="User details" id="TVC-2J-DeM">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="RBD-I0-tPW">
+                                        <rect key="frame" x="0.0" y="187.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RBD-I0-tPW" id="QP4-iq-X3D">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="xPl-oV-apF">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJf-sl-XIp" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="XRI-ka-87L"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.username"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="kEx-9H-lCk" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="152" y="0.0" width="222" height="44"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" textContentType="username"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.username"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="xPl-oV-apF" secondAttribute="bottom" id="C8H-88-wA9"/>
+                                                <constraint firstItem="xPl-oV-apF" firstAttribute="top" secondItem="QP4-iq-X3D" secondAttribute="top" id="LRL-QZ-oBf"/>
+                                                <constraint firstItem="xPl-oV-apF" firstAttribute="leading" secondItem="QP4-iq-X3D" secondAttribute="leadingMargin" id="NgZ-gY-CRe"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xPl-oV-apF" secondAttribute="trailing" id="SpN-ph-0CD"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="8Eu-vA-g7Z">
+                                        <rect key="frame" x="0.0" y="231.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8Eu-vA-g7Z" id="SEA-20-RXG">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="FnL-sC-E1m">
+                                                    <rect key="frame" x="20" y="0.0" width="354" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcA-YB-fo1" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="134.5" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="udY-Tc-2Li"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.password"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UjY-yl-E7J" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                            <rect key="frame" x="146.5" y="0.0" width="207.5" height="44"/>
+                                                            <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.generate_password"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDu-Rg-bcZ">
+                                                    <rect key="frame" x="374" y="0.0" width="40" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="MbZ-72-d1J"/>
+                                                    </constraints>
+                                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <inset key="imageEdgeInsets" minX="6" minY="12" maxX="10" maxY="12"/>
+                                                    <state key="normal" image="eye_logo"/>
+                                                    <connections>
+                                                        <action selector="showPassword:" destination="pOa-WL-RMC" eventType="touchUpInside" id="sZI-d8-ct5"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="FnL-sC-E1m" firstAttribute="leading" secondItem="SEA-20-RXG" secondAttribute="leadingMargin" id="Cbs-8g-dAs"/>
+                                                <constraint firstAttribute="bottom" secondItem="LDu-Rg-bcZ" secondAttribute="bottom" id="Lri-QB-5oU"/>
+                                                <constraint firstAttribute="trailing" secondItem="LDu-Rg-bcZ" secondAttribute="trailing" id="hZx-Wo-NPe"/>
+                                                <constraint firstItem="LDu-Rg-bcZ" firstAttribute="top" secondItem="SEA-20-RXG" secondAttribute="top" id="omr-zp-Edo"/>
+                                                <constraint firstItem="LDu-Rg-bcZ" firstAttribute="leading" secondItem="FnL-sC-E1m" secondAttribute="trailing" id="pgh-6a-JXK"/>
+                                                <constraint firstItem="FnL-sC-E1m" firstAttribute="top" secondItem="SEA-20-RXG" secondAttribute="top" id="wb8-gQ-3ie"/>
+                                                <constraint firstAttribute="bottom" secondItem="FnL-sC-E1m" secondAttribute="bottom" id="xcp-3C-Rae"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Notes" id="o4u-Kd-N6B">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="05B-cS-qnS" customClass="MultiLineTextInputTableViewCell" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="325.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="05B-cS-qnS" id="An6-aT-yWk">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QrD-Ru-mn6">
+                                                    <rect key="frame" x="16" y="8" width="382" height="28"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="textColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.58823529409999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="QrD-Ru-mn6" secondAttribute="trailing" constant="16" id="LjK-33-auR"/>
+                                                <constraint firstItem="QrD-Ru-mn6" firstAttribute="top" secondItem="An6-aT-yWk" secondAttribute="top" constant="8" id="bmt-1O-LRD"/>
+                                                <constraint firstItem="QrD-Ru-mn6" firstAttribute="leading" secondItem="An6-aT-yWk" secondAttribute="leading" constant="16" id="gdX-I4-Z7W"/>
+                                                <constraint firstAttribute="bottom" secondItem="QrD-Ru-mn6" secondAttribute="bottom" constant="8" id="myN-UT-Gw5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="textView" destination="QrD-Ru-mn6" id="Qak-Xz-Zd8"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="pOa-WL-RMC" id="JFg-ja-zVt"/>
+                            <outlet property="delegate" destination="pOa-WL-RMC" id="GZU-Wj-aKF"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="UEA-Ci-J4Y">
+                        <barButtonItem key="backBarButtonItem" title=" " id="N1T-Zq-Eqf"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="nh2-Gg-Iqd">
+                            <connections>
+                                <action selector="saveAccount:" destination="pOa-WL-RMC" id="xgS-VF-Ptw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="notesCell" destination="05B-cS-qnS" id="E2L-ku-3Ih"/>
+                        <outlet property="passwordField" destination="UjY-yl-E7J" id="qwA-na-rVa"/>
+                        <outlet property="saveButton" destination="nh2-Gg-Iqd" id="IBM-7z-3V7"/>
+                        <outlet property="showPasswordButton" destination="LDu-Rg-bcZ" id="jlK-5G-0Bg"/>
+                        <outlet property="siteNameField" destination="aBY-9F-oUb" id="2Ua-N0-rRk"/>
+                        <outlet property="siteURLField" destination="mUg-wC-BHE" id="e6P-Ic-QTY"/>
+                        <outlet property="usernameField" destination="kEx-9H-lCk" id="SIN-tO-s45"/>
+                        <segue destination="KeB-AI-ry5" kind="unwind" identifier="UnwindToAccountOverview" unwindAction="unwindToAccountOverviewWithSender:" id="3cC-z1-br8"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="opD-YJ-ndT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="KeB-AI-ry5" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1264" y="759"/>
+        </scene>
+        <!--Chiff Navigation Controller-->
+        <scene sceneID="qvB-Gr-2ff">
+            <objects>
+                <navigationController storyboardIdentifier="AddAccount" automaticallyAdjustsScrollViewInsets="NO" id="bHf-CV-fbs" customClass="ChiffNavigationController" customModule="chiffCredentialProvider" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="h2Q-8z-zwH">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="pOa-WL-RMC" kind="relationship" relationship="rootViewController" id="REu-CW-BDb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ADv-Qe-PQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="345" y="759"/>
+        </scene>
     </scenes>
     <designables>
+        <designable name="UjY-yl-E7J">
+            <size key="intrinsicContentSize" width="207.5" height="18"/>
+        </designable>
+        <designable name="XCw-sA-dzt">
+            <size key="intrinsicContentSize" width="87" height="17.5"/>
+        </designable>
         <designable name="Xqo-f6-qwf">
             <size key="intrinsicContentSize" width="219" height="14"/>
+        </designable>
+        <designable name="aBY-9F-oUb">
+            <size key="intrinsicContentSize" width="109.5" height="19"/>
+        </designable>
+        <designable name="dcA-YB-fo1">
+            <size key="intrinsicContentSize" width="136.5" height="17.5"/>
+        </designable>
+        <designable name="jTI-0m-FmI">
+            <size key="intrinsicContentSize" width="109.5" height="17.5"/>
+        </designable>
+        <designable name="kEx-9H-lCk">
+            <size key="intrinsicContentSize" width="140" height="19"/>
+        </designable>
+        <designable name="mUg-wC-BHE">
+            <size key="intrinsicContentSize" width="87" height="19"/>
+        </designable>
+        <designable name="tJf-sl-XIp">
+            <size key="intrinsicContentSize" width="140" height="17.5"/>
         </designable>
         <designable name="z1U-Mq-NMo">
             <size key="intrinsicContentSize" width="81" height="16.5"/>
         </designable>
     </designables>
+    <inferredMetricsTieBreakers>
+        <segue reference="Vhf-Lt-8h6"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron_right" width="7" height="11"/>
+        <image name="eye_logo" width="50" height="43"/>
         <image name="fingerprint" width="50" height="55"/>
         <image name="lock_small" width="10" height="13"/>
         <image name="logo" width="291" height="323"/>
         <image name="team_icon" width="25" height="17"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

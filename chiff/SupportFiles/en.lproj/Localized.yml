@@ -32,6 +32,19 @@ accounts:
     value: Alphabetically
   alternative_add:
     value: 'Alternatively, you can add an account manually.'
+  autofill:
+    confirm:
+      value: Got it
+    deny:
+      value: I never want this
+    first:
+      value: Go to 'Passwords' in your system settings.
+    second:
+      value: Enable Chiff under 'AutoFill Passwords'.
+    third:
+      value: "When you want to log in to an app or website on your phone, you can use Chiff \U0001F389."
+    title:
+      value: Logging in on your phone
   choose:
     value: Choose an account to fill the credentials.
   code:
@@ -53,6 +66,8 @@ accounts:
     value: Delete account
   didnt_save:
     value: You didn’t save any of your accounts yet.
+  enable_autofill:
+    value: Enable autofill
   enabled:
     value: Enabled
   footer:
@@ -69,6 +84,8 @@ accounts:
       Premium to log in with more.
   footer_unlimited:
     value: You can save as many accounts as you want.
+  generate_password:
+    value: Generate automatically
   mode:
     value: Mode
   mode_description:
@@ -518,6 +535,11 @@ notifications:
     value: Do you want log in to %@?
   update_account:
     value: Do you want to update %@?
+numbers:
+  one:
+    value: '1'
+  two:
+    value: '2'
 popups:
   questions:
     agree_terms:
@@ -733,14 +755,7 @@ settings:
     value: Legal
   mobile:
     value: Mobile
-  mobile_instruction_<iOS12:
-    first:
-      value: 'To log in on your phone, open Chiff.'
-    second:
-      value: Copy your password by simply tapping it.
-    third:
-      value: Return to the login fields and paste your password.
-  mobile_instruction_iOS12:
+  mobile_instruction:
     first:
       value: >-
         To use Chiff on your phone, you need to tell iOS that Chiff manages your

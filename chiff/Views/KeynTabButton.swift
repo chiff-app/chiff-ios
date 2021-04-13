@@ -51,6 +51,7 @@ import ChiffCore
 
     override func prepareForInterfaceBuilder() {
         sharedInit()
+        super.prepareForInterfaceBuilder()
     }
 
     func sharedInit() {

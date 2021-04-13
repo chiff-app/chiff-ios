@@ -42,6 +42,7 @@ import ChiffCore
 
     override func prepareForInterfaceBuilder() {
         decorate()
+        super.prepareForInterfaceBuilder()
     }
 
     func decorate() {

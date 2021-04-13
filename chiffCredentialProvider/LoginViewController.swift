@@ -17,10 +17,12 @@ class LoginViewController: ASCredentialProviderViewController {
     var credentialProviderViewController: CredentialProviderViewController?
     var shouldAsk: Bool = false
     var credentialIdentity: ASPasswordCredentialIdentity?
+    var serviceIdentifiers: [ASCredentialServiceIdentifier]!
     var accounts: [String: Account]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ChiffCore.initialize(logger: ChiffLogger(), localizer: ChiffLocalizer())
         if Properties.hasFaceID {
             touchIDButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
@@ -53,8 +55,12 @@ class LoginViewController: ASCredentialProviderViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination.contents as? CredentialProviderViewController {
+        if segue.identifier == "ShowAccounts", let destination = segue.destination.contents as? CredentialProviderViewController {
             destination.unfilteredAccounts = Array(accounts.values)
+            destination.serviceIdentifiers = self.serviceIdentifiers
+            destination.credentialExtensionContext = extensionContext
+        } else if segue.identifier == "ShowAddAccount", let destination = segue.destination.contents as? AddAccountViewController {
+            destination.serviceIdentifiers = self.serviceIdentifiers
             destination.credentialExtensionContext = extensionContext
         }
     }
@@ -80,6 +86,10 @@ class LoginViewController: ASCredentialProviderViewController {
         self.credentialIdentity = credentialIdentity
     }
 
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        self.serviceIdentifiers = serviceIdentifiers
+    }
+
     // MARK: - Private functions
 
     private func loadUsers() {
@@ -92,13 +102,13 @@ class LoginViewController: ASCredentialProviderViewController {
                 self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } else {
                 let accounts = try UserAccount.allCombined(context: context)
-                guard !accounts.isEmpty else {
-                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                    return
-                }
                 DispatchQueue.main.async {
-                    self.accounts = accounts
-                    self.performSegue(withIdentifier: "showAccounts", sender: self)
+                    if accounts.isEmpty {
+                        self.performSegue(withIdentifier: "ShowAddAccount", sender: self)
+                    } else {
+                        self.accounts = accounts
+                        self.performSegue(withIdentifier: "ShowAccounts", sender: self)
+                    }
                 }
             }
         }.catch { _ in

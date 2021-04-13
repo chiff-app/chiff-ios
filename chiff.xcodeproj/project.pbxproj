@@ -35,6 +35,7 @@
 		4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
+		492EC78C26249EB9003962F5 /* LocalizableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
 		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
@@ -74,6 +75,8 @@
 		4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262F22BBA2FC00545118 /* BackupCircle.swift */; };
 		4950263222BBA31200545118 /* FilledCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950263122BBA31200545118 /* FilledCircle.swift */; };
 		4955DE642315773600C66996 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4955DE632315773500C66996 /* MainInterface.storyboard */; };
+		49590F412625D3E1003578B0 /* AccountsPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */; };
+		49590F432625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49590F422625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift */; };
 		495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		495E09EE22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* ChiffNavigationController.swift */; };
 		495E09EF22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* ChiffNavigationController.swift */; };
@@ -117,7 +120,6 @@
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */; };
 		4995D48D23995CF900267E6A /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48C23995CF900267E6A /* PushNotificationViewController.swift */; };
-		4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49AC6E7723604BDC0010AC32 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC6E7623604BDC0010AC32 /* PushNotifications.swift */; };
 		49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
@@ -157,6 +159,9 @@
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
 		49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */; };
 		49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2FE0A22D390B3001AA622 /* ProductIds.plist */; };
+		49E454732622F70200AD9E68 /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E454722622F70200AD9E68 /* AddAccountViewController.swift */; };
+		49E454782622F76600AD9E68 /* ChiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E872424DBA30080B248 /* ChiffTableViewController.swift */; };
+		49E4547D2622F86100AD9E68 /* MultiLineTextInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */; };
 		49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
@@ -273,6 +278,7 @@
 		4950262F22BBA2FC00545118 /* BackupCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCircle.swift; sourceTree = "<group>"; };
 		4950263122BBA31200545118 /* FilledCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledCircle.swift; sourceTree = "<group>"; };
 		4955DE632315773500C66996 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		49590F422625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CredentialProviderViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		495E09ED22453BD500BDFBB1 /* ChiffNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChiffNavigationController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
@@ -308,7 +314,6 @@
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartInitialisationViewController.swift; sourceTree = "<group>"; };
 		4995D48C23995CF900267E6A /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
-		4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49AC6E7623604BDC0010AC32 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +336,7 @@
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccountViewController.swift; sourceTree = "<group>"; };
 		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
+		49E454722622F70200AD9E68 /* AddAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
 		49E766501F7E6F420022C042 /* chiff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chiff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -540,7 +546,6 @@
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
 				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
-				4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */,
 				49B17337229ECADC0029FD2B /* PrivacyViewController.swift */,
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
 				49774C1722664DC30094D3ED /* StartBackupViewController.swift */,
@@ -749,7 +754,9 @@
 				498FF17B22B0F3490072C3AE /* TabBarGradient.swift */,
 				611F4B4D2146B47300B35A89 /* Info.plist */,
 				611F4B4E2146B47300B35A89 /* chiffCredentialProvider.entitlements */,
+				49E454722622F70200AD9E68 /* AddAccountViewController.swift */,
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
+				49590F422625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift */,
 				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
 			);
 			path = chiffCredentialProvider;
@@ -1074,7 +1081,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    lib_spm=${BUILD_DIR%Build/*}SourcePackages/checkouts/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    elif test -f \"$lib_spm\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_spm').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
 		};
 		494AA2B524266AF60068FD46 /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1093,7 +1100,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    lib_spm=${BUILD_DIR%Build/*}SourcePackages/checkouts/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    elif test -f \"$lib_spm\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_spm').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
 		};
 		4967F423225CBF950069330D /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1190,7 +1197,6 @@
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
-				4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */,
 				49B2A8EB254327E4001BA6EE /* AccountViewController+TableView.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */,
@@ -1250,19 +1256,25 @@
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
+				49E454782622F76600AD9E68 /* ChiffTableViewController.swift in Sources */,
 				49B2A96425433502001BA6EE /* TeamAccount.swift in Sources */,
+				492EC78C26249EB9003962F5 /* LocalizableTextField.swift in Sources */,
 				498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
 				498B6048260B9DE5009259E8 /* Constants.swift in Sources */,
 				49B2A958254334EF001BA6EE /* TeamRole.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
+				49590F412625D3E1003578B0 /* AccountsPickerButton.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
 				49B2A957254334EF001BA6EE /* TeamUser.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */,
 				498B6040260B9A14009259E8 /* Localizer.swift in Sources */,
+				49E4547D2622F86100AD9E68 /* MultiLineTextInputTableViewCell.swift in Sources */,
+				49E454732622F70200AD9E68 /* AddAccountViewController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				49B2A96B25433507001BA6EE /* Team.swift in Sources */,
+				49590F432625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift in Sources */,
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
 				49B2A96D2543350B001BA6EE /* TeamSessionKeys.swift in Sources */,
 				4904A76C25558C500086787D /* AccountTableViewCell.swift in Sources */,
@@ -1793,7 +1805,7 @@
 			repositoryURL = "https://github.com/amplitude/Amplitude-iOS.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.1.1;
+				minimumVersion = 8.2.1;
 			};
 		};
 		4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
