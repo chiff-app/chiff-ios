@@ -820,6 +820,11 @@ settings:
     value: Deel gebruiksstatistieken
   share_errors:
     value: Deel foutmeldingen
+  share_text:
+    value: >-
+      Met Chiff kun je overal veilig inloggen met je telefoon! Chiff is
+      beschikbaar voor iOS (https://ios.chiff.app) en Android
+      (https://android.chiff.app).
   success:
     value: Gelukt
   terms_of_use:
