@@ -11,7 +11,7 @@ import QuartzCore
 import PromiseKit
 import ChiffCore
 
-class AccountViewController: ChiffTableViewController {
+class AccountViewController: ChiffTableViewController, TokenHandler {
 
     override var headers: [String?] {
         return [
@@ -63,19 +63,11 @@ class AccountViewController: ChiffTableViewController {
     }
 
     var webAuthnEnabled: Bool {
-        if let account = account as? UserAccount {
-            return account.webAuthn != nil
-        } else {
-            return false
-        }
+        return (account as? UserAccount)?.webAuthn != nil
     }
 
     var shadowing: Bool {
-        if let account = account as? UserAccount {
-            return account.shadowing
-        } else {
-            return false
-        }
+        return (account as? UserAccount)?.shadowing ?? false
     }
 
     override func viewDidLoad() {
@@ -136,6 +128,16 @@ class AccountViewController: ChiffTableViewController {
         }
     }
 
+    func updateHOTP() {
+        if let token = token?.updatedToken() {
+            self.token = token
+            if var account = self.account as? UserAccount {
+                try? account.setOtp(token: token)
+            }
+            userCodeTextField.text = token.currentPasswordSpaced
+        }
+    }
+
     // MARK: - Actions
 
     @IBAction func showPassword(_ sender: UIButton) {
@@ -187,6 +189,7 @@ class AccountViewController: ChiffTableViewController {
                 fatalError("Should not be able to open OTP controller on shared account")
             }
             destination.account = account
+            destination.siteName = account.site.name
         } else if segue.identifier == "ShowSiteOverview", let destination = segue.destination as? SiteTableViewController {
             guard let account = account as? UserAccount else {
                 fatalError("Should not be able to open site overview on shared account")

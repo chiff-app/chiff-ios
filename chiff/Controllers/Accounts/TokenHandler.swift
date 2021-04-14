@@ -10,7 +10,23 @@ import OneTimePassword
 import QuartzCore
 import ChiffCore
 
-extension AccountViewController {
+protocol TokenHandler: UIViewController {
+
+    var qrEnabled: Bool { get set }
+    var token: Token? { get set }
+
+    var userCodeCell: UITableViewCell! { get set }
+    var userCodeTextField: UITextField! { get set }
+    var totpLoaderWidthConstraint: NSLayoutConstraint! { get set }
+    var totpLoader: UIView! { get set }
+    var loadingCircle: FilledCircle? { get set }
+
+    func updateHOTP()
+    func updateTOTP()
+
+}
+
+extension TokenHandler where Self: UIViewController {
 
     func updateOTPUI() {
         var otpCodeTimer: Timer?
@@ -27,7 +43,7 @@ extension AccountViewController {
                 button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
                 button.setImage(UIImage(named: "refresh"), for: .normal)
                 button.imageView?.contentMode = .scaleAspectFit
-                button.addTarget(self, action: #selector(self.updateHOTP), for: .touchUpInside)
+                button.addTarget(self, action: #selector(self.updateHOTPHandler), for: .touchUpInside)
                 totpLoader.addSubview(button)
             case .timer(let period):
                 let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
@@ -38,7 +54,7 @@ extension AccountViewController {
                 totpLoader.addSubview(self.loadingCircle!)
                 otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (_) in
                     self.userCodeTextField.text = token.currentPasswordSpaced
-                    otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
+                    otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTPHandler), userInfo: nil, repeats: true)
                 })
                 loadingCircle!.startCircleAnimation(duration: period, start: start)
             }
@@ -55,16 +71,25 @@ extension AccountViewController {
         }
     }
 
-    @objc func updateHOTP() {
-        if let token = token?.updatedToken(), var account = self.account as? UserAccount {
-            self.token = token
-            try? account.setOtp(token: token)
-            userCodeTextField.text = token.currentPasswordSpaced
-        }
-    }
-
-    @objc func updateTOTP() {
+    func updateTOTP() {
         userCodeTextField.text = token?.currentPasswordSpaced ?? ""
     }
 
+}
+
+fileprivate extension UIViewController {
+
+    @objc func updateHOTPHandler() {
+        guard let tokenHandlingSelf = self as? TokenHandler else {
+            return
+        }
+        tokenHandlingSelf.updateHOTP()
+    }
+
+    @objc func updateTOTPHandler() {
+        guard let tokenHandlingSelf = self as? TokenHandler else {
+            return
+        }
+        tokenHandlingSelf.updateTOTP()
+    }
 }
