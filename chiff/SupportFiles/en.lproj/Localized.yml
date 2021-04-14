@@ -817,10 +817,17 @@ settings:
   settings:
     comment: The word for settings
     value: Settings
+  share:
+    value: Tell a friend
   share_analytics:
     value: Share analytical data
   share_errors:
     value: Share errors
+  share_text:
+    value: >-
+      With Chiff you can log in everywhere with your phone securely! Chiff is
+      available for iOS (https://ios.chiff.app) and Android
+      (https://android.chiff.app).
   success:
     value: Success
   terms_of_use:
