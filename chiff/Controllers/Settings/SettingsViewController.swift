@@ -75,17 +75,9 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 3 {
-            if #available(iOS 13.0, *) {
-                let metadata = LPLinkMetadata()
-                metadata.originalURL = URL(string: "https://apps.apple.com/app/id1361749715")
-                metadata.url = metadata.originalURL
-                metadata.title = "Chiff"
-                metadata.imageProvider =
-                    NSItemProvider.init(contentsOf:
-                    Bundle.main.url(forResource: "logo", withExtension: "png"))
-                let activityViewController = UIActivityViewController(activityItems: [metadata], applicationActivities: nil)
-                present(activityViewController, animated: true, completion: nil)
-            }
+            let activityViewController = UIActivityViewController(activityItems: [self], applicationActivities: nil)
+            activityViewController.excludedActivityTypes = [.addToReadingList, .assignToContact, .markupAsPDF, .openInIBooks, .saveToCameraRoll]
+            present(activityViewController, animated: true, completion: nil)
         }
     }
 
@@ -143,4 +135,36 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         ]
     }
 
+}
+
+extension SettingsViewController: UIActivityItemSource {
+
+    var url: URL {
+        return URL(string: "https://ios.chiff.app")!
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return url
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        if activityType == .airDrop {
+            return URL(string: "https://apps.apple.com/app/id1361749715")!
+        }
+        return "settings.share_text".localized
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return "Chiff"
+    }
+
+    @available(iOS 13.0, *)
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = "Chiff"
+        metadata.imageProvider =
+            NSItemProvider.init(contentsOf:
+            Bundle.main.url(forResource: "logo", withExtension: "png"))
+        return metadata
+    }
 }
