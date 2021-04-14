@@ -129,7 +129,7 @@
 		49B26B56260B961000B713B9 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49B26B55260B961000B713B9 /* ChiffCore */; };
 		49B2A8D525432373001BA6EE /* AccountViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8D425432373001BA6EE /* AccountViewController+Extensions.swift */; };
 		49B2A8DC254326B8001BA6EE /* AccountViewController+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8DB254326B8001BA6EE /* AccountViewController+Editing.swift */; };
-		49B2A8E3254327A2001BA6EE /* AccountViewController+OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8E2254327A2001BA6EE /* AccountViewController+OTP.swift */; };
+		49B2A8E3254327A2001BA6EE /* TokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8E2254327A2001BA6EE /* TokenHandler.swift */; };
 		49B2A8EB254327E4001BA6EE /* AccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8EA254327E4001BA6EE /* AccountViewController+TableView.swift */; };
 		49B2A8F2254328A4001BA6EE /* AccountViewController+Teams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8F1254328A4001BA6EE /* AccountViewController+Teams.swift */; };
 		49B2A8F925432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8F825432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift */; };
@@ -150,6 +150,7 @@
 		49B2A97A25434608001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
+		49C0BF2E262734B50041810D /* AddAccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0BF2D262734B50041810D /* AddAccountViewController+TableView.swift */; };
 		49CEB504260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB505260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB506260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
@@ -319,7 +320,7 @@
 		49B26B4B260B958600B713B9 /* ChiffCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ChiffCore; path = ../ChiffCore; sourceTree = "<group>"; };
 		49B2A8D425432373001BA6EE /* AccountViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+Extensions.swift"; sourceTree = "<group>"; };
 		49B2A8DB254326B8001BA6EE /* AccountViewController+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+Editing.swift"; sourceTree = "<group>"; };
-		49B2A8E2254327A2001BA6EE /* AccountViewController+OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+OTP.swift"; sourceTree = "<group>"; };
+		49B2A8E2254327A2001BA6EE /* TokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenHandler.swift; sourceTree = "<group>"; };
 		49B2A8EA254327E4001BA6EE /* AccountViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+TableView.swift"; sourceTree = "<group>"; };
 		49B2A8F1254328A4001BA6EE /* AccountViewController+Teams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+Teams.swift"; sourceTree = "<group>"; };
 		49B2A8F825432A31001BA6EE /* AccountsTableViewController+UITableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTableViewController+UITableViewDataSource.swift"; sourceTree = "<group>"; };
@@ -328,6 +329,7 @@
 		49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSessionKeys.swift; sourceTree = "<group>"; };
 		49B2A973254345F3001BA6EE /* Team+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Creation.swift"; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
+		49C0BF2D262734B50041810D /* AddAccountViewController+TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AddAccountViewController+TableView.swift"; path = "chiff/Controllers/Accounts/AddAccountViewController+TableView.swift"; sourceTree = SOURCE_ROOT; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CEB503260CC50900FEF356 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -579,7 +581,6 @@
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				49B2A8D425432373001BA6EE /* AccountViewController+Extensions.swift */,
 				49B2A8EA254327E4001BA6EE /* AccountViewController+TableView.swift */,
-				49B2A8E2254327A2001BA6EE /* AccountViewController+OTP.swift */,
 				49B2A8F1254328A4001BA6EE /* AccountViewController+Teams.swift */,
 				49B2A8DB254326B8001BA6EE /* AccountViewController+Editing.swift */,
 			);
@@ -722,6 +723,8 @@
 				49B2A91725432CAC001BA6EE /* AccountsTableViewController */,
 				49B2A8E9254327C1001BA6EE /* AccountViewController */,
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
+				49C0BF2D262734B50041810D /* AddAccountViewController+TableView.swift */,
+				49B2A8E2254327A2001BA6EE /* TokenHandler.swift */,
 				4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */,
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
@@ -1188,6 +1191,7 @@
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
 				49B2A8EB254327E4001BA6EE /* AccountViewController+TableView.swift in Sources */,
+				49C0BF2E262734B50041810D /* AddAccountViewController+TableView.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */,
 				4950263222BBA31200545118 /* FilledCircle.swift in Sources */,
@@ -1219,7 +1223,7 @@
 				49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */,
 				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
 				4950262E22BBA2DC00545118 /* CircleView.swift in Sources */,
-				49B2A8E3254327A2001BA6EE /* AccountViewController+OTP.swift in Sources */,
+				49B2A8E3254327A2001BA6EE /* TokenHandler.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */,
 				49F2A0F722142F0400429875 /* FormTextField.swift in Sources */,
@@ -1834,7 +1838,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "file:///Users/bas/Projects/keyn/ChiffCore";
 			requirement = {
-				branch = dev;
+				branch = master;
 				kind = branch;
 			};
 		};
