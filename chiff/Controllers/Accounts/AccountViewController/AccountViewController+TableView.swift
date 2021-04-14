@@ -62,44 +62,48 @@ extension AccountViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 1 && account.sites.count > 1 && account is UserAccount {
-                performSegue(withIdentifier: "ShowSiteOverview", sender: self)
-            }
-        } else if indexPath.section == 1 {
-            if (indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled)) && password != nil {
-                copyToPasteboard(indexPath)
-            } else if indexPath.row == 2 && qrEnabled && account is UserAccount {
-                performSegue(withIdentifier: "showQR", sender: self)
-            }
-        }
-    }
-
-    // MARK: - Private functions
-
-    private func copyToPasteboard(_ indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
 
-        if indexPath.row == 1 {
-            Logger.shared.analytics(.passwordCopied)
-        } else {
-            Logger.shared.analytics(.otpCopied)
-        }
-
         let pasteBoard = UIPasteboard.general
-        pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
+        switch indexPath.section {
+        case 0:
+            if indexPath.row == 0 {
+                pasteBoard.string = websiteNameTextField.text
+            } else if account.sites.count > 1 && account is UserAccount {
+                performSegue(withIdentifier: "ShowSiteOverview", sender: self)
+            } else if let urlString = websiteURLTextField.text, let url = URL(string: urlString) {
+                pasteBoard.url = url
+            } else {
+                pasteBoard.string = websiteURLTextField.text
+            }
+        case 1:
+            if indexPath.row == 0 {
+                pasteBoard.string = userNameTextField.text
+            } else if indexPath.row == 1 {
+                pasteBoard.string = userPasswordTextField.text
+                Logger.shared.analytics(.passwordCopied)
+            } else if qrEnabled && account is UserAccount {
+                performSegue(withIdentifier: "showQR", sender: self)
+            } else {
+                pasteBoard.string = userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
+                Logger.shared.analytics(.otpCopied)
+            }
+        default:
+            pasteBoard.string = notesCell.textString
+        }
+        guard pasteBoard.hasStrings || pasteBoard.hasURLs else {
+            return
+        }
 
         let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "accounts.copied".localized
-        copiedLabel.font = copiedLabel.font.withSize(18)
+        copiedLabel.font = UIFont.primaryMediumNormal?.withSize(16)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
-        copiedLabel.backgroundColor = UIColor(displayP3Red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
-
+        copiedLabel.backgroundColor = UIColor.primaryDark
         cell.addSubview(copiedLabel)
-
         UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
             copiedLabel.alpha = 0.0
         }, completion: { result in
