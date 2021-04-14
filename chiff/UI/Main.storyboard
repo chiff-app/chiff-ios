@@ -1255,6 +1255,34 @@
                                             <segue destination="UMK-2r-SA1" kind="show" id="I49-H3-0bW"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="FwZ-Pb-Yxw" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="187.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FwZ-Pb-Yxw" id="3vv-Qi-NQ5">
+                                            <rect key="frame" x="0.0" y="0.0" width="348" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEy-cY-kbV" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
+                                                    <rect key="frame" x="16" y="0.0" width="332" height="44"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.share"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="kEy-cY-kbV" secondAttribute="bottom" id="IhT-iE-fNY"/>
+                                                <constraint firstItem="kEy-cY-kbV" firstAttribute="top" secondItem="3vv-Qi-NQ5" secondAttribute="top" id="XVM-iE-hB2"/>
+                                                <constraint firstItem="kEy-cY-kbV" firstAttribute="leading" secondItem="3vv-Qi-NQ5" secondAttribute="leadingMargin" id="Zwq-jy-mLS"/>
+                                                <constraint firstAttribute="trailing" secondItem="kEy-cY-kbV" secondAttribute="trailing" id="mgt-vW-2YN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -4813,6 +4841,9 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         </designable>
         <designable name="kAk-h2-8eD">
             <size key="intrinsicContentSize" width="168" height="17.333333333333332"/>
+        </designable>
+        <designable name="kEy-cY-kbV">
+            <size key="intrinsicContentSize" width="46" height="16.5"/>
         </designable>
         <designable name="n3L-Py-LkS">
             <size key="intrinsicContentSize" width="140" height="19"/>
