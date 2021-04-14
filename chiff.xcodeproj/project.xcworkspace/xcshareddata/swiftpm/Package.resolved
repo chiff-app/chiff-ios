@@ -156,7 +156,7 @@
       },
       {
         "package": "Sodium",
-        "repositoryURL": "https://github.com/junelife/swift-sodium",
+        "repositoryURL": "https://github.com/junelife/swift-sodium.git",
         "state": {
           "branch": "master",
           "revision": "c4f4a947fa4d2284baf8999c579e0dbb9d131c98",
