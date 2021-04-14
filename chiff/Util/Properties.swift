@@ -28,7 +28,7 @@ extension Properties {
     }
 
     /// The number of seconds after which the pasteboard should be cleared.
-    static let pasteboardTimeout = 60.0 // seconds
+    static let pasteboardTimeout = 29.0 // seconds
 
     /// The sorting preference of the accounts.
     static var sortingPreference: SortingValue {
