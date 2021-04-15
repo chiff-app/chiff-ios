@@ -72,16 +72,6 @@
                ReferencedContainer = "container:chiff.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ChiffCoreTests"
-               BuildableName = "ChiffCoreTests"
-               BlueprintName = "ChiffCoreTests"
-               ReferencedContainer = "container:../ChiffCore">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
