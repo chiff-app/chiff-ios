@@ -93,7 +93,6 @@ platform :ios do
 
     desc 'Beta release'
     lane :beta_release do
-        login
         version = get_version_number(target: scheme)
         build
         upload_to_testflight()
@@ -103,7 +102,6 @@ platform :ios do
 
     desc "Submit Chiff to the App Store"
     lane :release do |options|
-      login
       version = get_version_number(target: scheme)
       build
       deliver(
