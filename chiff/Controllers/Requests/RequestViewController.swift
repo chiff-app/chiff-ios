@@ -50,14 +50,7 @@ class RequestViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
-        if let factor = token?.generator.factor, case .counter = factor, let newToken = token?.updatedToken() {
-            self.token = newToken
-            var userAccount = account as? UserAccount
-            try? userAccount?.setOtp(token: newToken)
-            successTextLabel.text = newToken.currentPasswordSpaced
-        } else {
-            acceptRequest()
-        }
+        acceptRequest()
     }
 
     @IBAction func close(_ sender: UIButton) {
@@ -104,8 +97,13 @@ class RequestViewController: UIViewController {
             if self.authorizer.type == .login {
                 Properties.loginCount += 1
             }
-            if let account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
-                self.token = token
+            if var account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
+                if case .counter = token.generator.factor {
+                    self.token = token.updatedToken()
+                    try account.setOtp(token: self.token!)
+                } else {
+                    self.token = token
+                }
                 self.account = account
                 self.showOtp()
             } else {

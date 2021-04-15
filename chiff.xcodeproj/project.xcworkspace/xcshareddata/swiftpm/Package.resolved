@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "ChiffCore",
+        "repositoryURL": "https://github.com/chiff-app/chiff-core-ios.git",
+        "state": {
+          "branch": "master",
+          "revision": "bc499568fed1beb68969cbbccd71a48d6a89ff51",
+          "version": null
+        }
+      },
+      {
         "package": "Clibsodium",
         "repositoryURL": "https://github.com/junelife/clibsodium-xcframework",
         "state": {

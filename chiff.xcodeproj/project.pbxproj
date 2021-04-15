@@ -124,9 +124,6 @@
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
 		49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* WebViewController.swift */; };
 		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
-		49B26B4E260B95CE00B713B9 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49B26B4D260B95CE00B713B9 /* ChiffCore */; };
-		49B26B54260B960600B713B9 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49B26B53260B960600B713B9 /* ChiffCore */; };
-		49B26B56260B961000B713B9 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49B26B55260B961000B713B9 /* ChiffCore */; };
 		49B2A8D525432373001BA6EE /* AccountViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8D425432373001BA6EE /* AccountViewController+Extensions.swift */; };
 		49B2A8DC254326B8001BA6EE /* AccountViewController+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8DB254326B8001BA6EE /* AccountViewController+Editing.swift */; };
 		49B2A8E3254327A2001BA6EE /* TokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A8E2254327A2001BA6EE /* TokenHandler.swift */; };
@@ -151,6 +148,9 @@
 		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
 		49C0BF2E262734B50041810D /* AddAccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0BF2D262734B50041810D /* AddAccountViewController+TableView.swift */; };
+		49C0BF3126282CAB0041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3026282CAB0041810D /* ChiffCore */; };
+		49C0BF3326282CD20041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3226282CD20041810D /* ChiffCore */; };
+		49C0BF3526282CDD0041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3426282CDD0041810D /* ChiffCore */; };
 		49CEB504260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB505260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB506260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
@@ -317,7 +317,6 @@
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		49B17339229ED29A0029FD2B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
-		49B26B4B260B958600B713B9 /* ChiffCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ChiffCore; path = ../ChiffCore; sourceTree = "<group>"; };
 		49B2A8D425432373001BA6EE /* AccountViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+Extensions.swift"; sourceTree = "<group>"; };
 		49B2A8DB254326B8001BA6EE /* AccountViewController+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+Editing.swift"; sourceTree = "<group>"; };
 		49B2A8E2254327A2001BA6EE /* TokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenHandler.swift; sourceTree = "<group>"; };
@@ -376,10 +375,10 @@
 			files = (
 				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */,
+				49C0BF3326282CD20041810D /* ChiffCore in Frameworks */,
 				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
-				49B26B56260B961000B713B9 /* ChiffCore in Frameworks */,
 				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
 				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
 			);
@@ -396,9 +395,9 @@
 				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
 				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
+				49C0BF3126282CAB0041810D /* ChiffCore in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
-				49B26B4E260B95CE00B713B9 /* ChiffCore in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,11 +416,11 @@
 				4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AF7B25403C3E00CEFDE9 /* FirebaseCore in Frameworks */,
 				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
-				49B26B54260B960600B713B9 /* ChiffCore in Frameworks */,
 				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
 				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
+				49C0BF3526282CDD0041810D /* ChiffCore in Frameworks */,
 				4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -615,7 +614,6 @@
 		49E766471F7E6F420022C042 = {
 			isa = PBXGroup;
 			children = (
-				49B26B4B260B958600B713B9 /* ChiffCore */,
 				49E766521F7E6F420022C042 /* chiff */,
 				49E766691F7E6F420022C042 /* chiffTests */,
 				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
@@ -796,7 +794,7 @@
 				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
 				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
 				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
-				49B26B55260B961000B713B9 /* ChiffCore */,
+				49C0BF3226282CD20041810D /* ChiffCore */,
 			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
@@ -829,7 +827,7 @@
 				4941AF5325403A5B00CEFDE9 /* Down */,
 				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
 				4941AFA32540423200CEFDE9 /* PMKFoundation */,
-				49B26B4D260B95CE00B713B9 /* ChiffCore */,
+				49C0BF3026282CAB0041810D /* ChiffCore */,
 			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
@@ -875,7 +873,7 @@
 				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
 				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
 				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
-				49B26B53260B960600B713B9 /* ChiffCore */,
+				49C0BF3426282CDD0041810D /* ChiffCore */,
 			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
@@ -971,7 +969,7 @@
 				4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */,
 				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
-				49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */,
+				49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */,
 			);
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
 			projectDirPath = "";
@@ -1074,7 +1072,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    lib_spm=${BUILD_DIR%Build/*}SourcePackages/checkouts/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    elif test -f \"$lib_spm\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_spm').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
 		};
 		494AA2B524266AF60068FD46 /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1093,7 +1091,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    lib_spm=${BUILD_DIR%Build/*}SourcePackages/checkouts/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    elif test -f \"$lib_spm\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_spm').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n";
 		};
 		4967F423225CBF950069330D /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1112,7 +1110,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    lib_spm=${BUILD_DIR%Build/*}SourcePackages/checkouts/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    elif test -f \"$lib_spm\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_spm').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        echo \"ChiffCore not found.\"\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1834,9 +1832,9 @@
 				minimumVersion = 3.3.4;
 			};
 		};
-		49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */ = {
+		49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "file:///Users/bas/Projects/keyn/ChiffCore";
+			repositoryURL = "https://github.com/chiff-app/chiff-core-ios.git";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -1955,19 +1953,19 @@
 			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
 			productName = PMKFoundation;
 		};
-		49B26B4D260B95CE00B713B9 /* ChiffCore */ = {
+		49C0BF3026282CAB0041810D /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */;
+			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
 			productName = ChiffCore;
 		};
-		49B26B53260B960600B713B9 /* ChiffCore */ = {
+		49C0BF3226282CD20041810D /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */;
+			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
 			productName = ChiffCore;
 		};
-		49B26B55260B961000B713B9 /* ChiffCore */ = {
+		49C0BF3426282CDD0041810D /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 49B26B4C260B95CE00B713B9 /* XCRemoteSwiftPackageReference "ChiffCore" */;
+			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
 			productName = ChiffCore;
 		};
 /* End XCSwiftPackageProductDependency section */
