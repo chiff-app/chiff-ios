@@ -665,6 +665,8 @@ requests:
   'on':
     comment: 'The word for on, e.g. Pair with browser on OS?'
     value: 'on'
+  pair_with:
+    value: Pair with
   team_created:
     value: Team created
   unlock_keyn:
