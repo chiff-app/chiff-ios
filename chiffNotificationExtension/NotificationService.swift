@@ -6,6 +6,7 @@
 //
 
 import UserNotifications
+import ChiffCore
 
 class NotificationService: UNNotificationServiceExtension {
 
@@ -15,6 +16,8 @@ class NotificationService: UNNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         content = (request.content.mutableCopy() as? UNMutableNotificationContent)
+
+        ChiffCore.initialize(logger: ChiffLogger(), localizer: ChiffLocalizer())
 
         if var content = content {
             do {
