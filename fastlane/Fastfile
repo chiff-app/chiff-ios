@@ -107,7 +107,9 @@ platform :ios do
       deliver(
         app_version: version,
         platform: 'ios',
-        skip_screenshots: true
+        skip_screenshots: true,
+        submission_information: "{ \"add_id_info_uses_idfa\": false }",
+        submit_for_review: options[:submit]
       )
       upload_symbols
       slack(message: "New version of Chiff released! #{version}")

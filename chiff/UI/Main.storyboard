@@ -3576,7 +3576,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.desktop_instruction.first"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
@@ -3601,7 +3601,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.desktop_instruction.second"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
@@ -3623,7 +3623,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.desktop_instruction.third"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
@@ -3734,6 +3734,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.mobile_instruction.first"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
@@ -3755,6 +3756,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.mobile_instruction.second"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
@@ -3776,6 +3778,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.mobile_instruction.third"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
@@ -3810,14 +3813,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mtT-Gs-n29"/>
-                    <connections>
-                        <outlet property="firstImage" destination="hm4-aM-yMH" id="g6N-RD-mAW"/>
-                        <outlet property="firstLabel" destination="tQ2-8n-V5F" id="rLe-U7-Ua2"/>
-                        <outlet property="secondImage" destination="Zbe-uS-H7G" id="lCd-9X-BPz"/>
-                        <outlet property="secondLabel" destination="bR0-0p-9RS" id="GEH-DV-G2c"/>
-                        <outlet property="thirdImage" destination="OVY-4h-b9n" id="al6-5m-rvp"/>
-                        <outlet property="thirdLabel" destination="xXQ-il-BDE" id="m8u-Ww-4R9"/>
-                    </connections>
                 </viewController>
                 <exit id="zFP-P5-J3W" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sCB-Il-rYa" userLabel="First Responder" sceneMemberID="firstResponder"/>
