@@ -254,6 +254,11 @@ class AccountViewController: ChiffTableViewController, TokenHandler {
     }
 
     private func showHiddenPasswordPopup(password: String) {
+        guard self.passwordPopup == nil else {
+            hidePasswordPopup()
+            return
+        }
+
         let passwordPopup = UIView()
         passwordPopup.backgroundColor = .primaryDark
         passwordPopup.layer.cornerRadius = 5
@@ -279,7 +284,7 @@ class AccountViewController: ChiffTableViewController, TokenHandler {
             textView.trailingAnchor.constraint(equalTo: passwordPopup.trailingAnchor, constant: -8),
             passwordPopup.centerYAnchor.constraint(equalTo: self.tableView.superview!.centerYAnchor),
             passwordPopup.centerXAnchor.constraint(equalTo: self.tableView.superview!.centerXAnchor),
-            passwordPopup.leadingAnchor.constraint(greaterThanOrEqualTo: self.tableView!.leadingAnchor, constant: 32),
+            passwordPopup.leadingAnchor.constraint(greaterThanOrEqualTo: self.tableView.superview!.leadingAnchor, constant: 32),
             passwordPopup.trailingAnchor.constraint(greaterThanOrEqualTo: self.tableView.superview!.trailingAnchor, constant: -32)
         ])
         passwordPopup.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hidePasswordPopup)))

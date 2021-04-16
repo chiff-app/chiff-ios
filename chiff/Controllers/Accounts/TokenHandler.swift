@@ -58,7 +58,7 @@ extension TokenHandler where Self: UIViewController {
                 })
                 loadingCircle!.startCircleAnimation(duration: period, start: start)
             }
-        } else {
+        } else if totpLoaderWidthConstraint.constant > 0 {
             userCodeTextField.text = ""
             otpCodeTimer?.invalidate()
             qrEnabled = true
