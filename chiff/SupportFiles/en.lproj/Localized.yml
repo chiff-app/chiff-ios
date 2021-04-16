@@ -421,6 +421,13 @@ errors:
   updating_account:
     comment: Error updating the account.
     value: Error updating the account.
+feedback:
+  feedback:
+    value: >-
+      Did you find a bug? Please let us know! We're also happy to hear your
+      opinion on Chiff or suggestions for improvements.
+  send:
+    value: Send
 initialization:
   agree:
     value: Agree
