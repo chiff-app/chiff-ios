@@ -424,6 +424,13 @@ errors:
   updating_account:
     comment: Error retrieving the OTP-code
     value: Fout bij het bijwerken van het account.
+feedback:
+  feedback:
+    value: >-
+      Heb je een bug gevonden? Laat het ons weten! We horen ook graag je mening
+      over chiff of suggesties voor verbeteringen.
+  send:
+    value: Stuur
 initialization:
   agree:
     value: Akkoord
