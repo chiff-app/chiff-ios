@@ -53,7 +53,7 @@ class TestHelper {
         }
         do {
             try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .passwordSeed), service: .passwordSeed, secretData: passwordSeed)
             try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
             try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: pubKey)
             try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: privKey)
