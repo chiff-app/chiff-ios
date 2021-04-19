@@ -34,9 +34,11 @@ platform :ios do
 
     desc 'Upload dSYMs to Crashlytics'
     lane :upload_symbols do |options|
-        download_dsyms(
-          version: 'latest'
-        )
+        if options[:download]
+          download_dsyms(
+            version: 'latest'
+          )
+        end
     
         upload_symbols_to_crashlytics(
           gsp_path: "./chiff/SupportFiles/GoogleService-Info.plist",
