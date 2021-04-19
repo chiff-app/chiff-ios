@@ -74,7 +74,7 @@ class AuthenticationGuard {
         }.map { (context) -> ([String: Account], LAContext) in
             Keychain.shared.migrate(context: context)
             let accounts = try UserAccount.allCombined(context: context, migrateVersion: true)
-            if #available(iOS 12.0, *), Properties.reloadAccounts {
+            if Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
                 Properties.reloadAccounts = false
             }
@@ -96,7 +96,6 @@ class AuthenticationGuard {
                 (self.lockWindow.rootViewController as? LoginViewController)?.showAlert(message: errorMessage)
             }
         }
-
     }
 
     /// Hide the lock window, effectively putting the app in the *unlocked* state. Only makes sense if the user is really authenticated, otherwise the data from the Keychain is not loaded.

@@ -62,41 +62,53 @@ extension AccountViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else {
-            return
-        }
-
-        let pasteBoard = UIPasteboard.general
+        var stringToCopy: String?
+        var urlToCopy: URL?
         switch indexPath.section {
         case 0:
             if indexPath.row == 0 {
-                pasteBoard.string = websiteNameTextField.text
+                stringToCopy = websiteNameTextField.text
             } else if account.sites.count > 1 && account is UserAccount {
                 performSegue(withIdentifier: "ShowSiteOverview", sender: self)
+                return
             } else if let urlString = websiteURLTextField.text, let url = URL(string: urlString) {
-                pasteBoard.url = url
+                urlToCopy = url
             } else {
-                pasteBoard.string = websiteURLTextField.text
+                stringToCopy = websiteURLTextField.text
             }
         case 1:
             if indexPath.row == 0 {
-                pasteBoard.string = userNameTextField.text
+                stringToCopy = userNameTextField.text
             } else if indexPath.row == 1 {
-                pasteBoard.string = userPasswordTextField.text
+                stringToCopy = userPasswordTextField.text
                 Logger.shared.analytics(.passwordCopied)
             } else if qrEnabled && account is UserAccount {
                 performSegue(withIdentifier: "showQR", sender: self)
+                return
             } else {
-                pasteBoard.string = userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
+                stringToCopy = userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
                 Logger.shared.analytics(.otpCopied)
             }
         default:
-            pasteBoard.string = notesCell.textString
+            stringToCopy = notesCell.textString
         }
-        guard pasteBoard.hasStrings || pasteBoard.hasURLs else {
+        let pasteBoard = UIPasteboard.general
+        if let string = stringToCopy {
+            pasteBoard.string = string
+        } else if let url = urlToCopy {
+            pasteBoard.url = url
+        } else {
+            // Nothing to copy.
             return
         }
 
+        showCopyLabel(indexPath: indexPath)
+    }
+
+    private func showCopyLabel(indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
+            return
+        }
         let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "accounts.copied".localized
         copiedLabel.font = UIFont.primaryMediumNormal?.withSize(16)
