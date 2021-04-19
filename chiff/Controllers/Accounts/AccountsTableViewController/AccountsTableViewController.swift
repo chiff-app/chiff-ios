@@ -189,7 +189,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
 
     private func updateUi() {
         loadingSpinner.stopAnimating()
-        if let accounts = filteredAccounts, !accounts.isEmpty {
+        if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             addBarButtons()

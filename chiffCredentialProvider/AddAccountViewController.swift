@@ -23,7 +23,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
     override var footers: [String?] {
         return [
             "accounts.url_warning".localized.capitalizedFirstLetter,
-            nil,
+            "accounts.generate_password_footer".localized,
             String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters)
         ]
     }

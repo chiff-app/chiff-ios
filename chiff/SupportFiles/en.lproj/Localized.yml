@@ -86,6 +86,10 @@ accounts:
     value: You can save as many accounts as you want.
   generate_password:
     value: Generate automatically
+  generate_password_footer:
+    value: >-
+      Chiff will automatically generate a secure password if you don't provide
+      one.
   mode:
     value: Mode
   mode_description:

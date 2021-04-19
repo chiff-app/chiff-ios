@@ -86,6 +86,8 @@ accounts:
     value: Je kunt zoveel accounts toevoegen als je wilt.
   generate_password:
     value: Genereer automatisch
+  generate_password_footer:
+    value: Chiff genereert automatisch een veilig wachtwoord als je er geen invult.
   mode:
     value: Type
   mode_description:
