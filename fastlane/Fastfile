@@ -50,7 +50,6 @@ platform :ios do
 
     desc 'Build app'
     lane :build do
-	    xcode_select("/Users/bas/Downloads/Xcode-beta.app")
         test
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
