@@ -1,1 +1,5 @@
-Ondersteuning voor Chiff voor Teams.
+- Betere support voor WebAuthn.
+- Je kunt nu een account creëren vanuit de app (via AutoFill).
+- Kleine UI bug fixes.
+- Het is nu mogelijk om direct een 2FA code toe voegen als je een nieuw account maakt.
+- Nieuwe knop om een vriend(in) over Chiff te vertellen :D 
