@@ -46,6 +46,12 @@ struct ChiffLogger: LoggerProtocol {
         }
     }
 
+    /// Enable / disable error logging.
+    /// - Parameter value: True to enable, false to disable.
+    func setErrorLogging(value: Bool) {
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(value)
+    }
+
     /// Set the user id for analytics and error logging.
     /// - Parameter userId: The user id.
     func setUserId(userId: String?) {
