@@ -8,6 +8,7 @@
 import XCTest
 import LocalAuthentication
 import PromiseKit
+import ChiffCore
 
 @testable import chiff
 
@@ -42,7 +43,7 @@ class KeychainTests: XCTestCase {
     
     func testSaveDoesntThrow() {
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: "secretKey".data))
-        XCTAssertNoThrow(try Keychain.shared.save(id: "signing", service: .browserSession(attribute: .signingKey), secretData: "privateKey".data)) // To cover restricted
+        XCTAssertNoThrow(try Keychain.shared.save(id: "signing", service: .browserSession(attribute: .signing), secretData: "privateKey".data)) // To cover restricted
     }
     
     func testSaveDuplicateSeedThrows() {
@@ -232,7 +233,7 @@ class KeychainTests: XCTestCase {
         TestHelper.createSeed()
         Keychain.shared.deleteAll(service: .seed)
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: Self.context))
-        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: Self.context))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .passwordSeed), service: .passwordSeed, context: Self.context))
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: Self.context))
     }
     

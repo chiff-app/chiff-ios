@@ -9,8 +9,6 @@ accounts:
     value: Accounts details
   add_2fa:
     value: Voeg 2FA code toe
-  add_2fa_code:
-    value: Voeg 2FA-code toe
   add_account:
     value: Voeg account toe
   add_instructions:
@@ -34,6 +32,19 @@ accounts:
     value: Alfabetisch
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
+  autofill:
+    confirm:
+      value: Ik snap het
+    deny:
+      value: Ik wil dit nooit
+    first:
+      value: Ga naar 'Wachtwoorden' in de instellingen van je telefoon.
+    second:
+      value: Kies Chiff onder 'Vul automatisch in'.
+    third:
+      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken  \U0001F389."
+    title:
+      value: Inloggen op je telefoon
   choose:
     value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
   code:
@@ -55,6 +66,8 @@ accounts:
     value: Verwijder account
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen.
+  enable_autofill:
+    value: Zet autofill aan
   enabled:
     value: Ingeschakeld
   footer:
@@ -71,6 +84,10 @@ accounts:
       Upgrade naar Chiff Premium om met alle accounts in te loggen.
   footer_unlimited:
     value: Je kunt zoveel accounts toevoegen als je wilt.
+  generate_password:
+    value: Genereer automatisch
+  generate_password_footer:
+    value: Chiff genereert automatisch een veilig wachtwoord als je er geen invult.
   mode:
     value: Type
   mode_description:
@@ -138,8 +155,6 @@ accounts:
   two_fa_instruction:
     comment: Instruct the user to scan a 2FA-code
     value: Scan de QR-code om een 2FA-code toe te voegen voor
-  update_2fa_code:
-    value: Update 2FA-code voor
   upgrade:
     value: Upgrade
   url:
@@ -188,8 +203,6 @@ backup:
     value: Schrijf op a.u.b.
   previous:
     value: Vorige
-  retrieve:
-    value: Paper backup ontsleutelen
   return_to_settings:
     value: Terug naar instellingen
   start_backup:
@@ -205,78 +218,6 @@ backup:
     value: woord
   word_is:
     value: woord is
-date_components:
-  ago:
-    value: geleden
-  day:
-    future_singular:
-      value: Morgen
-    past_singular:
-      value: Gisteren
-    plural_unit:
-      value: dagen
-    singular_unit:
-      value: dag
-  hour:
-    future_singular:
-      value: Over een uur
-    past_singular:
-      value: Een uur geleden
-    plural_unit:
-      value: uur
-    singular_unit:
-      value: uur
-  in:
-    value: over
-  just_now:
-    value: Zojuist
-  less_than_minute:
-    value: Zojuist
-  minute:
-    future_singular:
-      value: In een minuut
-    past_singular:
-      value: Een minuut geleden
-    plural_unit:
-      value: minuten
-    singular_unit:
-      value: minuut
-  month:
-    future_singular:
-      value: Volgende maand
-    past_singular:
-      value: Vorige maand
-    plural_unit:
-      value: maanden
-    singular_unit:
-      value: maand
-  second:
-    future_singular:
-      value: Bijna
-    past_singular:
-      value: Zojuist
-    plural_unit:
-      value: seconden
-    singular_unit:
-      value: seconde
-  week:
-    future_singular:
-      value: Volgende week
-    past_singular:
-      value: Vorige week
-    plural_unit:
-      value: weken
-    singular_unit:
-      value: week
-  year:
-    future_singular:
-      value: Volgend jaar
-    past_singular:
-      value: Vorig jaar
-    plural_unit:
-      value: jaar
-    singular_unit:
-      value: jaar
 devices:
   admin:
     value: Beheerder
@@ -405,21 +346,6 @@ errors:
     value: Deze URL lijkt niet geldig te zijn.
   loading_wordlists:
     value: Fout bij het laden van de woordlijsten.
-  local_authentication:
-    biometry_not_available:
-      value: >-
-        Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de
-        telefoon.
-    biometry_not_enrolled:
-      value: >-
-        Authenticatie kan niet gestart worden, omdat biometrie niet is ingesteld
-        op de telefoon.
-    generic:
-      value: Er is een authenticatiefout opgetreden.
-    passcode_not_set:
-      value: >-
-        Authenticatie kan niet gestart worden, omdat de toegangscode niet is
-        ingesteld op de telefoon.
   move_from_team:
     value: Fout bij verplaatsen account van team
   moving_data:
@@ -501,40 +427,12 @@ errors:
     comment: Error retrieving the OTP-code
     value: Fout bij het bijwerken van het account.
 feedback:
-  add_site:
-    value: Site toevoegen
-  additional_info:
-    value: Wil je nog iets toevoegen?
-  change_password:
-    value: Wachtwoord wijzigen
   feedback:
     value: >-
       Heb je een bug gevonden? Laat het ons weten! We horen ook graag je mening
       over chiff of suggesties voor verbeteringen.
-  finish:
-    value: Klaar
-  logging_in:
-    value: Inloggen
-  next:
-    value: Volgende
-  'no':
-    value: Nee
   send:
     value: Stuur
-  start:
-    value: Start
-  submit:
-    value: Stuur
-  thanks:
-    value: |-
-      That was all.
-      Thank you!
-  use_help:
-    value: We kunnen je hulp gebruiken
-  what_did_not_work:
-    value: What didn't work?
-  'yes':
-    value: Ja
 initialization:
   agree:
     value: Akkoord
@@ -650,14 +548,8 @@ notifications:
   update_account:
     value: Wil je %@ wijzigen?
 numbers:
-  five:
-    value: '5'
-  four:
-    value: '4'
   one:
     value: '1'
-  three:
-    value: '3'
   two:
     value: '2'
 popups:
@@ -765,148 +657,32 @@ popups:
     'yes':
       comment: ja
       value: 'yes'
-registration:
-  breach_password_found:
-    comment: >-
-      Part of sentence This password has been found in 3 breaches! You should
-      probably change it.
-    value: Dit wachtwoord is gevonden in
-  change_password_footer:
-    comment: Description for enabling changing a password
-    value: >-
-      Indien ingeschakeld, wijzigt Chiff het wachtwoord automatisch in een zeer
-      veilig wachtwoord
-  change_password_impossible:
-    comment: Description if changing a password is not possible
-    value: Het is niet mogelijk het wachtwoord voor deze website te wijzigen.
 requests:
-  account_added:
-    value: Account toegevoegd
-  account_disabled:
-    value: Account uitgeschakeld
-  account_updated:
-    value: Account geüpdatet
-  accounts:
-    comment: The word for 'accounts'
-    value: accounts
-  accounts_added:
-    value: accounts toegevoegd
-  accounts_left_1:
-    comment: Je kunt nog 1 account toevoegen. Check in code.
-    value: Je kunt nog maar
-  accounts_left_2_plural:
-    value: extra accounts
-  accounts_left_2_single:
-    value: extra account
-  accounts_left_3:
-    value: >-
-      toevoegen in de gratis versie van Chiff. Upgrade om onbeperkt accounts te
-      bewaren.
-  add_account:
-    value: Account toevoegen
-  add_accounts:
-    value: Accounts toevoegen
-  add_site:
-    comment: 'Ask the user to add a site, e.g. Add Amazon.com?'
-    value: Voeg %@ toe
-  cannot_add:
-    value: Upgrade nodig
-  change_for:
-    comment: 'Ask the user to change a password, e.g. Change password for Amazon.com?'
-    value: Wijzig wachtwoord voor %@
-  change_password:
-    value: Wijzig wachtwoord
-  confirm_login:
-    value: Bevestig login
-  confirm_request:
-    value: Bevestig verzoek
+  authorize_credential_disclosure:
+    allow:
+      value: Ja
+    deny:
+      value: Nee
+    message:
+      value: 'Je hebt een account voor  %@, wil je dat laten weten aan de website?'
+    title:
+      value: Account bestaat
   create_team:
     value: Creëer team
   create_this:
     value: Creëer %@.
   enter_otp:
     value: Voer het one-time password in
-  expired:
-    value: >-
-      Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
-      verstuurd.
-  get_for:
-    comment: 'Ask the user to fill a password, e.g. Fill password for Amazon.com?'
-    value: Haal wachtwoord van %@ op.
-  get_password:
-    value: Wachtwoord ophalen
-  get_password_successful:
-    value: Wachtwoord opgehaald
-  import_progress_1:
-    value: Accounts ophalen..
-  import_progress_2:
-    value: Metadata van websites ophalen..
-  import_progress_3:
-    value: Accounts versleutelen..
-  import_progress_4:
-    value: Backup-gegevens uploaden..
-  import_progress_5:
-    value: Klaar!
-  keyn_for_teams:
-    value: Chiff voor teams
-  login_keyn_next_time:
-    value: Volgende keer kun je met Chiff inloggen
-  login_succesful:
-    value: Login gelukt
-  login_to:
-    comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
-    value: Log in bij %@
-  login_with:
-    comment: 'Ask to the user to login with an account, e.g. Login with demo@chiff.app?'
-    value: Login met %@
-  n_new_accounts:
-    value: '%d nieuwe accounts.'
-  new_password_generated:
-    value: Nieuw wachtwoord gegenereerd
-  no_accounts_left:
-    value: >-
-      Je kunt geen accounts meer toevoegen in de gratis versie van Chiff.
-      Upgrade om een onbeperkt aantal accounts te bewaren.
   'on':
     comment: 'The word for on, e.g. Pair with browser on OS?'
     value: op
   pair_with:
     value: Koppel met
-  restore_team:
-    value: Herstel team
-  return:
-    value: Terug
-  return_to_computer:
-    value: Keer terug naar je computer
-  save:
-    comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
-    value: Bewaar
   team_created:
     value: Team gecreëerd
-  to_complete_process:
-    value: om het proces te voltooien
-  unknown_request:
-    value: Onbekend verzoek
-  unlock_accounts:
-    comment: Unlock accounts
-    value: Ontgrendel accounts
   unlock_keyn:
     comment: Unlock Chiff
     value: Ontgrendel Chiff
-  update_account:
-    value: Update account
-  update_this:
-    value: Update %@.
-  upgrade:
-    value: Upgrade nu
-  upgrade_keyn_for_add:
-    value: >-
-      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
-      naar Chiff Premium om onbeperkt accounts op te slaan
-  upgrade_keyn_for_request:
-    value: >-
-      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
-      naar Chiff Premium om weer met al je accounts in te loggen
 settings:
   about:
     value: Over Chiff
@@ -989,14 +765,7 @@ settings:
     value: Juridisch
   mobile:
     value: Mobiel
-  mobile_instruction_<iOS12:
-    first:
-      value: Open Chiff om in te loggen op je telefoon.
-    second:
-      value: Kopieer je wachtwoord door er op te tikken.
-    third:
-      value: Keer terug naar de website en plak je wachtwoord.
-  mobile_instruction_iOS12:
+  mobile_instruction:
     first:
       value: 'Om Chiff op je telefoon te gebruiken, moet je toestemming geven bij iOS.'
     second:
@@ -1056,49 +825,23 @@ settings:
   settings:
     comment: The word for settings
     value: Instellingen
+  share:
+    value: Vertel een vriend
   share_analytics:
     value: Deel gebruiksstatistieken
   share_errors:
     value: Deel foutmeldingen
+  share_text:
+    value: >-
+      Met Chiff kun je overal veilig inloggen met je telefoon! Chiff is
+      beschikbaar voor iOS (https://ios.chiff.app) en Android
+      (https://android.chiff.app).
   success:
     value: Gelukt
   terms_of_use:
     value: Algemene voorwaarden
   version:
     value: Versie
-storekit:
-  choose_plan:
-    value: Kies je type abonnement
-  couldNotFind:
-    value: Kon bronbestand niet vinden
-  deferred:
-    value: Sta gebruiker toe je app te blijven gebruiken
-  deliverContent:
-    value: Lever inhoud voor
-  error:
-    value: 'Fout: '
-  failed:
-    value: mislukt
-  noRestorablePurchases:
-    value: Geen herstelbare aankopen gevonden.
-  purchase:
-    value: Koop
-  purchaseOf:
-    value: Aankoop van
-  removed:
-    value: is verwijderd van de betalingswachtrij
-  restorable:
-    value: Alle herstelbare transacties zijn verwerkt door de betalingswachtrij
-  restore_button:
-    value: Ik heb al Chiff Premium
-  status:
-    value: Status
-  title:
-    value: Met Chiff Premium kun je zoveel accounts toevoegen als je wilt.
-  unknownDefault:
-    value: Onbekende betalingstransactie
-  updateResource:
-    value: Update het met je product ID's om de productinformatie op te halen
 tabs:
   accounts:
     value: Accounts

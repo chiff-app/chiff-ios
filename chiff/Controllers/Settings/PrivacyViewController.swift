@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import ChiffCore
 
 class PrivacyViewController: UITableViewController {
 
@@ -157,7 +158,7 @@ class PrivacyViewController: UITableViewController {
             // Deleting endpoint relies on Seed being present
             NotificationManager.shared.unregisterDevice()
         }.map {
-            Seed.delete()
+            Seed.delete(includeSeed: true)
             Properties.purgePreferences()
         }
     }

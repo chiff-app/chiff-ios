@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import ChiffCore
 
 enum TeamError: Error {
     case inconsistent
@@ -44,13 +45,11 @@ struct Team {
             let roleData = try Crypto.shared.convertFromBase64(from: role)
             return try JSONDecoder().decode(TeamRole.self, from: Crypto.shared.decryptSymmetric(roleData, secretKey: encryptionKey))
         })
-        users = Set(try userData.compactMap { (pubkey, user) -> TeamUser? in
+        users = Set(try userData.compactMap { (_, user) -> TeamUser? in
             guard let data = (user["data"] as? String)?.fromBase64 else {
                 throw CodingError.missingData
             }
-            var user = try JSONDecoder().decode(TeamUser.self, from: Crypto.shared.decryptSymmetric(data, secretKey: encryptionKey))
-            user.pubkey = pubkey
-            return user
+            return try JSONDecoder().decode(TeamUser.self, from: Crypto.shared.decryptSymmetric(data, secretKey: encryptionKey))
         })
         accounts = Set(try accountData.compactMap { (_, account) -> TeamAccount? in
             let data = try Crypto.shared.convertFromBase64(from: account)
@@ -115,4 +114,17 @@ struct Team {
         return (teamEncryptionKey, teamKeyPair, teamPasswordSeed)
     }
 
+}
+
+extension TeamSession {
+
+    /// Get an instance of the `Team` that corresponds to this session.
+    /// - Returns: A Promise of the `Team`.
+    func getTeam() -> Promise<Team> {
+        return firstly {
+            getTeamSeed()
+        }.then { seed in
+            Team.get(id: self.teamId, seed: seed)
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  ChiffTableViewController.swift
+//  chiffTableViewController.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md

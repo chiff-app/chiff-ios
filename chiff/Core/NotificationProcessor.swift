@@ -8,6 +8,7 @@
 import UserNotifications
 import PromiseKit
 import LocalAuthentication
+import ChiffCore
 
 enum NotificationExtensionError: Error {
     case decodeCiphertext

@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import ChiffCore
 
 extension AccountViewController {
 
@@ -61,44 +62,60 @@ extension AccountViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 1 && account.sites.count > 1 && account is UserAccount {
+        var stringToCopy: String?
+        var urlToCopy: URL?
+        switch indexPath.section {
+        case 0:
+            if indexPath.row == 0 {
+                stringToCopy = websiteNameTextField.text
+            } else if account.sites.count > 1 && account is UserAccount {
                 performSegue(withIdentifier: "ShowSiteOverview", sender: self)
+                return
+            } else if let urlString = websiteURLTextField.text, let url = URL(string: urlString) {
+                urlToCopy = url
+            } else {
+                stringToCopy = websiteURLTextField.text
             }
-        } else if indexPath.section == 1 {
-            if (indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled)) && password != nil {
-                copyToPasteboard(indexPath)
-            } else if indexPath.row == 2 && qrEnabled && account is UserAccount {
+        case 1:
+            if indexPath.row == 0 {
+                stringToCopy = userNameTextField.text
+            } else if indexPath.row == 1 {
+                stringToCopy = userPasswordTextField.text
+                Logger.shared.analytics(.passwordCopied)
+            } else if qrEnabled && account is UserAccount {
                 performSegue(withIdentifier: "showQR", sender: self)
+                return
+            } else {
+                stringToCopy = userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
+                Logger.shared.analytics(.otpCopied)
             }
+        default:
+            stringToCopy = notesCell.textString
         }
-    }
-
-    // MARK: - Private functions
-
-    private func copyToPasteboard(_ indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else {
+        let pasteBoard = UIPasteboard.general
+        if let string = stringToCopy {
+            pasteBoard.string = string
+        } else if let url = urlToCopy {
+            pasteBoard.url = url
+        } else {
+            // Nothing to copy.
             return
         }
 
-        if indexPath.row == 1 {
-            Logger.shared.analytics(.passwordCopied)
-        } else {
-            Logger.shared.analytics(.otpCopied)
+        showCopyLabel(indexPath: indexPath)
+    }
+
+    private func showCopyLabel(indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
+            return
         }
-
-        let pasteBoard = UIPasteboard.general
-        pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text?.replacingOccurrences(of: " ", with: "")
-
         let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "accounts.copied".localized
-        copiedLabel.font = copiedLabel.font.withSize(18)
+        copiedLabel.font = UIFont.primaryMediumNormal?.withSize(16)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
-        copiedLabel.backgroundColor = UIColor(displayP3Red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
-
+        copiedLabel.backgroundColor = UIColor.primaryDark
         cell.addSubview(copiedLabel)
-
         UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
             copiedLabel.alpha = 0.0
         }, completion: { result in

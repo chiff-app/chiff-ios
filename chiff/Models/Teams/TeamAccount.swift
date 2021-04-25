@@ -7,6 +7,7 @@
 
 import Foundation
 import OneTimePassword
+import ChiffCore
 
 /// A team account in the context of a team. Not to be confused with a shared account, which is the team account in the context of the team member.
 struct TeamAccount: BaseAccount {
@@ -35,7 +36,7 @@ struct TeamAccount: BaseAccount {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
-        self.users = Set(users.map { $0.pubkey! })
+        self.users = Set(users.map { $0.id })
         self.roles = Set(roles.map { $0.id })
         self.version = version
         self.notes = try account.notes()

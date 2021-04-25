@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 protocol SitesDelegate: AnyObject {
     func updateAccount(account: UserAccount)

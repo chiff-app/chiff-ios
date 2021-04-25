@@ -7,7 +7,7 @@
 
 import UIKit
 import PromiseKit
-import DeviceCheck
+import ChiffCore
 
 /// Handles registration of the device at the back-end
 struct NotificationManager {
@@ -27,15 +27,21 @@ struct NotificationManager {
             } else {
                 return createEndpoint(pushToken: token, id: id)
             }
-        }.done { result in
+        }.then { result -> Promise<Void> in
             guard let endpoint = result["arn"] as? String else {
                 Logger.shared.error("Could not find ARN in server respoonse")
-                return
+                return .value(())
             }
             if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
                 try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
             } else {
                 try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+            }
+            if #available(iOS 14.0, *) {
+                // Will do nothing if attestation already has been completed.
+                return Attestation.attestDevice()
+            } else {
+                return .value(())
             }
         }.catchLog("AWS cannot get arn.")
     }
@@ -64,25 +70,13 @@ struct NotificationManager {
     // MARK: - Private functions
 
     private func createEndpoint(pushToken: String, id: String) -> Promise<JSONObject> {
-        return Promise<String?> { seal in
-            DCDevice.current.generateToken { (data, error) in
-                if let error = error {
-                    Logger.shared.warning("Error retrieving device token.", error: error)
-                    seal.fulfill(nil)
-                } else {
-                    seal.fulfill(data?.base64EncodedString())
-                }
-            }
-        }.then { deviceToken -> Promise<JSONObject> in
-            var message = [
-                "pushToken": pushToken,
-                "os": "ios",
-                "id": id
-            ]
-            if let deviceToken = deviceToken {
-                message["deviceToken"] = deviceToken
-            }
-            return API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .post, privKey: try Seed.privateKey(), message: message)
+        let message = [
+            "pushToken": pushToken,
+            "os": "ios",
+            "id": id
+        ]
+        return firstly {
+            API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .post, privKey: try Seed.privateKey(), message: message)
         }
     }
 

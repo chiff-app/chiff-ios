@@ -11,6 +11,7 @@ import UserNotifications
 import LocalAuthentication
 import PromiseKit
 import os.log
+import ChiffCore
 
 /*
  * Handles push notification that come from outside the app.

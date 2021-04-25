@@ -9,6 +9,8 @@ import UIKit
 import LocalAuthentication
 import OneTimePassword
 import PromiseKit
+import ChiffCore
+import StoreKit
 
 class RequestViewController: UIViewController {
 
@@ -48,14 +50,7 @@ class RequestViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
-        if let factor = token?.generator.factor, case .counter = factor, let newToken = token?.updatedToken() {
-            self.token = newToken
-            var userAccount = account as? UserAccount
-            try? userAccount?.setOtp(token: newToken)
-            successTextLabel.text = newToken.currentPasswordSpaced
-        } else {
-            acceptRequest()
-        }
+        acceptRequest()
     }
 
     @IBAction func close(_ sender: UIButton) {
@@ -91,24 +86,56 @@ class RequestViewController: UIViewController {
             }
         }.ensure {
             AuthorizationGuard.shared.authorizationInProgress = false
-        }.done(on: .main) { account in
             self.activityIndicator.stopAnimating()
+        }.done(on: .main) { account in
             self.progressLabel.isHidden = true
             if var account = account {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
             }
             self.authenticateButton.isHidden = true
-            if let account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
-                self.token = token
+            if self.authorizer.type == .login {
+                Properties.loginCount += 1
+            }
+            if var account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
+                if case .counter = token.generator.factor {
+                    self.token = token.updatedToken()
+                    try account.setOtp(token: self.token!)
+                } else {
+                    self.token = token
+                }
                 self.account = account
                 self.showOtp()
             } else {
                 self.success()
             }
+        }.recover(on: .main) { (error) -> Guarantee<Void> in
+            guard let errorResponse = error as? ChiffErrorResponse else {
+                throw error
+            }
+            return self.handleChiffErrorResponse(error: errorResponse, siteName: "TODO")
         }.catch(on: .main) { error in
-            self.activityIndicator.stopAnimating()
             self.handleError(error: error)
+            _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+        }
+    }
+
+    private func handleChiffErrorResponse(error: ChiffErrorResponse, siteName: String) -> Guarantee<Void> {
+        return Guarantee<ChiffErrorResponse> { seal in
+            let alert = UIAlertController(title: "requests.authorize_credential_disclosure.title".localized,
+                                          message: String(format: "requests.authorize_credential_disclosure.message".localized, siteName),
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.allow".localized, style: .default) { _ in
+                seal(.discloseAccountExists)
+            })
+            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.deny".localized, style: .cancel) { _ in
+                seal(.accountExists)
+            })
+            self.present(alert, animated: true, completion: nil)
+        }.then { response in
+            return self.authorizer.cancelRequest(reason: .error, error: response)
+        }.map {
+            self.dismiss()
         }
     }
 
@@ -189,8 +216,15 @@ class RequestViewController: UIViewController {
         self.authorized = true
         self.showSuccessView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
-            AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
-            self.dismiss()
+            if self.authorizer.type == .login &&
+                !Properties.hasBeenPromptedReview &&
+                (Properties.loginCount % 30 == 0 || Properties.accountCount > 15) {
+                SKStoreReviewController.requestReview()
+                Properties.hasBeenPromptedReview = true
+            } else {
+                AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+                self.dismiss()
+            }
         }
     }
 

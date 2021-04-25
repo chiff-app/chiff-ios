@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import ChiffCore
 
 /// A team user.
 struct TeamUser: Codable, AccessControllable {
-    var pubkey: String!
+    let pubkey: String
     let userPubkey: String
     let id: String
     let key: String

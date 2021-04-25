@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import ChiffCore
 
 extension Team {
 
@@ -96,7 +97,7 @@ extension Team {
             "id": id,
             "data": data,
             "roleId": role.id,
-            "userPubkey": user.pubkey!,
+            "userPubkey": user.pubkey,
             "userId": user.id,
             "userSyncPubkey": user.userSyncPubkey,
             "roleData": try role.encrypt(key: encryptionKey),

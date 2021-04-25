@@ -65,8 +65,9 @@ class MultiLineTextInputTableViewCell: UITableViewCell {
 extension MultiLineTextInputTableViewCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
-        // Resize the cell only when cell's size is changed
-        if textView.bounds.size.height != newSize.height {
+        // Resize the cell only when cell's size is changed substantially, because sizeThatFits sometimes returns 0.5 less.
+        let range = (textView.bounds.size.height - 1)...(textView.bounds.size.height + 1)
+        if !range.contains(newSize.height) {
             delegate.textViewHeightDidChange(self)
         }
     }
