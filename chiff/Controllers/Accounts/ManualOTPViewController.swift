@@ -9,6 +9,7 @@ import UIKit
 import OneTimePassword
 import Base32
 import PromiseKit
+import ChiffCore
 
 enum OTPError: Error {
     case invalidSecret
@@ -22,7 +23,8 @@ class ManualOTPViewController: ChiffTableViewController, TokenController {
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
-    var account: UserAccount!
+    var account: UserAccount?
+    var siteName: String!
     var token: Token?
 
     override var headers: [String?] {
@@ -58,6 +60,10 @@ class ManualOTPViewController: ChiffTableViewController, TokenController {
             throw OTPError.invalidSecret
         }
         self.token = Token(generator: generator)
+        guard let account = account else {
+            self.performSegue(withIdentifier: "UnwindFromOTPToAddAccount", sender: self)
+            return
+        }
         firstly {
             AuthorizationGuard.shared.addOTP(token: token!, account: account)
         }.done(on: .main) {

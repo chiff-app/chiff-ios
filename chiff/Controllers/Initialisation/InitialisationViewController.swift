@@ -8,6 +8,7 @@
 import UIKit
 import LocalAuthentication
 import PromiseKit
+import ChiffCore
 
 class InitialisationViewController: UIViewController {
 

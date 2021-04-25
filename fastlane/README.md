@@ -16,11 +16,6 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios login
-```
-fastlane ios login
-```
-Login to App Store connect
 ### ios test
 ```
 fastlane ios test

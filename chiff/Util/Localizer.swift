@@ -6,26 +6,12 @@
 //
 
 import UIKit
+import ChiffCore
 
-protocol Localizable {
-    var localized: String { get }
-    func attributedLocalized(color: UIColor) -> NSAttributedString
-}
-
-protocol XIBLocalizable {
-    var localizationKey: String? { get set }
-}
-
-private class Localizer {
-
-    static let shared = Localizer()
+class ChiffLocalizer: LocalizerProtocol {
 
     lazy var localizableDictionary: NSDictionary! = {
-        #if !TARGET_INTERFACE_BUILDER
         let bundle = Bundle.main
-        #else
-        let bundle = Bundle(for: type(of: self))
-        #endif
         if let path = bundle.path(forResource: "Localized", ofType: "plist") {
             return NSDictionary(contentsOfFile: path)
         }
@@ -82,17 +68,4 @@ private class Localizer {
         return localizableGroup
     }
 
-}
-
-extension String {
-
-    /// The localized string for this key. Should be in the format `"group.key"`.
-    var localized: String {
-        return Localizer.shared.localize(string: self)
-    }
-
-    /// The attributed string for this key, optionnaly overrding the font. The letters to color should be in the localization file.
-    func attributedLocalized(color: UIColor, font: UIFont?, attributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString {
-        return Localizer.shared.localize(string: self, accentColor: color, font: font, attributes: attributes)
-    }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 class PairContainerViewController: UIViewController, PairContainerDelegate {
 

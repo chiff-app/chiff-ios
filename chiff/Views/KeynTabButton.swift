@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 @IBDesignable class KeynTabButton: UIButton, XIBLocalizable {
 
@@ -50,6 +51,7 @@ import UIKit
 
     override func prepareForInterfaceBuilder() {
         sharedInit()
+        super.prepareForInterfaceBuilder()
     }
 
     func sharedInit() {

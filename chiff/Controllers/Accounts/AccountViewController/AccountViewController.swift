@@ -6,12 +6,12 @@
 //
 
 import UIKit
-import MBProgressHUD
 import OneTimePassword
 import QuartzCore
 import PromiseKit
+import ChiffCore
 
-class AccountViewController: ChiffTableViewController {
+class AccountViewController: ChiffTableViewController, TokenHandler {
 
     override var headers: [String?] {
         return [
@@ -50,6 +50,7 @@ class AccountViewController: ChiffTableViewController {
     var account: Account!
     var passwordLoaded = false
     var tap: UITapGestureRecognizer!
+    var passwordPopup: UIView?
     var qrEnabled: Bool = true
     var editingMode: Bool = false
     var token: Token?
@@ -62,19 +63,11 @@ class AccountViewController: ChiffTableViewController {
     }
 
     var webAuthnEnabled: Bool {
-        if let account = account as? UserAccount {
-            return account.webAuthn != nil
-        } else {
-            return false
-        }
+        return (account as? UserAccount)?.webAuthn != nil
     }
 
     var shadowing: Bool {
-        if let account = account as? UserAccount {
-            return account.shadowing
-        } else {
-            return false
-        }
+        return (account as? UserAccount)?.shadowing ?? false
     }
 
     override func viewDidLoad() {
@@ -135,6 +128,16 @@ class AccountViewController: ChiffTableViewController {
         }
     }
 
+    func updateHOTP() {
+        if let token = token?.updatedToken() {
+            self.token = token
+            if var account = self.account as? UserAccount {
+                try? account.setOtp(token: token)
+            }
+            userCodeTextField.text = token.currentPasswordSpaced
+        }
+    }
+
     // MARK: - Actions
 
     @IBAction func showPassword(_ sender: UIButton) {
@@ -186,6 +189,7 @@ class AccountViewController: ChiffTableViewController {
                 fatalError("Should not be able to open OTP controller on shared account")
             }
             destination.account = account
+            destination.siteName = account.site.name
         } else if segue.identifier == "ShowSiteOverview", let destination = segue.destination as? SiteTableViewController {
             guard let account = account as? UserAccount else {
                 fatalError("Should not be able to open site overview on shared account")
@@ -238,20 +242,55 @@ class AccountViewController: ChiffTableViewController {
         updateOTPUI()
     }
 
+    @objc func hidePasswordPopup() {
+        if let popup = self.passwordPopup {
+            UIView.transition(with: self.tableView.superview!, duration: 0.1, options: .transitionCrossDissolve) {
+                popup.isHidden = true
+            } completion: { _ in
+                popup.removeFromSuperview()
+                self.passwordPopup = nil
+            }
+        }
+    }
+
     private func showHiddenPasswordPopup(password: String) {
-        let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
-        showPasswordHUD.mode = .text
-        showPasswordHUD.bezelView.color = .black
-        showPasswordHUD.label.text = password
-        showPasswordHUD.label.textColor = .white
-        showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
-        showPasswordHUD.margin = 10
-        showPasswordHUD.label.numberOfLines = 0
-        showPasswordHUD.removeFromSuperViewOnHide = true
-        showPasswordHUD.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: showPasswordHUD,
-                action: #selector(showPasswordHUD.hide(animated:)))
-        )
+        guard self.passwordPopup == nil else {
+            hidePasswordPopup()
+            return
+        }
+
+        let passwordPopup = UIView()
+        passwordPopup.backgroundColor = .primaryDark
+        passwordPopup.layer.cornerRadius = 5
+        passwordPopup.layer.masksToBounds = true
+        passwordPopup.translatesAutoresizingMaskIntoConstraints = false
+        passwordPopup.isHidden = true
+
+        let textView = UILabel()
+        textView.text = password
+        textView.font = UIFont(name: "Courier New", size: 24)
+        textView.textColor = .white
+        textView.lineBreakMode = .byCharWrapping
+        textView.numberOfLines = 0
+        textView.textAlignment = .center
+        textView.translatesAutoresizingMaskIntoConstraints = false
+
+        passwordPopup.addSubview(textView)
+        self.tableView.superview?.addSubview(passwordPopup)
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalTo: passwordPopup.topAnchor, constant: 8),
+            textView.bottomAnchor.constraint(equalTo: passwordPopup.bottomAnchor, constant: -8),
+            textView.leadingAnchor.constraint(equalTo: passwordPopup.leadingAnchor, constant: 8),
+            textView.trailingAnchor.constraint(equalTo: passwordPopup.trailingAnchor, constant: -8),
+            passwordPopup.centerYAnchor.constraint(equalTo: self.tableView.superview!.centerYAnchor),
+            passwordPopup.centerXAnchor.constraint(equalTo: self.tableView.superview!.centerXAnchor),
+            passwordPopup.leadingAnchor.constraint(greaterThanOrEqualTo: self.tableView.superview!.leadingAnchor, constant: 32),
+            passwordPopup.trailingAnchor.constraint(greaterThanOrEqualTo: self.tableView.superview!.trailingAnchor, constant: -32)
+        ])
+        passwordPopup.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hidePasswordPopup)))
+        self.passwordPopup = passwordPopup
+        UIView.transition(with: self.tableView.superview!, duration: 0.1, options: .transitionCrossDissolve) {
+            passwordPopup.isHidden = false
+        }
     }
 }

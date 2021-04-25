@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import ChiffCore
 
 class LearnMoreViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 

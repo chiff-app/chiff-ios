@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ChiffCore
 
 @IBDesignable class UnderlinedButton: UIButton, XIBLocalizable {
 

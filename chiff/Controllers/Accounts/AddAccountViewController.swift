@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import ChiffCore
+import OneTimePassword
 
-class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
+class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate, TokenHandler {
 
     override var headers: [String?] {
         return [
@@ -20,7 +22,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
     override var footers: [String?] {
         return [
             "accounts.url_warning".localized.capitalizedFirstLetter,
-            nil,
+            "accounts.2fa_description".localized.capitalizedFirstLetter,
             String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters)
         ]
     }
@@ -33,8 +35,18 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
     @IBOutlet weak var showPasswordButton: UIButton!
     @IBOutlet weak var notesCell: MultiLineTextInputTableViewCell!
 
+    // TokenHandler
+    @IBOutlet weak var userCodeTextField: UITextField!
+    @IBOutlet weak var userCodeCell: UITableViewCell!
+    @IBOutlet weak var totpLoader: UIView!
+    @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
+
     private let ppd: PPD? = nil
     private var passwordIsHidden = true
+
+    var qrEnabled: Bool = true
+    var token: Token?
+    var loadingCircle: FilledCircle?
     var account: UserAccount?
 
     override func viewDidLoad() {
@@ -57,14 +69,11 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
         reEnableBarButtonFont()
     }
 
-    // MARK: - UITableView
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 2 ? UITableView.automaticDimension : 44
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // IMPORTANT: Override copy functionality
+    func updateHOTP() {
+        if let token = token?.updatedToken() {
+            self.token = token
+            userCodeTextField.text = token.currentPasswordSpaced
+        }
     }
 
     // MARK: - Actions
@@ -83,6 +92,22 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
         createAccount()
     }
 
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
+            destination.siteName = siteNameField.text ?? ""
+        }
+    }
+
+    @IBAction func unwindToAddAccountViewController(sender: UIStoryboardSegue) {
+        if let source = sender.source as? TokenController {
+            self.token = source.token
+            updateOTPUI()
+        }
+    }
+
     // MARK: UITextFieldDelegate
 
     @objc func textFieldDidChange(textField: UITextField) {
@@ -95,9 +120,8 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
         let siteName = siteNameField.text ?? ""
         let siteURL = siteURLField.text ?? ""
         let username = usernameField.text ?? ""
-        let password = passwordField.text ?? ""
 
-        if siteName.isEmpty || siteURL.isEmpty || username.isEmpty || password.isEmpty {
+        if siteName.isEmpty || siteURL.isEmpty || username.isEmpty {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
@@ -107,8 +131,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
     private func createAccount() {
         guard let websiteName = siteNameField.text,
            let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
-           let username = usernameField.text,
-           let password = passwordField.text else {
+           let username = usernameField.text else {
             self.showAlert(message: "errors.save_account" + ".")
             return
         }
@@ -118,7 +141,12 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
             }
             let id = url.absoluteString.lowercased().sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
-            self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
+            self.account = try UserAccount(username: username, sites: [site],
+                                           password: (passwordField.text ?? "").isEmpty ? nil : passwordField.text,
+                                           rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
+            if let token = token {
+                try self.account!.setOtp(token: token)
+            }
             self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
             Logger.shared.analytics(.accountAddedLocal)
         } catch KeychainError.duplicateItem {

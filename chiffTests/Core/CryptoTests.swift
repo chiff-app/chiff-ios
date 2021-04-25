@@ -8,6 +8,7 @@
 import XCTest
 import Sodium
 import CryptoKit
+import ChiffCore
 
 @testable import chiff
 
