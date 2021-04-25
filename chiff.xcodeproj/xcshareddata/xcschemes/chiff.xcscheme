@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1210"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -72,16 +72,6 @@
                ReferencedContainer = "container:chiff.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ChiffCoreTests"
-               BuildableName = "ChiffCoreTests"
-               BlueprintName = "ChiffCoreTests"
-               ReferencedContainer = "container:../ChiffCore">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -134,5 +124,23 @@
    <ArchiveAction
       buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "APPLICATIONS_PATH=&quot;$ARCHIVE_PRODUCTS_PATH/Applications&quot;&#10;rm &quot;$APPLICATIONS_PATH/$FRAMEWORKS_FOLDER_PATH/libsodium.a&quot;&#10;rm &quot;$APPLICATIONS_PATH/$PRODUCT_NAME.app/PlugIns/libsodium.a&quot;&#10;find &quot;$APPLICATIONS_PATH/$PRODUCT_NAME.app/PlugIns&quot; -name &apos;*.appex&apos; -type d | while read -r EXTENSION&#10;do&#10;rm -r &quot;$EXTENSION/Frameworks&quot;&#10;done&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "49E7664F1F7E6F420022C042"
+                     BuildableName = "chiff.app"
+                     BlueprintName = "chiff"
+                     ReferencedContainer = "container:chiff.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
    </ArchiveAction>
 </Scheme>

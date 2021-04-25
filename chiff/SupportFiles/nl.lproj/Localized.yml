@@ -86,6 +86,8 @@ accounts:
     value: Je kunt zoveel accounts toevoegen als je wilt.
   generate_password:
     value: Genereer automatisch
+  generate_password_footer:
+    value: Chiff genereert automatisch een veilig wachtwoord als je er geen invult.
   mode:
     value: Type
   mode_description:
@@ -424,6 +426,13 @@ errors:
   updating_account:
     comment: Error retrieving the OTP-code
     value: Fout bij het bijwerken van het account.
+feedback:
+  feedback:
+    value: >-
+      Heb je een bug gevonden? Laat het ons weten! We horen ook graag je mening
+      over chiff of suggesties voor verbeteringen.
+  send:
+    value: Stuur
 initialization:
   agree:
     value: Akkoord

@@ -233,7 +233,7 @@ class KeychainTests: XCTestCase {
         TestHelper.createSeed()
         Keychain.shared.deleteAll(service: .seed)
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: Self.context))
-        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: Self.context))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .passwordSeed), service: .passwordSeed, context: Self.context))
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: Self.context))
     }
     
