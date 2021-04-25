@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.9.0</string>
+	<string>3.10.0</string>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>82</string>
 	<key>TSKConfiguration</key>
 	<dict>
 		<key>TSKPinnedDomains</key>

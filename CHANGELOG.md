@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0] - 2021-04-15
+
+### Added
+
+- Added support for WebAuthn attestation
+- Added button with instructions on how to enable AutoFill.
+- Generate password when creating an account.
+- Added functionality to create an account from AutoFill provider.
+- Added functionality to share Chiff with a friend.
+- Added functionality to periodically ask users for an App Store review.
+- Added possibility to directly add OTP when creating a new account.
+
+### Changed
+
+- Extract core into library.
+- Use SPM for dependencies.
+- Changed the color of the copy label.
+
+### Fixed
+
+- Fixed bug with background color on password popup.
+- Fixed a bug where accounts written by Android with OTP-urls with spaces in the issuer name were ignored.
+- Fixed a bug where accounts with PPDs with default attributes were not correctly parsed.
+- Fixed a bug where the lock screen didn't show after authorizing a request with an OTP-code.
+
+
 ## [3.9.0] - 2021-01-15
 
 ### Added

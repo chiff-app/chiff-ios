@@ -34,13 +34,15 @@ platform :ios do
 
     desc 'Upload dSYMs to Crashlytics'
     lane :upload_symbols do |options|
-        login
-        download_dsyms(
-          version: 'latest'
-        )
+        if options[:download]
+          download_dsyms(
+            version: 'latest'
+          )
+        end
     
         upload_symbols_to_crashlytics(
-          gsp_path: "./chiff/SupportFiles/GoogleService-Info.plist"
+          gsp_path: "./chiff/SupportFiles/GoogleService-Info.plist",
+          binary_path: "./fastlane/upload_firebase_symbols"
         )
     
         clean_build_artifacts()
@@ -48,7 +50,6 @@ platform :ios do
 
     desc 'Build app'
     lane :build do
-	    xcode_select("/Users/bas/Downloads/Xcode-beta.app")
         test
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
@@ -93,7 +94,6 @@ platform :ios do
 
     desc 'Beta release'
     lane :beta_release do
-        login
         version = get_version_number(target: scheme)
         build
         upload_to_testflight()
@@ -103,13 +103,14 @@ platform :ios do
 
     desc "Submit Chiff to the App Store"
     lane :release do |options|
-      login
       version = get_version_number(target: scheme)
       build
       deliver(
         app_version: version,
         platform: 'ios',
-        skip_screenshots: true
+        skip_screenshots: true,
+        submission_information: "{ \"add_id_info_uses_idfa\": false }",
+        submit_for_review: options[:submit]
       )
       upload_symbols
       slack(message: "New version of Chiff released! #{version}")
