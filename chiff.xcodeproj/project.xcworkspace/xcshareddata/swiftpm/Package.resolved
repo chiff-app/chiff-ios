@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/chiff-app/chiff-core-ios.git",
         "state": {
           "branch": "master",
-          "revision": "1377473afe32c1ff1a0497f770b8798167f2f161",
+          "revision": "cd0a385d3469b2c1e51c38791784c56657243444",
           "version": null
         }
       },
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
         "state": {
           "branch": null,
-          "revision": "e73fdb6b83b489d3b037085e04a8381f14d7f009",
-          "version": "7.10.0"
+          "revision": "c6328a01c4db4c5dfd5ce0159a48a129ef6f4505",
+          "version": "7.11.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
         "state": {
           "branch": null,
-          "revision": "184d93b7790caa8b8368794c030c3aeb10d42e25",
-          "version": "7.10.0"
+          "revision": "7a263c22915db6e421dbf84bd3b4367a870588d9",
+          "version": "7.11.0"
         }
       },
       {
