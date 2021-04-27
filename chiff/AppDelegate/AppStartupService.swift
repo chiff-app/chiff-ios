@@ -213,6 +213,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     private func checkIfMigrated() -> Promise<Void> {
         Properties.migrateToAppGroup()
+        if Properties.errorLogging {
+            // Set Crashlytics.
+            Properties.errorLogging = true
+        }
         guard Properties.environment == .beta && !Properties.migrated else {
             return .value(())
         }
