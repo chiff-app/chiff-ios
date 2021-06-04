@@ -218,6 +218,31 @@ backup:
     value: woord
   word_is:
     value: woord is
+developer:
+  algorithm:
+    value: Algoritme
+  delete:
+    value: Verwijder
+  details:
+    value: Gegevens
+  last_used:
+    value: 'Laatst gebruikt:'
+  name:
+    value: Naam
+  never:
+    value: Nooit
+  pub_key:
+    value: Naam
+  size:
+    value: Grootte
+  ssh_detail_enclave_footer:
+    value: ⚠️ Sleutels in de Secure Enclave hebben geen backup.
+  ssh_detail_footer:
+    value: Deze sleutel kan worden hersteld met je paper backup.
+  ssh_detail_header:
+    value: Sleutelgegevens
+  ssh_pubkey_header:
+    value: Publiek sleutel
 devices:
   admin:
     value: Beheerder

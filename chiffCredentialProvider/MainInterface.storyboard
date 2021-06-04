@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -103,7 +103,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="vIp-NN-Owy">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="362.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="364.5"/>
                                         <subviews>
                                             <searchBar contentMode="redraw" searchBarStyle="minimal" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSm-zN-uhM">
                                                 <rect key="frame" x="10" y="5" width="392" height="51"/>
@@ -116,7 +116,7 @@
                                                 </scopeButtonTitles>
                                             </searchBar>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1U-Mq-NMo" customClass="KeynLabel" customModule="keynCredentialProvider">
-                                                <rect key="frame" x="29" y="64" width="365" height="16.5"/>
+                                                <rect key="frame" x="29" y="64" width="365" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -126,43 +126,36 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="374" placeholderIntrinsicHeight="204" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="48" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="H4U-r5-c9F" customClass="SelfSizingTableView" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="88.5" width="374" height="204"/>
+                                                <rect key="frame" x="20" y="89.5" width="374" height="204"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="AccountCell" id="Ss3-8F-m3f" customClass="AccountTableViewCell" customModule="chiffCredentialProvider" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="AccountCell" id="kGW-vN-7iI" customClass="AccountTableViewCell" customModule="chiff" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="24.5" width="374" height="48"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ss3-8F-m3f" id="YyQ-Ux-RxQ">
+                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kGW-vN-7iI" id="tBf-tO-DCs">
                                                             <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="umX-PH-YLU">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="3f2-rD-buF">
                                                                     <rect key="frame" x="20" y="0.0" width="334" height="48"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="MeO-1u-3Aa">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="nEc-yP-8Ul">
                                                                             <rect key="frame" x="0.0" y="0.0" width="10" height="48"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" constant="10" id="5ut-BY-URR"/>
+                                                                                <constraint firstAttribute="width" constant="10" id="4NO-g6-nvi"/>
                                                                             </constraints>
                                                                         </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3OU-Sd-IuP">
-                                                                            <rect key="frame" x="22" y="0.0" width="253" height="48"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUm-jm-ueZ">
+                                                                            <rect key="frame" x="22" y="0.0" width="292" height="48"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team_icon" translatesAutoresizingMaskIntoConstraints="NO" id="32F-er-SSS">
-                                                                            <rect key="frame" x="287" y="0.0" width="27" height="48"/>
-                                                                            <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" constant="27" id="ybe-d7-6i9"/>
-                                                                            </constraints>
-                                                                        </imageView>
-                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EO9-gW-H4B">
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRV-cj-V4P">
                                                                             <rect key="frame" x="326" y="0.0" width="8" height="48"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" constant="8" id="cv1-0I-M0L"/>
+                                                                                <constraint firstAttribute="width" constant="8" id="w9N-6U-QHt"/>
                                                                             </constraints>
                                                                             <state key="normal" image="chevron_right">
                                                                                 <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
@@ -173,23 +166,139 @@
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstItem="umX-PH-YLU" firstAttribute="top" secondItem="YyQ-Ux-RxQ" secondAttribute="top" id="aFX-fc-pfM"/>
-                                                                <constraint firstAttribute="bottom" secondItem="umX-PH-YLU" secondAttribute="bottom" id="qAY-3G-Kg7"/>
-                                                                <constraint firstAttribute="trailing" secondItem="umX-PH-YLU" secondAttribute="trailing" constant="20" id="qDl-pl-ABs"/>
-                                                                <constraint firstItem="umX-PH-YLU" firstAttribute="leading" secondItem="YyQ-Ux-RxQ" secondAttribute="leading" constant="20" id="tAY-ip-ehf"/>
+                                                                <constraint firstItem="3f2-rD-buF" firstAttribute="leading" secondItem="tBf-tO-DCs" secondAttribute="leading" constant="20" id="1qI-lz-1mQ"/>
+                                                                <constraint firstAttribute="bottom" secondItem="3f2-rD-buF" secondAttribute="bottom" id="EfF-BA-JS6"/>
+                                                                <constraint firstItem="3f2-rD-buF" firstAttribute="top" secondItem="tBf-tO-DCs" secondAttribute="top" id="ZL7-cG-Hhh"/>
+                                                                <constraint firstAttribute="trailing" secondItem="3f2-rD-buF" secondAttribute="trailing" constant="20" id="jPl-ki-6Kx"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="icon" destination="MeO-1u-3Aa" id="x7H-fS-PBt"/>
-                                                            <outlet property="teamIcon" destination="32F-er-SSS" id="ngH-s0-rfl"/>
-                                                            <outlet property="teamIconWidthConstraint" destination="ybe-d7-6i9" id="6RG-84-6ZF"/>
-                                                            <outlet property="titleLabel" destination="3OU-Sd-IuP" id="sa5-jb-eZW"/>
+                                                            <outlet property="accessoryButton" destination="uRV-cj-V4P" id="QUX-Ye-hNK"/>
+                                                            <outlet property="accessoryButtonWidthConstraint" destination="w9N-6U-QHt" id="HBl-0a-r8h"/>
+                                                            <outlet property="icon" destination="nEc-yP-8Ul" id="6Yb-pl-wpc"/>
+                                                            <outlet property="titleLabel" destination="sUm-jm-ueZ" id="yPA-UC-hlD"/>
+                                                        </connections>
+                                                    </tableViewCell>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="ShadowingCell" id="ofy-AV-kcf" customClass="SharedAccountTableViewCell" customModule="chiff" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="72.5" width="374" height="48"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ofy-AV-kcf" id="E5Q-Ha-7JO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="XSC-We-BKC">
+                                                                    <rect key="frame" x="20" y="0.0" width="334" height="48"/>
+                                                                    <subviews>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="CuA-Zk-GCE">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="10" height="48"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="10" id="GDJ-qI-bdF"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVO-g6-f9s">
+                                                                            <rect key="frame" x="22" y="0.0" width="253" height="48"/>
+                                                                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                                            <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team_icon" translatesAutoresizingMaskIntoConstraints="NO" id="L2H-NV-XF9">
+                                                                            <rect key="frame" x="287" y="0.0" width="27" height="48"/>
+                                                                            <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="27" id="n5v-Rv-SIy"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P2X-KZ-Ykg">
+                                                                            <rect key="frame" x="326" y="0.0" width="8" height="48"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="8" id="fHt-va-pOn"/>
+                                                                            </constraints>
+                                                                            <state key="normal" image="chevron_right">
+                                                                                <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
+                                                                            </state>
+                                                                        </button>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="XSC-We-BKC" secondAttribute="bottom" id="CKL-xG-X6J"/>
+                                                                <constraint firstAttribute="trailing" secondItem="XSC-We-BKC" secondAttribute="trailing" constant="20" id="bzA-rg-2cz"/>
+                                                                <constraint firstItem="XSC-We-BKC" firstAttribute="top" secondItem="E5Q-Ha-7JO" secondAttribute="top" id="dDc-V0-DOe"/>
+                                                                <constraint firstItem="XSC-We-BKC" firstAttribute="leading" secondItem="E5Q-Ha-7JO" secondAttribute="leading" constant="20" id="pdZ-7W-vrv"/>
+                                                            </constraints>
+                                                        </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="accessoryButton" destination="P2X-KZ-Ykg" id="HCC-EN-u0a"/>
+                                                            <outlet property="accessoryButtonWidthConstraint" destination="fHt-va-pOn" id="gH3-OY-lj8"/>
+                                                            <outlet property="icon" destination="CuA-Zk-GCE" id="Xf6-8M-x9d"/>
+                                                            <outlet property="teamIcon" destination="L2H-NV-XF9" id="MZc-dO-GHP"/>
+                                                            <outlet property="teamIconWidthConstraint" destination="n5v-Rv-SIy" id="lFj-GW-SYJ"/>
+                                                            <outlet property="titleLabel" destination="BVO-g6-f9s" id="GGT-kv-CzO"/>
+                                                        </connections>
+                                                    </tableViewCell>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="TeamsCell" id="toI-zC-weN" customClass="SharedAccountTableViewCell" customModule="chiff" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="120.5" width="374" height="48"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="toI-zC-weN" id="l9c-aW-Tqe">
+                                                            <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="a0t-fe-lhy">
+                                                                    <rect key="frame" x="20" y="0.0" width="334" height="48"/>
+                                                                    <subviews>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="FG1-0y-gM3">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="10" height="48"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="10" id="a5H-XD-Nxu"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="snN-MN-7Vj">
+                                                                            <rect key="frame" x="22" y="0.0" width="253" height="48"/>
+                                                                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                                            <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team_icon" translatesAutoresizingMaskIntoConstraints="NO" id="DTg-sW-95j">
+                                                                            <rect key="frame" x="287" y="0.0" width="27" height="48"/>
+                                                                            <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="27" id="ubV-Ll-mEF"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LsE-Dm-CVK">
+                                                                            <rect key="frame" x="326" y="0.0" width="8" height="48"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="8" id="XYY-da-c8O"/>
+                                                                            </constraints>
+                                                                            <state key="normal" image="chevron_right">
+                                                                                <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
+                                                                            </state>
+                                                                        </button>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="a0t-fe-lhy" firstAttribute="top" secondItem="l9c-aW-Tqe" secondAttribute="top" id="6nY-zS-RAf"/>
+                                                                <constraint firstAttribute="trailing" secondItem="a0t-fe-lhy" secondAttribute="trailing" constant="20" id="BUN-Qx-mtF"/>
+                                                                <constraint firstItem="a0t-fe-lhy" firstAttribute="leading" secondItem="l9c-aW-Tqe" secondAttribute="leading" constant="20" id="Cly-8Z-9qt"/>
+                                                                <constraint firstAttribute="bottom" secondItem="a0t-fe-lhy" secondAttribute="bottom" id="K5A-5c-qsZ"/>
+                                                            </constraints>
+                                                        </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="accessoryButton" destination="LsE-Dm-CVK" id="MuV-uH-e8c"/>
+                                                            <outlet property="accessoryButtonWidthConstraint" destination="XYY-da-c8O" id="zsb-kE-xFJ"/>
+                                                            <outlet property="icon" destination="FG1-0y-gM3" id="Msv-Gc-8sh"/>
+                                                            <outlet property="teamIcon" destination="DTg-sW-95j" id="0J5-oK-Lfs"/>
+                                                            <outlet property="teamIconWidthConstraint" destination="ubV-Ll-mEF" id="NPf-Xn-jZt"/>
+                                                            <outlet property="titleLabel" destination="snN-MN-7Vj" id="Vfs-B5-8qK"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an account to fill the credentials." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xqo-f6-qwf" customClass="KeynLabel" customModule="keynCredentialProvider">
-                                                <rect key="frame" x="22" y="298.5" width="372" height="14"/>
+                                                <rect key="frame" x="22" y="299.5" width="372" height="15"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                                 <color key="textColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -287,7 +396,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTI-0m-FmI" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="96.5" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="rma-50-tsq"/>
                                                             </constraints>
@@ -300,7 +409,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="aBY-9F-oUb" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="108.5" y="0.0" width="265.5" height="44"/>
+                                                            <rect key="frame" x="104" y="0.0" width="270" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" textContentType="organization"/>
@@ -380,7 +489,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJf-sl-XIp" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="123.5" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="XRI-ka-87L"/>
                                                             </constraints>
@@ -393,7 +502,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="kEx-9H-lCk" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="135.5" y="0.0" width="238.5" height="44"/>
+                                                            <rect key="frame" x="104" y="0.0" width="270" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" textContentType="username"/>
@@ -425,7 +534,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="354" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcA-YB-fo1" customClass="KeynLabel" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="123" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="udY-Tc-2Li"/>
                                                             </constraints>
@@ -438,7 +547,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UjY-yl-E7J" customClass="LocalizableTextField" customModule="chiffCredentialProvider" customModuleProvider="target">
-                                                            <rect key="frame" x="135" y="0.0" width="219" height="44"/>
+                                                            <rect key="frame" x="104" y="0.0" width="250" height="44"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
@@ -560,34 +669,34 @@
     </scenes>
     <designables>
         <designable name="UjY-yl-E7J">
-            <size key="intrinsicContentSize" width="185" height="17"/>
+            <size key="intrinsicContentSize" width="69" height="18"/>
         </designable>
         <designable name="XCw-sA-dzt">
-            <size key="intrinsicContentSize" width="77.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="30" height="17.5"/>
         </designable>
         <designable name="Xqo-f6-qwf">
-            <size key="intrinsicContentSize" width="219" height="14"/>
+            <size key="intrinsicContentSize" width="248.5" height="15"/>
         </designable>
         <designable name="aBY-9F-oUb">
-            <size key="intrinsicContentSize" width="96.5" height="18"/>
+            <size key="intrinsicContentSize" width="43.5" height="19"/>
         </designable>
         <designable name="dcA-YB-fo1">
-            <size key="intrinsicContentSize" width="123" height="16.5"/>
+            <size key="intrinsicContentSize" width="69" height="17.5"/>
         </designable>
         <designable name="jTI-0m-FmI">
-            <size key="intrinsicContentSize" width="96.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="43.5" height="17.5"/>
         </designable>
         <designable name="kEx-9H-lCk">
-            <size key="intrinsicContentSize" width="123.5" height="18"/>
+            <size key="intrinsicContentSize" width="74" height="19"/>
         </designable>
         <designable name="mUg-wC-BHE">
-            <size key="intrinsicContentSize" width="77.5" height="18"/>
+            <size key="intrinsicContentSize" width="30" height="19"/>
         </designable>
         <designable name="tJf-sl-XIp">
-            <size key="intrinsicContentSize" width="123.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="74" height="17.5"/>
         </designable>
         <designable name="z1U-Mq-NMo">
-            <size key="intrinsicContentSize" width="81" height="16.5"/>
+            <size key="intrinsicContentSize" width="93" height="17.5"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>

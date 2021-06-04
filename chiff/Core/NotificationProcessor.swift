@@ -40,7 +40,7 @@ class NotificationProcessor {
         let siteName = request.siteName ?? "Unknown"
         content.title = session.title
         switch request.type {
-        case .add, .addAndLogin, .webauthnCreate:
+        case .add, .addAndLogin, .webauthnCreate, .sshCreate:
             content.body = String(format: "notifications.add_account".localized, siteName)
         case .addBulk:
             content.body = String(format: "notifications.add_accounts".localized, request.count!)
@@ -48,9 +48,9 @@ class NotificationProcessor {
             content.body = "notifications.end_session".localized
         case .change:
             content.body = String(format: "notifications.change_password".localized, siteName)
-        case .updateAccount:
+        case .updateAccount, .addWebauthnToExisting:
             content.body = String(format: "notifications.update_account".localized, siteName)
-        case .login, .addToExisting, .webauthnLogin:
+        case .login, .addToExisting, .webauthnLogin, .sshLogin:
             content.body = String(format: "notifications.login".localized, siteName)
         case .fill, .getDetails:
             content.body = String(format: "notifications.get_password".localized, siteName)

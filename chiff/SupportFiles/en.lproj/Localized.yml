@@ -217,6 +217,31 @@ backup:
     value: word
   word_is:
     value: word is
+developer:
+  algorithm:
+    value: Algorithm
+  delete:
+    value: Delete
+  details:
+    value: Details
+  last_used:
+    value: 'Last used:'
+  name:
+    value: Name
+  never:
+    value: Never
+  pub_key:
+    value: Name
+  size:
+    value: Size
+  ssh_detail_enclave_footer:
+    value: ⚠️ Keys in the Secure Enclave are not backed up.
+  ssh_detail_footer:
+    value: This key is backed up with your paper backup.
+  ssh_detail_header:
+    value: Key details
+  ssh_pubkey_header:
+    value: Public key
 devices:
   admin:
     value: Admin

@@ -17,9 +17,17 @@ extension AccountsTableViewController: UITableViewDataSource {
         return accounts.count
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let account = filteredAccounts[indexPath.row] as? Account {
+            performSegue(withIdentifier: "ShowAccount", sender: account)
+        } else if let identity = filteredAccounts[indexPath.row] as? SSHIdentity {
+            performSegue(withIdentifier: "ShowDeveloperIdentity", sender: identity)
+        }
+    }
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let account = filteredAccounts[indexPath.row]
-        return account is UserAccount
+        return !(account is SharedAccount)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -36,7 +44,18 @@ extension AccountsTableViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
+        var identifier: String!
+        switch filteredAccounts[indexPath.row] {
+        case is SharedAccount:
+            identifier = "TeamsCell"
+        case is SSHIdentity:
+            identifier = "SSHCell"
+        case let account as UserAccount:
+            identifier = account.shadowing ? "ShadowingCell" : "AccountCell"
+        default:
+            identifier = "AccountCell"
+        }
+        return tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -44,17 +63,9 @@ extension AccountsTableViewController: UITableViewDataSource {
             return
         }
         let account = filteredAccounts[indexPath.row]
-        cell.titleLabel.text = account.site.name
-        if #available(iOS 13.0, *) {
+        cell.titleLabel.text = account.name
+        if #available(iOS 13.0, *), let cell = cell as? SharedAccountTableViewCell {
             cell.teamIcon.image = UIImage(systemName: "person.2.fill")
-        }
-        if account is SharedAccount {
-            cell.teamIconWidthConstraint.constant = 24
-        } else if let account = account as? UserAccount, account.shadowing {
-            cell.teamIconWidthConstraint.constant = 24
-            cell.teamIcon.alpha = 0.5
-        } else {
-            cell.teamIconWidthConstraint.constant = 0
         }
     }
 
