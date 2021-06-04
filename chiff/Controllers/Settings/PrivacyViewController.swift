@@ -154,6 +154,7 @@ class PrivacyViewController: UITableViewController {
             // The corresponding team accounts are deleted here.
             SharedAccount.deleteAll()
             UserAccount.deleteAll()
+            SSHIdentity.deleteAll()
         }.then { _ in
             // Deleting endpoint relies on Seed being present
             NotificationManager.shared.unregisterDevice()
