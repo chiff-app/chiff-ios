@@ -635,6 +635,12 @@ popups:
         account.
     move_to_user_account_title:
       value: Verplaats uit team
+    moved_to_team_message:
+      value: >-
+        Het account is verstuurd naar de teambeheerder. Als het account wordt
+        toegevoegd aan het team, kun je dit account verwijderen.
+    moved_to_team_title:
+      value: Verstuurd
     reset_keyn:
       comment: Resets Chiff and deletes all data
       value: Reset Chiff?
