@@ -70,7 +70,7 @@ extension AccountViewController {
             }.ensure(on: .main) {
                 sender.hideLoading()
             }.done(on: .main) {
-                self.showAlert(message: "Account submitted, admin should authorize")
+                self.showAlert(message: "popups.questions.moved_to_team_message".localized, title: "popups.questions.moved_to_team_title".localized)
             }.catch(on: .main) { error in
                 self.showAlert(message: "\("errors.add_to_team".localized): \(error)")
             }
