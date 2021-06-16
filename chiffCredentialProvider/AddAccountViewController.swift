@@ -143,7 +143,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
             PPD.get(id: id, organisationKeyPair: nil)
         }.done { ppd in
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: ppd)
-            let account = try UserAccount(username: username, sites: [site], password: chosenPassword, rpId: nil, algorithms: nil, notes: self.notesCell.textString, askToChange: nil, context: nil)
+            let account = try UserAccount(username: username, sites: [site], password: chosenPassword, webauthn: nil, notes: self.notesCell.textString, askToChange: nil, context: nil)
             guard let password = try account.password() else {
                 self.credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                 return
