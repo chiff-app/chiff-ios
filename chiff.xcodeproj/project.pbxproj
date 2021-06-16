@@ -25,6 +25,9 @@
 		4919DAEB20123FE50048B060 /* chiffNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
 		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
+		491E3563267A255900989B68 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 491E3562267A255900989B68 /* ChiffCore */; };
+		491E3566267A261400989B68 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 491E3565267A261400989B68 /* ChiffCore */; };
+		491E3568267A261900989B68 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 491E3567267A261900989B68 /* ChiffCore */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49235FF323151BC3003C4A0F /* privacy_policy.md in Resources */ = {isa = PBXBuildFile; fileRef = 49235FF523151BC3003C4A0F /* privacy_policy.md */; };
 		49235FF923152686003C4A0F /* WebView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49235FF823152686003C4A0F /* WebView.bundle */; };
@@ -146,9 +149,6 @@
 		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
 		49C0BF2E262734B50041810D /* AddAccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0BF2D262734B50041810D /* AddAccountViewController+TableView.swift */; };
-		49C0BF3126282CAB0041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3026282CAB0041810D /* ChiffCore */; };
-		49C0BF3326282CD20041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3226282CD20041810D /* ChiffCore */; };
-		49C0BF3526282CDD0041810D /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 49C0BF3426282CDD0041810D /* ChiffCore */; };
 		49CEB504260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB505260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
 		49CEB506260CC50900FEF356 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEB503260CC50900FEF356 /* Properties.swift */; };
@@ -253,6 +253,7 @@
 		4919DAE820123FE50048B060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		491E3564267A25BB00989B68 /* chiff-ios-core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "chiff-ios-core"; path = "../chiff-ios-core"; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
 		49235FF623151BCC003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/privacy_policy.md; sourceTree = "<group>"; };
 		49235FF823152686003C4A0F /* WebView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WebView.bundle; sourceTree = "<group>"; };
@@ -301,7 +302,6 @@
 		497C85DD2315737100DC4F91 /* Request.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
-		4985C0192664DFAC005EA43F /* chiff-core-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "chiff-core-ios"; path = "../chiff-core-ios"; sourceTree = "<group>"; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
 		498B6035260B9A0D009259E8 /* ChiffLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChiffLogger.swift; sourceTree = "<group>"; };
 		498B603D260B9A14009259E8 /* Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
-				49C0BF3326282CD20041810D /* ChiffCore in Frameworks */,
+				491E3566267A261400989B68 /* ChiffCore in Frameworks */,
 				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
@@ -393,9 +393,9 @@
 				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
 				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
-				49C0BF3126282CAB0041810D /* ChiffCore in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
+				491E3563267A255900989B68 /* ChiffCore in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,11 +413,11 @@
 			files = (
 				4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
+				491E3568267A261900989B68 /* ChiffCore in Frameworks */,
 				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
 				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
-				49C0BF3526282CDD0041810D /* ChiffCore in Frameworks */,
 				4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -611,7 +611,7 @@
 		49E766471F7E6F420022C042 = {
 			isa = PBXGroup;
 			children = (
-				4985C0192664DFAC005EA43F /* chiff-core-ios */,
+				491E3564267A25BB00989B68 /* chiff-ios-core */,
 				49E766521F7E6F420022C042 /* chiff */,
 				49E766691F7E6F420022C042 /* chiffTests */,
 				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
@@ -792,7 +792,7 @@
 				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
 				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
 				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
-				49C0BF3226282CD20041810D /* ChiffCore */,
+				491E3565267A261400989B68 /* ChiffCore */,
 			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
@@ -824,7 +824,7 @@
 				4941AF5325403A5B00CEFDE9 /* Down */,
 				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
 				4941AFA32540423200CEFDE9 /* PMKFoundation */,
-				49C0BF3026282CAB0041810D /* ChiffCore */,
+				491E3562267A255900989B68 /* ChiffCore */,
 			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
@@ -869,7 +869,7 @@
 				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
 				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
 				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
-				49C0BF3426282CDD0041810D /* ChiffCore */,
+				491E3567267A261900989B68 /* ChiffCore */,
 			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
@@ -965,7 +965,7 @@
 				4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */,
 				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
-				49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */,
+				491E3561267A255800989B68 /* XCRemoteSwiftPackageReference "chiff-ios-core" */,
 			);
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
 			projectDirPath = "";
@@ -1773,6 +1773,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		491E3561267A255800989B68 /* XCRemoteSwiftPackageReference "chiff-ios-core" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chiff-app/chiff-ios-core.git";
+			requirement = {
+				branch = production;
+				kind = branch;
+			};
+		};
 		4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1829,17 +1837,22 @@
 				minimumVersion = 3.3.4;
 			};
 		};
-		49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/chiff-app/chiff-core-ios.git";
-			requirement = {
-				branch = production;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		491E3562267A255900989B68 /* ChiffCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 491E3561267A255800989B68 /* XCRemoteSwiftPackageReference "chiff-ios-core" */;
+			productName = ChiffCore;
+		};
+		491E3565267A261400989B68 /* ChiffCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChiffCore;
+		};
+		491E3567267A261900989B68 /* ChiffCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChiffCore;
+		};
 		4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -1934,21 +1947,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
 			productName = PMKFoundation;
-		};
-		49C0BF3026282CAB0041810D /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
-			productName = ChiffCore;
-		};
-		49C0BF3226282CD20041810D /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
-			productName = ChiffCore;
-		};
-		49C0BF3426282CDD0041810D /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 49C0BF2F26282CAB0041810D /* XCRemoteSwiftPackageReference "chiff-core-ios" */;
-			productName = ChiffCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

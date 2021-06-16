@@ -145,7 +145,7 @@ extension TeamSession {
                 guard try SharedAccount.get(id: account.id, context: nil) == nil else {
                     throw KeychainError.storeKey
                 }
-                return try UserAccount(username: account.username, sites: account.sites, password: password, rpId: nil, algorithms: nil, notes: notes, askToChange: nil, context: nil)
+                return try UserAccount(username: account.username, sites: account.sites, password: password, webauthn: nil, notes: notes, askToChange: nil, context: nil)
             }
         } catch {
             return Promise(error: error)
