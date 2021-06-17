@@ -23,6 +23,7 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var successImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var pickerView: UIPickerView!
 
     var authorizer: Authorizer!
 
@@ -31,6 +32,9 @@ class RequestViewController: UIViewController {
     private var account: Account?
     private var otpCodeTimer: Timer?
     private var token: Token?
+    lazy var teamSessions: [TeamSession] = {
+        return (try? TeamSession.all().filter({ $0.isAdmin })) ?? []
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +43,19 @@ class RequestViewController: UIViewController {
         }
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        requestLabel.text = authorizer.requestText
-        acceptRequest()
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        progressLabel.text = "requests.click_authorize_button".localized
+        if self.authorizer is TeamAdminLoginAuthorizer && !teamSessions.isEmpty {
+            (self.authorizer as? TeamAdminLoginAuthorizer)?.teamSession = teamSessions.first
+            if teamSessions.count > 1 {
+                self.pickerView.isHidden = false
+                requestLabel.text = "requests.pick_team".localized
+            }
+        } else {
+            requestLabel.text = authorizer.requestText
+            acceptRequest()
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -75,8 +90,9 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizer.authorize { message in
+            self.authorizer.authorize { message in
                 DispatchQueue.main.async { [weak self] in
+                    self?.pickerView.isHidden = true
                     self?.activityIndicator.startAnimating()
                     if let message = message {
                         self?.progressLabel.isHidden = false

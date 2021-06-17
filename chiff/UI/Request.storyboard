@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -48,6 +48,10 @@
                                     <action selector="authenticate:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="uir-QB-9JZ"/>
                                 </connections>
                             </button>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j0D-6t-I3t">
+                                <rect key="frame" x="16" y="196" width="343" height="275"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTZ-Sz-IhE">
                                 <rect key="frame" x="311" y="25" width="39" height="39"/>
                                 <state key="normal" image="close_button">
@@ -94,7 +98,7 @@
                                     <constraint firstItem="jtk-5h-fdB" firstAttribute="centerX" secondItem="Dnn-31-QJY" secondAttribute="centerX" id="z6x-MW-ACF"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching data..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KU-eH-Piw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Click button below to authorize" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KU-eH-Piw">
                                 <rect key="frame" x="40" y="471" width="295" height="15"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
@@ -120,12 +124,15 @@
                         <constraints>
                             <constraint firstItem="qAm-BS-Rbr" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="0jc-hJ-NWG"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="94D-re-oPz" secondAttribute="trailing" constant="16" id="1Xp-7h-O8U"/>
+                            <constraint firstItem="j0D-6t-I3t" firstAttribute="bottom" secondItem="Dnn-31-QJY" secondAttribute="bottom" id="2Q2-OV-Pxt"/>
                             <constraint firstItem="0yL-oc-bvy" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="34t-Fd-6hC"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="15" id="8C7-AH-O92"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="top" secondItem="qAm-BS-Rbr" secondAttribute="bottom" constant="20" id="9nH-wY-6Uf"/>
+                            <constraint firstItem="j0D-6t-I3t" firstAttribute="top" secondItem="Dnn-31-QJY" secondAttribute="top" id="F2W-Mr-zlu"/>
                             <constraint firstItem="J0B-1e-Apk" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="Iz1-Ka-LIg"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="qAm-BS-Rbr" secondAttribute="trailing" constant="16" id="KcC-aH-lvM"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="50" id="MlD-um-UHF"/>
+                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="j0D-6t-I3t" secondAttribute="trailing" constant="16" id="WeN-EB-7cP"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="Dnn-31-QJY" secondAttribute="trailing" constant="50" id="Xyn-Vi-8YG"/>
                             <constraint firstItem="0KU-eH-Piw" firstAttribute="top" secondItem="Dnn-31-QJY" secondAttribute="bottom" id="avg-fr-3Np"/>
                             <constraint firstItem="VTZ-Sz-IhE" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="25" id="cCz-eg-KTW"/>
@@ -136,12 +143,14 @@
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="centerY" secondItem="TnR-ml-hOh" secondAttribute="centerY" id="g6y-im-dWL"/>
                             <constraint firstItem="0KU-eH-Piw" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="40" id="hNV-DU-Ucr"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="VTZ-Sz-IhE" secondAttribute="trailing" constant="25" id="oDr-Ga-dGo"/>
+                            <constraint firstItem="j0D-6t-I3t" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="uRb-9l-Ogl"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="0yL-oc-bvy" id="6ab-P4-stO"/>
                         <outlet property="authenticateButton" destination="J0B-1e-Apk" id="Onl-y7-Lnr"/>
                         <outlet property="checkmarkHeightContstraint" destination="hbI-90-4vC" id="bcd-zo-18U"/>
+                        <outlet property="pickerView" destination="j0D-6t-I3t" id="aCi-Q2-xhd"/>
                         <outlet property="progressLabel" destination="0KU-eH-Piw" id="WMt-1c-005"/>
                         <outlet property="requestLabel" destination="qAm-BS-Rbr" id="91F-kb-EA0"/>
                         <outlet property="successImageView" destination="wwh-dI-pS2" id="jMv-Kd-cR3"/>
