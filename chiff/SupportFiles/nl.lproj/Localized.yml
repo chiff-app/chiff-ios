@@ -704,6 +704,9 @@ requests:
       value: 'Je hebt een account voor  %@, wil je dat laten weten aan de website?'
     title:
       value: Account bestaat
+  click_authorize_button:
+    comment: Click
+    value: Druk op deze knop om te autoriseren
   create_team:
     value: Creëer team
   create_this:
@@ -715,6 +718,9 @@ requests:
     value: op
   pair_with:
     value: Koppel met
+  pick_team:
+    comment: Click
+    value: Kies het team
   team_created:
     value: Team gecreëerd
   unlock_keyn:

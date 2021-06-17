@@ -704,6 +704,9 @@ requests:
       value: 'You have an account for %@, do you want the website to know this?'
     title:
       value: Account exists
+  click_authorize_button:
+    comment: Click
+    value: Click the button below to authorize
   create_team:
     value: Create team
   create_this:
@@ -715,6 +718,9 @@ requests:
     value: 'on'
   pair_with:
     value: Pair with
+  pick_team:
+    comment: Click
+    value: Pick a team
   team_created:
     value: Team created
   unlock_keyn:
