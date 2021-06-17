@@ -660,6 +660,9 @@ popups:
     updated_terms_message:
       value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:
+    authorize:
+      comment: ja
+      value: Autoriseer
     cancel:
       comment: Cancels something
       value: Annuleer
@@ -675,6 +678,9 @@ popups:
     delete:
       comment: Deletes something
       value: Verwijder
+    deny:
+      comment: ja
+      value: Weiger
     dont_care:
       value: Prima
     move:
@@ -733,6 +739,8 @@ settings:
     value: actief
   and:
     value: en
+  auto_authorize:
+    value: Autoriseer automatisch
   backup_completed_footer:
     comment: Description if backup is already completed
     value: >-

@@ -660,6 +660,9 @@ popups:
     updated_terms_message:
       value: We have updated are terms of use.
   responses:
+    authorize:
+      comment: 'yes'
+      value: Authorize
     cancel:
       comment: Cancels something
       value: Cancel
@@ -675,6 +678,9 @@ popups:
     delete:
       comment: Deletes something
       value: Delete
+    deny:
+      comment: 'yes'
+      value: Deny
     dont_care:
       value: Don't care
     move:
@@ -733,6 +739,8 @@ settings:
     value: active
   and:
     value: and
+  auto_authorize:
+    value: Auto-authorize requests
   backup_completed_footer:
     comment: Description if backup is already completed
     value: >-
