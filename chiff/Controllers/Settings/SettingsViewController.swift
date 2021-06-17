@@ -16,7 +16,8 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         return Seed.paperBackupCompleted ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
     }
 
-    @IBOutlet weak var notificationSettingSwitch: UISwitch!
+    @IBOutlet weak var autoAuthorizeCell: UITableViewCell!
+    @IBOutlet weak var autoAuthorizeSwitch: UISwitch!
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
@@ -27,7 +28,9 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
+        autoAuthorizeSwitch.isOn = Properties.autoShowAuthorization
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
+
         setJailbreakText()
         NotificationCenter.default.addObserver(self, selector: #selector(updateBackupFooter(notification:)), name: .backupCompleted, object: nil)
     }
@@ -36,6 +39,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "settings.settings".localized
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 && indexPath.section == 0 && !Properties.hasFaceID {
+            return 0.5
+        }
+        return 44
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -68,13 +78,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 3, #available(iOS 13.0, *) {
-            cell.accessoryView = UIImageView(image: UIImage(systemName: "action"))
+        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 4, #available(iOS 13.0, *) {
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "square.and.arrow.up"))
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 {
+        if indexPath.row == 4 {
             let activityViewController = UIActivityViewController(activityItems: [self], applicationActivities: nil)
             activityViewController.excludedActivityTypes = [.addToReadingList, .assignToContact, .markupAsPDF, .openInIBooks, .saveToCameraRoll]
             present(activityViewController, animated: true, completion: nil)
@@ -89,6 +99,12 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         if let rootController = tabBarController as? RootViewController {
             rootController.setBadge(completed: completed)
         }
+    }
+
+    // MARK: - Actions
+
+    @IBAction func updateAutoAuthorize(_ sender: UISwitch) {
+        Properties.autoShowAuthorization = sender.isOn
     }
 
     // MARK: - UITextViewDelegate
