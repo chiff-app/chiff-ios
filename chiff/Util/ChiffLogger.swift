@@ -13,8 +13,12 @@ import ChiffCore
 
 struct ChiffLogger: LoggerProtocol {
 
-    private let crashlytics = Crashlytics.crashlytics()
-    private let amplitude = Amplitude.instance()
+    private var crashlytics: Crashlytics {
+        return Crashlytics.crashlytics()
+    }
+    private var amplitude: Amplitude {
+        return Amplitude.instance()
+    }
 
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
@@ -49,7 +53,7 @@ struct ChiffLogger: LoggerProtocol {
     /// Enable / disable error logging.
     /// - Parameter value: True to enable, false to disable.
     func setErrorLogging(value: Bool) {
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(value)
+        crashlytics.setCrashlyticsCollectionEnabled(value)
     }
 
     /// Set the user id for analytics and error logging.
@@ -78,12 +82,7 @@ struct ChiffLogger: LoggerProtocol {
         guard Properties.errorLogging else {
             return
         }
-        crashlytics.setCustomValue(message, forKey: "message")
-        crashlytics.setCustomValue("warning", forKey: "level")
-        crashlytics.setCustomValue(file, forKey: "file")
-        crashlytics.setCustomValue(function, forKey: "function")
-        crashlytics.setCustomValue(Int32(line), forKey: "line")
-        crashlytics.record(error: error ?? KeynError())
+        submitError(message: message, error: error, type: "warning", file: file.description, line: line.description, function: function.description)
     }
 
     /// Log an error with the error level.
@@ -105,12 +104,32 @@ struct ChiffLogger: LoggerProtocol {
         guard Properties.errorLogging || override else {
             return
         }
-        crashlytics.setCustomValue(message, forKey: "message")
-        crashlytics.setCustomValue("error", forKey: "level")
-        crashlytics.setCustomValue(file, forKey: "file")
-        crashlytics.setCustomValue(function, forKey: "function")
-        crashlytics.setCustomValue(Int32(line), forKey: "line")
-        crashlytics.record(error: error ?? KeynError())
+        submitError(message: message, error: error, type: "error", file: file.description, line: line.description, function: function.description)
+    }
+
+    private func submitError(message: String, error: Error?, type: String, file: String, line: String, function: String) {
+        DispatchQueue.global(qos: .default).async {
+            do {
+                let data: [String: Any] = [
+                    "message": message,
+                    "error": (error != nil ? String(describing: error!) : nil) as Any,
+                    "log_type": "error",
+                    "version": Properties.version as Any,
+                    "environment": Properties.environment.rawValue,
+                    "device": "IOS",
+                    "fileName": file,
+                    "function": function,
+                    "line": line,
+                    "userID": Properties.userId as Any
+                ]
+                let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+                API.shared.request(path: "logs", method: .post, signature: nil, body: jsonData, parameters: nil).catch { err in
+                    print("Error uploading error data: \(err)")
+                }
+            } catch let err {
+                print("Error uploading error data: \(err)")
+            }
+        }
     }
 
     /// Submit an analytics event.
