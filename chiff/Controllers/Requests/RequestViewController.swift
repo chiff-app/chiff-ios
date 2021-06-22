@@ -149,8 +149,9 @@ class RequestViewController: UIViewController {
             }
             return self.handleChiffErrorResponse(error: errorResponse, siteName: "TODO")
         }.catch(on: .main) { error in
-            self.handleError(error: error)
-            _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+            if self.handleError(error: error) {
+                _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+            }
         }
     }
 
@@ -173,7 +174,7 @@ class RequestViewController: UIViewController {
         }
     }
 
-    private func handleError(error: Error) {
+    private func handleError(error: Error) -> Bool {
         if let error = error as? AuthorizationError {
             switch error {
             case .cannotChangeAccount:
@@ -185,14 +186,14 @@ class RequestViewController: UIViewController {
             case .multipleAdminSessionsFound(count: let count):
                 self.showAlert(message: String(format: "errors.multiple_admins".localized, count))
             case .inProgress, .missingData, .unknownType:
-                return
+                return true
             }
             AuthenticationGuard.shared.hideLockWindow()
         } else if let error = error as? APIError {
             Logger.shared.error("APIError authorizing request", error: error)
             guard self.authorizer.type == .createOrganisation else {
                 self.showAlert(message: "\("errors.api_error".localized): \(error)")
-                return
+                return true
             }
             switch error {
             case APIError.statusCode(409):
@@ -213,8 +214,15 @@ class RequestViewController: UIViewController {
             self.showAlert(message: errorMessage)
             Logger.shared.error("Error authorizing request", error: error)
         } else {
-            Logger.shared.error("Error authorizing request", error: error)
+            switch error {
+            case KeychainError.authenticationCancelled, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+                return false
+            default:
+                Logger.shared.error("Error authorizing request", error: error)
+                return true
+            }
         }
+        return true
     }
 
     private func showOtp() {
