@@ -1,5 +1,3 @@
-- Betere support voor WebAuthn.
-- Je kunt nu een account creëren vanuit de app (via AutoFill).
-- Kleine UI bug fixes.
-- Het is nu mogelijk om direct een 2FA code toe voegen als je een nieuw account maakt.
-- Nieuwe knop om een vriend(in) over Chiff te vertellen :D 
+- Ondersteuning voor SSH.
+- Leden van een team kunnen nu een account voorstellen aan de beheerder.
+- Met FaceID moet je expliciet toestemming geven bij een binnenkomende notificatie. Dit kan worden uitgezet in de instellingen.
