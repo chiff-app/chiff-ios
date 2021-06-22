@@ -357,7 +357,7 @@ errors:
   failed_import_accounts:
     value: Chiff was unable to import %d of the %d accounts.
   failed_teams_and_accounts_message:
-    value: Chiff was unable to restore %d of the %d accounts and  %d of the %d teams.
+    value: Chiff was unable to restore %d of the %d accounts and %d of the %d teams.
   failed_teams_message:
     value: Chiff was unable to restore %d of the %d teams.
   generic_error:

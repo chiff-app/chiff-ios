@@ -42,7 +42,7 @@ accounts:
     second:
       value: Kies Chiff onder 'Vul automatisch in'.
     third:
-      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken  \U0001F389."
+      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken \U0001F389."
     title:
       value: Inloggen op je telefoon
   choose:
@@ -624,7 +624,7 @@ popups:
         als je de App Store versie van Chiff wilt gaan gebruiken.
     move_to_team_message:
       value: >-
-        Wil je dit account aan je team toevoegen? Andere teamleden  krijgen
+        Wil je dit account aan je team toevoegen? Andere teamleden krijgen
         mogelijk toegang tot het wachtwoord van dit account.
     move_to_team_title:
       value: Voeg toe aan team
@@ -707,7 +707,7 @@ requests:
     deny:
       value: Nee
     message:
-      value: 'Je hebt een account voor  %@, wil je dat laten weten aan de website?'
+      value: 'Je hebt een account voor %@, wil je dat laten weten aan de website?'
     title:
       value: Account bestaat
   click_authorize_button:

@@ -111,6 +111,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             BrowserSession.purgeSessionDataFromKeychain()
             TeamSession.purgeSessionDataFromKeychain()
             UserAccount.deleteAll()
+            SSHIdentity.deleteAll()
             Properties.currentKeychainVersion = Properties.latestKeychainVersion
             firstly {
                 NotificationManager.shared.unregisterDevice()
