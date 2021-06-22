@@ -110,9 +110,8 @@ struct ChiffLogger: LoggerProtocol {
     private func submitError(message: String, error: Error?, type: String, file: String, line: String, function: String) {
         DispatchQueue.global(qos: .default).async {
             do {
-                let data: [String: Any] = [
+                var data: [String: Any] = [
                     "message": message,
-                    "error": (error != nil ? String(describing: error!) : nil) as Any,
                     "log_type": "error",
                     "version": Properties.version as Any,
                     "environment": Properties.environment.rawValue,
@@ -122,6 +121,9 @@ struct ChiffLogger: LoggerProtocol {
                     "line": line,
                     "userID": Properties.userId as Any
                 ]
+                if let error = error {
+                    data["error"] = error.localizedDescription
+                }
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
                 API.shared.request(path: "logs", method: .post, signature: nil, body: jsonData, parameters: nil).catch { err in
                     print("Error uploading error data: \(err)")
@@ -146,5 +148,3 @@ struct ChiffLogger: LoggerProtocol {
     }
 
 }
-
-struct KeynError: Error {}
