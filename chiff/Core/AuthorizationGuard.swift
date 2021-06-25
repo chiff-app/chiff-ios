@@ -21,7 +21,6 @@ extension AuthorizationGuard {
         authorizationInProgress = true
         do {
             guard let sessionID = request.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) else {
-                authorizationInProgress = false
                 throw SessionError.doesntExist
             }
             let storyboard: UIStoryboard = UIStoryboard.get(.request)
@@ -29,7 +28,10 @@ extension AuthorizationGuard {
                 throw TypeError.wrongViewControllerType
             }
             viewController.authorizer = try createAuthorizer(request: request, session: session)
-            UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
+            guard let visibleViewController = UIApplication.shared.visibleViewController else {
+                throw TypeError.wrongViewControllerType
+            }
+            visibleViewController.present(viewController, animated: true, completion: nil)
         } catch {
             authorizationInProgress = false
             Logger.shared.error("Could not decode session.", error: error)
