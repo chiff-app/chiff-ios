@@ -14,6 +14,7 @@ extension Properties {
     private static let loginCountFlag = "loginCountFlag"
     private static let hasBeenPromptedReviewFlag = "hasBeenPromptedReviewFlag"
     private static let deniedAutofillFlag = "deniedAutofillFlag"
+    private static let autoShowAuthorizationFlag = "autoShowAuthorizationFlag"
 
     /// The token for amplitude.
     static var amplitudeToken: String {
@@ -49,6 +50,11 @@ extension Properties {
     static var deniedAutofill: Bool {
         get { return UserDefaults.standard.bool(forKey: deniedAutofillFlag)  }
         set { UserDefaults.standard.setValue(newValue, forKey: deniedAutofillFlag) }
+    }
+
+    static var autoShowAuthorization: Bool {
+        get { return !hasFaceID || UserDefaults.standard.bool(forKey: autoShowAuthorizationFlag)  }
+        set { UserDefaults.standard.setValue(newValue, forKey: autoShowAuthorizationFlag) }
     }
 
     /// Notification identifiers nudges.
