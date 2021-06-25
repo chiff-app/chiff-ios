@@ -72,7 +72,9 @@ class RequestViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
             self.acceptRequest()
         })
-        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+            AuthorizationGuard.shared.authorizationInProgress = false
+        })
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -83,6 +85,7 @@ class RequestViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
+        AuthorizationGuard.shared.authorizationInProgress = true
         acceptRequest()
     }
 
