@@ -32,6 +32,7 @@ class RequestViewController: UIViewController {
     private var account: Account?
     private var otpCodeTimer: Timer?
     private var token: Token?
+    private var showAuthorizationAlert = false
     lazy var teamSessions: [TeamSession] = {
         return (try? TeamSession.all().filter({ $0.isAdmin })) ?? []
     }()
@@ -39,23 +40,40 @@ class RequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if Properties.hasFaceID {
+            showAuthorizationAlert = !Properties.autoShowAuthorization
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         pickerView.dataSource = self
         pickerView.delegate = self
-        progressLabel.text = "requests.click_authorize_button".localized
+        requestLabel.text = authorizer.requestText
         if self.authorizer is TeamAdminLoginAuthorizer && !teamSessions.isEmpty {
             (self.authorizer as? TeamAdminLoginAuthorizer)?.teamSession = teamSessions.first
             if teamSessions.count > 1 {
                 self.pickerView.isHidden = false
+                showAuthorizationAlert = false
                 requestLabel.text = "requests.pick_team".localized
+                progressLabel.isHidden = false
+                progressLabel.text = "requests.click_authorize_button".localized
+                return
             }
-        } else {
-            requestLabel.text = authorizer.requestText
+        }
+        if !showAuthorizationAlert {
             acceptRequest()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard showAuthorizationAlert else { return }
+        showAuthorizationAlert = false
+        let alert = UIAlertController(title: authorizer.requestText, message: authorizer.authenticationReason, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
+            self.acceptRequest()
+        })
+        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -131,8 +149,9 @@ class RequestViewController: UIViewController {
             }
             return self.handleChiffErrorResponse(error: errorResponse, siteName: "TODO")
         }.catch(on: .main) { error in
-            self.handleError(error: error)
-            _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+            if self.handleError(error: error) {
+                _ = self.authorizer.cancelRequest(reason: .error, error: nil)
+            }
         }
     }
 
@@ -155,7 +174,7 @@ class RequestViewController: UIViewController {
         }
     }
 
-    private func handleError(error: Error) {
+    private func handleError(error: Error) -> Bool {
         if let error = error as? AuthorizationError {
             switch error {
             case .cannotChangeAccount:
@@ -167,14 +186,14 @@ class RequestViewController: UIViewController {
             case .multipleAdminSessionsFound(count: let count):
                 self.showAlert(message: String(format: "errors.multiple_admins".localized, count))
             case .inProgress, .missingData, .unknownType:
-                return
+                return true
             }
             AuthenticationGuard.shared.hideLockWindow()
         } else if let error = error as? APIError {
             Logger.shared.error("APIError authorizing request", error: error)
             guard self.authorizer.type == .createOrganisation else {
                 self.showAlert(message: "\("errors.api_error".localized): \(error)")
-                return
+                return true
             }
             switch error {
             case APIError.statusCode(409):
@@ -195,8 +214,15 @@ class RequestViewController: UIViewController {
             self.showAlert(message: errorMessage)
             Logger.shared.error("Error authorizing request", error: error)
         } else {
-            Logger.shared.error("Error authorizing request", error: error)
+            switch error {
+            case KeychainError.authenticationCancelled, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+                return false
+            default:
+                Logger.shared.error("Error authorizing request", error: error)
+                return true
+            }
         }
+        return true
     }
 
     private func showOtp() {

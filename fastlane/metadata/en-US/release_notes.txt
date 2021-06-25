@@ -1,5 +1,3 @@
-- Improved support for WebAuthn.
-- You can now create a new account from within the app (via AutoFill).
-- Small UI bug fixes.
-- It's now possible to add a 2FA code when creating an account
-- Add button to tell a friend about Chiff :D 
+- Added support for SSH
+- Team members can now propose accounts to the team admin.
+- With FaceID, you now how have to accept explicitly before authorizing. This can be changed in the settings.
