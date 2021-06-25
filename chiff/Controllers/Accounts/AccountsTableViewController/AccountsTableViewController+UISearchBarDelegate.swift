@@ -57,13 +57,13 @@ extension AccountsTableViewController: UISearchBarDelegate {
         filteredAccounts = sortAccounts(accounts: filteredAccounts)
     }
 
-    func searchAccounts(accounts: [Account]) -> [Account] {
+    func searchAccounts(accounts: [Identity]) -> [Identity] {
         return searchQuery.isEmpty ? unfilteredAccounts : unfilteredAccounts.filter({ (account) -> Bool in
-            return account.site.name.lowercased().contains(searchQuery.lowercased())
+            return account.name.lowercased().contains(searchQuery.lowercased())
         })
     }
 
-    func filterAccounts(accounts: [Account]) -> [Account] {
+    func filterAccounts(accounts: [Identity]) -> [Identity] {
         switch currentFilter {
         case .all:
             return accounts
@@ -74,7 +74,7 @@ extension AccountsTableViewController: UISearchBarDelegate {
         }
     }
 
-    func sortAccounts(accounts: [Account]) -> [Account] {
+    func sortAccounts(accounts: [Identity]) -> [Identity] {
         switch currentSortingValue {
         case .alphabetically: return sortAlphabetically(accounts: accounts)
         case .mostly: return sortMostlyUsed(accounts: accounts)
@@ -82,15 +82,15 @@ extension AccountsTableViewController: UISearchBarDelegate {
         }
     }
 
-    func sortAlphabetically(accounts: [Account]) -> [Account] {
-        return accounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+    func sortAlphabetically(accounts: [Identity]) -> [Identity] {
+        return accounts.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
     }
 
-    func sortMostlyUsed(accounts: [Account]) -> [Account] {
+    func sortMostlyUsed(accounts: [Identity]) -> [Identity] {
         return accounts.sorted(by: { $0.timesUsed > $1.timesUsed })
     }
 
-    func sortRecentlyUsed(accounts: [Account]) -> [Account] {
+    func sortRecentlyUsed(accounts: [Identity]) -> [Identity] {
         return accounts.sorted(by: { current, next in
             if current.lastTimeUsed == nil {
                 return false

@@ -101,6 +101,10 @@ extension AuthorizationGuard {
             return try UpdateAccountAuthorizer(request: request, session: session)
         case .createOrganisation:
             return try CreateOrganisationAuthorizer(request: request, session: session)
+        case .sshCreate:
+            return try SSHCreateAuthorizer(request: request, session: session)
+        case .sshLogin:
+            return try SSHLoginAuthorizer(request: request, session: session)
         default:
             if let browserTab = request.browserTab {
                 _ = session.cancelRequest(reason: .error, browserTab: browserTab, error: nil)

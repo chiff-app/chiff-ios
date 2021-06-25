@@ -14,8 +14,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
-    var unfilteredAccounts: [Account]!
-    var filteredAccounts: [Account]!
+    var unfilteredAccounts: [Identity]!
+    var filteredAccounts: [Identity]!
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
@@ -36,9 +36,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
         super.viewDidLoad()
 
         if let accountDict = try? UserAccount.allCombined(context: nil) {
-            unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+            unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
         } else {
-            unfilteredAccounts = [UserAccount]()
+            unfilteredAccounts = [Identity]()
+        }
+        if let sshIdentities = try? SSHIdentity.all(context: nil) {
+            unfilteredAccounts.append(contentsOf: Array(sshIdentities.values).sorted(by: { $0.name.lowercased() < $1.name.lowercased() }))
         }
 
         prepareAccounts()
@@ -72,7 +75,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
     }
 
     func addAccount(account: UserAccount) {
-        if let index = unfilteredAccounts.firstIndex(where: { ($0 as? SharedAccount)?.id == account.id }) {
+        if let index = unfilteredAccounts.firstIndex(where: { $0.id == account.id && $0 is SharedAccount }) {
             var account = account
             account.shadowing = true
             unfilteredAccounts[index] = account
@@ -89,7 +92,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
         }
     }
 
-    func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
+    func deleteAccount(account: Identity, filteredIndexPath: IndexPath) {
         firstly {
             account.delete()
         }.done(on: DispatchQueue.main) {
@@ -106,14 +109,18 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-
-        if segue.identifier == "ShowAccount" {
+        switch segue.identifier {
+        case "ShowAccount":
             if let controller = (segue.destination.contents as? AccountViewController),
-               let cell = sender as? UITableViewCell,
-               let indexPath = tableView.indexPath(for: cell) {
-                let account = filteredAccounts[indexPath.row]
+               let account = sender as? Account {
                 controller.account = account
             }
+        case "ShowDeveloperIdentity":
+            if let controller = (segue.destination.contents as? SSHIdentityViewController),
+               let identity = sender as? SSHIdentity {
+                controller.identity = identity
+            }
+        default: return
         }
     }
 
@@ -136,6 +143,30 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
                 }
                 let indexPath = IndexPath(row: index, section: 0)
                 deleteAccount(account: account, filteredIndexPath: indexPath)
+            case "DeleteSSHIdentity":
+                guard let sourceViewController = sender.source as? SSHIdentityViewController,
+                   let identity = sourceViewController.identity,
+                   let index = filteredAccounts.firstIndex(where: { identity.id == $0.id }) else {
+                    return
+                }
+                let indexPath = IndexPath(row: index, section: 0)
+                deleteAccount(account: identity, filteredIndexPath: indexPath)
+            case "UpdateSSHIdentity":
+                guard let sourceViewController = sender.source as? SSHIdentityViewController,
+                   var identity = sourceViewController.identity,
+                   let index = unfilteredAccounts.firstIndex(where: { identity.id == $0.id }),
+                   let name = sourceViewController.nameTextField.text,
+                   name != identity.name else {
+                    return
+                }
+                do {
+                    try identity.updateName(to: name)
+                    unfilteredAccounts[index] = identity
+                    prepareAccounts()
+                    tableView.reloadData()
+                } catch {
+                    Logger.shared.error("Error updating SSH identity", error: error)
+                }
             case "DeleteUserAccount":
                 guard let sourceViewController = sender.source as? TeamAccountViewController,
                       let account = sourceViewController.account,
@@ -166,7 +197,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
     @objc private func loadAccounts(notification: Notification?) {
         DispatchQueue.main.async {
             if let accounts = try? notification?.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
-                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+                self.unfilteredAccounts = accounts.values.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
+                if let sshIdentities = try? SSHIdentity.all(context: nil) {
+                    self.unfilteredAccounts.append(contentsOf: sshIdentities.values.sorted(by: { $0.name.lowercased() < $1.name.lowercased() }))
+                }
                 self.prepareAccounts()
                 self.tableView.reloadData()
                 self.updateUi()

@@ -1,5 +1,5 @@
 //
-//  SessionDetailViewController.swift
+//  DeviceDetailViewController.swift
 //  chiff
 //
 //  Copyright: see LICENSE.md
@@ -8,7 +8,7 @@
 import UIKit
 import ChiffCore
 
-class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
+class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
 
     var session: Session! {
         didSet {

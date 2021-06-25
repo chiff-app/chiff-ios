@@ -143,7 +143,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate, T
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             self.account = try UserAccount(username: username, sites: [site],
                                            password: (passwordField.text ?? "").isEmpty ? nil : passwordField.text,
-                                           rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
+                                           webauthn: nil, notes: notesCell.textString, askToChange: nil, context: nil)
             if let token = token {
                 try self.account!.setOtp(token: token)
             }
