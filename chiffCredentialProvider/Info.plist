@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.11.0</string>
+	<string>3.11.1</string>
 	<key>CFBundleVersion</key>
 	<string>86</string>
 	<key>TSKConfiguration</key>
