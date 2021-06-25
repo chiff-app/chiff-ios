@@ -120,7 +120,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination.contents as? PairContainerViewController {
             destination.pairControllerDelegate = self
-        } else if let destination = segue.destination.contents as? SessionDetailViewController {
+        } else if let destination = segue.destination.contents as? DeviceDetailViewController {
             guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { fatalError("Wrong type") }
             destination.session = sessions[indexPath.row]
         }
@@ -145,7 +145,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func unwindToDevicesOverview(sender: UIStoryboardSegue) {
-        guard let sourceViewController = sender.source as? SessionDetailViewController,
+        guard let sourceViewController = sender.source as? DeviceDetailViewController,
             var session = sourceViewController.session,
             let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
             return

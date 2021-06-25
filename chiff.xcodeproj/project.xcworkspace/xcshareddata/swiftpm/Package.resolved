@@ -39,10 +39,10 @@
       },
       {
         "package": "ChiffCore",
-        "repositoryURL": "https://github.com/chiff-app/chiff-core-ios.git",
+        "repositoryURL": "https://github.com/chiff-app/chiff-ios-core.git",
         "state": {
-          "branch": "master",
-          "revision": "cd0a385d3469b2c1e51c38791784c56657243444",
+          "branch": "production",
+          "revision": "af90a70d79534eb841a7465cc712b7b7251101a4",
           "version": null
         }
       },

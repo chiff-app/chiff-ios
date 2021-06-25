@@ -42,7 +42,7 @@ accounts:
     second:
       value: Kies Chiff onder 'Vul automatisch in'.
     third:
-      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken  \U0001F389."
+      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken \U0001F389."
     title:
       value: Inloggen op je telefoon
   choose:
@@ -218,6 +218,31 @@ backup:
     value: woord
   word_is:
     value: woord is
+developer:
+  algorithm:
+    value: Algoritme
+  delete:
+    value: Verwijder
+  details:
+    value: Gegevens
+  last_used:
+    value: 'Laatst gebruikt:'
+  name:
+    value: Naam
+  never:
+    value: Nooit
+  pub_key:
+    value: Naam
+  size:
+    value: Grootte
+  ssh_detail_enclave_footer:
+    value: ⚠️ Sleutels in de Secure Enclave hebben geen backup.
+  ssh_detail_footer:
+    value: Deze sleutel kan worden hersteld met je paper backup.
+  ssh_detail_header:
+    value: Sleutelgegevens
+  ssh_pubkey_header:
+    value: Publiek sleutel
 devices:
   admin:
     value: Beheerder
@@ -597,6 +622,12 @@ popups:
       value: >-
         Verhuis je backup data naar de productie database. Gebruik deze functie
         als je de App Store versie van Chiff wilt gaan gebruiken.
+    move_to_team_message:
+      value: >-
+        Wil je dit account aan je team toevoegen? Andere teamleden krijgen
+        mogelijk toegang tot het wachtwoord van dit account.
+    move_to_team_title:
+      value: Voeg toe aan team
     move_to_user_account_message:
       value: >-
         Wil je dit account van het team naar je persoonlijke accounts
@@ -604,6 +635,12 @@ popups:
         account.
     move_to_user_account_title:
       value: Verplaats uit team
+    moved_to_team_message:
+      value: >-
+        Het account is verstuurd naar de teambeheerder. Als het account wordt
+        toegevoegd aan het team, kun je dit account verwijderen.
+    moved_to_team_title:
+      value: Verstuurd
     reset_keyn:
       comment: Resets Chiff and deletes all data
       value: Reset Chiff?
@@ -623,6 +660,9 @@ popups:
     updated_terms_message:
       value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:
+    authorize:
+      comment: ja
+      value: Autoriseer
     cancel:
       comment: Cancels something
       value: Annuleer
@@ -638,6 +678,9 @@ popups:
     delete:
       comment: Deletes something
       value: Verwijder
+    deny:
+      comment: ja
+      value: Weiger
     dont_care:
       value: Prima
     move:
@@ -664,9 +707,12 @@ requests:
     deny:
       value: Nee
     message:
-      value: 'Je hebt een account voor  %@, wil je dat laten weten aan de website?'
+      value: 'Je hebt een account voor %@, wil je dat laten weten aan de website?'
     title:
       value: Account bestaat
+  click_authorize_button:
+    comment: Click
+    value: Druk op deze knop om te autoriseren
   create_team:
     value: Creëer team
   create_this:
@@ -678,6 +724,9 @@ requests:
     value: op
   pair_with:
     value: Koppel met
+  pick_team:
+    comment: Click
+    value: Kies het team
   team_created:
     value: Team gecreëerd
   unlock_keyn:
@@ -690,6 +739,8 @@ settings:
     value: actief
   and:
     value: en
+  auto_authorize:
+    value: Autoriseer automatisch
   backup_completed_footer:
     comment: Description if backup is already completed
     value: >-

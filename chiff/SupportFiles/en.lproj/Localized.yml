@@ -217,6 +217,31 @@ backup:
     value: word
   word_is:
     value: word is
+developer:
+  algorithm:
+    value: Algorithm
+  delete:
+    value: Delete
+  details:
+    value: Details
+  last_used:
+    value: 'Last used:'
+  name:
+    value: Name
+  never:
+    value: Never
+  pub_key:
+    value: Name
+  size:
+    value: Size
+  ssh_detail_enclave_footer:
+    value: ⚠️ Keys in the Secure Enclave are not backed up.
+  ssh_detail_footer:
+    value: This key is backed up with your paper backup.
+  ssh_detail_header:
+    value: Key details
+  ssh_pubkey_header:
+    value: Public key
 devices:
   admin:
     value: Admin
@@ -332,7 +357,7 @@ errors:
   failed_import_accounts:
     value: Chiff was unable to import %d of the %d accounts.
   failed_teams_and_accounts_message:
-    value: Chiff was unable to restore %d of the %d accounts and  %d of the %d teams.
+    value: Chiff was unable to restore %d of the %d accounts and %d of the %d teams.
   failed_teams_message:
     value: Chiff was unable to restore %d of the %d teams.
   generic_error:
@@ -597,6 +622,12 @@ popups:
       value: >-
         This moves your backup data to the production database. Use this if you
         want to switch to the App Store version of Chiff.
+    move_to_team_message:
+      value: >-
+        Do you want to add this account to your team? Other team members may get
+        access to this account's password.
+    move_to_team_title:
+      value: Add to team
     move_to_user_account_message:
       value: >-
         Do you want to move this account from the team to your personal
@@ -604,6 +635,12 @@ popups:
         anymore.
     move_to_user_account_title:
       value: Move from team
+    moved_to_team_message:
+      value: >-
+        The account has been submitted to the team admin. When the account has
+        been accepted, you can delete your own account.
+    moved_to_team_title:
+      value: Submitted
     reset_keyn:
       comment: Resets Chiff and deletes all data
       value: Reset Chiff?
@@ -623,6 +660,9 @@ popups:
     updated_terms_message:
       value: We have updated are terms of use.
   responses:
+    authorize:
+      comment: 'yes'
+      value: Authorize
     cancel:
       comment: Cancels something
       value: Cancel
@@ -638,6 +678,9 @@ popups:
     delete:
       comment: Deletes something
       value: Delete
+    deny:
+      comment: 'yes'
+      value: Deny
     dont_care:
       value: Don't care
     move:
@@ -667,6 +710,9 @@ requests:
       value: 'You have an account for %@, do you want the website to know this?'
     title:
       value: Account exists
+  click_authorize_button:
+    comment: Click
+    value: Click the button below to authorize
   create_team:
     value: Create team
   create_this:
@@ -678,6 +724,9 @@ requests:
     value: 'on'
   pair_with:
     value: Pair with
+  pick_team:
+    comment: Click
+    value: Pick a team
   team_created:
     value: Team created
   unlock_keyn:
@@ -690,6 +739,8 @@ settings:
     value: active
   and:
     value: and
+  auto_authorize:
+    value: Auto-authorize requests
   backup_completed_footer:
     comment: Description if backup is already completed
     value: >-

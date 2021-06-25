@@ -75,16 +75,24 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as? AccountTableViewCell else {
-            fatalError("Wrong UITableViewCell type.")
+        var identifier: String!
+        if let account = filteredAccounts[indexPath.row] as? UserAccount {
+            identifier = account.shadowing ? "ShadowingCell" : "AccountCell"
+        } else {
+            identifier = "TeamsCell"
+        }
+        return tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? AccountTableViewCell else {
+            return
         }
         let account = filteredAccounts[indexPath.row]
-        cell.titleLabel.text = account.site.name
-        cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
-        if #available(iOS 13.0, *) {
+        cell.titleLabel.text = account.name
+        if #available(iOS 13.0, *), let cell = cell as? SharedAccountTableViewCell {
             cell.teamIcon.image = UIImage(systemName: "person.2.fill")
         }
-        return cell
     }
 
     // MARK: - Table view delegate
