@@ -71,6 +71,11 @@ When initializing Chiff, a 128-bit seed is randomly generated. Passwords and enc
 
 To build this project, you need a *MacOS* machine with the latest version of Xcode.
 Furthermore, the build process assumes that *Ruby* is present.
+Install the ruby dependencies with 
+
+```bash
+bundle install
+```
 
 ### Build with Xcode
 Open `chiff.xcodeproj` with *XCode*. We use SPM for dependencies, so Xcode should automatically resolve those as soon as the project is opened.
