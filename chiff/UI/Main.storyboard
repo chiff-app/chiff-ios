@@ -2945,7 +2945,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                                 </constraints>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                         <constraints>
