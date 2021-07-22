@@ -205,7 +205,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let stringToWrite = "Jailbreak Test"
         do {
             try stringToWrite.write(toFile: "/private/JailbreakTest.txt", atomically: true, encoding: String.Encoding.utf8)
-            //Device is jailbroken
+            // Device is jailbroken
             return true
         } catch {
             return false

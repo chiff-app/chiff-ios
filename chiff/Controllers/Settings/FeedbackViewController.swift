@@ -5,58 +5,65 @@
 //  Copyright: see LICENSE.md
 //
 
-import UIKit
-import PromiseKit
 import ChiffCore
+import PromiseKit
+import UIKit
 
 class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
-
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var sendButton: UIBarButtonItem!
-
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var constraintContentHeight: NSLayoutConstraint! // Should be raised to 1000 on keyboard show
-    @IBOutlet weak var bottomDistanceConstraint: NSLayoutConstraint!
-
-    private let frameHeight: CGFloat = 480
-    private let heightOffset: CGFloat = 68
-    private let bottomOffset: CGFloat = 10
-    private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
+    private var initialContentOffset: CGPoint!
+
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var textView: UITextView!
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var nameTextField: UITextField!
+    @IBOutlet var sendButton: UIBarButtonItem!
+    
+    // MARK: - UIViewControllerLifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        initialSetup()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        initialContentOffset = scrollView.contentOffset
+    }
+
+    // MARK: - InitialViewSetup
+
+    private func initialSetup() {
+        setupImputFields()
+        setKeyboardHandlers()
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem?.setColor(color: .white)
+        navigationItem.rightBarButtonItem?.setColor(color: .white)
+    }
+
+    private func setupImputFields() {
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 4.0
         nameTextField.layer.cornerRadius = 4.0
-
         nameTextField.delegate = self
         textView.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-
         if let name = UserDefaults.standard.object(forKey: "name") as? String, !name.isEmpty {
             nameTextField.text = name
             sendButton.isEnabled = true
         }
+    }
 
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-
-        self.constraintContentHeight.constant = self.view.frame.size.height - heightOffset
-
-        navigationItem.leftBarButtonItem?.setColor(color: .white)
-        navigationItem.rightBarButtonItem?.setColor(color: .white)
-
-        view.layoutIfNeeded()
-        textView.layer.cornerRadius = 4.0
-
-        // Observe keyboard change
+    func setKeyboardHandlers() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        view.addEndEditingTapGesture()
     }
+
+    // MARK: - StatusBarStyle
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -64,11 +71,21 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
     // MARK: - TextFieldDelegate
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        setScrollViewContentOffsetFor(textField)
+    }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         let name = textField.text ?? ""
         if !name.isEmpty {
             sendButton.isEnabled = true
         }
+        setInitialContentOffset()
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textView.becomeFirstResponder()
+        return true
     }
 
     @objc private func textFieldDidChange(textField: UITextField) {
@@ -78,59 +95,39 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         }
     }
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        lastOffset = self.scrollView.contentOffset
-        return true
+    // MARK: - TextViewDelegate
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        setScrollViewContentOffsetFor(textView)
     }
 
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        lastOffset = self.scrollView.contentOffset
-        return true
+    func textViewDidEndEditing(_ textView: UITextView) {
+        setInitialContentOffset()
     }
-
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-
-    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        return true
-    }
+    
+    // MARK: - KeyboardAppearance
 
     @objc func keyboardWillShow(notification: NSNotification) {
         guard keyboardHeight == nil else {
             return
         }
-
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height
-            // so increase contentView's height by keyboard height
-            UIView.animate(withDuration: 0.3, animations: {
-                self.bottomDistanceConstraint.constant += (self.keyboardHeight)
-                self.constraintContentHeight.constant += (self.keyboardHeight)
-            })
-
-            let distanceToBottom = self.scrollView.frame.size.height - (textView.frame.origin.y) - (textView.frame.size.height)
-
-            // set new offset for scroll view
-            UIView.animate(withDuration: 0.3, animations: {
-                // scroll to the position above bottom 10 points
-                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.bottomOffset)
-            })
+            keyboardHeight = keyboardSize.height + view.safeAreaInsets.bottom
+        }
+        if let view = view.firstResponder {
+            setScrollViewContentOffsetFor(view)
         }
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
-        guard keyboardHeight != nil else {
-            return
+    private func setScrollViewContentOffsetFor(_ view: UIView) {
+        if let keyboardHeight = keyboardHeight {
+            let currentContentOffset = CGPoint(x: 0, y: contentView.convert(view.superview!.frame.origin, to: scrollView).y + (view.frame.size.height / 1.4) - keyboardHeight)
+            scrollView.setContentOffset(currentContentOffset, animated: true)
         }
+    }
 
-        UIView.animate(withDuration: 0.3) {
-            self.bottomDistanceConstraint.constant -= (self.keyboardHeight)
-            self.constraintContentHeight.constant -= (self.keyboardHeight)
-            self.scrollView.contentOffset = self.lastOffset
-        }
-
-        keyboardHeight = nil
+    private func setInitialContentOffset() {
+        scrollView.setContentOffset(initialContentOffset, animated: true)
     }
 
     // MARK: - Actions
@@ -152,7 +149,6 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
         \(userFeedback)
 
-
         Groetjes,
 
         \(debugLogUser)
@@ -161,13 +157,12 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         firstly {
             API.shared.request(path: "analytics", method: .post, body: message.data)
         }.ensure {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.dismiss(animated: true, completion: nil)
-            })
+            }
         }.done(on: .main) { _ in
             self.nameTextField.text = ""
             self.textView.text = "settings.feedback_submitted".localized
         }.catchLog("Error posting feedback")
     }
-
 }

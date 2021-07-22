@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="20" y="138" width="374" height="218"/>
+                                <rect key="frame" x="20" y="138" width="374" height="237"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="wFq-E5-qbT"/>
                                 </constraints>
@@ -60,7 +60,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="28" y="386" width="358" height="19"/>
+                                <rect key="frame" x="28" y="405" width="358" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -72,7 +72,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB" customClass="UnderlinedButton" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="145" y="822" width="124" height="20"/>
+                                <rect key="frame" x="119" y="822" width="176" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="b0G-uf-Vuz"/>
                                 </constraints>
@@ -172,14 +172,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 2" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6cz-b2-H5E">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                         <constraints>
@@ -194,14 +194,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 4" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="T3L-VE-69V">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -213,14 +213,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 6" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="utN-X5-bfb">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -232,14 +232,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 8" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n9W-Gx-TuY">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -251,14 +251,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 10" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aAx-n9-XvJ">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -270,14 +270,14 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 12" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ys7-RF-a4e">
                                                                 <rect key="frame" x="202" y="0.0" width="172" height="44"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -576,7 +576,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="16" y="169" width="382" height="26"/>
+                                <rect key="frame" x="16" y="169" width="382" height="51.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -772,7 +772,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="20" y="380" width="374" height="16.5"/>
+                                <rect key="frame" x="20" y="347" width="374" height="82"/>
                                 <string key="text">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
 Sensitive data is never shared and everything is anonymous.</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -786,7 +786,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="20" y="582.5" width="374" height="16.5"/>
+                                <rect key="frame" x="20" y="615" width="374" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -798,7 +798,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
-                                <rect key="frame" x="20" y="456.5" width="374" height="76"/>
+                                <rect key="frame" x="20" y="489" width="374" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duW-jH-tOo">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
@@ -940,7 +940,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in with your fingerprint on any website from today onwards." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlO-Tl-us3" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="16" y="709" width="382" height="19"/>
+                                <rect key="frame" x="16" y="690.5" width="382" height="37.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -962,7 +962,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="DvO-Ut-DMi" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                <rect key="frame" x="16" y="189" width="382" height="26"/>
+                                <rect key="frame" x="16" y="189" width="382" height="51.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1047,64 +1047,60 @@ Sensitive data is never shared and everything is anonymous.</string>
     </scenes>
     <designables>
         <designable name="3w9-7v-dBp">
-            <size key="intrinsicContentSize" width="150" height="33"/>
+            <size key="intrinsicContentSize" width="92" height="29"/>
         </designable>
         <designable name="Bdb-Fh-lQY">
-            <size key="intrinsicContentSize" width="160" height="33"/>
+            <size key="intrinsicContentSize" width="72" height="29"/>
         </designable>
         <designable name="C1f-Mc-Tnt">
-            <size key="intrinsicContentSize" width="123" height="16.5"/>
+            <size key="intrinsicContentSize" width="276" height="16.5"/>
         </designable>
         <designable name="DvO-Ut-DMi">
-            <size key="intrinsicContentSize" width="235" height="26"/>
+            <size key="intrinsicContentSize" width="530" height="26"/>
         </designable>
         <designable name="Fo9-YI-YeD">
-            <size key="intrinsicContentSize" width="157" height="33"/>
+            <size key="intrinsicContentSize" width="50" height="29"/>
         </designable>
         <designable name="GvP-ft-ZSB">
-            <size key="intrinsicContentSize" width="124" height="28.5"/>
+            <size key="intrinsicContentSize" width="176" height="29"/>
         </designable>
         <designable name="M8I-e3-aXB">
-            <size key="intrinsicContentSize" width="259.5" height="30.5"/>
+            <size key="intrinsicContentSize" width="286" height="30.5"/>
         </designable>
         <designable name="MHS-Ka-Tah">
-            <size key="intrinsicContentSize" width="183" height="33"/>
+            <size key="intrinsicContentSize" width="103" height="29"/>
         </designable>
         <designable name="O94-HQ-lRE">
-            <size key="intrinsicContentSize" width="321.5" height="26"/>
+            <size key="intrinsicContentSize" width="530" height="26"/>
         </designable>
         <designable name="QBQ-qg-TDr">
-            <size key="intrinsicContentSize" width="173" height="16.5"/>
+            <size key="intrinsicContentSize" width="137.5" height="16.5"/>
         </designable>
-        <designable name="VKc-Ti-Ljr">
-            <size key="intrinsicContentSize" width="187" height="19"/>
-        </designable>
+        <designable name="VKc-Ti-Ljr"/>
         <designable name="YpQ-vr-qYc">
-            <size key="intrinsicContentSize" width="158" height="30"/>
+            <size key="intrinsicContentSize" width="72" height="29"/>
         </designable>
         <designable name="bgW-c9-TVR">
-            <size key="intrinsicContentSize" width="126.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="756" height="33"/>
         </designable>
-        <designable name="cYH-an-f33">
-            <size key="intrinsicContentSize" width="262.5" height="35"/>
-        </designable>
+        <designable name="cYH-an-f33"/>
         <designable name="gnx-Nq-zcW">
-            <size key="intrinsicContentSize" width="154.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="101.5" height="16.5"/>
         </designable>
         <designable name="nk6-TU-eK2">
-            <size key="intrinsicContentSize" width="154" height="16.5"/>
+            <size key="intrinsicContentSize" width="407.5" height="16.5"/>
         </designable>
         <designable name="oZY-7Q-lNd">
-            <size key="intrinsicContentSize" width="145" height="33"/>
+            <size key="intrinsicContentSize" width="73" height="29"/>
         </designable>
         <designable name="sMy-56-2qE">
-            <size key="intrinsicContentSize" width="226" height="33"/>
+            <size key="intrinsicContentSize" width="104" height="29"/>
         </designable>
         <designable name="weg-oh-KUs">
-            <size key="intrinsicContentSize" width="137" height="30"/>
+            <size key="intrinsicContentSize" width="73" height="29"/>
         </designable>
         <designable name="xlO-Tl-us3">
-            <size key="intrinsicContentSize" width="206.5" height="19"/>
+            <size key="intrinsicContentSize" width="455.5" height="19"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
