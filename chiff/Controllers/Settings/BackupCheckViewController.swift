@@ -85,6 +85,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             secondWordTextField.becomeFirstResponder()
         } else if isWordsMatch() {
             finish(nil)
+        } else {
+            view.endEditing(true)
         }
         return true
     }
@@ -124,6 +126,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     @IBAction func finish(_ sender: UIButton?) {
+        if sender == nil {
+            self.performSegue(withIdentifier: "showBackupFinish", sender: nil)
+        }
         Seed.paperBackupCompleted = true
         Logger.shared.analytics(.backupCompleted)
     }

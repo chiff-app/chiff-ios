@@ -2866,7 +2866,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="finish:" destination="EvN-my-LiB" eventType="touchUpInside" id="lEq-eZ-fOI"/>
-                                                    <segue destination="lrn-bZ-rc8" kind="show" id="gmU-sO-2D6"/>
+                                                    <segue destination="lrn-bZ-rc8" kind="show" identifier="showBackupFinish" id="crB-R1-uxJ"/>
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qIe-zm-Hqa">
@@ -3034,7 +3034,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <!--Backup Finish View Controller-->
         <scene sceneID="BCI-SP-vNu">
             <objects>
-                <viewController id="lrn-bZ-rc8" customClass="BackupFinishViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BackupFinishViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lrn-bZ-rc8" customClass="BackupFinishViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tro-RP-kHB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3120,6 +3120,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                             <constraint firstItem="fDQ-QN-mFg" firstAttribute="top" secondItem="Tro-RP-kHB" secondAttribute="top" constant="35" id="zol-6W-HKn"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Dds-gX-vpL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kWb-GS-KrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="yjq-8D-UZ3" userLabel="Exit" sceneMemberID="exit"/>
