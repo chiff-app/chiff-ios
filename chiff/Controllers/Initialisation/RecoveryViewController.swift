@@ -35,7 +35,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - UIViewControllerLifeCycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
@@ -127,7 +127,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - KeyboardAppearance
-    
+
     @objc func keyboardWillShow(notification: Notification) {
         guard keyboardHeight == nil else {
             return

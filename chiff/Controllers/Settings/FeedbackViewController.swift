@@ -18,7 +18,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var sendButton: UIBarButtonItem!
-    
+
     // MARK: - UIViewControllerLifeCycle
 
     override func viewDidLoad() {
@@ -104,7 +104,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
     func textViewDidEndEditing(_ textView: UITextView) {
         setInitialContentOffset()
     }
-    
+
     // MARK: - KeyboardAppearance
 
     @objc func keyboardWillShow(notification: NSNotification) {

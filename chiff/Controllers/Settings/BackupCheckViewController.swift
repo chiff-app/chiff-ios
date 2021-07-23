@@ -41,6 +41,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     // MARK: - InitialViewSetup
 
     private func initialSetup() {
+        setWordsIndexes()
         setupNavigationBar()
         setKeyboardHandlers()
         initializeTextfields()
