@@ -95,7 +95,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let keyboardHeight = keyboardHeight {
-            let currentContentOffset = CGPoint(x: 0, y: contentView.convert(textField.superview!.frame.origin, to: scrollView).y - (textField.frame.size.height * 1.4) - keyboardHeight)
+            let currentContentOffset = CGPoint(x: 0, y: max(contentView.convert(textField.superview!.frame.origin, to: scrollView).y - (textField.frame.size.height * 1.4) - keyboardHeight, 0))
             scrollView.setContentOffset(currentContentOffset, animated: true)
         }
     }
