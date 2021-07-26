@@ -6,29 +6,27 @@
 //
 
 import UIKit
-import PromiseKit
 import ChiffCore
+import PromiseKit
 
 enum RecoveryError: Error {
     case unauthenticated
 }
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
+    var isInitialSetup = true
+    var wordlists: [[String]]!
 
-    @IBOutlet var wordTextFields: [UITextField]!
-    @IBOutlet weak var wordTextFieldsStack: UIStackView!
-    @IBOutlet weak var finishButton: UIBarButtonItem!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
-    @IBOutlet weak var activityViewContainer: UIView!
-
-    private let lowerBoundaryOffset: CGFloat = 15
-    private let keyboardHeightOffset: CGFloat = 20
-
-    private var textFieldOffset: CGPoint!
-    private var textFieldHeight: CGFloat!
     private var keyboardHeight: CGFloat?
+    private var initialContentOffset: CGPoint!
+
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var wordTextFields: [UITextField]!
+    @IBOutlet var activityViewContainer: UIView!
+    @IBOutlet var finishButton: UIBarButtonItem!
+    @IBOutlet var wordTextFieldsStack: UIStackView!
+    @IBOutlet var constraintContentHeight: NSLayoutConstraint!
 
     var mnemonic = [String](repeating: "", count: 12) {
         didSet {
@@ -36,39 +34,58 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    var isInitialSetup = true
-    var wordlists: [[String]]!
+    // MARK: - UIViewControllerLifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        wordTextFields?.sort(by: { $0.tag < $1.tag })
-        for textField in wordTextFields! {
-            initialize(textfield: textField)
-        }
-
-        do {
-            self.wordlists = try Seed.wordlists()
-        } catch {
-            showAlert(message: "errors.loading_wordlist".localized)
-        }
-
-        // Observe keyboard change
-        let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        navigationItem.rightBarButtonItem?.setColor(color: .white)
+        initialSetup()
         Logger.shared.analytics(.restoreBackupOpened, override: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        initialContentOffset = scrollView.contentOffset
+        checkSeedSeed()
+    }
+
+    // MARK: - InitialSetup
+
+    func initialSetup() {
+        fillTextFields()
+        setWordList()
+        setKeyboardHandlers()
+        navigationItem.rightBarButtonItem?.setColor(color: .white)
+    }
+
+    func checkSeedSeed() {
         guard !Seed.hasKeys else {
             seedExistsError()
             return
         }
     }
+
+    func fillTextFields() {
+        wordTextFields?.sort(by: { $0.tag < $1.tag })
+        for textField in wordTextFields {
+            initialize(textfield: textField)
+        }
+    }
+
+    func setWordList() {
+        do {
+            wordlists = try Seed.wordlists()
+        } catch {
+            showAlert(message: "errors.loading_wordlist".localized)
+        }
+    }
+
+    func setKeyboardHandlers() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        view.addEndEditingTapGesture()
+    }
+
+    // MARK: - StatusBarStyle
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
@@ -76,10 +93,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - UITextFieldDelegate
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
-        textFieldHeight = textField.frame.size.height
-        return true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if let keyboardHeight = keyboardHeight {
+            let currentContentOffset = CGPoint(x: 0, y: max(contentView.convert(textField.superview!.frame.origin, to: scrollView).y - (textField.frame.size.height * 1.4) - keyboardHeight, 0))
+            scrollView.setContentOffset(currentContentOffset, animated: true)
+        }
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -88,56 +106,47 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
-        textField.resignFirstResponder()
+        if let currentIndex = wordTextFields.firstIndex(of: textField), currentIndex < wordTextFields.count - 1 {
+            wordTextFields[currentIndex + 1].becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            if checkMnemonic() {
+                finish(nil)
+            }
+        }
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         checkWord(for: textField)
+        scrollView.setContentOffset(initialContentOffset, animated: true)
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
         checkWord(for: textField)
     }
 
+    // MARK: - KeyboardAppearance
+
     @objc func keyboardWillShow(notification: Notification) {
         guard keyboardHeight == nil else {
             return
         }
-
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height + view.safeAreaInsets.bottom
-            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardSize.height)
-            UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += (self.keyboardHeight!) // Just assigned so it makes sense to force unwrap
-                if distanceToKeyboard > 0 {
-                    self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: (distanceToKeyboard + self.lowerBoundaryOffset))
-                }
-            })
         }
-    }
-
-    @objc func keyboardWillHide(notification: Notification) {
-        if let keyboardHeight = keyboardHeight {
-            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardHeight) + self.lowerBoundaryOffset
-            UIView.animate(withDuration: 0.3) {
-                self.constraintContentHeight.constant -= (keyboardHeight)
-                if distanceToKeyboard > 0 {
-                    self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-                }
-            }
+        if let textView = view.firstResponder as? UITextField {
+            textFieldDidBeginEditing(textView)
         }
-
-        keyboardHeight = nil
     }
 
     // MARK: - Actions
 
     @IBAction func back(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func finish(_ sender: UIBarButtonItem) {
+    @IBAction func finish(_ sender: UIBarButtonItem?) {
         view.endEditing(false)
         activityViewContainer.isHidden = false
         firstly {
@@ -146,9 +155,9 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             Seed.recover(context: context, mnemonic: self.mnemonic)
         }.ensure(on: .main) {
             self.activityViewContainer.isHidden = true
-        }.done { (accountResult, teamResult) in
+        }.done { accountResult, teamResult in
             var message: String?
-            if accountResult.failed > 0 && teamResult.failed > 0 {
+            if accountResult.failed > 0, teamResult.failed > 0 {
                 message = String(format: "errors.failed_teams_and_accounts_message".localized, accountResult.failed, accountResult.total, teamResult.failed, teamResult.total)
             } else if accountResult.failed > 0 {
                 message = String(format: "errors.failed_accounts_message".localized, accountResult.failed, accountResult.total)
@@ -175,7 +184,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private func onSeedRecoverySuccess() {
         Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-        self.registerForPushNotifications()
+        registerForPushNotifications()
         Logger.shared.analytics(.backupRestored, override: true)
     }
 
@@ -249,7 +258,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 return NotificationManager.shared.unregisterDevice()
             }.catchLog("Error deleting data")
         }))
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     private func registerForPushNotifications() {
@@ -259,5 +268,4 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             self.showRootController()
         }
     }
-
 }
