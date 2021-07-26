@@ -5,73 +5,94 @@
 //  Copyright: see LICENSE.md
 //
 
-import UIKit
 import ChiffCore
+import UIKit
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
-
-    @IBOutlet weak var firstWordLabel: UILabel!
-    @IBOutlet weak var secondWordLabel: UILabel!
-    @IBOutlet weak var firstWordTextField: UITextField!
-    @IBOutlet weak var secondWordTextField: UITextField!
-    @IBOutlet weak var wordFieldStack: UIStackView!
-    @IBOutlet weak var finishButton: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-
-    private var textFieldOffset: CGPoint!
-    private var textFieldHeight: CGFloat!
-    private var keyboardHeight: CGFloat!
-    private let lowerBoundaryOffset: CGFloat = 109
-
     var mnemonic: [String]!
     private var firstWordIndex = 0
     private var secondWordIndex = 0
+    private var keyboardHeight: CGFloat!
+    private var initialContentOffset: CGPoint!
+
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var finishButton: UIButton!
+    @IBOutlet var firstWordLabel: UILabel!
+    @IBOutlet var secondWordLabel: UILabel!
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var wordFieldStack: UIStackView!
+    @IBOutlet var firstWordTextField: UITextField!
+    @IBOutlet var secondWordTextField: UITextField!
+    @IBOutlet var bottomConstraint: NSLayoutConstraint!
+
+    // MARK: - UIViewControllerLifeCycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initialSetup()
+        Logger.shared.analytics(.backupCheckOpened)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        initialContentOffset = scrollView.contentOffset
+    }
+
+    // MARK: - InitialViewSetup
+
+    private func initialSetup() {
+        setWordsIndexes()
+        setupNavigationBar()
+        setKeyboardHandlers()
+        initializeTextfields()
+    }
+
+    private func setWordsIndexes() {
+        firstWordIndex = Int(arc4random_uniform(6))
+        secondWordIndex = Int(arc4random_uniform(6)) + 6
+    }
+
+    private func initializeTextfields() {
+        initialize(textfield: firstWordTextField, label: firstWordLabel, index: firstWordIndex)
+        initialize(textfield: secondWordTextField, label: secondWordLabel, index: secondWordIndex)
+    }
+
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem?.setColor(color: .white)
+    }
+
+    func setKeyboardHandlers() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        view.addEndEditingTapGesture()
+    }
+
+    // MARK: - StatusBarStyle
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        firstWordIndex = Int(arc4random_uniform(6))
-        secondWordIndex = Int(arc4random_uniform(6)) + 6
-
-        initialize(textfield: firstWordTextField, label: firstWordLabel, index: firstWordIndex)
-        initialize(textfield: secondWordTextField, label: secondWordLabel, index: secondWordIndex)
-
-        // Observe keyboard change
-        let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-
-        navigationItem.leftBarButtonItem?.setColor(color: .white)
-        Logger.shared.analytics(.backupCheckOpened)
-    }
-
     // MARK: - UITextFieldDelegate
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
-        textFieldHeight = textField.frame.size.height
-        return true
-    }
-
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        setScrollViewContentOffset()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Hide the keyboard.
-        textField.resignFirstResponder()
+        if textField == firstWordTextField {
+            textField.resignFirstResponder()
+            secondWordTextField.becomeFirstResponder()
+        } else if isWordsMatch() {
+            finish(nil)
+        } else {
+            view.endEditing(true)
+        }
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        setInitialContentOffset()
         checkWords(for: textField)
     }
 
@@ -79,40 +100,35 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         checkWords(for: textField)
     }
 
+    // MARK: - KeyboardAppearance
+
     @objc func keyboardWillShow(notification: NSNotification) {
         guard keyboardHeight == nil else {
             return
         }
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            let lowerBoundary = (wordFieldStack.frame.origin.y + wordFieldStack.frame.size.height) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
-            if lowerBoundary > 0 {
-                keyboardHeight = keyboardSize.height
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.bottomConstraint.constant += (self.keyboardHeight)
-                })
-
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: lowerBoundary)
-                })
-            }
+            keyboardHeight = keyboardSize.height
+            setScrollViewContentOffset()
         }
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
-        guard keyboardHeight != nil else {
-            return
+    private func setScrollViewContentOffset() {
+        if let keyboardHeight = keyboardHeight {
+            let currentContentOffset = CGPoint(x: 0, y: max(contentView.convert(finishButton.frame.origin, to: scrollView).y - (finishButton.frame.size.height * 2) - keyboardHeight, 0))
+            scrollView.setContentOffset(currentContentOffset, animated: true)
         }
-        UIView.animate(withDuration: 0.3) {
-            self.bottomConstraint.constant -= (self.keyboardHeight)
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-        }
+    }
 
-        keyboardHeight = nil
+    private func setInitialContentOffset() {
+        scrollView.setContentOffset(initialContentOffset, animated: true)
     }
 
     // MARK: - Actions
 
-    @IBAction func finish(_ sender: UIButton) {
+    @IBAction func finish(_ sender: UIButton?) {
+        if sender == nil {
+            self.performSegue(withIdentifier: "showBackupFinish", sender: nil)
+        }
         Seed.paperBackupCompleted = true
         Logger.shared.analytics(.backupCompleted)
     }
@@ -130,7 +146,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
                 textField.rightView?.alpha = 0.0
             }
         }
-        finishButton.isEnabled = firstWordTextField.text == mnemonic[firstWordIndex] && secondWordTextField.text == mnemonic[secondWordIndex]
+        finishButton.isEnabled = isWordsMatch()
+    }
+
+    private func isWordsMatch() -> Bool {
+        return firstWordTextField.text == mnemonic[firstWordIndex] && secondWordTextField.text == mnemonic[secondWordIndex]
     }
 
     private func loadRootController() {
