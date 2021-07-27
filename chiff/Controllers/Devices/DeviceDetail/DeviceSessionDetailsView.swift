@@ -5,9 +5,9 @@
 //  Copyright: see LICENSE.md
 //
 
-import UIKit
 import ChiffCore
 import Foundation
+import UIKit
 
 class DeviceSessionDetailsView: UITableViewCell, UITextFieldDelegate {
     var session: Session? {

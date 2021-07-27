@@ -141,6 +141,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
 
         DispatchQueue.main.async {
+            ChiffRequestsLogStorage.sharedStorage.save(log: ChiffRequestLogModel(request: chiffRequest))
             AuthorizationGuard.shared.launchRequestView(with: chiffRequest)
         }
 

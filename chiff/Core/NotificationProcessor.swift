@@ -66,7 +66,8 @@ class NotificationProcessor {
 
         content.userInfo[NotificationContentKey.type.rawValue] = NotificationType.browser.rawValue
         content.userInfo["chiffRequest"] = try PropertyListEncoder().encode(request)
+        ChiffRequestsLogStorage.sharedStorage.save(log: ChiffRequestLogModel(request: request))
+        
         return content
     }
-
 }

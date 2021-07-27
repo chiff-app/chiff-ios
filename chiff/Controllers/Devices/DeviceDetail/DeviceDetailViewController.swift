@@ -36,6 +36,12 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let resentReqestsViewController = segue.destination.contents as? ResentReqestsViewController {
+            resentReqestsViewController.session = session
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,13 +57,16 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
-
+        if let footer = tableView.tableFooterView, let logs = ChiffRequestsLogStorage.sharedStorage.getLogForSession(ID: session.id) {
+            var frame = footer.frame
+            frame.size.height = CGFloat(44 * logs.count)
+            footer.frame = frame
+            tableView.tableFooterView = footer
+        }
         guard let session = session as? TeamSession else {
             return
         }
-        headerView.isHidden = session.isAdmin
         footerView.isHidden = session.isAdmin
-        detailsView.isHidden = session.isAdmin
         recentContainer.isHidden = session.isAdmin
     }
 

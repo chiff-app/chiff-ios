@@ -5,12 +5,11 @@
 //  Copyright: see LICENSE.md
 //
 
-import UIKit
 import ChiffCore
 import Foundation
+import UIKit
 
 class DeviceSessionFooterView: UITableViewCell, UITextFieldDelegate {
-    
     @IBOutlet private var footerLabel: UILabel!
     @IBOutlet private var recentLabel: UILabel!
     
@@ -34,5 +33,4 @@ class DeviceSessionFooterView: UITableViewCell, UITextFieldDelegate {
 
         recentLabel.text = sessionResentHeader
     }
-    
 }
