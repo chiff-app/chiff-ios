@@ -15,9 +15,6 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    var sessionDetailFooter = "devices.session_detail_footer".localized
-    var sessionResentHeader = "devices.session_resent_header".localized
-
     @IBOutlet var recentContainer: UIView!
     @IBOutlet var footerView: DeviceSessionFooterView!
 
