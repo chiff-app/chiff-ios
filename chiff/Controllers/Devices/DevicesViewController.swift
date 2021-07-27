@@ -41,7 +41,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             Logger.shared.error("Could not get sessions.", error: error)
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUi()
@@ -152,7 +152,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         if sender.identifier == "DeleteSession" {
             deleteSession(session: session, indexPath: IndexPath(row: index, section: 0))
-        } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
+        } else if sender.identifier == "UpdateSession", let title = sourceViewController.detailsView.sessionName {
             session.title = title
             try? session.update(makeBackup: true)
             sessions[index] = session

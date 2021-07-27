@@ -289,6 +289,8 @@ devices:
     value: Koppel nu
   session_detail_footer:
     value: Je kunt je apparaat altijd opnieuw koppelen door de QR-code te scannen.
+  session_resent_header:
+    value: Resent requests
   session_detail_header:
     value: Sessie details
   session_name:
