@@ -5181,10 +5181,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="1349.5999999999999" y="-3299.2610837438424"/>
         </scene>
-        <!--Resent Reqests View Controller-->
+        <!--Recent Reqests View Controller-->
         <scene sceneID="aHm-b7-IUm">
             <objects>
-                <viewController storyboardIdentifier="ResentReqestsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VSC-lz-3tP" customClass="ResentReqestsViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RecentReqestsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VSC-lz-3tP" customClass="RecentReqestsViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IbO-x8-Zwf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="166"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -5203,8 +5203,8 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="VSC-lz-3tP" id="mLL-QW-flt"/>
-                                    <outlet property="delegate" destination="VSC-lz-3tP" id="qcG-nw-OMS"/>
+                                    <outlet property="dataSource" destination="VSC-lz-3tP" id="opP-mk-NpZ"/>
+                                    <outlet property="delegate" destination="VSC-lz-3tP" id="MsW-OH-hOa"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -5218,7 +5218,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="6A4-DW-R0h" id="Nsi-Rm-7JY"/>
+                        <outlet property="tableView" destination="6A4-DW-R0h" id="GX8-Ly-9nn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pJ6-2X-ckt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
