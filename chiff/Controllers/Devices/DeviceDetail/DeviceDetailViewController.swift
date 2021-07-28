@@ -37,7 +37,7 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let resentReqestsViewController = segue.destination.contents as? ResentReqestsViewController {
+        if let resentReqestsViewController = segue.destination.contents as? RecentReqestsViewController {
             resentReqestsViewController.session = session
         }
     }
