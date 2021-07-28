@@ -28,7 +28,7 @@ class RecentReqestsViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RequestCell")
-    }
+      }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -48,7 +48,7 @@ class RecentReqestsViewController: UIViewController, UITableViewDataSource {
         cell.textLabel?.textColor = UIColor.textColor
         cell.textLabel?.font = UIFont.primaryMediumSmall
         cell.textLabel?.textAlignment = NSTextAlignment.left
-        cell.textLabel?.text = "\(request.dateString) \(request.type) @ \(request.siteName!)" + (request.isRejected ? " (decline)" : "")
+        cell.textLabel?.text = "\(request.dateString) \(request.type.logString(param: request.siteName!))" + (request.isRejected ? " (decline)" : "")
         
         return cell
     }
