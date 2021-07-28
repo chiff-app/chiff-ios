@@ -121,7 +121,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
     private func setScrollViewContentOffsetFor(_ view: UIView) {
         if let keyboardHeight = keyboardHeight {
-            let currentContentOffset = CGPoint(x: 0, y: contentView.convert(view.superview!.frame.origin, to: scrollView).y + (view.frame.size.height / 1.4) - keyboardHeight)
+            let currentContentOffset = CGPoint(x: 0, y: max(contentView.convert(view.superview!.frame.origin, to: scrollView).y + (view.frame.size.height / 1.4) - keyboardHeight, 0))
             scrollView.setContentOffset(currentContentOffset, animated: true)
         }
     }

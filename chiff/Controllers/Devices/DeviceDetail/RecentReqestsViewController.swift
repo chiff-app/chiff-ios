@@ -9,7 +9,7 @@ import ChiffCore
 import Foundation
 import UIKit
 
-class ResentReqestsViewController: UIViewController, UITableViewDataSource {
+class RecentReqestsViewController: UIViewController, UITableViewDataSource {
     var session: Session? {
         didSet {
             tableView?.reloadData()

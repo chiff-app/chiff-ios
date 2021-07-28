@@ -114,7 +114,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     private func setScrollViewContentOffset() {
         if let keyboardHeight = keyboardHeight {
-            let currentContentOffset = CGPoint(x: 0, y: contentView.convert(finishButton.frame.origin, to: scrollView).y - (finishButton.frame.size.height * 2) - keyboardHeight)
+            let currentContentOffset = CGPoint(x: 0, y: max(contentView.convert(finishButton.frame.origin, to: scrollView).y - (finishButton.frame.size.height * 2) - keyboardHeight, 0))
             scrollView.setContentOffset(currentContentOffset, animated: true)
         }
     }
@@ -127,7 +127,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func finish(_ sender: UIButton?) {
         if sender == nil {
-            self.performSegue(withIdentifier: "showBackupFinish", sender: nil)
+            performSegue(withIdentifier: "showBackupFinish", sender: nil)
         }
         Seed.paperBackupCompleted = true
         Logger.shared.analytics(.backupCompleted)
