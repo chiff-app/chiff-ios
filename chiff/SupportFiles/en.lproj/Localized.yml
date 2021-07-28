@@ -293,7 +293,7 @@ devices:
   session_detail_footer:
     value: You can always pair again with your device by scanning the QR-code.
   session_resent_header:
-    value: Resent requests
+    value: Recent requests
   session_detail_header:
     value: Session details
   session_name:
