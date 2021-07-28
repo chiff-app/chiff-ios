@@ -44,11 +44,11 @@ class RecentReqestsViewController: UIViewController, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestCell") else {
             return UITableViewCell()
         }
-        let reqest = requests[indexPath.row]
+        let request = requests[indexPath.row]
         cell.textLabel?.textColor = UIColor.textColor
         cell.textLabel?.font = UIFont.primaryMediumSmall
         cell.textLabel?.textAlignment = NSTextAlignment.left
-        cell.textLabel?.text = "\(reqest.dateString) \(reqest.type) @ \(reqest.siteName!)"
+        cell.textLabel?.text = "\(request.dateString) \(request.type) @ \(request.siteName!)" + (request.isRejected ? " (decline)" : "")
         
         return cell
     }
