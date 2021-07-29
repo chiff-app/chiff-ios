@@ -292,14 +292,14 @@ devices:
     value: Set up computer
   session_detail_footer:
     value: You can always pair again with your device by scanning the QR-code.
-  session_resent_header:
-    value: Recent activity
   session_detail_header:
     value: Session details
   session_name:
     value: Name
   session_name_example:
     value: Example @ work
+  session_recent_header:
+    value: Recent activity
   start_pairing:
     value: You haven't set up Chiff on your computer yet.
   team_auxiliary_title:

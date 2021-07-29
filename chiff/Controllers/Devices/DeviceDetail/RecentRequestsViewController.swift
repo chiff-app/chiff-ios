@@ -9,7 +9,7 @@ import ChiffCore
 import Foundation
 import UIKit
 
-class RecentReqestsViewController: UIViewController, UITableViewDataSource {
+class RecentRequestsViewController: UIViewController, UITableViewDataSource {
     var session: Session? {
         didSet {
             tableView?.reloadData()
@@ -19,7 +19,7 @@ class RecentReqestsViewController: UIViewController, UITableViewDataSource {
     @IBOutlet var tableView: UITableView!
 
     var requests: [ChiffRequestLogModel] {
-        guard let session = session, let logs = ChiffRequestsLogStorage.sharedStorage.getLogForSession(ID: session.id) else {
+        guard let session = session, let logs = try? ChiffRequestsLogStorage.sharedStorage.getLogForSession(id: session.id) else {
             return [ChiffRequestLogModel]()
         }
         return logs
@@ -48,8 +48,7 @@ class RecentReqestsViewController: UIViewController, UITableViewDataSource {
         cell.textLabel?.textColor = UIColor.textColor
         cell.textLabel?.font = UIFont.primaryMediumSmall
         cell.textLabel?.textAlignment = NSTextAlignment.left
-        cell.textLabel?.text = "\(request.dateString) \(request.type.logString(param: request.siteName!))" + (request.isRejected ? " (decline)" : "")
-        
+        cell.textLabel?.text = request.logString
         return cell
     }
 }

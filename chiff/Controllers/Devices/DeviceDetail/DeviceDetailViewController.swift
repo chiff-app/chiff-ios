@@ -37,7 +37,7 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let resentReqestsViewController = segue.destination.contents as? RecentReqestsViewController {
+        if let resentReqestsViewController = segue.destination.contents as? RecentRequestsViewController {
             resentReqestsViewController.session = session
         }
     }
@@ -57,7 +57,7 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
-        if let footer = tableView.tableFooterView, let logs = ChiffRequestsLogStorage.sharedStorage.getLogForSession(ID: session.id) {
+        if let footer = tableView.tableFooterView, let logs = try? ChiffRequestsLogStorage.sharedStorage.getLogForSession(id: session.id) {
             var frame = footer.frame
             frame.size.height = CGFloat(44 * logs.count)
             footer.frame = frame

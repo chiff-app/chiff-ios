@@ -15,6 +15,9 @@ class CreateOrganisationAuthorizer: Authorizer {
     let browserTab: Int
     let organisationName: String
     let orderKey: String
+    public var logParam: String {
+        return organisationName
+    }
 
     let requestText = "requests.create_team".localized.capitalizedFirstLetter
     let successText = "requests.team_created".localized.capitalizedFirstLetter

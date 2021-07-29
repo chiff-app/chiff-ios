@@ -289,14 +289,14 @@ devices:
     value: Koppel nu
   session_detail_footer:
     value: Je kunt je apparaat altijd opnieuw koppelen door de QR-code te scannen.
-  session_resent_header:
-    value: Laatste activiteit
   session_detail_header:
     value: Sessie details
   session_name:
     value: Naam
   session_name_example:
     value: Voorbeeld @ werk
+  session_recent_header:
+    value: Laatste activiteit
   start_pairing:
     value: Je bent nog niet gekoppeld met je computer.
   team_auxiliary_title:
