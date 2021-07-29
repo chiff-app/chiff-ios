@@ -22,7 +22,7 @@ class RecentRequestsViewController: UIViewController, UITableViewDataSource {
         guard let session = session, let logs = try? ChiffRequestsLogStorage.sharedStorage.getLogForSession(id: session.id) else {
             return [ChiffRequestLogModel]()
         }
-        return logs
+        return logs.reversed()
     }
 
     override func viewDidLoad() {

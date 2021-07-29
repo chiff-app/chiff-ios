@@ -4180,7 +4180,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                             </connections>
                         </view>
                         <containerView key="tableFooterView" opaque="NO" contentMode="scaleToFill" id="Zc0-sd-vow">
-                            <rect key="frame" x="0.0" y="518" width="375" height="166"/>
+                            <rect key="frame" x="0.0" y="518" width="375" height="160"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <connections>
                                 <segue destination="VSC-lz-3tP" kind="embed" id="AdU-R3-YaX"/>
@@ -5186,18 +5186,18 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             <objects>
                 <viewController storyboardIdentifier="RecentReqestsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VSC-lz-3tP" customClass="RecentRequestsViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IbO-x8-Zwf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="166"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6A4-DW-R0h">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="166"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="24" estimatedRowHeight="-1" sectionHeaderHeight="8" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6A4-DW-R0h">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RequestCell" rowHeight="24" id="0G0-YG-I7Y">
-                                        <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="24"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RequestCell" rowHeight="16" id="0G0-YG-I7Y">
+                                        <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="16"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0G0-YG-I7Y" id="rh0-4F-xU8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="24"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
