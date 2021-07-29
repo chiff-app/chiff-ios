@@ -15,25 +15,25 @@ class DeviceDetailsHeaderView: UIView {
             setupView()
         }
     }
-    
+
     @IBOutlet private var iconView: UIImageView!
-    
+
     @IBOutlet private var createdLabel: UILabel!
     @IBOutlet private var createdValueLabel: UILabel!
-    
+
     @IBOutlet private var auxiliaryLabel: UILabel!
     @IBOutlet private var auxiliaryValueLabel: UILabel!
-    
+
     override func didMoveToWindow() {
         super.didMoveToWindow()
         initialSetup()
     }
-    
+
     private func initialSetup() {
         setAuxiliaryLabel(count: nil)
         setupView()
     }
-    
+
     private func setupView() {
         createdLabel.text = "devices.created".localized
         guard let session = session else {
@@ -42,7 +42,7 @@ class DeviceDetailsHeaderView: UIView {
         iconView?.image = session.logo ?? UIImage(named: "logo_purple")
         createdValueLabel.text = session.creationDate.timeAgoSinceNow()
     }
-    
+
     func setAuxiliaryLabel(count: Int?) {
         if let session = session as? TeamSession {
             auxiliaryLabel.text = "devices.team_auxiliary_title".localized

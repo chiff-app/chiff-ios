@@ -41,7 +41,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             Logger.shared.error("Could not get sessions.", error: error)
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUi()
