@@ -127,7 +127,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func finish(_ sender: UIButton?) {
         if sender == nil {
-            self.performSegue(withIdentifier: "showBackupFinish", sender: nil)
+            performSegue(withIdentifier: "showBackupFinish", sender: nil)
         }
         Seed.paperBackupCompleted = true
         Logger.shared.analytics(.backupCompleted)

@@ -5,9 +5,9 @@
 //  Copyright: see LICENSE.md
 //
 
-import UIKit
 import ChiffCore
 import PromiseKit
+import UIKit
 
 enum RecoveryError: Error {
     case unauthenticated

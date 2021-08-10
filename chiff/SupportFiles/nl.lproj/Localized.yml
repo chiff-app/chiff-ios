@@ -295,6 +295,8 @@ devices:
     value: Naam
   session_name_example:
     value: Voorbeeld @ werk
+  session_recent_header:
+    value: Laatste activiteit
   start_pairing:
     value: Je bent nog niet gekoppeld met je computer.
   team_auxiliary_title:

@@ -189,6 +189,10 @@
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
+		EA73F98A26AC9F5800AC2B13 /* RecentRequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73F98926AC9F5800AC2B13 /* RecentRequestsViewController.swift */; };
+		EA73F99026AF519300AC2B13 /* DeviceDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73F98F26AF519300AC2B13 /* DeviceDetailsHeaderView.swift */; };
+		EA73F99226AF638900AC2B13 /* DeviceSessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73F99126AF638900AC2B13 /* DeviceSessionDetailsView.swift */; };
+		EA92D9A226AF7A9F001146B8 /* DeviceSessionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA92D9A126AF7A9F001146B8 /* DeviceSessionFooterView.swift */; };
 		EABDC05626AAF3A700C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05526AAF3A700C769C7 /* ChiffCore */; };
 		EABDC05826AAF3D900C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05726AAF3D900C769C7 /* ChiffCore */; };
 		EABDC05A26AAF3E500C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05926AAF3E500C769C7 /* ChiffCore */; };
@@ -367,6 +371,10 @@
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
+		EA73F98926AC9F5800AC2B13 /* RecentRequestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentRequestsViewController.swift; sourceTree = "<group>"; };
+		EA73F98F26AF519300AC2B13 /* DeviceDetailsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailsHeaderView.swift; sourceTree = "<group>"; };
+		EA73F99126AF638900AC2B13 /* DeviceSessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSessionDetailsView.swift; sourceTree = "<group>"; };
+		EA92D9A126AF7A9F001146B8 /* DeviceSessionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSessionFooterView.swift; sourceTree = "<group>"; };
 		EABDC05B26AAF3F300C769C7 /* chiff-ios-core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "chiff-ios-core"; path = "../chiff-ios-core"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -766,9 +774,21 @@
 				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
 				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
 				492EC8442249214E0088F73D /* PairContainerViewController.swift */,
-				4275BC2223D898090060506D /* DeviceDetailViewController.swift */,
+				EA73F98B26ACA10B00AC2B13 /* DeviceDetail */,
 			);
 			path = Devices;
+			sourceTree = "<group>";
+		};
+		EA73F98B26ACA10B00AC2B13 /* DeviceDetail */ = {
+			isa = PBXGroup;
+			children = (
+				EA73F98926AC9F5800AC2B13 /* RecentRequestsViewController.swift */,
+				4275BC2223D898090060506D /* DeviceDetailViewController.swift */,
+				EA73F98F26AF519300AC2B13 /* DeviceDetailsHeaderView.swift */,
+				EA73F99126AF638900AC2B13 /* DeviceSessionDetailsView.swift */,
+				EA92D9A126AF7A9F001146B8 /* DeviceSessionFooterView.swift */,
+			);
+			path = DeviceDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1139,6 +1159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA73F99026AF519300AC2B13 /* DeviceDetailsHeaderView.swift in Sources */,
 				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
 				49CEB504260CC50900FEF356 /* Properties.swift in Sources */,
 				49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */,
@@ -1192,6 +1213,7 @@
 				49C0BF2E262734B50041810D /* AddAccountViewController+TableView.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */,
+				EA73F98A26AC9F5800AC2B13 /* RecentRequestsViewController.swift in Sources */,
 				4950263222BBA31200545118 /* FilledCircle.swift in Sources */,
 				4275BC2323D898090060506D /* DeviceDetailViewController.swift in Sources */,
 				49B2A8DC254326B8001BA6EE /* AccountViewController+Editing.swift in Sources */,
@@ -1218,6 +1240,7 @@
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */,
+				EA92D9A226AF7A9F001146B8 /* DeviceSessionFooterView.swift in Sources */,
 				49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */,
 				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
 				4950262E22BBA2DC00545118 /* CircleView.swift in Sources */,
@@ -1225,6 +1248,7 @@
 				49B2A8E3254327A2001BA6EE /* TokenHandler.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */,
+				EA73F99226AF638900AC2B13 /* DeviceSessionDetailsView.swift in Sources */,
 				49F2A0F722142F0400429875 /* FormTextField.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				497828862285712C00D30C42 /* NotificationManager.swift in Sources */,
