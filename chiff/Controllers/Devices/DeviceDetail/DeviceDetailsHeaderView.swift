@@ -21,16 +21,8 @@ class DeviceDetailsHeaderView: UIView {
     @IBOutlet private var createdLabel: UILabel!
     @IBOutlet private var createdValueLabel: UILabel!
 
-    @IBOutlet private var auxiliaryLabel: UILabel!
-    @IBOutlet private var auxiliaryValueLabel: UILabel!
-
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        initialSetup()
-    }
-
-    private func initialSetup() {
-        setAuxiliaryLabel(count: nil)
         setupView()
     }
 
@@ -43,13 +35,4 @@ class DeviceDetailsHeaderView: UIView {
         createdValueLabel.text = session.creationDate.timeAgoSinceNow()
     }
 
-    func setAuxiliaryLabel(count: Int?) {
-        if let session = session as? TeamSession {
-            auxiliaryLabel.text = "devices.team_auxiliary_title".localized
-            auxiliaryValueLabel.text = "\(count ?? session.accountCount)"
-        } else if let session = session as? BrowserSession {
-            auxiliaryLabel.text = "devices.auxiliary_title".localized
-            auxiliaryValueLabel.text = session.lastRequest?.timeAgoSinceNow() ?? "devices.never".localized.capitalizedFirstLetter
-        }
-    }
 }

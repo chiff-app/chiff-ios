@@ -9,10 +9,11 @@ import ChiffCore
 import UIKit
 
 class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
-    
+
     private let logsRowlimit = 6
     private let logsRowHeight = 22
-    
+    private let logRowBottomMargin = 3
+
     var session: Session! {
         didSet {
             initialViewSetup()
@@ -63,7 +64,7 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         tableView.separatorColor = UIColor.primaryTransparant
         if let footer = tableView.tableFooterView, let logs = try? ChiffRequestsLogStorage.sharedStorage.getLogForSession(id: session.id) {
             var frame = footer.frame
-            frame.size.height = CGFloat(logs.count < logsRowlimit ? logs.count * logsRowHeight : logsRowlimit * logsRowHeight)
+            frame.size.height = CGFloat(logs.count < logsRowlimit ? logs.count * logsRowHeight + logRowBottomMargin : logsRowlimit * logsRowHeight + logRowBottomMargin)
             footer.frame = frame
             tableView.tableFooterView = footer
         }
@@ -93,7 +94,6 @@ class DeviceDetailViewController: UITableViewController, UITextFieldDelegate {
         }
         headerView.session = session
         detailsView.session = session
-        headerView.setAuxiliaryLabel(count: notification.userInfo?["count"] as? Int)
 
         tableView.reloadData()
     }

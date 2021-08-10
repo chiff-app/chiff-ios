@@ -15,7 +15,7 @@ class DeviceSessionDetailsView: UITableViewCell, UITextFieldDelegate {
             viewSetup()
         }
     }
-    
+
     var sessionName: String? {
         sessionNameTextField.text
     }
