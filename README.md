@@ -14,10 +14,10 @@ Chiff also supports TOTP and HOTP codes, so you don't need another app for that.
 
 ### Security model
 #### Short version
-All sensitive data is stored encrypted on your phone. When needed, it is decrypted (by authenticating to your phone with biometrics) and sent to the browser/cli, where it is filled in the website. An end-to-end encrypted channel is established between browser/cli by scanning a QR-code. This means confidentiality is ensured, even though the server (mainly serving as message broker and backup storage) is modelled as an untrusted entity. In other words, the fact that you have the code of this app and the code of the [browser extension]((https://github.com/chiff-app/chiff-browser)) / [CLI](https://github.com/chiff-app/chiff-cli) should provide sufficient information to see that *you don't need to trust us* (although you can :upside_down_face:).
+All sensitive data is stored encrypted on your phone. When needed, it is decrypted (by authenticating to your phone with biometrics) and sent to the browser/cli, where it is filled in the website. An end-to-end encrypted channel is established between browser/cli by scanning a QR-code. This means confidentiality is ensured, even though the server (mainly serving as message broker and backup storage) is modelled as an untrusted entity. In other words, the fact that you have the code of this app and the code of the [browser extension]((https://github.com/chiff-app/chiff-browser)) / [CLI](https://github.com/chiff-app/chiff-cli) should provide sufficient information to see that *you don't need to trust us*.
 
 #### Long version
-TODO: Link to (part of) thesis.
+TODO: Link to security whitepaper.
 
 ### Screenshots
 TODO
@@ -89,17 +89,5 @@ To build Chiff, run
 bundle exec fastlane build
 ```
 
-<!-- ## Contributing
-To contribute, follow these steps:
-
-1. Fork this repository.
-2. Create a branch from the `dev` branch: `git checkout -b <branch_name>`.
-3. Make your changes and commit them: `git commit -m '<commit_message>'`
-4. Push to the original branch: `git push origin <project_name>/<location>`
-5. Create the pull request to the `dev` branch.
-
-Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
- -->
-
 ## License
-For now: all rights reserved. 
+All rights reserved. 
