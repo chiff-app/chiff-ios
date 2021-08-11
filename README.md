@@ -13,21 +13,15 @@ The idea behind Chiff is that it works in the same way for both *WebAuthn* and p
 Chiff also supports TOTP and HOTP codes, so you don't need another app for that.
 
 ### Security model
-#### Short version
 All sensitive data is stored encrypted on your phone. When needed, it is decrypted (by authenticating to your phone with biometrics) and sent to the browser/cli, where it is filled in the website. An end-to-end encrypted channel is established between browser/cli by scanning a QR-code. This means confidentiality is ensured, even though the server (mainly serving as message broker and backup storage) is modelled as an untrusted entity. In other words, the fact that you have the code of this app and the code of the [browser extension]((https://github.com/chiff-app/chiff-browser)) / [CLI](https://github.com/chiff-app/chiff-cli) should provide sufficient information to see that *you don't need to trust us*.
 
-#### Long version
-TODO: Link to security whitepaper.
-
-### Screenshots
-TODO
-
 ### Related projects
-This is the repository for the *iOS app*.  
-For the *Android app*, please see [chiff-android](https://github.com/chiff-app/chiff-android).  
-For the *Browser extension*, please see [chiff-browser](https://github.com/chiff-app/chiff-browser).  
+This is the repository for the *iOS app*.
+
+For the *iOS app core*, please see [chiff-ios-core](https://github.com/chiff-app/chiff-ios-core).  
 For the *CLI*, please see [chiff-cli](https://github.com/chiff-app/chiff-cli).  
-For the *Backend*, please see [chiff-backend](https://github.com/chiff-app/chiff-backend). 
+For the *Android app*, please see [chiff-android](https://github.com/chiff-app/chiff-android) (_Coming soon_).  
+For the *Browser extension*, please see [chiff-browser](https://github.com/chiff-app/chiff-browser) (_Coming soon_).  
 
 ## Installation
 The easiest way is to install the version from the App Store:
@@ -71,7 +65,8 @@ When initializing Chiff, a 128-bit seed is randomly generated. Passwords and enc
 
 To build this project, you need a *MacOS* machine with the latest version of Xcode.
 Furthermore, the build process assumes that *Ruby* is present.
-Install the ruby dependencies with 
+You also need the *Xcode additional components*.
+Install the ruby dependencies in the *Gemfile* with:
 
 ```bash
 bundle install
@@ -82,8 +77,7 @@ Open `chiff.xcodeproj` with *XCode*. We use SPM for dependencies, so Xcode shoul
 Simply build by clicking the *build* button.
 
 ### Build with Fastlane
-We also have fastlane scripts to build from commandline. To use these, you should first install Fastlane. This can be installed through various methods, but the easiest is to run `bundle` in the project folder to install via the *Gemfile*. Note that you also still need the *Xcode additional components*.
-
+We also have fastlane scripts to build from commandline. 
 To build Chiff, run
 ```
 bundle exec fastlane build
