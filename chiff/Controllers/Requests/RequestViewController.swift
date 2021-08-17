@@ -186,7 +186,7 @@ class RequestViewController: UIViewController {
             }
             AuthenticationGuard.shared.hideLockWindow()
         } else if let error = error as? APIError {
-            Logger.shared.error("APIError authorizing request", error: error.localizedDescription)
+            Logger.shared.error("APIError authorizing request", error: error)
             guard authorizer.type == .createOrganisation else {
                 showAlert(message: error.localizedDescription)
                 return true
