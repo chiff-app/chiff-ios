@@ -45,7 +45,7 @@ struct ChiffLogger: LoggerProtocol {
                     options.releaseName = "chiff-ios@\(version)"
                 }
             }
-            options.environment = Properties.environment.rawValue
+            options.environment = Properties.environment.description
             options.attachStacktrace = true
             options.attachScreenshot = false
             options.attachViewHierarchy = false
