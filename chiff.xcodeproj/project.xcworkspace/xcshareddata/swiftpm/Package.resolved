@@ -1,115 +1,122 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Amplitude",
-        "repositoryURL": "https://github.com/amplitude/Amplitude-iOS.git",
-        "state": {
-          "branch": null,
-          "revision": "9e3081af2f3d45931b5404c4276c6c2e21ecd671",
-          "version": "8.13.0"
-        }
-      },
-      {
-        "package": "analytics-connector-ios",
-        "repositoryURL": "https://github.com/amplitude/analytics-connector-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "b44981119e2efc0edd1d2e26831c3c4c0e0264e6",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "Base32",
-        "repositoryURL": "https://github.com/mattrubin/Base32.git",
-        "state": {
-          "branch": "1.1.2+spm",
-          "revision": "d185e44c8b355d34d5c6c6ad502c60cba4599f69",
-          "version": null
-        }
-      },
-      {
-        "package": "DataCompression",
-        "repositoryURL": "https://github.com/mw99/DataCompression.git",
-        "state": {
-          "branch": null,
-          "revision": "4ac2c9c108d80b690a74252a4ec48f47e9995e00",
-          "version": "3.7.0"
-        }
-      },
-      {
-        "package": "Down",
-        "repositoryURL": "https://github.com/johnxnguyen/Down",
-        "state": {
-          "branch": null,
-          "revision": "f34b166be1f1db4aa8f573067e901d72f2a6be57",
-          "version": "0.11.0"
-        }
-      },
-      {
-        "package": "PMKFoundation",
-        "repositoryURL": "https://github.com/PromiseKit/Foundation.git",
-        "state": {
-          "branch": null,
-          "revision": "985f17fa69ee0e5b7eb3ff9be87ffc4e05fc0927",
-          "version": "3.4.0"
-        }
-      },
-      {
-        "package": "Kronos",
-        "repositoryURL": "https://github.com/lyft/Kronos.git",
-        "state": {
-          "branch": null,
-          "revision": "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
-          "version": "4.2.1"
-        }
-      },
-      {
-        "package": "OneTimePassword",
-        "repositoryURL": "https://github.com/bas-d/OneTimePassword.git",
-        "state": {
-          "branch": "spm",
-          "revision": "520be217b1b30e4cc0d6f841d9ab871b2ed1f57c",
-          "version": null
-        }
-      },
-      {
-        "package": "PromiseKit",
-        "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
-        "state": {
-          "branch": null,
-          "revision": "43772616c46a44a9977e41924ae01d0e55f2f9ca",
-          "version": "6.18.1"
-        }
-      },
-      {
-        "package": "Sentry",
-        "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
-        "state": {
-          "branch": null,
-          "revision": "4a60ff4287d4c6ac64085ad48606ef5ecaec9817",
-          "version": "7.24.1"
-        }
-      },
-      {
-        "package": "Sodium",
-        "repositoryURL": "https://github.com/jedisct1/swift-sodium.git",
-        "state": {
-          "branch": null,
-          "revision": "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
-          "version": "0.9.1"
-        }
-      },
-      {
-        "package": "TrustKit",
-        "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
-        "state": {
-          "branch": null,
-          "revision": "65d573e0e2687ea91ab0b1be377f9dd3eb1c2785",
-          "version": "2.0.1"
-        }
+  "pins" : [
+    {
+      "identity" : "amplitude-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/amplitude/Amplitude-iOS.git",
+      "state" : {
+        "revision" : "9e3081af2f3d45931b5404c4276c6c2e21ecd671",
+        "version" : "8.13.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "analytics-connector-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/amplitude/analytics-connector-ios.git",
+      "state" : {
+        "revision" : "b44981119e2efc0edd1d2e26831c3c4c0e0264e6",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "base32",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattrubin/Base32.git",
+      "state" : {
+        "branch" : "1.1.2+spm",
+        "revision" : "d185e44c8b355d34d5c6c6ad502c60cba4599f69"
+      }
+    },
+    {
+      "identity" : "chiff-ios-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/chiff-app/chiff-ios-core.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3e59eabe0adf0fcc37a40d6d0d90da8d2bae2373"
+      }
+    },
+    {
+      "identity" : "datacompression",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mw99/DataCompression.git",
+      "state" : {
+        "revision" : "4ac2c9c108d80b690a74252a4ec48f47e9995e00",
+        "version" : "3.7.0"
+      }
+    },
+    {
+      "identity" : "down",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnxnguyen/Down",
+      "state" : {
+        "revision" : "f34b166be1f1db4aa8f573067e901d72f2a6be57",
+        "version" : "0.11.0"
+      }
+    },
+    {
+      "identity" : "foundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PromiseKit/Foundation.git",
+      "state" : {
+        "revision" : "985f17fa69ee0e5b7eb3ff9be87ffc4e05fc0927",
+        "version" : "3.4.0"
+      }
+    },
+    {
+      "identity" : "kronos",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lyft/Kronos.git",
+      "state" : {
+        "revision" : "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
+        "version" : "4.2.1"
+      }
+    },
+    {
+      "identity" : "onetimepassword",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bas-d/OneTimePassword.git",
+      "state" : {
+        "branch" : "spm",
+        "revision" : "520be217b1b30e4cc0d6f841d9ab871b2ed1f57c"
+      }
+    },
+    {
+      "identity" : "promisekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/PromiseKit.git",
+      "state" : {
+        "revision" : "43772616c46a44a9977e41924ae01d0e55f2f9ca",
+        "version" : "6.18.1"
+      }
+    },
+    {
+      "identity" : "sentry-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/sentry-cocoa.git",
+      "state" : {
+        "revision" : "4a60ff4287d4c6ac64085ad48606ef5ecaec9817",
+        "version" : "7.24.1"
+      }
+    },
+    {
+      "identity" : "swift-sodium",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jedisct1/swift-sodium.git",
+      "state" : {
+        "revision" : "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
+        "version" : "0.9.1"
+      }
+    },
+    {
+      "identity" : "trustkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/datatheorem/TrustKit.git",
+      "state" : {
+        "revision" : "65d573e0e2687ea91ab0b1be377f9dd3eb1c2785",
+        "version" : "2.0.1"
+      }
+    }
+  ],
+  "version" : 2
 }
