@@ -17,6 +17,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
     @IBOutlet var textView: UITextView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var nameTextField: UITextField!
+    @IBOutlet weak var emailTextField: FormTextField!
     @IBOutlet var sendButton: UIBarButtonItem!
 
     // MARK: - UIViewControllerLifeCycle
@@ -34,7 +35,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
     // MARK: - InitialViewSetup
 
     private func initialSetup() {
-        setupImputFields()
+        setupInputFields()
         setKeyboardHandlers()
         setupNavigationBar()
     }
@@ -44,11 +45,13 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         navigationItem.rightBarButtonItem?.setColor(color: .white)
     }
 
-    private func setupImputFields() {
+    private func setupInputFields() {
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 4.0
         nameTextField.layer.cornerRadius = 4.0
         nameTextField.delegate = self
+        emailTextField.layer.cornerRadius = 4.0
+        emailTextField.delegate = self
         textView.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         if let name = UserDefaults.standard.object(forKey: "name") as? String, !name.isEmpty {
@@ -140,7 +143,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         guard let userFeedback = textView.text else {
             return
         }
-        Logger.shared.feedback(message: userFeedback, name: nameTextField.text, email: nil)
+        Logger.shared.feedback(message: userFeedback, name: nameTextField.text, email: emailTextField.text)
         self.nameTextField.text = ""
         self.textView.text = "settings.feedback_submitted".localized
         self.dismiss(animated: true, completion: nil)

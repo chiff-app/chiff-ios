@@ -66,6 +66,8 @@ accounts:
     value: Verwijder account
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen.
+  email:
+    value: 'E-mailadres (optioneel, als je een reactie wilt)'
   enable_autofill:
     value: Zet autofill aan
   enabled:

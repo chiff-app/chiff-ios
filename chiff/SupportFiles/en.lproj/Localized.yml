@@ -66,6 +66,8 @@ accounts:
     value: Delete account
   didnt_save:
     value: You didn’t save any of your accounts yet.
+  email:
+    value: 'Email address (optional, if you want a response)'
   enable_autofill:
     value: Enable autofill
   enabled:
