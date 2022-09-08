@@ -27,6 +27,8 @@ extension Properties {
             return "081d54cf687bdf40799532a854b9a9b6"
         }
     }
+    
+    static let sentryDsn = "https://6d4ca8274d474708b3f21055a2ce13ef@o1211855.ingest.sentry.io/6729302"
 
     /// The number of seconds after which the pasteboard should be cleared.
     static let pasteboardTimeout = 29.0 // seconds
