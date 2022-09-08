@@ -155,9 +155,6 @@
 		49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
-		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
-		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
-		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EFF8F228C9DAF400643B46 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F128C9DAF400643B46 /* Sentry */; };
 		49EFF8F528C9DB1500643B46 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F428C9DB1500643B46 /* Down */; };
 		49EFF8F728C9E69900643B46 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F628C9E69900643B46 /* Sentry */; };
@@ -346,7 +343,6 @@
 		49E766611F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E766661F7E6F420022C042 /* chiffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chiffTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E7666C1F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PatrickHand-Regular.ttf"; sourceTree = "<group>"; };
 		49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreViewController.swift; sourceTree = "<group>"; };
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -697,7 +693,6 @@
 				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
 				49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */,
 				49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */,
-				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
 				613C8A16200D213F005C7D61 /* chiff.entitlements */,
 				49191EE5239AA2430034EEE7 /* InfoPlist.strings */,
@@ -1005,7 +1000,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
 				494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1014,7 +1008,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */,
 				497C85E22315737100DC4F91 /* Request.storyboard in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */,
@@ -1047,7 +1040,6 @@
 				4955DE642315773600C66996 /* MainInterface.storyboard in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */,
-				49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1859,7 +1851,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/chiff-app/chiff-ios-core.git";
 			requirement = {
-				branch = production;
+				branch = main;
 				kind = branch;
 			};
 		};
