@@ -59,7 +59,7 @@ struct ChiffLogger: LoggerProtocol {
                 return nil
             }
             options.beforeSend = { event in
-                guard Properties.errorLogging else {
+                guard Properties.errorLogging || event.message?.formatted == "User feedback" else {
                     return nil
                 }
                 if let exceptions = event.exceptions {
@@ -80,7 +80,6 @@ struct ChiffLogger: LoggerProtocol {
             // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
             // We recommend adjusting this value in production.
             options.tracesSampleRate = 0.0
-            options.enabled = Properties.errorLogging
         }
     }
 
@@ -102,11 +101,7 @@ struct ChiffLogger: LoggerProtocol {
     /// Enable / disable error logging.
     /// - Parameter value: True to enable, false to disable.
     func setErrorLogging(value: Bool) {
-        if value && !SentrySDK.isEnabled {
-            startSentry()
-        } else if !value && SentrySDK.isEnabled {
-            SentrySDK.close()
-        }
+        return
     }
 
     /// Set the user id for analytics and error logging.

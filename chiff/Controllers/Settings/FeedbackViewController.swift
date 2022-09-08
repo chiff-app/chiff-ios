@@ -137,32 +137,12 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         if let name = nameTextField.text {
             UserDefaults.standard.set(name, forKey: "name")
         }
-        let debugLogUser = nameTextField.text ?? "Anonymous"
         guard let userFeedback = textView.text else {
             return
         }
-        let message = """
-        Hallo met \(debugLogUser),
-
-
-        Allereerst grote complimenten voor het ontwikkelen van deze fantastische app. Hulde! Ik kwam alleen het volgende tegen:
-
-        \(userFeedback)
-
-        Groetjes,
-
-        \(debugLogUser)
-        id: \(Properties.userId ?? "not set")
-        """
-        firstly {
-            API.shared.request(path: "analytics", method: .post, body: message.data)
-        }.ensure {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.dismiss(animated: true, completion: nil)
-            }
-        }.done(on: .main) { _ in
-            self.nameTextField.text = ""
-            self.textView.text = "settings.feedback_submitted".localized
-        }.catchLog("Error posting feedback")
+        Logger.shared.feedback(message: userFeedback, name: nameTextField.text, email: nil)
+        self.nameTextField.text = ""
+        self.textView.text = "settings.feedback_submitted".localized
+        self.dismiss(animated: true, completion: nil)
     }
 }
