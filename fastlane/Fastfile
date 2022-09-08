@@ -53,7 +53,7 @@ platform :ios do
         project_slug: 'chiff-ios',
         version: options[:version],
         app_identifier: 'chiff-ios',
-        build_num = get_build_number(xcodeproj: project)
+        build: build_num
       )
     end
 
@@ -94,7 +94,7 @@ platform :ios do
         project_slug: 'chiff-ios',
         version: options[:version],
         app_identifier: 'chiff-ios',
-        build_num = get_build_number(xcodeproj: project)
+        build: build_num,
         env: options[:environment]
       )
     end

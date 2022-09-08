@@ -31,6 +31,14 @@ Run tests
 
 Upload dSYMs to Sentry
 
+### ios finalize_release
+
+```sh
+[bundle exec] fastlane ios finalize_release
+```
+
+Finalize release
+
 ### ios build
 
 ```sh
@@ -46,6 +54,14 @@ Build app
 ```
 
 Create sentry release
+
+### ios create_sentry_deployment
+
+```sh
+[bundle exec] fastlane ios create_sentry_deployment
+```
+
+Create sentry deployment
 
 ### ios start_minor_release
 
