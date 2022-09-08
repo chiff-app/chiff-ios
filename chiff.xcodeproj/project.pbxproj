@@ -44,16 +44,12 @@
 		493DB00B231577B40061CB5C /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */; };
 		493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
 		493DB00D231578380061CB5C /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
-		4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */; };
 		4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF212540371A00CEFDE9 /* TrustKit */; };
 		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
 		4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF432540395C00CEFDE9 /* PromiseKit */; };
-		4941AF5425403A5B00CEFDE9 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF5325403A5B00CEFDE9 /* Down */; };
-		4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */; };
 		4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6E25403C2A00CEFDE9 /* TrustKit */; };
 		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
 		4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7425403C2A00CEFDE9 /* PromiseKit */; };
-		4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */; };
 		4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7E25403C3E00CEFDE9 /* TrustKit */; };
 		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
 		4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8425403C3E00CEFDE9 /* PromiseKit */; };
@@ -162,6 +158,10 @@
 		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
+		49EFF8F228C9DAF400643B46 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F128C9DAF400643B46 /* Sentry */; };
+		49EFF8F528C9DB1500643B46 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F428C9DB1500643B46 /* Down */; };
+		49EFF8F728C9E69900643B46 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F628C9E69900643B46 /* Sentry */; };
+		49EFF8F928C9E69F00643B46 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 49EFF8F828C9E69F00643B46 /* Sentry */; };
 		49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */; };
 		49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */; };
 		49F2A0F522142EB900429875 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F422142EB900429875 /* Extensions.swift */; };
@@ -375,7 +375,6 @@
 		EA73F98F26AF519300AC2B13 /* DeviceDetailsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailsHeaderView.swift; sourceTree = "<group>"; };
 		EA73F99126AF638900AC2B13 /* DeviceSessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSessionDetailsView.swift; sourceTree = "<group>"; };
 		EA92D9A126AF7A9F001146B8 /* DeviceSessionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSessionFooterView.swift; sourceTree = "<group>"; };
-		EABDC05B26AAF3F300C769C7 /* chiff-ios-core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "chiff-ios-core"; path = "../chiff-ios-core"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,9 +385,9 @@
 				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
 				EABDC05826AAF3D900C769C7 /* ChiffCore in Frameworks */,
 				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
-				4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
 				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
+				49EFF8F728C9E69900643B46 /* Sentry in Frameworks */,
 				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,11 +397,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */,
-				4941AF5425403A5B00CEFDE9 /* Down in Frameworks */,
 				4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */,
+				49EFF8F528C9DB1500643B46 /* Down in Frameworks */,
+				49EFF8F228C9DAF400643B46 /* Sentry in Frameworks */,
 				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
 				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
-				4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				EABDC05626AAF3A700C769C7 /* ChiffCore in Frameworks */,
 				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
@@ -421,10 +420,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
 				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
 				EABDC05A26AAF3E500C769C7 /* ChiffCore in Frameworks */,
 				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
+				49EFF8F928C9E69F00643B46 /* Sentry in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
 				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
 				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
@@ -622,7 +621,6 @@
 		49E766471F7E6F420022C042 = {
 			isa = PBXGroup;
 			children = (
-				EABDC05B26AAF3F300C769C7 /* chiff-ios-core */,
 				49E766521F7E6F420022C042 /* chiff */,
 				49E766691F7E6F420022C042 /* chiffTests */,
 				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
@@ -809,13 +807,13 @@
 			);
 			name = chiffNotificationExtension;
 			packageProductDependencies = (
-				4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */,
 				4941AF6E25403C2A00CEFDE9 /* TrustKit */,
 				4941AF7025403C2A00CEFDE9 /* Amplitude */,
 				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
 				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
 				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
 				EABDC05726AAF3D900C769C7 /* ChiffCore */,
+				49EFF8F628C9E69900643B46 /* Sentry */,
 			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
@@ -840,14 +838,14 @@
 			);
 			name = chiff;
 			packageProductDependencies = (
-				4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */,
 				4941AF212540371A00CEFDE9 /* TrustKit */,
 				4941AF292540377300CEFDE9 /* Amplitude */,
 				4941AF432540395C00CEFDE9 /* PromiseKit */,
-				4941AF5325403A5B00CEFDE9 /* Down */,
 				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
 				4941AFA32540423200CEFDE9 /* PMKFoundation */,
 				EABDC05526AAF3A700C769C7 /* ChiffCore */,
+				49EFF8F128C9DAF400643B46 /* Sentry */,
+				49EFF8F428C9DB1500643B46 /* Down */,
 			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
@@ -886,13 +884,13 @@
 			);
 			name = chiffCredentialProvider;
 			packageProductDependencies = (
-				4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */,
 				4941AF7E25403C3E00CEFDE9 /* TrustKit */,
 				4941AF8025403C3E00CEFDE9 /* Amplitude */,
 				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
 				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
 				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
 				EABDC05926AAF3E500C769C7 /* ChiffCore */,
+				49EFF8F828C9E69F00643B46 /* Sentry */,
 			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
@@ -981,14 +979,14 @@
 			);
 			mainGroup = 49E766471F7E6F420022C042;
 			packageReferences = (
-				4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */,
 				4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
 				4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */,
 				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
 				EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */,
+				49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				49EFF8F328C9DB1500643B46 /* XCRemoteSwiftPackageReference "Down" */,
 			);
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
 			projectDirPath = "";
@@ -1129,7 +1127,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        echo \"ChiffCore not found.\"\n        ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n\n";
+			shellScript = "export PATH=~/.rbenv/shims:$PATH\nfor dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    lib_local=${BUILT_PRODUCTS_DIR}/ChiffCore_ChiffCore.bundle/${dir##*/}/Localized.yml\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    if test -f \"$lib_local\"; then\n        bundle exec ruby -rjson -ryaml -e \"require 'deep_merge';puts YAML.load_file('$lib_local').deep_merge!(YAML.load_file('$dir/Localized.yml')).to_json\" | plutil -convert xml1 - -o $dest\n    else\n        echo \"ChiffCore not found.\"\n        ruby -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\n    fi\ndone\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1801,20 +1799,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/datatheorem/TrustKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.7.0;
+				minimumVersion = 2.0.1;
 			};
 		};
 		4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
@@ -1833,14 +1823,6 @@
 				minimumVersion = 6.13.3;
 			};
 		};
-		4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/iwasrobbed/Down.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.3;
-			};
-		};
 		4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bas-d/OneTimePassword.git";
@@ -1857,6 +1839,22 @@
 				minimumVersion = 3.3.4;
 			};
 		};
+		49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		49EFF8F328C9DB1500643B46 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnxnguyen/Down";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.11.0;
+			};
+		};
 		EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/chiff-app/chiff-ios-core.git";
@@ -1868,11 +1866,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
 		4941AF212540371A00CEFDE9 /* TrustKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
@@ -1888,16 +1881,6 @@
 			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
 		};
-		4941AF5325403A5B00CEFDE9 /* Down */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */;
-			productName = Down;
-		};
-		4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
 		4941AF6E25403C2A00CEFDE9 /* TrustKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
@@ -1912,11 +1895,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
-		};
-		4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
 		};
 		4941AF7E25403C3E00CEFDE9 /* TrustKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1962,6 +1940,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
 			productName = PMKFoundation;
+		};
+		49EFF8F128C9DAF400643B46 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+		49EFF8F428C9DB1500643B46 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49EFF8F328C9DB1500643B46 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		49EFF8F628C9E69900643B46 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+		49EFF8F828C9E69F00643B46 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 		EABDC05526AAF3A700C769C7 /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
