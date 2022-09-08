@@ -32,21 +32,30 @@ platform :ios do
         )
     end
 
-    desc 'Upload dSYMs to Crashlytics'
+    desc 'Upload dSYMs to Sentry'
     lane :upload_symbols do |options|
-        if options[:download]
-          download_dsyms(
-            version: 'latest'
-          )
-        end
-    
-        upload_symbols_to_crashlytics(
-          gsp_path: "./chiff/SupportFiles/GoogleService-Info.plist",
-          binary_path: "./fastlane/upload_firebase_symbols"
+        download_dsyms(
+          version: 'latest'
         )
-    
+        sentry_upload_dsym(
+          org_slug: 'nemis-security',
+          project_slug: 'chiff-ios',
+          
+        )
         clean_build_artifacts()
       end
+
+    desc 'Finalize release'
+    lane :finalize_release do |options|
+      build_num = get_build_number(xcodeproj: project)
+      sentry_finalize_release(
+        org_slug: 'nemis-security',
+        project_slug: 'chiff-ios',
+        version: options[:version],
+        app_identifier: 'chiff-ios',
+        build_num = get_build_number(xcodeproj: project)
+      )
+    end
 
     desc 'Build app'
     lane :build do
@@ -64,11 +73,38 @@ platform :ios do
         gym(scheme: scheme)
     end
 
+    desc 'Create sentry release'
+    lane :create_sentry_release do |options|
+      build_num = get_build_number(xcodeproj: project)
+      sentry_create_release(
+        org_slug: 'nemis-security',
+        project_slug: 'chiff-ios',
+        version: options[:version],
+        app_identifier: 'chiff-ios',
+        build: build_num,
+        finalize: false
+      )
+    end
+
+    desc 'Create sentry deployment'
+    lane :create_sentry_deployment do |options|
+      build_num = get_build_number(xcodeproj: project)
+      sentry_create_deploy(
+        org_slug: 'nemis-security',
+        project_slug: 'chiff-ios',
+        version: options[:version],
+        app_identifier: 'chiff-ios',
+        build_num = get_build_number(xcodeproj: project)
+        env: options[:environment]
+      )
+    end
+
     desc 'Start minor release'
     lane :start_minor_release do
         version = increment_version_number(bump_type: 'minor')
         `git stash;git flow release start #{version};git stash pop; git add ..`
         commit_version_bump(xcodeproj: project)
+        create_sentry_release(version: version)
     end
 
     desc 'Start patch version'
@@ -76,6 +112,7 @@ platform :ios do
         version = increment_version_number(bump_type: 'patch')
         `git stash;git flow release start #{version};git stash pop;git add ..`
         commit_version_bump(xcodeproj: project)
+        create_sentry_release(version: version)
     end
 
     desc 'Start major version'
@@ -83,6 +120,7 @@ platform :ios do
         version = increment_version_number(bump_type: 'major')
         `git stash;git flow release start #{version};git stash pop; git add ..`
         commit_version_bump(xcodeproj: project)
+        create_sentry_release(version: version)
     end
 
     desc 'Start hotfix version'
@@ -90,6 +128,7 @@ platform :ios do
         version = increment_version_number(bump_type: 'patch')
         `git stash;git flow hotfix start #{version};git stash pop;git add ..`
         commit_version_bump(xcodeproj: project)
+        create_sentry_release(version: version)
     end
 
     desc 'Beta release'
@@ -97,7 +136,7 @@ platform :ios do
         version = get_version_number(target: scheme)
         build
         upload_to_testflight()
-        upload_symbols
+        create_sentry_deployment(environment: "staging", version: version)
         slack(message: "New Testflight version of Chiff released! #{version}")
     end
 
@@ -112,7 +151,8 @@ platform :ios do
         submission_information: "{ \"add_id_info_uses_idfa\": false }",
         submit_for_review: options[:submit]
       )
-      upload_symbols
+      create_sentry_deployment(environment: "production", version: version)
+      finalize_release(version: version)
       slack(message: "New version of Chiff released! #{version}")
     end
 
