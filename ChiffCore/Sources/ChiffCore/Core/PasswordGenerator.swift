@@ -32,8 +32,6 @@ extension PasswordGenerationError: LocalizedError {
             return "errors.password_generation.invalid_password".localized
         case .ppdInconsistency:
             return "errors.password_generation.ppd_inconsistency".localized
-        default:
-            return "errors.password_generation.generic".localized
         }
     }
 }

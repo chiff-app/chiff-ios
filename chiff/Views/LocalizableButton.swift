@@ -10,7 +10,7 @@ import ChiffCore
 
 @IBDesignable class LocalizableButton: UIButton, XIBLocalizable {
 
-    @IBInspectable var localizationKey: String? = nil {
+    @IBInspectable var localizationKey: String? {
         didSet {
             UIView.performWithoutAnimation {
                 setTitle(localizationKey?.localized, for: .normal)

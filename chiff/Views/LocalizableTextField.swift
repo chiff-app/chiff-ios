@@ -10,7 +10,7 @@ import ChiffCore
 
 @IBDesignable class LocalizableTextField: UITextField, XIBLocalizable {
 
-    @IBInspectable var localizationKey: String? = nil {
+    @IBInspectable var localizationKey: String? {
         didSet {
             if let key = localizationKey {
                 placeholder = key.localized

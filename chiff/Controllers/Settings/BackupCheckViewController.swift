@@ -48,8 +48,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func setWordsIndexes() {
-        firstWordIndex = Int(arc4random_uniform(6))
-        secondWordIndex = Int(arc4random_uniform(6)) + 6
+        firstWordIndex = Int.random(in: 0..<6)
+        secondWordIndex = Int.random(in: 0..<6) + 6
     }
 
     private func initializeTextfields() {

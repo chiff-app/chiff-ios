@@ -309,7 +309,7 @@ class SessionTests: XCTestCase {
         TestHelper.createEndpointKey()
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, webauthn: nil, notes: nil, askToChange: nil, context: Self.context)
-            guard var session = session as? BrowserSession else {
+            guard let session = session as? BrowserSession else {
                 return XCTFail("Casting error")
             }
             XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: Self.context, newPassword: nil))

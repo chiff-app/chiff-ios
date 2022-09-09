@@ -96,7 +96,7 @@ extension UserAccount: Syncable {
         }
 
         // Webauthn
-        if let webAuthn = webAuthn {
+        if let webAuthn {
             try saveWebAuthn(webAuthn: webAuthn, context: context)
         }
 

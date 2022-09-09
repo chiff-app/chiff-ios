@@ -10,7 +10,7 @@ import ChiffCore
 
 @IBDesignable class UnderlinedButton: UIButton, XIBLocalizable {
 
-    @IBInspectable var localizationKey: String? = nil {
+    @IBInspectable var localizationKey: String? {
         didSet {
             if let key = localizationKey {
                 UIView.performWithoutAnimation {

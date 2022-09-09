@@ -10,7 +10,7 @@ import ChiffCore
 
 @IBDesignable class KeynTabButton: UIButton, XIBLocalizable {
 
-    @IBInspectable var localizationKey: String? = nil {
+    @IBInspectable var localizationKey: String? {
         didSet {
             if let key = localizationKey {
                 setTitle(key.localized, for: .normal)

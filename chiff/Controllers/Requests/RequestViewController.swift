@@ -249,8 +249,7 @@ class RequestViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
             if self.authorizer.type == .login &&
                 !Properties.hasBeenPromptedReview &&
-                (Properties.loginCount % 30 == 0 || Properties.accountCount > 15)
-            {
+                (Properties.loginCount % 30 == 0 || Properties.accountCount > 15) {
                 SKStoreReviewController.requestReview()
                 Properties.hasBeenPromptedReview = true
             } else {
