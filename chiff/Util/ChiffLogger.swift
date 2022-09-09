@@ -10,13 +10,13 @@ import Amplitude
 import ChiffCore
 import Sentry
 
-struct ChiffLogger: LoggerProtocol {
+class ChiffLogger: LoggerProtocol {
 
     private var amplitude: Amplitude {
         return Amplitude.instance()
     }
-    private let scrubbingRegex = try! NSRegularExpression(pattern: "privKey|private|password|username|keyPair|keypair|sharedKey|sharedKeypair|seed|accounts|order|signingKeypair|newPassword|code|pin|organisationKey|passwordSeed|encryptionKey|passwordOffset|passwordIndex|notes|tokenSecret|tokenURL|oldSeeds|backupKey|passwordKey|pairingKeyPair|sharedKeyKeyPair|pairing|allowCredentials|userHandle|challenge|displayName|\"p\":|\"y\":|\"c\":|\"u\":|\"o\":|\"h\":|\"np\":")
-//    private var scrubbingRegex = /privKey|private|password|username|keyPair|keypair|sharedKey|sharedKeypair|seed|accounts|order|signingKeypair|newPassword|code|pin|organisationKey|passwordSeed|encryptionKey|passwordOffset|passwordIndex|notes|tokenSecret|tokenURL|oldSeeds|backupKey|passwordKey|pairingKeyPair|sharedKeyKeyPair|pairing|allowCredentials|userHandle|challenge|displayName|"p":|"y":|"c":|"u":|"o":|"h":|"np":/
+
+    private var _scrubbingRegex: Any?
 
     init() {
         startSentry()
@@ -33,7 +33,7 @@ struct ChiffLogger: LoggerProtocol {
             setUserId(userId: userId)
         }
     }
-    
+
     func startSentry() {
         SentrySDK.start { options in
             options.dsn = Properties.sentryDsn
@@ -51,32 +51,19 @@ struct ChiffLogger: LoggerProtocol {
             options.attachViewHierarchy = false
             options.sendClientReports = false
             options.enableSwizzling = false
-            
+
             options.integrations = Sentry.Options.defaultIntegrations().filter { $0 != "SentryAutoBreadcrumbTrackingIntegration" }
-            
+
             // Disable breadcrumbs
             options.beforeBreadcrumb = { _ in
                 return nil
             }
-            options.beforeSend = { event in
-                guard Properties.errorLogging || event.message?.formatted == "User feedback" else {
-                    return nil
-                }
-                if let exceptions = event.exceptions {
-                    for (index, exception) in exceptions.enumerated() {
-                        if self.scrubbingRegex.numberOfMatches(in: exception.value, range: NSMakeRange(0, exception.value.count)) > 0 {
-                            event.exceptions![index] = Exception(value: "<REDACTED>", type: exception.type)
-                        }
-                    }
-                }
-                if let message = event.message {
-                    if self.scrubbingRegex.numberOfMatches(in: message.formatted, range: NSMakeRange(0, message.formatted.count)) > 0 {
-                        event.message = SentryMessage(formatted: "<REDACTED>")
-                    }
-                }
-                return event
+            if #available(iOS 16.0, *) {
+                options.beforeSend = self.onBeforeSendiOS16
+            } else {
+                options.beforeSend = self.onBeforeSend
             }
-            
+
             // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
             // We recommend adjusting this value in production.
             options.tracesSampleRate = 0.0
@@ -173,8 +160,7 @@ struct ChiffLogger: LoggerProtocol {
             SentrySDK.capture(message: message)
         }
     }
-    
-    
+
     /// Send feedback to Sentry
     /// - Parameters:
     ///   - message: The feedback message
@@ -208,3 +194,62 @@ struct ChiffLogger: LoggerProtocol {
     }
 
 }
+
+// swiftlint:disable force_cast
+// swiftlint:disable force_try
+// swiftlint:disable line_length
+// swiftlint:disable colon
+@available(iOS 16.0, *)
+extension ChiffLogger {
+
+    fileprivate var scrubbingRegexiOS16: Regex<Substring> {
+        if _scrubbingRegex == nil {
+            _scrubbingRegex = /privKey|private|password|username|keyPair|keypair|sharedKey|sharedKeypair|seed|accounts|order|signingKeypair|newPassword|code|pin|organisationKey|passwordSeed|encryptionKey|passwordOffset|passwordIndex|notes|tokenSecret|tokenURL|oldSeeds|backupKey|passwordKey|pairingKeyPair|sharedKeyKeyPair|pairing|allowCredentials|userHandle|challenge|displayName|"p":|"y":|"c":|"u":|"o":|"h":|"np":/
+        }
+        return _scrubbingRegex as! Regex<Substring>
+    }
+
+    func onBeforeSendiOS16(event: Event) -> Event? {
+        guard Properties.errorLogging || event.message?.formatted == "User feedback" else {
+            return nil
+        }
+        if let exceptions = event.exceptions {
+            for (index, exception) in exceptions.enumerated() where (try? self.scrubbingRegexiOS16.firstMatch(in: exception.value)) != nil {
+                event.exceptions![index] = Exception(value: "<REDACTED>", type: exception.type)
+            }
+        }
+        if let message = event.message, (try? self.scrubbingRegexiOS16.firstMatch(in: message.formatted)) != nil {
+            event.message = SentryMessage(formatted: "<REDACTED>")
+        }
+        return event
+    }
+}
+
+extension ChiffLogger {
+
+    fileprivate var scrubbingRegex: NSRegularExpression {
+        if _scrubbingRegex == nil {
+            _scrubbingRegex = try! NSRegularExpression(pattern: "privKey|private|password|username|keyPair|keypair|sharedKey|sharedKeypair|seed|accounts|order|signingKeypair|newPassword|code|pin|organisationKey|passwordSeed|encryptionKey|passwordOffset|passwordIndex|notes|tokenSecret|tokenURL|oldSeeds|backupKey|passwordKey|pairingKeyPair|sharedKeyKeyPair|pairing|allowCredentials|userHandle|challenge|displayName|\"p\":|\"y\":|\"c\":|\"u\":|\"o\":|\"h\":|\"np\":")
+        }
+        return _scrubbingRegex as! NSRegularExpression
+    }
+
+    func onBeforeSend(event: Event) -> Event? {
+        guard Properties.errorLogging || event.message?.formatted == "User feedback" else {
+            return nil
+        }
+        if let exceptions = event.exceptions {
+            for (index, exception) in exceptions.enumerated() where self.scrubbingRegex.numberOfMatches(in: exception.value, range: NSRange(0..<exception.value.count)) > 0 {
+                event.exceptions![index] = Exception(value: "<REDACTED>", type: exception.type)
+            }
+        }
+        if let message = event.message {
+            if self.scrubbingRegex.numberOfMatches(in: message.formatted, range: NSRange(0..<message.formatted.count)) > 0 {
+                event.message = SentryMessage(formatted: "<REDACTED>")
+            }
+        }
+        return event
+    }
+}
+// swiftlint:enable force_cast
+// swiftlint:enable colon
