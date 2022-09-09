@@ -66,7 +66,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         guard Seed.hasKeys else {
-            Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
         NotificationManager.shared.registerDevice(token: deviceToken)
