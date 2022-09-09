@@ -1,0 +1,323 @@
+accounts:
+  add_2fa_code:
+    value: Voeg 2FA-code toe
+  update_2fa_code:
+    value: Update 2FA-code voor
+backup:
+  retrieve:
+    value: Paper backup ontsleutelen
+date_components:
+  ago:
+    value: geleden
+  day:
+    future_singular:
+      value: Morgen
+    past_singular:
+      value: Gisteren
+    plural_unit:
+      value: dagen
+    singular_unit:
+      value: dag
+  hour:
+    future_singular:
+      value: Over een uur
+    past_singular:
+      value: Een uur geleden
+    plural_unit:
+      value: uur
+    singular_unit:
+      value: uur
+  in:
+    value: over
+  just_now:
+    value: Zojuist
+  less_than_minute:
+    value: Zojuist
+  minute:
+    future_singular:
+      value: In een minuut
+    past_singular:
+      value: Een minuut geleden
+    plural_unit:
+      value: minuten
+    singular_unit:
+      value: minuut
+  month:
+    future_singular:
+      value: Volgende maand
+    past_singular:
+      value: Vorige maand
+    plural_unit:
+      value: maanden
+    singular_unit:
+      value: maand
+  second:
+    future_singular:
+      value: Bijna
+    past_singular:
+      value: Zojuist
+    plural_unit:
+      value: seconden
+    singular_unit:
+      value: seconde
+  week:
+    future_singular:
+      value: Volgende week
+    past_singular:
+      value: Vorige week
+    plural_unit:
+      value: weken
+    singular_unit:
+      value: week
+  year:
+    future_singular:
+      value: Volgend jaar
+    past_singular:
+      value: Vorig jaar
+    plural_unit:
+      value: jaar
+    singular_unit:
+      value: jaar
+errors:
+  account:
+    accounts_not_loaded:
+      value: De accounts zijn nog niet geladen.
+    duplicate_account_id:
+      value: Het account bestaat al.
+    invalid_url:
+      value: De URL is ongeldig.
+    missing_context:
+      value: De authenticatiecontext ontbreekt.
+    no_webauthn:
+      value: WebAuthn is niet ingeschakeld voor dit account.
+    not_found:
+      value: Het account is niet gevonden.
+    not_totp:
+      value: Dit account heeft geen time-based one-time password.
+    password_generation:
+      value: Wachtwoord genereren mislukt.
+    token_retrieval:
+      value: De one-time password token kan niet worden opgehaald.
+    webauthn_exists:
+      value: WebAuthn is al ingeschakeld voor dit account.
+    wrong_rp_id:
+      value: Het WebAuthn-domein is niet correct.
+  api:
+    generic:
+      value: Er is een netwerkfout opgetreden
+    organisation_exists:
+      value: >-
+        Het team bestaat al. Neem contact op met help@chiff.app als je geen
+        toegang hebt tot het team.
+    payment_required:
+      value: De betaling is niet gelukt. Neem contact op met help@chiff.app.
+  authorization:
+    default:
+      value: Er is een onbekende autorisatiefout opgetreden.
+    in_progress:
+      value: Er is al een autorisatie bezig.
+    missing_data:
+      value: Sommige gegevens ontbreken.
+    multiple_admins:
+      value: >-
+        Je bent beheerder van %d teams. Deze functionaliteit wordt nog niet
+        ondersteund.
+    no_admin:
+      value: Je bent geen beheerder van dit team.
+    no_team:
+      value: Je bent geen onderdeel van een team.
+    shared_account_change:
+      value: Het wachtwoord van een gedeeld account kan niet gewijzigd worden.
+    unknown_type:
+      value: Onbekend type.
+  local_authentication:
+    biometry_not_available:
+      value: >-
+        Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de
+        telefoon.
+    biometry_not_enrolled:
+      value: >-
+        Authenticatie kan niet gestart worden, omdat biometrie niet is ingesteld
+        op de telefoon.
+    generic:
+      value: Er is een authenticatiefout opgetreden.
+    passcode_not_set:
+      value: >-
+        Authenticatie kan niet gestart worden, omdat de toegangscode niet is
+        ingesteld op de telefoon.
+  password_generation:
+    character_not_allowed:
+      value: Het wachtwoord bevat een teken dat niet is toegestaan.
+    generic:
+      value: Wachtwoord genereren mislukt.
+    invalid_password:
+      value: Het wachtwoord is ongeldig.
+    key_generation:
+      value: Er is een fout opgetreden bij het genereren van de sleutel.
+    ppd_inconsistency:
+      value: De 'password policy description' bevat een fout.
+    too_long:
+      value: Het wachtwoord is te lang.
+    too_short:
+      value: Het wachtwoord is te kort.
+logs:
+  add:
+    value: Account gemaakt voor %@
+  add_bulk:
+    value: '%@ accounts geïmporteerd'
+  add_to_existing:
+    value: URL toegevoegd aan %@
+  add_webauthn:
+    value: WebAuthn toegevoegd aan %@
+  bulk_login:
+    value: Ingelogd bij %@ accounts
+  change:
+    value: Wachtwoord gewijzigd @ %@
+  fill:
+    value: Wachtwoord opgehaald voor %@
+  get_details:
+    value: Account voor %@ opgehaald
+  login:
+    value: Ingelogd bij %@
+  register:
+    value: Account gemaakt voor %@
+  ssh_created:
+    value: 'Nieuwe SSH sleutel gemaakt: %@'
+  ssh_login:
+    value: Ingelogd via SSH met %@
+  team_created:
+    value: Team %@ gemaakt
+  team_login:
+    value: Ingelogd bij team %@
+  unknown:
+    value: Onbekende actie
+  update_account:
+    value: Account voor %@ geüpdatet
+requests:
+  account_added:
+    value: Account toegevoegd
+  account_disabled:
+    value: Account uitgeschakeld
+  account_updated:
+    value: Account geüpdatet
+  accounts:
+    comment: The word for 'accounts'
+    value: accounts
+  accounts_added:
+    value: accounts toegevoegd
+  accounts_left_1:
+    comment: Je kunt nog 1 account toevoegen. Check in code.
+    value: Je kunt nog maar
+  accounts_left_2_plural:
+    value: extra accounts
+  accounts_left_2_single:
+    value: extra account
+  accounts_left_3:
+    value: >-
+      toevoegen in de gratis versie van Chiff. Upgrade om onbeperkt accounts te
+      bewaren.
+  add_account:
+    value: Account toevoegen
+  add_accounts:
+    value: Accounts toevoegen
+  add_site:
+    comment: 'Ask the user to add a site, e.g. Add Amazon.com?'
+    value: Voeg %@ toe
+  cannot_add:
+    value: Upgrade nodig
+  change_for:
+    comment: 'Ask the user to change a password, e.g. Change password for Amazon.com?'
+    value: Wijzig wachtwoord voor %@
+  change_password:
+    value: Wijzig wachtwoord
+  chiff_for_teams:
+    value: Chiff voor teams
+  confirm_login:
+    value: Bevestig login
+  confirm_request:
+    value: Bevestig verzoek
+  create_ssh_key:
+    value: SSH sleutel genereren
+  expired:
+    value: >-
+      Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
+      verstuurd.
+  generate_ssh:
+    value: Genereer SSH sleutel
+  get_for:
+    comment: 'Ask the user to fill a password, e.g. Fill password for Amazon.com?'
+    value: Haal wachtwoord van %@ op.
+  get_password:
+    value: Wachtwoord ophalen
+  get_password_successful:
+    value: Wachtwoord opgehaald
+  import_progress_1:
+    value: Accounts ophalen..
+  import_progress_2:
+    value: Metadata van websites ophalen..
+  import_progress_3:
+    value: Accounts versleutelen..
+  import_progress_4:
+    value: Backup-gegevens uploaden..
+  import_progress_5:
+    value: Klaar!
+  login_keyn_next_time:
+    value: Volgende keer kun je met Chiff inloggen
+  login_succesful:
+    value: Login gelukt
+  login_to:
+    comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
+    value: Log in bij %@
+  login_with:
+    comment: 'Ask to the user to login with an account, e.g. Login with demo@chiff.app?'
+    value: Login met %@
+  n_new_accounts:
+    value: '%d nieuwe accounts.'
+  new_password_generated:
+    value: Nieuw wachtwoord gegenereerd
+  no_accounts_left:
+    value: >-
+      Je kunt geen accounts meer toevoegen in de gratis versie van Chiff.
+      Upgrade om een onbeperkt aantal accounts te bewaren.
+  restore_team:
+    value: Herstel team
+  return:
+    value: Terug
+  return_to_computer:
+    value: Keer terug naar je computer
+  save:
+    comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
+    value: Bewaar
+  ssh_key_created:
+    value: SSH sleutel gegenereerd
+  ssh_login:
+    value: Bevestig SSH login
+  ssh_login_authentication:
+    value: Inloggen met SSH
+  ssh_login_success:
+    value: SSH login bevestigd
+  to_complete_process:
+    value: om het proces te voltooien
+  unknown_request:
+    value: Onbekend verzoek
+  unlock_accounts:
+    comment: Unlock accounts
+    value: Ontgrendel accounts
+  update_account:
+    value: Update account
+  update_this:
+    value: Update %@.
+  upgrade:
+    value: Upgrade nu
+  upgrade_keyn_for_add:
+    value: >-
+      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
+      naar Chiff Premium om onbeperkt accounts op te slaan
+  upgrade_keyn_for_request:
+    value: >-
+      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
+      naar Chiff Premium om weer met al je accounts in te loggen
+webauthn:
+  attestation:
+    value: Apparaatintegriteit controleren
+

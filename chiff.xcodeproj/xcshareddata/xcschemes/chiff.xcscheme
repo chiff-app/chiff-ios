@@ -66,6 +66,16 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ChiffCoreTests"
+               BuildableName = "ChiffCoreTests"
+               BlueprintName = "ChiffCoreTests"
+               ReferencedContainer = "container:ChiffCore">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "49E766651F7E6F420022C042"
                BuildableName = "chiffTests.xctest"
                BlueprintName = "chiffTests"
@@ -94,12 +104,6 @@
             ReferencedContainer = "container:chiff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-FIRAnalyticsDebugEnabled"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

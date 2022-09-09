@@ -44,21 +44,9 @@
 		493DB00B231577B40061CB5C /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */; };
 		493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
 		493DB00D231578380061CB5C /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
-		4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF212540371A00CEFDE9 /* TrustKit */; };
 		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
-		4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF432540395C00CEFDE9 /* PromiseKit */; };
-		4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6E25403C2A00CEFDE9 /* TrustKit */; };
 		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
-		4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7425403C2A00CEFDE9 /* PromiseKit */; };
-		4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7E25403C3E00CEFDE9 /* TrustKit */; };
 		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
-		4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8425403C3E00CEFDE9 /* PromiseKit */; };
-		4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9225403DCF00CEFDE9 /* OneTimePassword */; };
-		4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9925403E0200CEFDE9 /* OneTimePassword */; };
-		4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9B25403E0B00CEFDE9 /* OneTimePassword */; };
-		4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFA32540423200CEFDE9 /* PMKFoundation */; };
-		4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAA2540425700CEFDE9 /* PMKFoundation */; };
-		4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAC2540425F00CEFDE9 /* PMKFoundation */; };
 		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
@@ -81,6 +69,9 @@
 		49686957242103E600B9BEE9 /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
 		4968695B2421046200B9BEE9 /* TeamRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968695A2421046200B9BEE9 /* TeamRole.swift */; };
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
+		497226F028CB219B00B37D30 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 497226EF28CB219B00B37D30 /* ChiffCore */; };
+		497226F228CB21A000B37D30 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 497226F128CB21A000B37D30 /* ChiffCore */; };
+		497226F428CB21A300B37D30 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = 497226F328CB21A300B37D30 /* ChiffCore */; };
 		4973BB7522F818470004E365 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7422F818470004E365 /* TermsViewController.swift */; };
 		4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7622F84C490004E365 /* AboutViewController.swift */; };
 		4973BB7922F866D90004E365 /* AccessoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */; };
@@ -190,9 +181,6 @@
 		EA73F99026AF519300AC2B13 /* DeviceDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73F98F26AF519300AC2B13 /* DeviceDetailsHeaderView.swift */; };
 		EA73F99226AF638900AC2B13 /* DeviceSessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73F99126AF638900AC2B13 /* DeviceSessionDetailsView.swift */; };
 		EA92D9A226AF7A9F001146B8 /* DeviceSessionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA92D9A126AF7A9F001146B8 /* DeviceSessionFooterView.swift */; };
-		EABDC05626AAF3A700C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05526AAF3A700C769C7 /* ChiffCore */; };
-		EABDC05826AAF3D900C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05726AAF3D900C769C7 /* ChiffCore */; };
-		EABDC05A26AAF3E500C769C7 /* ChiffCore in Frameworks */ = {isa = PBXBuildFile; productRef = EABDC05926AAF3E500C769C7 /* ChiffCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -289,6 +277,7 @@
 		49686956242103E600B9BEE9 /* TeamUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUser.swift; sourceTree = "<group>"; };
 		4968695A2421046200B9BEE9 /* TeamRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRole.swift; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
+		497226F528CB2B9900B37D30 /* ChiffCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChiffCore; sourceTree = "<group>"; };
 		4973BB7422F818470004E365 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4973BB7622F84C490004E365 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -378,13 +367,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
-				EABDC05826AAF3D900C769C7 /* ChiffCore in Frameworks */,
-				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
-				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
+				497226F228CB21A000B37D30 /* ChiffCore in Frameworks */,
 				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
 				49EFF8F728C9E69900643B46 /* Sentry in Frameworks */,
-				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,14 +378,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */,
-				4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */,
 				49EFF8F528C9DB1500643B46 /* Down in Frameworks */,
 				49EFF8F228C9DAF400643B46 /* Sentry in Frameworks */,
-				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
-				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
-				EABDC05626AAF3A700C769C7 /* ChiffCore in Frameworks */,
-				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
+				497226F028CB219B00B37D30 /* ChiffCore in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,14 +397,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
-				EABDC05A26AAF3E500C769C7 /* ChiffCore in Frameworks */,
 				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
+				497226F428CB21A300B37D30 /* ChiffCore in Frameworks */,
 				49EFF8F928C9E69F00643B46 /* Sentry in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
-				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
-				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
-				4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,6 +594,7 @@
 		49E766471F7E6F420022C042 = {
 			isa = PBXGroup;
 			children = (
+				497226F528CB2B9900B37D30 /* ChiffCore */,
 				49E766521F7E6F420022C042 /* chiff */,
 				49E766691F7E6F420022C042 /* chiffTests */,
 				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
@@ -802,13 +780,9 @@
 			);
 			name = chiffNotificationExtension;
 			packageProductDependencies = (
-				4941AF6E25403C2A00CEFDE9 /* TrustKit */,
 				4941AF7025403C2A00CEFDE9 /* Amplitude */,
-				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
-				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
-				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
-				EABDC05726AAF3D900C769C7 /* ChiffCore */,
 				49EFF8F628C9E69900643B46 /* Sentry */,
+				497226F128CB21A000B37D30 /* ChiffCore */,
 			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
@@ -833,14 +807,10 @@
 			);
 			name = chiff;
 			packageProductDependencies = (
-				4941AF212540371A00CEFDE9 /* TrustKit */,
 				4941AF292540377300CEFDE9 /* Amplitude */,
-				4941AF432540395C00CEFDE9 /* PromiseKit */,
-				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
-				4941AFA32540423200CEFDE9 /* PMKFoundation */,
-				EABDC05526AAF3A700C769C7 /* ChiffCore */,
 				49EFF8F128C9DAF400643B46 /* Sentry */,
 				49EFF8F428C9DB1500643B46 /* Down */,
+				497226EF28CB219B00B37D30 /* ChiffCore */,
 			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
@@ -879,13 +849,9 @@
 			);
 			name = chiffCredentialProvider;
 			packageProductDependencies = (
-				4941AF7E25403C3E00CEFDE9 /* TrustKit */,
 				4941AF8025403C3E00CEFDE9 /* Amplitude */,
-				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
-				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
-				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
-				EABDC05926AAF3E500C769C7 /* ChiffCore */,
 				49EFF8F828C9E69F00643B46 /* Sentry */,
+				497226F328CB21A300B37D30 /* ChiffCore */,
 			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
@@ -974,12 +940,7 @@
 			);
 			mainGroup = 49E766471F7E6F420022C042;
 			packageReferences = (
-				4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */,
 				4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
-				4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
-				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
-				EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */,
 				49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				49EFF8F328C9DB1500643B46 /* XCRemoteSwiftPackageReference "Down" */,
 			);
@@ -1791,44 +1752,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/datatheorem/TrustKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.1;
-			};
-		};
 		4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/amplitude/Amplitude-iOS.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.2.1;
-			};
-		};
-		4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.13.3;
-			};
-		};
-		4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bas-d/OneTimePassword.git";
-			requirement = {
-				branch = spm;
-				kind = branch;
-			};
-		};
-		4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/PromiseKit/Foundation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.3.4;
 			};
 		};
 		49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -1847,91 +1776,35 @@
 				minimumVersion = 0.11.0;
 			};
 		};
-		EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/chiff-app/chiff-ios-core.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4941AF212540371A00CEFDE9 /* TrustKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
-			productName = TrustKit;
-		};
 		4941AF292540377300CEFDE9 /* Amplitude */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
 			productName = Amplitude;
-		};
-		4941AF432540395C00CEFDE9 /* PromiseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
-		};
-		4941AF6E25403C2A00CEFDE9 /* TrustKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
-			productName = TrustKit;
 		};
 		4941AF7025403C2A00CEFDE9 /* Amplitude */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
 			productName = Amplitude;
 		};
-		4941AF7425403C2A00CEFDE9 /* PromiseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
-		};
-		4941AF7E25403C3E00CEFDE9 /* TrustKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
-			productName = TrustKit;
-		};
 		4941AF8025403C3E00CEFDE9 /* Amplitude */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
 			productName = Amplitude;
 		};
-		4941AF8425403C3E00CEFDE9 /* PromiseKit */ = {
+		497226EF28CB219B00B37D30 /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
+			productName = ChiffCore;
 		};
-		4941AF9225403DCF00CEFDE9 /* OneTimePassword */ = {
+		497226F128CB21A000B37D30 /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
-			productName = OneTimePassword;
+			productName = ChiffCore;
 		};
-		4941AF9925403E0200CEFDE9 /* OneTimePassword */ = {
+		497226F328CB21A300B37D30 /* ChiffCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
-			productName = OneTimePassword;
-		};
-		4941AF9B25403E0B00CEFDE9 /* OneTimePassword */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
-			productName = OneTimePassword;
-		};
-		4941AFA32540423200CEFDE9 /* PMKFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
-			productName = PMKFoundation;
-		};
-		4941AFAA2540425700CEFDE9 /* PMKFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
-			productName = PMKFoundation;
-		};
-		4941AFAC2540425F00CEFDE9 /* PMKFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
-			productName = PMKFoundation;
+			productName = ChiffCore;
 		};
 		49EFF8F128C9DAF400643B46 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1952,21 +1825,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 49EFF8F028C9DAF400643B46 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
-		};
-		EABDC05526AAF3A700C769C7 /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */;
-			productName = ChiffCore;
-		};
-		EABDC05726AAF3D900C769C7 /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */;
-			productName = ChiffCore;
-		};
-		EABDC05926AAF3E500C769C7 /* ChiffCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EABDC05426AAF3A700C769C7 /* XCRemoteSwiftPackageReference "chiff-ios-core" */;
-			productName = ChiffCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
