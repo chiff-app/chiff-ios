@@ -57,9 +57,9 @@ public extension BrowserSession {
     ///   - isAdmin: Whether this user is admin in at least one team.
     ///   - migrated: Whether this beta user has been migrated to production.
     /// - Throws: Encryption errors.
-    func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
+    func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> String {
         var data: [String: Any] = [
-            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+            "environment": Properties.environment.rawValue,
             "isAdmin": isAdmin
         ]
         if let appVersion = Properties.version {

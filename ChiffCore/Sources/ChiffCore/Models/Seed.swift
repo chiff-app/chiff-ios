@@ -54,7 +54,6 @@ public struct Seed {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
         }
-        Properties.migrated = true
         do {
             delete(includeSeed: false)
             let seed = try Crypto.shared.generateSeed()
@@ -107,8 +106,6 @@ public struct Seed {
             _ = try createKeys(seed: seed)
             paperBackupCompleted = true
             return firstly {
-                setMigrated()
-            }.then {
                 when(fulfilled:
                     UserAccount.restore(context: context),
                     TeamSession.restore(context: context),

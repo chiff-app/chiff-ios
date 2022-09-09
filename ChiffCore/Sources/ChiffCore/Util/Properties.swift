@@ -14,14 +14,14 @@ public struct Properties {
 
     public enum Environment: String {
         case dev
-        case beta
+        case staging
         case prod
 
         var path: String {
-            switch self {
-            case .dev: return "dev"
-            case .beta: return Properties.migrated ? "v1" : "beta"
-            case .prod: return "v1"
+            if case .dev = self {
+                return "dev"
+            } else {
+                return "v1"
             }
         }
         
@@ -32,7 +32,7 @@ public struct Properties {
         public var description: String {
             switch self {
             case .dev: return "development"
-            case .beta: return "staging"
+            case .staging: return "staging"
             case .prod: return "production"
             }
         }
@@ -49,7 +49,6 @@ public struct Properties {
     private static let reloadAccountsFlag = "reloadAccountsFlag"
     private static let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
     private static let lastRunVersionFlag = "lastRunVersionFlag"
-    private static let migratedFlag = "migratedFlag"
     private static let keychainVersionFlag = "keychainVersionFlag"
     private static let attestationKeyIDFlag = "attestationKeyIDFlag"
 
@@ -110,7 +109,7 @@ public struct Properties {
 
     /// Whether the user allows error logging.
     public static var errorLogging: Bool {
-        get { return environment == .beta || UserDefaults.group.bool(forKey: errorLoggingFlag) }
+        get { return environment == .staging || UserDefaults.group.bool(forKey: errorLoggingFlag) }
         set {
             UserDefaults.group.set(newValue, forKey: errorLoggingFlag)
             Logger.shared.setErrorLogging(value: newValue)
@@ -119,19 +118,10 @@ public struct Properties {
 
     /// Wheter the user allows analytics messages.
     public static var analyticsLogging: Bool {
-        get { return environment == .beta || UserDefaults.group.bool(forKey: analyticsLoggingFlag) }
+        get { return environment == .staging || UserDefaults.group.bool(forKey: analyticsLoggingFlag) }
         set {
             UserDefaults.group.set(newValue, forKey: analyticsLoggingFlag)
             Logger.shared.setAnalyticsLogging(value: newValue)
-        }
-    }
-
-    /// Whether the beta user been migrated to production.
-    public static var migrated: Bool {
-        get { return environment == .beta && UserDefaults.group.bool(forKey: migratedFlag) }
-        set {
-            guard environment == .beta else { return }
-            UserDefaults.group.set(newValue, forKey: migratedFlag)
         }
     }
 
@@ -189,7 +179,6 @@ public struct Properties {
         UserDefaults.group.removeObject(forKey: errorLoggingFlag)
         UserDefaults.group.removeObject(forKey: analyticsLoggingFlag)
         UserDefaults.group.removeObject(forKey: userIdFlag)
-        UserDefaults.group.removeObject(forKey: migratedFlag)
         UserDefaults.group.removeObject(forKey: teamAccountCountFlag)
         UserDefaults.group.removeObject(forKey: accountCountFlag)
 
@@ -219,7 +208,7 @@ public struct Properties {
         if Properties.isDebug {
             return .dev
         } else if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
-            return .beta
+            return .staging
         } else {
             return .prod
         }
@@ -289,7 +278,6 @@ public struct Properties {
         UserDefaults.group.setValue(UserDefaults.standard.string(forKey: userIdFlag), forKey: userIdFlag)
         UserDefaults.group.setValue(UserDefaults.standard.dictionary(forKey: teamAccountCountFlag), forKey: teamAccountCountFlag)
         UserDefaults.group.setValue(UserDefaults.standard.integer(forKey: accountCountFlag), forKey: accountCountFlag)
-        UserDefaults.group.setValue(UserDefaults.standard.bool(forKey: migratedFlag), forKey: migratedFlag)
         UserDefaults.group.setValue(UserDefaults.standard.bool(forKey: analyticsLoggingFlag), forKey: analyticsLoggingFlag)
         UserDefaults.group.setValue(UserDefaults.standard.bool(forKey: errorLoggingFlag), forKey: errorLoggingFlag)
     }

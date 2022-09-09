@@ -15,7 +15,7 @@ class PrivacyViewController: UITableViewController {
     @IBOutlet weak var shareAnalyticsSwitch: UISwitch!
 
     var footerText: String {
-        return Properties.environment == .beta ? "settings.privacy_beta_explanation".localized : "settings.privacy_explanation".localized
+        return Properties.environment == .staging ? "settings.privacy_beta_explanation".localized : "settings.privacy_explanation".localized
     }
 
     override func viewDidLoad() {
@@ -25,7 +25,7 @@ class PrivacyViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         shareErrorSwitch.isOn = Properties.errorLogging
         shareAnalyticsSwitch.isOn = Properties.analyticsLogging
-        if Properties.environment == .beta {
+        if Properties.environment == .staging {
             shareErrorSwitch.isEnabled = false
             shareAnalyticsSwitch.isEnabled = false
         }

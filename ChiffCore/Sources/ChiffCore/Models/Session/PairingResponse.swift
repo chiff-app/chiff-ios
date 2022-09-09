@@ -49,7 +49,7 @@ struct BrowserPairingResponse: PairingResponse {
         self.pubKey = pubKey
         self.browserPubKey = browserPubKey
         self.userID = Properties.userId!
-        self.environment = Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue
+        self.environment = Properties.environment.rawValue
         self.type = .pair
         self.version = version
         guard let endpoint = Properties.endpoint else {
@@ -83,7 +83,7 @@ struct TeamPairingResponse: PairingResponse {
         self.pubKey = pubKey
         self.browserPubKey = browserPubKey
         self.userID = Properties.userId!
-        self.environment = Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue
+        self.environment = Properties.environment.rawValue
         self.type = .pair
         self.version = version
         self.userPubKey = try Seed.publicKey()

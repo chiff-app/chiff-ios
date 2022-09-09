@@ -121,9 +121,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             }.catchLog("Failed to purge keychain on launch")
         }
         if Seed.hasKeys {
+            Properties.migrateToAppGroup()
             firstly {
-                checkIfMigrated()
-            }.then {
                 Properties.deniedPushNotifications ? .value(()) : PushNotifications.register().asVoid()
             }.done(on: .main) { _ in
                 self.launchRootViewController()
@@ -209,23 +208,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return true
         } catch {
             return false
-        }
-    }
-
-    private func checkIfMigrated() -> Promise<Void> {
-        Properties.migrateToAppGroup()
-        if Properties.errorLogging {
-            // Set Crashlytics.
-            Properties.errorLogging = true
-        }
-        guard Properties.environment == .beta && !Properties.migrated else {
-            return .value(())
-        }
-        return firstly {
-            Seed.moveToProduction()
-        }.recover { error in
-            Logger.shared.warning("Error migrating from beta environment.", error: error)
-            return
         }
     }
 

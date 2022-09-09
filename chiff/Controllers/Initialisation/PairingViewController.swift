@@ -31,7 +31,7 @@ class PairingViewController: UIViewController {
     // MARK: - Private functions
 
     private func start() {
-        if Properties.environment == .beta {
+        if Properties.environment == .staging {
             Properties.analyticsLogging = true
             Properties.errorLogging = true
             UIApplication.shared.showRootController()
