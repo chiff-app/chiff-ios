@@ -28,21 +28,17 @@ platform :ios do
     lane :test do
         scan(
             scheme: scheme,
-            device: 'iPhone 13 mini'
+            device: 'iPhone 14 Pro'
         )
     end
 
     desc 'Upload dSYMs to Sentry'
     lane :upload_symbols do |options|
-        download_dsyms(
-          version: 'latest'
-        )
         sentry_upload_dsym(
           org_slug: 'nemis-security',
           project_slug: 'chiff-ios',
-          
+          dsym_path: 'chiff.app.dSYM.zip'
         )
-        clean_build_artifacts()
       end
 
     desc 'Finalize release'
@@ -101,26 +97,31 @@ platform :ios do
 
     desc 'Start minor release'
     lane :start_minor_release do
-        version = increment_version_number(bump_type: 'minor')
-        `git stash;git flow release start #{version};git stash pop; git add ..`
-        commit_version_bump(xcodeproj: project)
-        create_sentry_release(version: version)
+        start_release(bump_type: 'minor')
     end
 
     desc 'Start patch version'
     lane :start_patch_release do
-        version = increment_version_number(bump_type: 'patch')
-        `git stash;git flow release start #{version};git stash pop;git add ..`
-        commit_version_bump(xcodeproj: project)
-        create_sentry_release(version: version)
+        start_release(bump_type: 'patch')
     end
 
     desc 'Start major version'
     lane :start_major_release do
-        version = increment_version_number(bump_type: 'major')
-        `git stash;git flow release start #{version};git stash pop; git add ..`
-        commit_version_bump(xcodeproj: project)
-        create_sentry_release(version: version)
+        start_release(bump_type: 'major')
+    end
+
+    desc 'Start release'
+    lane :start_release do |options|
+      version = increment_version_number(bump_type: options[:bump_type])
+      `git stash;git flow release start #{version};git stash pop; git add ..`
+      build_num = app_store_build_number(
+        live: false,
+      )
+      increment_build_number({
+        build_number: build_num + 1
+      })
+      commit_version_bump(xcodeproj: project)
+      create_sentry_release(version: version)
     end
 
     desc 'Start hotfix version'
@@ -135,23 +136,32 @@ platform :ios do
     lane :beta_release do
         version = get_version_number(target: scheme)
         build
-        upload_to_testflight()
+        upload_to_testflight(skip_waiting_for_build_processing: true)
+        create_sentry_release(version: version)
         create_sentry_deployment(environment: "staging", version: version)
+        upload_symbols
         slack(message: "New Testflight version of Chiff released! #{version}")
     end
 
     desc "Submit Chiff to the App Store"
     lane :release do |options|
       version = get_version_number(target: scheme)
-      build
+      if options[:build]
+        build
+      end
       deliver(
         app_version: version,
         platform: 'ios',
+        skip_binary_upload: options[:build],
+        skip_waiting_for_build_processing: true,
         skip_screenshots: true,
         submission_information: "{ \"add_id_info_uses_idfa\": false }",
         submit_for_review: options[:submit]
       )
       create_sentry_deployment(environment: "production", version: version)
+      if options[:build]
+        upload_symbols
+      end
       finalize_release(version: version)
       slack(message: "New version of Chiff released! #{version}")
     end

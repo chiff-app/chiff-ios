@@ -15,4 +15,5 @@ fastlane/metadata/review_information
 *.cer
 .ruby-version
 .bundle/ 
+.env.*
 
