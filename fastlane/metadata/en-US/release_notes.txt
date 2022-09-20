@@ -1,3 +1,1 @@
-- Added support for SSH
-- Team members can now propose accounts to the team admin.
-- With FaceID, you now how have to accept explicitly before authorizing. This can be changed in the settings.
+This releases contains various bugfixes and improvements.

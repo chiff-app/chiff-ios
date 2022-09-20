@@ -87,6 +87,14 @@ Start patch version
 
 Start major version
 
+### ios start_release
+
+```sh
+[bundle exec] fastlane ios start_release
+```
+
+Start release
+
 ### ios start_hotfix
 
 ```sh

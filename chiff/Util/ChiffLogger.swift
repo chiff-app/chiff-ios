@@ -155,6 +155,12 @@ class ChiffLogger: LoggerProtocol {
         if let error = error {
             let event = Event(error: error)
             event.message = SentryMessage(formatted: message)
+            let context = event.context ?? ["async": [
+                "file": file,
+                "line": line,
+                "function": function
+            ]]
+            event.context = context
             SentrySDK.capture(event: event)
         } else {
             SentrySDK.capture(message: message)

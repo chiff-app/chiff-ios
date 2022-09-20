@@ -1,3 +1,1 @@
-- Ondersteuning voor SSH.
-- Leden van een team kunnen nu een account voorstellen aan de beheerder.
-- Met FaceID moet je expliciet toestemming geven bij een binnenkomende notificatie. Dit kan worden uitgezet in de instellingen.
+Deze versie bevat verschillende bugfixes en verbeteringen.

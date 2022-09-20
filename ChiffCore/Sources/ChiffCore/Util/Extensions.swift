@@ -53,17 +53,17 @@ public extension NotificationCenter {
 
 public extension CatchMixin {
     /// Log the error and rethrow the error.
-    func log(_ message: String) -> Promise<T> {
+    func log(_ message: String, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) -> Promise<T> {
         recover { (error) -> Promise<T> in
-            Logger.shared.error(message, error: error)
+            Logger.shared.error(message, error: error, userInfo: nil, file, function, line)
             throw error
         }
     }
 
     /// Catch any errors and log it.
-    func catchLog(_ message: String) {
+    func catchLog(_ message: String, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
         `catch` { (error) in
-            Logger.shared.error(message, error: error)
+            Logger.shared.error(message, error: error, userInfo: nil, file, function, line)
         }
     }
 }
