@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.11.1</string>
+	<string>3.12.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,9 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>87</string>
-	<key>FirebaseScreenReportingEnabled</key>
-	<false/>
+	<string>90</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -47,6 +45,23 @@
 	<dict>
 		<key>TSKPinnedDomains</key>
 		<dict>
+			<key>api.chiff.io</key>
+			<dict>
+				<key>TSKDisableDefaultReportUri</key>
+				<true/>
+				<key>TSKEnforcePinning</key>
+				<true/>
+				<key>TSKIncludeSubdomains</key>
+				<false/>
+				<key>TSKPublicKeyHashes</key>
+				<array>
+					<string>++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=</string>
+					<string>f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=</string>
+					<string>NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=</string>
+					<string>9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=</string>
+					<string>KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I=</string>
+				</array>
+			</dict>
 			<key>api.chiff.dev</key>
 			<dict>
 				<key>TSKDisableDefaultReportUri</key>

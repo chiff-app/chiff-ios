@@ -1,0 +1,79 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Base32",
+        "repositoryURL": "https://github.com/mattrubin/Base32.git",
+        "state": {
+          "branch": "1.1.2+spm",
+          "revision": "d185e44c8b355d34d5c6c6ad502c60cba4599f69",
+          "version": null
+        }
+      },
+      {
+        "package": "DataCompression",
+        "repositoryURL": "https://github.com/mw99/DataCompression.git",
+        "state": {
+          "branch": null,
+          "revision": "6abb8f3cd0e4b2a33b4927a7a92b6764528f2440",
+          "version": "3.6.0"
+        }
+      },
+      {
+        "package": "PMKFoundation",
+        "repositoryURL": "https://github.com/PromiseKit/Foundation.git",
+        "state": {
+          "branch": null,
+          "revision": "1a276e598dac59489ed904887e0740fa75e571e0",
+          "version": "3.3.4"
+        }
+      },
+      {
+        "package": "Kronos",
+        "repositoryURL": "https://github.com/lyft/Kronos.git",
+        "state": {
+          "branch": null,
+          "revision": "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
+          "version": "4.2.1"
+        }
+      },
+      {
+        "package": "OneTimePassword",
+        "repositoryURL": "https://github.com/bas-d/OneTimePassword.git",
+        "state": {
+          "branch": "spm",
+          "revision": "520be217b1b30e4cc0d6f841d9ab871b2ed1f57c",
+          "version": null
+        }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
+        "state": {
+          "branch": null,
+          "revision": "aea48ea1855f5d82e2dffa6027afce3aab8f3dd7",
+          "version": "6.13.3"
+        }
+      },
+      {
+        "package": "Sodium",
+        "repositoryURL": "https://github.com/jedisct1/swift-sodium.git",
+        "state": {
+          "branch": null,
+          "revision": "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
+          "version": "0.9.1"
+        }
+      },
+      {
+        "package": "TrustKit",
+        "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
+        "state": {
+          "branch": null,
+          "revision": "65d573e0e2687ea91ab0b1be377f9dd3eb1c2785",
+          "version": "2.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -18,15 +18,14 @@ extension Properties {
 
     /// The token for amplitude.
     static var amplitudeToken: String {
-        switch environment {
-        case .dev:
+        if case .dev = environment {
             return "a6c7cba5e56ef0084e4b61a930a13c84"
-        case .beta:
-            return "1d56fb0765c71d09e73b68119cfab32d"
-        case .prod:
+        } else {
             return "081d54cf687bdf40799532a854b9a9b6"
         }
     }
+
+    static let sentryDsn = "https://6d4ca8274d474708b3f21055a2ce13ef@o1211855.ingest.sentry.io/6729302"
 
     /// The number of seconds after which the pasteboard should be cleared.
     static let pasteboardTimeout = 29.0 // seconds

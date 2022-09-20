@@ -94,10 +94,8 @@ class PairViewController: QRViewController {
         case SessionError.noEndpoint:
             Logger.shared.error("There is no endpoint in the session data.", error: error)
             self.showAlert(message: "errors.session_error_no_endpoint".localized, handler: closeError)
-        case APIError.statusCode(let statusCode):
-            self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: closeError)
         case is APIError:
-            self.showAlert(message: "errors.api_error".localized, handler: closeError)
+            self.showAlert(message: error.localizedDescription, handler: closeError)
         case let error as NSError where error.domain == NSURLErrorDomain:
             self.showAlert(message: error.localizedDescription, handler: closeError)
         default:

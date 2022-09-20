@@ -111,7 +111,27 @@ struct System {
 
 }
 
+extension UIView {
+
+    var firstResponder: UIView? {
+        guard !isFirstResponder else { return self }
+
+        for subview in subviews {
+            if let firstResponder = subview.firstResponder {
+                return firstResponder
+            }
+        }
+
+        return nil
+    }
+
+    func addEndEditingTapGesture() {
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing(_:))))
+    }
+}
+
 extension UIApplication {
+
     var visibleViewController: UIViewController? {
         guard let rootViewController = keyWindow?.rootViewController else {
             return nil

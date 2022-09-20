@@ -66,6 +66,8 @@ accounts:
     value: Delete account
   didnt_save:
     value: You didn’t save any of your accounts yet.
+  email:
+    value: 'Email address (optional, if you want a response)'
   enable_autofill:
     value: Enable autofill
   enabled:
@@ -298,6 +300,8 @@ devices:
     value: Name
   session_name_example:
     value: Example @ work
+  session_recent_header:
+    value: Recent activity
   start_pairing:
     value: You haven't set up Chiff on your computer yet.
   team_auxiliary_title:
@@ -317,9 +321,6 @@ errors:
     value: Error adding OTP token
   add_to_team:
     value: Error adding account to team
-  api_error:
-    comment: An error thrown by the API
-    value: A network error occured
   authentication_error:
     comment: 'Error in the authentication process to the phone, e.g. TouchID'
     value: Authentication error
@@ -376,10 +377,6 @@ errors:
     value: Error moving account from team
   moving_data:
     value: Error moving backup data.
-  multiple_admins:
-    value: You are admin of %d teams. This is not supported yet.
-  no_admin:
-    value: You are not the team admin.
   no_camera:
     comment: The camera is not available
     value: Camera not available
@@ -391,24 +388,14 @@ errors:
 
       Turn them on if you want to use Chiff. You can do this in Settings > Chiff
       > Notifications.
-  no_team:
-    value: You are not part of a team.
   only_admins:
     value: Only admins are allowed to perform this action.
-  organisation_exists:
-    value: >-
-      The team already exists. Please contact help@chiff.app if you don't have
-      access to the team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Error retrieving the OTP-code
   password_error:
     comment: Error fetching password
     value: Error fetching password
-  password_generation:
-    value: 'Error generating new password:'
-  payment_required:
-    value: The payment has not been successful. Please contact help@chiff.app.
   push_notifications_error:
     comment: Error when push notifications are not available
     value: There was an error registering for push notifications.

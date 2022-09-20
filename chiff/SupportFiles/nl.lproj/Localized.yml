@@ -66,6 +66,8 @@ accounts:
     value: Verwijder account
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen.
+  email:
+    value: 'E-mailadres (optioneel, als je een reactie wilt)'
   enable_autofill:
     value: Zet autofill aan
   enabled:
@@ -295,6 +297,8 @@ devices:
     value: Naam
   session_name_example:
     value: Voorbeeld @ werk
+  session_recent_header:
+    value: Laatste activiteit
   start_pairing:
     value: Je bent nog niet gekoppeld met je computer.
   team_auxiliary_title:
@@ -316,9 +320,6 @@ errors:
     value: Fout bij toevoegen OTP token
   add_to_team:
     value: Fout bij toevoegen aan team
-  api_error:
-    comment: An error thrown by the API
-    value: Er is een netwerkfout opgetreden
   authentication_error:
     comment: 'Error in the authentication process to the phone, e.g. TouchID'
     value: Authenticatiefout
@@ -375,12 +376,6 @@ errors:
     value: Fout bij verplaatsen account van team
   moving_data:
     value: Fout bij verhuizen backup data.
-  multiple_admins:
-    value: >-
-      Je bent beheerder van %d teams. Deze functionaliteit wordt nog niet
-      ondersteund.
-  no_admin:
-    value: Je bent geen beheerder van dit team.
   no_camera:
     comment: The camera is not available
     value: Camera niet beschikbaar
@@ -392,24 +387,14 @@ errors:
 
       Schakel deze in als je Chiff wilt gebruiken. Dit kun je doen via
       Instellingen > Chiff > Berichtgeving.
-  no_team:
-    value: Je bent geen onderdeel van een team.
   only_admins:
     value: Alleen beheerders mogen deze actie uitvoeren.
-  organisation_exists:
-    value: >-
-      Het team bestaat al. Neem contact op met help@chiff.app als je geen
-      toegang hebt tot het team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Fout bij ophalen OTP-code
   password_error:
     comment: Fout bij ophalen wachtwoord
     value: Error fetching password
-  password_generation:
-    value: 'Fout bij genereren van nieuw wachtwoord:'
-  payment_required:
-    value: De betaling is niet gelukt. Neem contact op met help@chiff.app.
   push_notifications_error:
     comment: Error when push notifications are not available
     value: Er is een fout opgetreden bij het registreren van pushberichten.

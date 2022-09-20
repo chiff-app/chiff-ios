@@ -66,7 +66,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         guard Seed.hasKeys else {
-            Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
         NotificationManager.shared.registerDevice(token: deviceToken)
@@ -121,9 +120,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             }.catchLog("Failed to purge keychain on launch")
         }
         if Seed.hasKeys {
+            Properties.migrateToAppGroup()
             firstly {
-                checkIfMigrated()
-            }.then {
                 Properties.deniedPushNotifications ? .value(()) : PushNotifications.register().asVoid()
             }.done(on: .main) { _ in
                 self.launchRootViewController()
@@ -205,27 +203,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let stringToWrite = "Jailbreak Test"
         do {
             try stringToWrite.write(toFile: "/private/JailbreakTest.txt", atomically: true, encoding: String.Encoding.utf8)
-            //Device is jailbroken
+            // Device is jailbroken
             return true
         } catch {
             return false
-        }
-    }
-
-    private func checkIfMigrated() -> Promise<Void> {
-        Properties.migrateToAppGroup()
-        if Properties.errorLogging {
-            // Set Crashlytics.
-            Properties.errorLogging = true
-        }
-        guard Properties.environment == .beta && !Properties.migrated else {
-            return .value(())
-        }
-        return firstly {
-            Seed.moveToProduction()
-        }.recover { error in
-            Logger.shared.warning("Error migrating from beta environment.", error: error)
-            return
         }
     }
 

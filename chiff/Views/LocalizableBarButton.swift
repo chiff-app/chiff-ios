@@ -13,7 +13,7 @@ import ChiffCore
     var originalButtonText: String?
     var activityIndicator: UIActivityIndicatorView!
 
-    @IBInspectable var localizationKey: String? = nil {
+    @IBInspectable var localizationKey: String? {
         didSet {
             if let key = localizationKey {
                 title = key.localized
