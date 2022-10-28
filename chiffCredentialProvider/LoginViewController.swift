@@ -22,7 +22,7 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ChiffCore.initialize(logger: ChiffLogger(), localizer: ChiffLocalizer())
+        ChiffCore.initialize(logger: ChiffLogger(enableOutOfMemoryTracking: false), localizer: ChiffLocalizer())
         if Properties.hasFaceID {
             touchIDButton.setImage(UIImage(named: "face_id"), for: .normal)
         }

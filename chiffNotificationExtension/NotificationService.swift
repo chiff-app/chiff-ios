@@ -17,7 +17,7 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         content = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
-        ChiffCore.initialize(logger: ChiffLogger(), localizer: ChiffLocalizer())
+        ChiffCore.initialize(logger: ChiffLogger(enableOutOfMemoryTracking: false), localizer: ChiffLocalizer())
 
         if var content = content {
             do {
