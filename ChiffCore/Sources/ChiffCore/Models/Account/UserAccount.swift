@@ -54,7 +54,8 @@ public struct UserAccount: Account, Equatable, Identity {
                 notes: String?,
                 askToChange: Bool?,
                 context: LAContext? = nil,
-                offline: Bool = false) throws {
+                offline: Bool = false,
+                token: Token? = nil) throws {
         guard let id = "\(sites[0].id)_\(username)".hash else {
             throw CryptoError.hashing
         }
@@ -85,7 +86,7 @@ public struct UserAccount: Account, Equatable, Identity {
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
         self.lastChange = Date.now
-        try save(password: generatedPassword, keyPair: keyPair, offline: offline)
+        try save(password: generatedPassword, keyPair: keyPair, offline: offline, token: token)
     }
 
     /// Create a `UserAccount`, without saving to the Keychain or generating passwords.
@@ -356,11 +357,16 @@ public struct UserAccount: Account, Equatable, Identity {
 
     // MARK: - Private functions
 
-    private func save(password: String?, keyPair: KeyPair?, offline: Bool = false) throws {
+    private func save(password: String?, keyPair: KeyPair?, offline: Bool = false, token: Token? = nil) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
         if let keyPair = keyPair {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
+        }
+        if let token = token {
+            let secret = token.generator.secret
+            let tokenData = try token.toURL().absoluteString.data
+            try Keychain.shared.save(id: id, service: Self.otpService, secretData: secret, objectData: tokenData)
         }
         if !offline {
             _ = try backup()
