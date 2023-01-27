@@ -135,6 +135,7 @@ extension TeamSession {
         do {
             let password = try account.password()
             let notes = try account.notes()
+            let token = try account.oneTimePasswordToken()
             return firstly {
                 getTeam()
             }.then {
@@ -145,7 +146,7 @@ extension TeamSession {
                 guard try SharedAccount.get(id: account.id, context: nil) == nil else {
                     throw KeychainError.storeKey
                 }
-                return try UserAccount(username: account.username, sites: account.sites, password: password, webauthn: nil, notes: notes, askToChange: nil, context: nil)
+                return try UserAccount(username: account.username, sites: account.sites, password: password, webauthn: nil, notes: notes, askToChange: nil, context: nil, token: token)
             }
         } catch {
             return Promise(error: error)
