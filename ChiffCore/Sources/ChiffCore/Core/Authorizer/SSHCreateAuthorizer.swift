@@ -12,6 +12,7 @@ public class SSHCreateAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.sshCreate
     public let browserTab: Int
+    public let code: String? = nil
     let name: String
     let algorithm: SSHAlgorithm
     public var logParam: String {
@@ -23,6 +24,8 @@ public class SSHCreateAuthorizer: Authorizer {
     public var authenticationReason: String {
         return "requests.generate_ssh".localized
     }
+    public var verify = false
+    public var verifyText: String? = nil
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -44,10 +47,10 @@ public class SSHCreateAuthorizer: Authorizer {
         Logger.shared.analytics(.createSSHKeyRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context: LAContext) -> Promise<(SSHIdentity, LAContext)> in
             let identity = try SSHIdentity(algorithm: self.algorithm, name: self.name, context: context)
             return identity.backup().map { (identity, context) }

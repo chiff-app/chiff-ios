@@ -15,11 +15,18 @@ public class SSHLoginAuthorizer: Authorizer {
     public let challenge: String
     public let id: String
     public var logParam: String
+    public let code: String? = nil
 
     public let requestText = "requests.ssh_login".localized.capitalizedFirstLetter
     public let successText = "requests.ssh_login_success".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return "requests.ssh_login_authentication".localized
+    }
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_ssh_login".localized)
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
@@ -37,10 +44,10 @@ public class SSHLoginAuthorizer: Authorizer {
         Logger.shared.analytics(.loginWithSSHRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context: LAContext) -> Promise<Account?> in
             guard var identity = try SSHIdentity.get(id: self.id, context: context) else {
                 throw AccountError.notFound

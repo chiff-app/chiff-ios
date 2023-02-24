@@ -12,11 +12,18 @@ public class TeamAdminLoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.adminLogin
     public let browserTab: Int
+    public let code: String? = nil
 
     public let requestText = "requests.confirm_login".localized.capitalizedFirstLetter
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return String(format: "requests.login_to".localized, "requests.chiff_for_teams".localized)
+    }
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_login".localized, "requests.chiff_for_teams".localized)
     }
     public var teamSession: TeamSession?
     public var logParam: String = ""
@@ -30,13 +37,13 @@ public class TeamAdminLoginAuthorizer: Authorizer {
         Logger.shared.analytics(.adminLoginRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         guard let teamSession = teamSession else {
             return Promise(error: AuthorizationError.notAdmin)
         }
         self.logParam = teamSession.title
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { context -> Promise<(Data, LAContext?)> in
             startLoading?(nil)
             return teamSession.getTeamSeed().map { ($0, context) }

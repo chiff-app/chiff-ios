@@ -12,6 +12,7 @@ public class BulkLoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.bulkLogin
     public let browserTab: Int
+    public let code: String? = nil
     let count: Int
     let accountIds: [Int: String]
     public var logParam: String {
@@ -22,6 +23,10 @@ public class BulkLoginAuthorizer: Authorizer {
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return String(format: "requests.login_to".localized, "\(accountIds.count) tabs")
+    }
+    public let verify = true
+    public var verifyText: String? {
+        return String(format: "requests.verify_login".localized, "\(accountIds.count) tabs")
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
@@ -36,9 +41,9 @@ public class BulkLoginAuthorizer: Authorizer {
         Logger.shared.analytics(.bulkLoginRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.map { context in
             let accounts: [String: Account] = try UserAccount.allCombined(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)

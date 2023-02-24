@@ -12,6 +12,7 @@ public class AddToExistingAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.addToExisting
     public let browserTab: Int
+    public let code: String? = nil
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -24,6 +25,12 @@ public class AddToExistingAuthorizer: Authorizer {
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return  String(format: "requests.login_to".localized, siteName)
+    }
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_login".localized, siteName)
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
@@ -43,12 +50,12 @@ public class AddToExistingAuthorizer: Authorizer {
         Logger.shared.analytics(.addSiteToExistingRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
             try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
+            self.authenticate(verification: verification).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName, id: self.siteId, url: self.siteURL, ppd: ppd)
             guard var account = try UserAccount.get(id: self.accountId, context: context) else {

@@ -12,6 +12,7 @@ public class WebAuthnRegistrationAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.webauthnCreate
     public let browserTab: Int
+    public let code: String? = nil
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -30,6 +31,12 @@ public class WebAuthnRegistrationAuthorizer: Authorizer {
     public let successText = "requests.account_added".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return  String(format: "requests.add_site".localized, siteName)
+    }
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_add_account".localized, siteName)
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
@@ -57,13 +64,13 @@ public class WebAuthnRegistrationAuthorizer: Authorizer {
         Logger.shared.analytics(.webAuthnCreateRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         guard !accountExists else {
             return Promise(error: ChiffErrorResponse.accountExists)
         }
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context: LAContext) -> Promise<(UserAccount, WebAuthnAttestation?, LAContext)> in
             let site = Site(name: self.siteName, id: self.siteId, url: self.siteURL, ppd: nil)
             let webauthn = try WebAuthn(id: self.relyingPartyId, algorithms: self.algorithms, userHandle: self.userHandle)
