@@ -651,6 +651,9 @@ popups:
     cancel:
       comment: Cancels something
       value: Annuleer
+    confirm:
+      comment: Confirm something
+      value: Bevestigen
     continue:
       comment: Continue something
       value: Doorgaan
@@ -890,4 +893,3 @@ urls:
     value: 'https://chiff.app/nl/faq_raw'
   jailbreak:
     value: 'https://chiff.app/nl/faq#jailbreak'
-

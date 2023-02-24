@@ -653,6 +653,9 @@ popups:
     cancel:
       comment: Cancels something
       value: Cancel
+    confirm:
+      comment: Confirm something
+      value: Confirm
     continue:
       comment: Continue something
       value: Continue
@@ -897,4 +900,3 @@ urls:
     value: 'https://chiff.app/faq_raw'
   jailbreak:
     value: 'https://chiff.app/faq#jailbreak'
-
