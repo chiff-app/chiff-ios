@@ -141,6 +141,7 @@ public enum ChiffErrorResponse: String, Error, Codable {
     case accountExists
     case expired
     case discloseAccountExists
+    case invalidCode
 }
 
 public enum AnalyticsEventProperty: String {
