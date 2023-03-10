@@ -36,6 +36,7 @@ struct BrowserPairingResponse: PairingResponse {
     let organisationKey: String?
     let organisationType: OrganisationType?
     let isAdmin: Bool?
+    let verify: Bool
 
     init(id: String,
          pubKey: String,
@@ -63,6 +64,7 @@ struct BrowserPairingResponse: PairingResponse {
         self.organisationKey = organisationKey
         self.organisationType = organisationType
         self.isAdmin = isAdmin
+        self.verify = Properties.extraVerification
     }
 }
 

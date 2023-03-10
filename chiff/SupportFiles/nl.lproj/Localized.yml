@@ -772,6 +772,8 @@ settings:
       met onze
   discount:
     value: Bespaar 17%
+  extra_verification:
+    value: Vraag verificatie code
   faq:
     value: FAQ
   feedback:

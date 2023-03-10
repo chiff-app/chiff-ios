@@ -33,7 +33,7 @@ public class WebAuthnRegistrationAuthorizer: Authorizer {
         return  String(format: "requests.add_site".localized, siteName)
     }
     public var verify: Bool {
-        return code != nil
+        return Properties.extraVerification
     }
     public var verifyText: String? {
         return String(format: "requests.verify_add_account".localized, siteName)

@@ -32,7 +32,7 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
         return  String(format: "requests.update_this".localized, siteName)
     }
     public var verify: Bool {
-        return code != nil
+        return Properties.extraVerification
     }
     public var verifyText: String? {
         return String(format: "requests.verify_update_account".localized, siteName)

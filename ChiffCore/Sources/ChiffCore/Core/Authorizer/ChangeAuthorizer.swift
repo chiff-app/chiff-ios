@@ -27,7 +27,7 @@ public class ChangeAuthorizer: Authorizer {
         return String(format: "requests.change_for".localized, siteName)
     }
     public var verify: Bool {
-        return code != nil
+        return Properties.extraVerification
     }
     public var verifyText: String? {
         return String(format: "requests.verify_change_password".localized, siteName)

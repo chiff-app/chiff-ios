@@ -48,7 +48,7 @@ public class LoginAuthorizer: Authorizer {
         }
     }
     public var verify: Bool {
-        return code != nil
+        return Properties.extraVerification
     }
     public var verifyText: String? {
         return String(format: "requests.verify_login".localized, siteName)

@@ -27,7 +27,7 @@ public class WebAuthnLoginAuthorizer: Authorizer {
         return  String(format: "requests.login_to".localized, siteName)
     }
     public var verify: Bool {
-        return code != nil
+        return Properties.extraVerification
     }
     public var verifyText: String? {
         return String(format: "requests.verify_login".localized, siteName)

@@ -775,6 +775,8 @@ settings:
       Store account settings after purchase. By purchasing, you agree with our
   discount:
     value: You save 17%
+  extra_verification:
+    value: Ask verification code
   faq:
     value: FAQ
   feedback:
