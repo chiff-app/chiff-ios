@@ -15,7 +15,7 @@ public class SSHLoginAuthorizer: Authorizer {
     public let challenge: String
     public let id: String
     public var logParam: String
-    public let code: String? = nil
+    public let code: String?
 
     public let requestText = "requests.ssh_login".localized.capitalizedFirstLetter
     public let successText = "requests.ssh_login_success".localized.capitalizedFirstLetter
@@ -37,6 +37,7 @@ public class SSHLoginAuthorizer: Authorizer {
               let challenge = request.challenge else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.challenge = challenge
         self.id = id

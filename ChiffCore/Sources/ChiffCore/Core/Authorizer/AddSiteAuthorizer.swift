@@ -12,7 +12,7 @@ public class AddSiteAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type: ChiffMessageType
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -50,6 +50,7 @@ public class AddSiteAuthorizer: Authorizer {
               else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL

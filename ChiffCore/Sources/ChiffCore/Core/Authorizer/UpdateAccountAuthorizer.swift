@@ -12,7 +12,7 @@ public class UpdateAccountAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.updateAccount
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let siteName: String
     let siteURL: String
     let accountId: String
@@ -44,6 +44,7 @@ public class UpdateAccountAuthorizer: Authorizer {
               let accountId = request.accountID else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL

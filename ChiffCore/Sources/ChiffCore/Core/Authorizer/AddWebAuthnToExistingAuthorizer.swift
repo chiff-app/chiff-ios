@@ -12,7 +12,7 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.addWebauthnToExisting
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -49,6 +49,7 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
               let algorithms = request.algorithms else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.accountId = accountId
         self.browserTab = browserTab
         self.siteName = siteName

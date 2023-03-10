@@ -12,7 +12,7 @@ public class BulkLoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.bulkLogin
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let count: Int
     let accountIds: [Int: String]
     public var logParam: String {
@@ -35,6 +35,7 @@ public class BulkLoginAuthorizer: Authorizer {
               let accountIds = request.accountIDs else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.count = accountIds.count
         self.accountIds = accountIds

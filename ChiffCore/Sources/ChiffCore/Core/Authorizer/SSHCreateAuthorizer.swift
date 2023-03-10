@@ -12,7 +12,7 @@ public class SSHCreateAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.sshCreate
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let name: String
     let algorithm: SSHAlgorithm
     public var logParam: String {
@@ -34,6 +34,7 @@ public class SSHCreateAuthorizer: Authorizer {
               let algorithms = request.algorithms else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.name = name
         switch algorithms.first {

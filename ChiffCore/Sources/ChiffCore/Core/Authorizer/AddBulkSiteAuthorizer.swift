@@ -16,7 +16,7 @@ public class AddBulkSiteAuthorizer: Authorizer {
     public var logParam: String {
         return String(count)
     }
-    public let code: String? = nil
+    public let code: String?
 
 
     public let requestText = "requests.add_accounts".localized.capitalizedFirstLetter
@@ -35,6 +35,7 @@ public class AddBulkSiteAuthorizer: Authorizer {
               let browserTab = request.browserTab else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.count = count
         self.browserTab = browserTab
         Logger.shared.analytics(.addBulkSitesRequestOpened)

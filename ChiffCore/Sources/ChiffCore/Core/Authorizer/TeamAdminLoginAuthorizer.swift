@@ -12,7 +12,7 @@ public class TeamAdminLoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.adminLogin
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
 
     public let requestText = "requests.confirm_login".localized.capitalizedFirstLetter
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
@@ -33,6 +33,7 @@ public class TeamAdminLoginAuthorizer: Authorizer {
         guard let browserTab = request.browserTab else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         Logger.shared.analytics(.adminLoginRequestOpened)
     }

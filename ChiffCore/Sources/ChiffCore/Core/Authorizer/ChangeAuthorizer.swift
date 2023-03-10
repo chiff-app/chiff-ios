@@ -12,7 +12,7 @@ public class ChangeAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.change
     public let browserTab: Int
-    public let code: String? = nil
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -42,6 +42,7 @@ public class ChangeAuthorizer: Authorizer {
               let accountId = request.accountID else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL
