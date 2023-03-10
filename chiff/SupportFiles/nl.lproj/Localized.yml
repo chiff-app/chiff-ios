@@ -834,6 +834,9 @@ settings:
   privacy:
     comment: The word for privacy
     value: Privacy
+  privacy_and_security:
+    comment: ''
+    value: Privacy & security
   privacy_beta_explanation:
     value: >-
       Gebruiksstatistieken worden automatisch gedeeld als je de betaversie
@@ -863,6 +866,14 @@ settings:
     value: Geen actief abonnement gevonden
   restore_successful:
     value: Je aankoop is hersteld
+  security:
+    comment: ''
+    value: Security
+  security_footer:
+    comment: ''
+    value: >-
+      Als je dit aanzet, moet je voor bepaalde verzoeken handmatig een
+      verificatiecode invoeren.
   settings:
     comment: The word for settings
     value: Instellingen

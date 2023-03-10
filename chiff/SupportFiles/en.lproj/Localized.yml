@@ -841,6 +841,9 @@ settings:
   privacy:
     comment: The word for privacy
     value: Privacy
+  privacy_and_security:
+    comment: ''
+    value: Privacy & security
   privacy_beta_explanation:
     value: >-
       Usage statistics are shared automatically if you join the public beta. You
@@ -870,6 +873,14 @@ settings:
     value: No active subscriptions were found
   restore_successful:
     value: Your purchase has been restored
+  security:
+    comment: ''
+    value: Security
+  security_footer:
+    comment: ''
+    value: >-
+      When turning this on, you have to manually enter a verification code for
+      certain requests.
   settings:
     comment: The word for settings
     value: Settings

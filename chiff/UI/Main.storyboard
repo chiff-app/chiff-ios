@@ -1346,7 +1346,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="XnA-go-mdU">
-                            <rect key="frame" x="0.0" y="349.33333015441895" width="375" height="55"/>
+                            <rect key="frame" x="0.0" y="261.33333015441895" width="375" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-FM-4ck">
@@ -1381,83 +1381,8 @@
                         <sections>
                             <tableViewSection headerTitle="General" footerTitle="[Generated in ViewController] " id="zsO-ju-Qwo">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="x5o-3u-zcF">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x5o-3u-zcF" id="4d6-Lu-U9u">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Share errors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3L-c4-Wh6" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                                    <rect key="frame" x="20" y="11" width="286" height="22"/>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.auto_authorize"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="afx-FA-QBx">
-                                                    <rect key="frame" x="306" y="6.6666666666666679" width="51" height="31.000000000000004"/>
-                                                    <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <connections>
-                                                        <action selector="updateAutoAuthorize:" destination="dcO-2k-qG2" eventType="valueChanged" id="KZf-BW-uv2"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="b3L-c4-Wh6" firstAttribute="top" secondItem="4d6-Lu-U9u" secondAttribute="topMargin" id="4dp-YM-3hE"/>
-                                                <constraint firstAttribute="trailing" secondItem="afx-FA-QBx" secondAttribute="trailing" constant="20" symbolic="YES" id="6f8-vc-dwD"/>
-                                                <constraint firstItem="afx-FA-QBx" firstAttribute="leading" secondItem="b3L-c4-Wh6" secondAttribute="trailing" id="Chv-4C-GXe"/>
-                                                <constraint firstItem="afx-FA-QBx" firstAttribute="centerY" secondItem="4d6-Lu-U9u" secondAttribute="centerY" id="S7f-hP-TvG"/>
-                                                <constraint firstItem="b3L-c4-Wh6" firstAttribute="leading" secondItem="4d6-Lu-U9u" secondAttribute="leadingMargin" id="eiN-By-fPl"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="b3L-c4-Wh6" secondAttribute="bottom" id="q7s-NT-7nz"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="vfb-hZ-FS3">
-                                        <rect key="frame" x="0.0" y="99.333332061767578" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vfb-hZ-FS3" id="Yal-7Y-bA6">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Share errors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icl-FA-kwf" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                                    <rect key="frame" x="20" y="11" width="286" height="22"/>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.extra_verification"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EcO-Kg-mDI">
-                                                    <rect key="frame" x="306" y="6.6666666666666679" width="51" height="31.000000000000004"/>
-                                                    <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <connections>
-                                                        <action selector="updateAutoAuthorize:" destination="dcO-2k-qG2" eventType="valueChanged" id="KdV-FV-qWV"/>
-                                                        <action selector="updateExtraVerification:" destination="dcO-2k-qG2" eventType="valueChanged" id="1WT-FJ-EwV"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="EcO-Kg-mDI" secondAttribute="trailing" constant="20" symbolic="YES" id="3Sw-sE-lwU"/>
-                                                <constraint firstItem="EcO-Kg-mDI" firstAttribute="centerY" secondItem="Yal-7Y-bA6" secondAttribute="centerY" id="8zF-3i-5oQ"/>
-                                                <constraint firstItem="icl-FA-kwf" firstAttribute="leading" secondItem="Yal-7Y-bA6" secondAttribute="leadingMargin" id="Qxv-7p-ywA"/>
-                                                <constraint firstItem="icl-FA-kwf" firstAttribute="top" secondItem="Yal-7Y-bA6" secondAttribute="topMargin" id="SRv-AH-Dih"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="icl-FA-kwf" secondAttribute="bottom" id="STN-Wa-RNo"/>
-                                                <constraint firstItem="EcO-Kg-mDI" firstAttribute="leading" secondItem="icl-FA-kwf" secondAttribute="trailing" id="rZL-vh-Gd5"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="dSn-id-Ull" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="143.33333206176758" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dSn-id-Ull" id="H7M-wl-DFI">
                                             <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="44"/>
@@ -1488,7 +1413,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2JR-su-vfy" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="187.33333206176758" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="99.333332061767578" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2JR-su-vfy" id="Xox-Mh-T5S">
                                             <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="44"/>
@@ -1501,7 +1426,7 @@
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.privacy"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.privacy_and_security"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
@@ -1519,7 +1444,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="oyn-RN-Wtn" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="231.33333206176758" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="143.33333206176758" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oyn-RN-Wtn" id="VeV-CE-y5A">
                                             <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="44"/>
@@ -1559,7 +1484,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="FwZ-Pb-Yxw" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="275.33333206176758" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="187.33333206176758" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FwZ-Pb-Yxw" id="3vv-Qi-NQ5">
                                             <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="44"/>
@@ -1599,9 +1524,6 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="gKl-BS-uBy"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="autoAuthorizeCell" destination="x5o-3u-zcF" id="oaw-I3-xdL"/>
-                        <outlet property="autoAuthorizeSwitch" destination="afx-FA-QBx" id="WBS-bG-5u9"/>
-                        <outlet property="extraVerifificationSwitch" destination="EcO-Kg-mDI" id="yC7-se-OoP"/>
                         <outlet property="jailbreakStackView" destination="N9K-FM-4ck" id="DS8-QJ-3qE"/>
                         <outlet property="jailbreakStackViewHeightConstraint" destination="2Lu-qY-8QL" id="MvR-Pj-tiA"/>
                         <outlet property="jailbreakWarningTextView" destination="Q6o-28-pWN" id="hFD-bP-Oju"/>
@@ -3314,43 +3236,90 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2U9-tF-R8U" customClass="AccessoryTableViewCell" customModule="chiff" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="143.33333206176758" width="375" height="44"/>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Security" footerTitle="[Generated in ViewController] " id="LQv-Iu-57U">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="J7p-sA-MvO">
+                                        <rect key="frame" x="0.0" y="218.66666221618652" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2U9-tF-R8U" id="KnT-eZ-Rly">
-                                            <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="44"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J7p-sA-MvO" id="PQD-dq-qwZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Privacy policy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdf-hm-sxY" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
-                                                    <rect key="frame" x="20" y="11" width="316.66666666666669" height="22"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Auto-authorize requests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uDM-9l-2SQ" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
+                                                    <rect key="frame" x="20" y="11" width="286" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.privacy_policy"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.auto_authorize"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="woR-VP-rum">
+                                                    <rect key="frame" x="306" y="6.6666666666666679" width="51" height="31.000000000000004"/>
+                                                    <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="updateAutoAuthorize:" destination="NAd-Fh-Sau" eventType="valueChanged" id="avf-Ti-jRt"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="top" secondItem="KnT-eZ-Rly" secondAttribute="topMargin" id="CPK-j6-CTu"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="bdf-hm-sxY" secondAttribute="trailing" id="GAM-nL-7ag"/>
-                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="leading" secondItem="KnT-eZ-Rly" secondAttribute="leadingMargin" id="i5G-VQ-gXi"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="bdf-hm-sxY" secondAttribute="bottom" id="zgU-78-RCb"/>
+                                                <constraint firstItem="woR-VP-rum" firstAttribute="leading" secondItem="uDM-9l-2SQ" secondAttribute="trailing" id="1zJ-Qs-u1c"/>
+                                                <constraint firstItem="uDM-9l-2SQ" firstAttribute="top" secondItem="PQD-dq-qwZ" secondAttribute="topMargin" id="Uqd-kY-FtF"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="uDM-9l-2SQ" secondAttribute="bottom" id="d9a-OX-1YG"/>
+                                                <constraint firstAttribute="trailing" secondItem="woR-VP-rum" secondAttribute="trailing" constant="20" symbolic="YES" id="dxj-Qt-WgL"/>
+                                                <constraint firstItem="woR-VP-rum" firstAttribute="centerY" secondItem="PQD-dq-qwZ" secondAttribute="centerY" id="eGP-Vt-6hm"/>
+                                                <constraint firstItem="uDM-9l-2SQ" firstAttribute="leading" secondItem="PQD-dq-qwZ" secondAttribute="leadingMargin" id="iSC-Ev-c3y"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <segue destination="Za5-EU-xti" kind="show" id="hce-pK-xEM"/>
-                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="DE6-cI-hc9">
+                                        <rect key="frame" x="0.0" y="262.66666221618652" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DE6-cI-hc9" id="AMa-IQ-wEZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Ask verification code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GLi-C6-ZgG" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
+                                                    <rect key="frame" x="20" y="11" width="286" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.extra_verification"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xA6-vI-tQ6">
+                                                    <rect key="frame" x="306" y="6.6666666666666679" width="51" height="31.000000000000004"/>
+                                                    <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="updateExtraVerification:" destination="NAd-Fh-Sau" eventType="valueChanged" id="2LW-do-bRX"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="GLi-C6-ZgG" firstAttribute="top" secondItem="AMa-IQ-wEZ" secondAttribute="topMargin" id="1jG-dL-UJT"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="GLi-C6-ZgG" secondAttribute="bottom" id="5au-uw-mEd"/>
+                                                <constraint firstAttribute="trailing" secondItem="xA6-vI-tQ6" secondAttribute="trailing" constant="20" symbolic="YES" id="LFq-7a-Rt2"/>
+                                                <constraint firstItem="xA6-vI-tQ6" firstAttribute="centerY" secondItem="AMa-IQ-wEZ" secondAttribute="centerY" id="UiO-z2-mmA"/>
+                                                <constraint firstItem="GLi-C6-ZgG" firstAttribute="leading" secondItem="AMa-IQ-wEZ" secondAttribute="leadingMargin" id="gGZ-2J-B9q"/>
+                                                <constraint firstItem="xA6-vI-tQ6" firstAttribute="leading" secondItem="GLi-C6-ZgG" secondAttribute="trailing" id="nqT-TK-flV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection footerTitle="[Generated in ViewController] " id="BK7-rO-KhG">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="B2K-ep-efX">
-                                        <rect key="frame" x="0.0" y="235.33333015441895" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="354.66666221618652" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B2K-ep-efX" id="CyX-ML-OtD">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -3385,7 +3354,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                             <tableViewSection footerTitle="[Generated in ViewController] " id="B1I-fr-6GL">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="ip0-0s-GUz">
-                                        <rect key="frame" x="0.0" y="327.33333015441895" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="446.66666221618652" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ip0-0s-GUz" id="OCb-vx-ynI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -3426,6 +3395,8 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <barButtonItem key="backBarButtonItem" title=" " id="vlb-4c-iBb"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="autoAuthorizeSwitch" destination="woR-VP-rum" id="69n-yK-5Zl"/>
+                        <outlet property="extraVerifificationSwitch" destination="xA6-vI-tQ6" id="NPe-we-rRx"/>
                         <outlet property="shareAnalyticsSwitch" destination="pxV-dR-0E9" id="bbK-IX-wQm"/>
                         <outlet property="shareErrorSwitch" destination="cmq-sh-47t" id="Gp7-9l-fCQ"/>
                     </connections>
@@ -5346,6 +5317,9 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <designable name="F8u-Vq-wIN">
             <size key="intrinsicContentSize" width="4" height="19"/>
         </designable>
+        <designable name="GLi-C6-ZgG">
+            <size key="intrinsicContentSize" width="148.66666666666666" height="17.333333333333332"/>
+        </designable>
         <designable name="HAR-sz-fna">
             <size key="intrinsicContentSize" width="489.33333333333331" height="29.333333333333332"/>
         </designable>
@@ -5454,17 +5428,11 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <designable name="afT-jz-a0z">
             <size key="intrinsicContentSize" width="99.333333333333329" height="17.333333333333332"/>
         </designable>
-        <designable name="b3L-c4-Wh6">
-            <size key="intrinsicContentSize" width="86" height="17.333333333333332"/>
-        </designable>
         <designable name="bR0-0p-9RS">
             <size key="intrinsicContentSize" width="532.33333333333337" height="17.333333333333332"/>
         </designable>
         <designable name="bVk-wh-5ij">
             <size key="intrinsicContentSize" width="76" height="30"/>
-        </designable>
-        <designable name="bdf-hm-sxY">
-            <size key="intrinsicContentSize" width="97" height="17.333333333333332"/>
         </designable>
         <designable name="c9B-ZA-BTt">
             <size key="intrinsicContentSize" width="73.666666666666671" height="19"/>
@@ -5507,9 +5475,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         </designable>
         <designable name="iJo-1D-PPV">
             <size key="intrinsicContentSize" width="84" height="17.333333333333332"/>
-        </designable>
-        <designable name="icl-FA-kwf">
-            <size key="intrinsicContentSize" width="86" height="17.333333333333332"/>
         </designable>
         <designable name="ite-Pz-bdt">
             <size key="intrinsicContentSize" width="357.33333333333331" height="17.333333333333332"/>
@@ -5561,6 +5526,9 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         </designable>
         <designable name="tzL-n9-IOh">
             <size key="intrinsicContentSize" width="68.666666666666671" height="17.333333333333332"/>
+        </designable>
+        <designable name="uDM-9l-2SQ">
+            <size key="intrinsicContentSize" width="172.33333333333334" height="17.333333333333332"/>
         </designable>
         <designable name="uGT-fo-1hO">
             <size key="intrinsicContentSize" width="43.333333333333336" height="17.333333333333332"/>
