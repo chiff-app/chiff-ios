@@ -12,6 +12,7 @@ public class WebAuthnLoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.webauthnLogin
     public let browserTab: Int
+    public let code: String?
     let siteName: String
     let relyingPartyId: String
     let accountId: String
@@ -25,6 +26,12 @@ public class WebAuthnLoginAuthorizer: Authorizer {
     public var authenticationReason: String {
         return  String(format: "requests.login_to".localized, siteName)
     }
+    public var verify: Bool {
+        return Properties.extraVerification
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_login".localized, siteName)
+    }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -35,6 +42,7 @@ public class WebAuthnLoginAuthorizer: Authorizer {
               let accountId = request.accountID else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.relyingPartyId = relyingPartyId
@@ -43,10 +51,10 @@ public class WebAuthnLoginAuthorizer: Authorizer {
         Logger.shared.analytics(.webAuthnLoginRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.map { context in
             defer {
                 Logger.shared.analytics(.webAuthnLoginRequestAuthorized, properties: [.value: success])

@@ -33,6 +33,7 @@ public struct ChiffRequest: Codable {
     public var sessionID: String?
     public var accounts: [BulkAccount]?
     public var userHandle: String?
+    public var verificationCode: String?
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
@@ -59,5 +60,6 @@ public struct ChiffRequest: Codable {
         case organisationName = "on"
         case webAuthnExtensions = "we"
         case userHandle = "h"
+        case verificationCode = "vc"
     }
 }

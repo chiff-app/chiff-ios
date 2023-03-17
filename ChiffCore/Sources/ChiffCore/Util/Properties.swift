@@ -51,6 +51,7 @@ public struct Properties {
     private static let lastRunVersionFlag = "lastRunVersionFlag"
     private static let keychainVersionFlag = "keychainVersionFlag"
     private static let attestationKeyIDFlag = "attestationKeyIDFlag"
+    private static let extraVerificationFlag = "extraVerificationFlag"
 
     public static let latestKeychainVersion = 2
     static let termsOfUseVersion = 2
@@ -269,6 +270,12 @@ public struct Properties {
             UserDefaults.standard.set(Properties.version, forKey: lastRunVersionFlag)
         }
         return currentVersion != lastRunVersion
+    }
+    
+    /// Whether extra verification has been enabled
+    public static var extraVerification: Bool {
+        get { return UserDefaults.standard.bool(forKey: extraVerificationFlag)  }
+        set { UserDefaults.standard.setValue(newValue, forKey: extraVerificationFlag) }
     }
 
     public static func migrateToAppGroup() {

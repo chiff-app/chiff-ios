@@ -653,6 +653,9 @@ popups:
     cancel:
       comment: Cancels something
       value: Cancel
+    confirm:
+      comment: Confirm something
+      value: Confirm
     continue:
       comment: Continue something
       value: Continue
@@ -772,6 +775,8 @@ settings:
       Store account settings after purchase. By purchasing, you agree with our
   discount:
     value: You save 17%
+  extra_verification:
+    value: Ask verification code
   faq:
     value: FAQ
   feedback:
@@ -836,6 +841,9 @@ settings:
   privacy:
     comment: The word for privacy
     value: Privacy
+  privacy_and_security:
+    comment: ''
+    value: Privacy & security
   privacy_beta_explanation:
     value: >-
       Usage statistics are shared automatically if you join the public beta. You
@@ -865,6 +873,14 @@ settings:
     value: No active subscriptions were found
   restore_successful:
     value: Your purchase has been restored
+  security:
+    comment: ''
+    value: Security
+  security_footer:
+    comment: ''
+    value: >-
+      When turning this on, you have to manually enter a verification code for
+      certain requests.
   settings:
     comment: The word for settings
     value: Settings
@@ -897,4 +913,3 @@ urls:
     value: 'https://chiff.app/faq_raw'
   jailbreak:
     value: 'https://chiff.app/faq#jailbreak'
-

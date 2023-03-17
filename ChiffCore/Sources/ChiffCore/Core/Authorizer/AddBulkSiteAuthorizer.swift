@@ -16,12 +16,15 @@ public class AddBulkSiteAuthorizer: Authorizer {
     public var logParam: String {
         return String(count)
     }
+    public let code: String?
 
 
     public let requestText = "requests.add_accounts".localized.capitalizedFirstLetter
     public var successText: String {
         return "\(count) \("requests.accounts_added".localized)"
     }
+    public var verify = false
+    public var verifyText: String? = nil
     public var authenticationReason: String {
         return String(format: "requests.n_new_accounts".localized, count)
     }
@@ -32,16 +35,17 @@ public class AddBulkSiteAuthorizer: Authorizer {
               let browserTab = request.browserTab else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.count = count
         self.browserTab = browserTab
         Logger.shared.analytics(.addBulkSitesRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var succeeded: [String: (UserAccount, String?)] = [:]
         var failed = 0
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context: LAContext?) -> Promise<([(BulkAccount, PPD?)], LAContext?)> in
             self.getAccounts(startLoading: startLoading).map { ($0, context) }
         }.then { (accounts, context) -> Promise<(Int, LAContext?)> in

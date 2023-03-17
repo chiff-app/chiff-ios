@@ -12,6 +12,7 @@ public class AddSiteAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type: ChiffMessageType
     public let browserTab: Int
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -26,6 +27,13 @@ public class AddSiteAuthorizer: Authorizer {
 
     public let requestText = "requests.add_account".localized.capitalizedFirstLetter
     public let successText = "requests.account_added".localized.capitalizedFirstLetter
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_add_account".localized, siteName)
+    }
+
     public var authenticationReason: String {
         return  String(format: "requests.add_site".localized, siteName)
     }
@@ -42,6 +50,7 @@ public class AddSiteAuthorizer: Authorizer {
               else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL
@@ -53,12 +62,12 @@ public class AddSiteAuthorizer: Authorizer {
         Logger.shared.analytics(.addSiteRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
             try PPD.get(id: siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
+            self.authenticate(verification: verification).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName, id: self.siteId, url: self.siteURL, ppd: ppd)
             let account = try UserAccount(username: self.username, sites: [site],

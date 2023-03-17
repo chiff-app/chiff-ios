@@ -15,6 +15,7 @@ class CreateOrganisationAuthorizer: Authorizer {
     let browserTab: Int
     let organisationName: String
     let orderKey: String
+    public let code: String? = nil
     public var logParam: String {
         return organisationName
     }
@@ -24,6 +25,8 @@ class CreateOrganisationAuthorizer: Authorizer {
     var authenticationReason: String {
         return String(format: "requests.create_this".localized, organisationName)
     }
+    let verify = false
+    let verifyText: String? = nil
 
     required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -38,9 +41,9 @@ class CreateOrganisationAuthorizer: Authorizer {
         Logger.shared.analytics(.createOrganisationRequestOpened)
     }
 
-    func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
             startLoading?(nil)
             let team = try Team(name: self.organisationName)

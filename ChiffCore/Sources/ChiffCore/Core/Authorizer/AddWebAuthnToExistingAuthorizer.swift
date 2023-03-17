@@ -12,6 +12,7 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.addWebauthnToExisting
     public let browserTab: Int
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -30,7 +31,12 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
     public var authenticationReason: String {
         return  String(format: "requests.update_this".localized, siteName)
     }
-
+    public var verify: Bool {
+        return Properties.extraVerification
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_update_account".localized, siteName)
+    }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -43,6 +49,7 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
               let algorithms = request.algorithms else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.accountId = accountId
         self.browserTab = browserTab
         self.siteName = siteName
@@ -56,10 +63,10 @@ public class AddWebAuthnToExistingAuthorizer: Authorizer {
         Logger.shared.analytics(.webAuthnCreateRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.then { (context: LAContext) -> Promise<(UserAccount, WebAuthnAttestation?, LAContext)> in
             guard var account = try UserAccount.get(id: self.accountId, context: context) else {
                 throw AccountError.notFound

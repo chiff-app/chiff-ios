@@ -12,6 +12,7 @@ public class UpdateAccountAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.updateAccount
     public let browserTab: Int
+    public let code: String?
     let siteName: String
     let siteURL: String
     let accountId: String
@@ -28,6 +29,12 @@ public class UpdateAccountAuthorizer: Authorizer {
     public var authenticationReason: String {
         return  String(format: "requests.update_this".localized, siteName)
     }
+    public var verify: Bool {
+        return code != nil
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_update_account".localized, siteName)
+    }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -37,6 +44,7 @@ public class UpdateAccountAuthorizer: Authorizer {
               let accountId = request.accountID else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL
@@ -48,10 +56,10 @@ public class UpdateAccountAuthorizer: Authorizer {
         Logger.shared.analytics(.updateAccountRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.map { context in
             guard var account: UserAccount = try UserAccount.get(id: self.accountId, context: context) else {
                 if try SharedAccount.get(id: self.accountId, context: context) != nil {

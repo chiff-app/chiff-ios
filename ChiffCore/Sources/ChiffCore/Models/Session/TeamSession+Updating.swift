@@ -38,7 +38,6 @@ extension TeamSession {
         } catch {
             return Promise(error: error)
         }
-
     }
 
     /// Update this `TeamSession` to the current team state. Returns an updated copy.
