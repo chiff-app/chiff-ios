@@ -151,7 +151,7 @@ platform :ios do
       deliver(
         app_version: version,
         platform: 'ios',
-        skip_binary_upload: options[:build],
+        skip_binary_upload: !options[:build],
         skip_screenshots: true,
         submission_information: "{ \"add_id_info_uses_idfa\": false }",
         submit_for_review: options[:submit]
