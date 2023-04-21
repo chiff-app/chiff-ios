@@ -12,13 +12,16 @@ public class LoginAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type: ChiffMessageType
     public let browserTab: Int
-    let siteName: String
+    public let code: String?
+    public let siteName: String
     let accountId: String
     let siteURL: String?
     let siteId: String?
+    
     public var logParam: String {
         return siteName
     }
+    private var context: LAContext?
 
     public var successText: String {
         switch type {
@@ -44,6 +47,12 @@ public class LoginAuthorizer: Authorizer {
             return String(format: "requests.login_to".localized, siteName)
         }
     }
+    public var verify: Bool {
+        return Properties.extraVerification
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_login".localized, siteName)
+    }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -58,6 +67,7 @@ public class LoginAuthorizer: Authorizer {
         self.siteURL = request.siteURL
         self.siteId = request.siteID
         self.accountId = accountId
+        self.code = request.verificationCode
         switch type {
         case .fill:
             Logger.shared.analytics(.fillPasswordRequestOpened)
@@ -67,11 +77,11 @@ public class LoginAuthorizer: Authorizer {
             Logger.shared.analytics(.loginRequestOpened)
         }
     }
-
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            self.authenticate(verification: verification)
         }.map { context in
             guard let account: Account = try UserAccount.getAny(id: self.accountId, context: context) else {
                 throw AccountError.notFound

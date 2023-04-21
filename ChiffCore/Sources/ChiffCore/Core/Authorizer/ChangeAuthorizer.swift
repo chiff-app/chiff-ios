@@ -12,6 +12,7 @@ public class ChangeAuthorizer: Authorizer {
     public var session: BrowserSession
     public let type = ChiffMessageType.change
     public let browserTab: Int
+    public let code: String?
     let siteName: String
     let siteURL: String
     let siteId: String
@@ -25,6 +26,12 @@ public class ChangeAuthorizer: Authorizer {
     public var authenticationReason: String {
         return String(format: "requests.change_for".localized, siteName)
     }
+    public var verify: Bool {
+        return Properties.extraVerification
+    }
+    public var verifyText: String? {
+        return String(format: "requests.verify_change_password".localized, siteName)
+    }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
         self.session = session
@@ -35,6 +42,7 @@ public class ChangeAuthorizer: Authorizer {
               let accountId = request.accountID else {
             throw AuthorizationError.missingData
         }
+        self.code = request.verificationCode
         self.browserTab = browserTab
         self.siteName = siteName
         self.siteURL = siteURL
@@ -43,10 +51,10 @@ public class ChangeAuthorizer: Authorizer {
         Logger.shared.analytics(.changePasswordRequestOpened)
     }
 
-    public func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
+    public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
         var success = false
         return firstly {
-            when(fulfilled: LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false),
+            when(fulfilled: self.authenticate(verification: verification),
                  try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair()))
         }.map { (context, ppd) in
             guard var account: UserAccount = try UserAccount.get(id: self.accountId, context: context) else {

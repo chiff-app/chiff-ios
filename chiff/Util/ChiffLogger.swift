@@ -18,7 +18,7 @@ class ChiffLogger: LoggerProtocol {
 
     private var _scrubbingRegex: Any?
 
-    init() {
+    init(enableOutOfMemoryTracking: Bool = true) {
         startSentry()
         amplitude.initializeApiKey(Properties.amplitudeToken)
         amplitude.set(userProperties: [
@@ -34,7 +34,7 @@ class ChiffLogger: LoggerProtocol {
         }
     }
 
-    func startSentry() {
+    func startSentry(enableOutOfMemoryTracking: Bool = true) {
         SentrySDK.start { options in
             options.dsn = Properties.sentryDsn
             options.debug = Properties.environment == Properties.Environment.dev
@@ -51,6 +51,7 @@ class ChiffLogger: LoggerProtocol {
             options.attachViewHierarchy = false
             options.sendClientReports = false
             options.enableSwizzling = false
+            options.enableOutOfMemoryTracking = enableOutOfMemoryTracking
 
             options.integrations = Sentry.Options.defaultIntegrations().filter { $0 != "SentryAutoBreadcrumbTrackingIntegration" }
 

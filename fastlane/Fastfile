@@ -137,7 +137,6 @@ platform :ios do
         version = get_version_number(target: scheme)
         build
         upload_to_testflight(skip_waiting_for_build_processing: true)
-        create_sentry_release(version: version)
         create_sentry_deployment(environment: "staging", version: version)
         upload_symbols
         slack(message: "New Testflight version of Chiff released! #{version}")
@@ -152,7 +151,7 @@ platform :ios do
       deliver(
         app_version: version,
         platform: 'ios',
-        skip_binary_upload: options[:build],
+        skip_binary_upload: !options[:build],
         skip_screenshots: true,
         submission_information: "{ \"add_id_info_uses_idfa\": false }",
         submit_for_review: options[:submit]

@@ -39,7 +39,7 @@ class RequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if Properties.hasFaceID {
-            showAuthorizationAlert = !Properties.autoShowAuthorization
+            showAuthorizationAlert = authorizer.verify || !Properties.autoShowAuthorization
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         let nc = NotificationCenter.default
@@ -59,7 +59,7 @@ class RequestViewController: UIViewController {
             }
         }
         if !showAuthorizationAlert {
-            acceptRequest()
+            acceptRequest(code: nil)
         }
     }
 
@@ -67,14 +67,7 @@ class RequestViewController: UIViewController {
         super.viewDidAppear(animated)
         guard showAuthorizationAlert else { return }
         showAuthorizationAlert = false
-        let alert = UIAlertController(title: authorizer.requestText, message: authorizer.authenticationReason, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
-            self.acceptRequest()
-        })
-        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
-            AuthorizationGuard.shared.authorizationInProgress = false
-        })
-        present(alert, animated: true, completion: nil)
+        showAlert()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -85,7 +78,7 @@ class RequestViewController: UIViewController {
 
     @IBAction func authenticate(_ sender: UIButton) {
         AuthorizationGuard.shared.authorizationInProgress = true
-        acceptRequest()
+        acceptRequest(code: nil)
     }
 
     @IBAction func close(_ sender: UIButton) {
@@ -108,9 +101,34 @@ class RequestViewController: UIViewController {
 
     // MARK: - Private functions
 
-    private func acceptRequest() {
+    private func showAlert() {
+        let alert = UIAlertController(title: authorizer.requestText,
+                                      message: authorizer.verify ? authorizer.verifyText : authorizer.authenticationReason,
+                                      preferredStyle: authorizer.verify ? .alert : .actionSheet)
+        if authorizer.verify {
+            alert.addTextField { textField in
+                textField.placeholder = "123456"
+                textField.keyboardType = .numberPad
+                textField.textContentType = .oneTimeCode
+                textField.delegate = self
+            }
+        }
+        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+            AuthorizationGuard.shared.authorizationInProgress = false
+        })
+        alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
+            if self.authorizer.verify, let text = alert.textFields?[0].text {
+                self.acceptRequest(code: text)
+            } else {
+                self.acceptRequest(code: nil)
+            }
+        })
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func acceptRequest(code: String?) {
         firstly {
-            self.authorizer.authorize { message in
+            self.authorizer.authorize(verification: code) { message in
                 DispatchQueue.main.async { [weak self] in
                     self?.pickerView.isHidden = true
                     self?.activityIndicator.startAnimating()
@@ -149,7 +167,7 @@ class RequestViewController: UIViewController {
             guard let errorResponse = error as? ChiffErrorResponse else {
                 throw error
             }
-            return self.handleChiffErrorResponse(error: errorResponse, siteName: "TODO")
+            return self.handleChiffErrorResponse(error: errorResponse, siteName: (self.authorizer as? LoginAuthorizer)?.siteName ?? "website")
         }.catch(on: .main) { error in
             if self.handleError(error: error) {
                 _ = self.authorizer.cancelRequest(reason: .error, error: nil)
@@ -158,22 +176,32 @@ class RequestViewController: UIViewController {
     }
 
     private func handleChiffErrorResponse(error: ChiffErrorResponse, siteName: String) -> Guarantee<Void> {
-        return Guarantee<ChiffErrorResponse> { seal in
-            let alert = UIAlertController(title: "requests.authorize_credential_disclosure.title".localized,
-                                          message: String(format: "requests.authorize_credential_disclosure.message".localized, siteName),
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.allow".localized, style: .default) { _ in
-                seal(.discloseAccountExists)
-            })
-            alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.deny".localized, style: .cancel) { _ in
-                seal(.accountExists)
-            })
-            self.present(alert, animated: true, completion: nil)
-        }.then { response in
-            self.authorizer.cancelRequest(reason: .error, error: response)
-        }.map {
-            self.dismiss()
+        switch error {
+        case .accountExists, .discloseAccountExists:
+            return Guarantee<ChiffErrorResponse> { seal in
+                let alert = UIAlertController(title: "requests.authorize_credential_disclosure.title".localized,
+                                              message: String(format: "requests.authorize_credential_disclosure.message".localized, siteName),
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.allow".localized, style: .default) { _ in
+                    seal(.discloseAccountExists)
+                })
+                alert.addAction(UIAlertAction(title: "requests.authorize_credential_disclosure.deny".localized, style: .cancel) { _ in
+                    seal(.accountExists)
+                })
+                self.present(alert, animated: true, completion: nil)
+            }.then { response in
+                self.authorizer.cancelRequest(reason: .error, error: response)
+            }.map {
+                self.dismiss()
+            }
+        default:
+            return firstly {
+                self.authorizer.cancelRequest(reason: .error, error: error)
+            }.map {
+                self.dismiss()
+            }
         }
+
     }
 
     private func handleError(error: Error) -> Bool {
@@ -267,5 +295,18 @@ class RequestViewController: UIViewController {
 
     @objc private func applicationDidEnterBackground(notification: Notification) {
         dismiss()
+    }
+}
+
+extension RequestViewController: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Handle backspace/delete
+        guard !string.isEmpty else {
+
+            // Backspace detected, allow text change, no need to process the text any further
+            return true
+        }
+        return CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
     }
 }

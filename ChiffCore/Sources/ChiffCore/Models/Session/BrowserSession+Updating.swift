@@ -50,30 +50,6 @@ public extension BrowserSession {
         }
     }
 
-    /// Encrypt the data for this session with the session's shared key.
-    /// - Parameters:
-    ///   - organisationKey: The organisation key to add to data.
-    ///   - organisationType: The orgaanisation type to add to the data.
-    ///   - isAdmin: Whether this user is admin in at least one team.
-    ///   - migrated: Whether this beta user has been migrated to production.
-    /// - Throws: Encryption errors.
-    func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> String {
-        var data: [String: Any] = [
-            "environment": Properties.environment.rawValue,
-            "isAdmin": isAdmin
-        ]
-        if let appVersion = Properties.version {
-            data["appVersion"] = appVersion
-        }
-        if let organisationKey = organisationKey {
-            data["organisationKey"] = organisationKey.base64
-        }
-        if let organisationType = organisationType {
-            data["organisationType"] = organisationType.rawValue
-        }
-        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
-    }
-
     /// Delete a single session account from this session.
     /// - Parameter accountId: The account id.
     func deleteAccount(accountId: String) -> Promise<Void> {
@@ -83,6 +59,19 @@ public extension BrowserSession {
     }
 
     // MARK: - Static methods
+    
+    /// Update the session data for all sessions.
+    static func updateAllSessionData() -> Promise<Void> {
+        do {
+            let teamSessions = try TeamSession.all()
+            let organisationKey = teamSessions.first?.organisationKey
+            let organisationType = teamSessions.first?.type
+            let isAdmin = teamSessions.contains(where: { $0.isAdmin })
+            return updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+        } catch {
+            return Promise(error: error)
+        }
+    }
 
     /// Update the session data for all sessions.
     /// - Parameters:
@@ -107,6 +96,33 @@ public extension BrowserSession {
                                         message: message)
             .asVoid()
             .log("Failed to update session data.")
+    }
+    
+    /// Encrypt the data for this session with the session's shared key.
+    /// - Parameters:
+    ///   - organisationKey: The organisation key to add to data.
+    ///   - organisationType: The orgaanisation type to add to the data.
+    ///   - isAdmin: Whether this user is admin in at least one team.
+    ///   - migrated: Whether this beta user has been migrated to production.
+    /// - Throws: Encryption errors.
+    private func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> String {
+        var data: [String: Any] = [
+            "environment": Properties.environment.rawValue,
+            "verify": Properties.extraVerification,
+            "errorLogging": Properties.errorLogging,
+            "analyticsLogging": Properties.analyticsLogging,
+            "isAdmin": isAdmin
+        ]
+        if let appVersion = Properties.version {
+            data["appVersion"] = appVersion
+        }
+        if let organisationKey = organisationKey {
+            data["organisationKey"] = organisationKey.base64
+        }
+        if let organisationType = organisationType {
+            data["organisationType"] = organisationType.rawValue
+        }
+        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
     }
 
     private func updateSessionObject<T: SessionObject>(object: T) throws -> Promise<Void> {

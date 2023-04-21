@@ -13,6 +13,8 @@ class PrivacyViewController: UITableViewController {
 
     @IBOutlet weak var shareErrorSwitch: UISwitch!
     @IBOutlet weak var shareAnalyticsSwitch: UISwitch!
+    @IBOutlet weak var autoAuthorizeSwitch: UISwitch!
+    @IBOutlet weak var extraVerifificationSwitch: UISwitch!
 
     var footerText: String {
         return Properties.environment == .staging ? "settings.privacy_beta_explanation".localized : "settings.privacy_explanation".localized
@@ -25,6 +27,9 @@ class PrivacyViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         shareErrorSwitch.isOn = Properties.errorLogging
         shareAnalyticsSwitch.isOn = Properties.analyticsLogging
+        autoAuthorizeSwitch.isOn = Properties.autoShowAuthorization
+        extraVerifificationSwitch.isOn = Properties.extraVerification
+
         if Properties.environment == .staging {
             shareErrorSwitch.isEnabled = false
             shareAnalyticsSwitch.isEnabled = false
@@ -34,21 +39,26 @@ class PrivacyViewController: UITableViewController {
     // MARK: - UITableView
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "settings.privacy".localized : nil
+        switch section {
+        case 0: return "settings.privacy".localized
+        case 1: return "settings.security".localized
+        default: return nil
+        }
     }
 
     // This gets overrided by willDisplayFooterView, but this sets the correct height
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case 0: return footerText
-        case 1: return "settings.reset_warning".localized
-        case 2: return "settings.delete_warning".localized
+        case 1: return "settings.security_footer".localized
+        case 2: return "settings.reset_warning".localized
+        case 3: return "settings.delete_warning".localized
         default: fatalError("Too many sections")
         }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section == 0 else {
+        guard section <= 1 else {
             return
         }
 
@@ -60,7 +70,7 @@ class PrivacyViewController: UITableViewController {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = "settings.privacy".localized
+        header.textLabel?.text = section == 0 ? "settings.privacy".localized : "settings.security".localized
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -74,13 +84,23 @@ class PrivacyViewController: UITableViewController {
         footer.textLabel?.frame = footer.frame
         switch section {
         case 0: footer.textLabel?.text = footerText
-        case 1: footer.textLabel?.text = "settings.reset_warning".localized
-        case 2: footer.textLabel?.text = "settings.delete_warning".localized
+        case 1: footer.textLabel?.text = "settings.security_footer".localized
+        case 2: footer.textLabel?.text = "settings.reset_warning".localized
+        case 3: footer.textLabel?.text = "settings.delete_warning".localized
         default: fatalError("Too many sections")
         }
     }
 
     // MARK: - Actions
+
+    @IBAction func updateAutoAuthorize(_ sender: UISwitch) {
+        Properties.autoShowAuthorization = sender.isOn
+    }
+
+    @IBAction func updateExtraVerification(_ sender: UISwitch) {
+        Properties.extraVerification = sender.isOn
+        BrowserSession.updateAllSessionData().catchLog("Error updating session data")
+    }
 
     @IBAction func toggleShareErrors(_ sender: UISwitch) {
         Properties.errorLogging = sender.isOn

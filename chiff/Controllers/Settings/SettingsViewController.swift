@@ -16,8 +16,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         return Seed.paperBackupCompleted ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
     }
 
-    @IBOutlet weak var autoAuthorizeCell: UITableViewCell!
-    @IBOutlet weak var autoAuthorizeSwitch: UISwitch!
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
@@ -28,7 +26,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
-        autoAuthorizeSwitch.isOn = Properties.autoShowAuthorization
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
 
         setJailbreakText()
@@ -99,12 +96,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         if let rootController = tabBarController as? RootViewController {
             rootController.setBadge(completed: completed)
         }
-    }
-
-    // MARK: - Actions
-
-    @IBAction func updateAutoAuthorize(_ sender: UISwitch) {
-        Properties.autoShowAuthorization = sender.isOn
     }
 
     // MARK: - UITextViewDelegate

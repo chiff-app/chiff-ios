@@ -47,8 +47,11 @@ public protocol Authorizer {
     var type: ChiffMessageType { get }
     var authenticationReason: String { get }
     var requestText: String { get }
+    var verifyText: String? { get }
     var successText: String { get }
     var logParam: String { get }
+    var code: String? { get }
+    var verify: Bool { get }
 
     init(request: ChiffRequest, session: BrowserSession) throws
 
@@ -57,11 +60,20 @@ public protocol Authorizer {
 
     /// Start the authorization process to handle this request.
     /// - Parameter startLoading: This callback can be used for requests that may take a while to inform the user about the progress.
-    func authorize(startLoading: ((_ status: String?) -> Void)?) -> Promise<Account?>
+    func authorize(verification: String?, startLoading: ((_ status: String?) -> Void)?) -> Promise<Account?>
 }
 
 public extension Authorizer {
-
+    
+    func authenticate(verification: String?) -> Promise<LAContext> {
+        if verify {
+            guard let code = self.code, let verification = verification, code == verification else {
+                return Promise.init(error: ChiffErrorResponse.invalidCode)
+            }
+        }
+        return LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+    }
+    
     func writeLog(isRejected: Bool) {
         let log = ChiffRequestLogModel(sessionId: session.id, param: logParam, type: type, browserTab: browserTab, isRejected: isRejected)
         ChiffRequestsLogStorage.sharedStorage.save(log: log)

@@ -304,9 +304,9 @@ requests:
     comment: Unlock accounts
     value: Ontgrendel accounts
   update_account:
-    value: Update account
+    value: Wijzig account
   update_this:
-    value: Update %@.
+    value: Wijzig %@.
   upgrade:
     value: Upgrade nu
   upgrade_keyn_for_add:
@@ -317,7 +317,26 @@ requests:
     value: >-
       Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
       naar Chiff Premium om weer met al je accounts in te loggen
+  verify_add_account:
+    value: >-
+      Voer de verificatiecode in die in je browser wordt weergegeven om %@ toe
+      te voegen
+  verify_change_password:
+    value: >-
+      Voer de verificatiecode in die in je browser wordt weergegeven om het
+      wachtwoord voor %@ te wijzigen
+  verify_login:
+    value: >-
+      Voer de verificatiecode in die in je browser wordt weergegeven om je aan
+      te melden bij %@
+  verify_ssh_login:
+    value: >-
+      Voer de verificatiecode in die in je terminal wordt weergegeven om in te
+      loggen via SSH.
+  verify_update_account:
+    value: >-
+      Voer de verificatiecode in die in je browser wordt weergegeven om %@ te
+      wijzigen
 webauthn:
   attestation:
     value: Apparaatintegriteit controleren
-

@@ -313,7 +313,20 @@ requests:
     value: >-
       You can enable up to 8 accounts to use in your free Chiff plan. Upgrade to
       Chiff Premium to log in with all your accounts again
+  verify_add_account:
+    value: Please enter the verification code shown in your browser to add %@
+  verify_change_password:
+    value: >-
+      Please enter the verification code shown in your browser to change the
+      password for %@
+  verify_login:
+    value: Please enter the verification code shown in your browser to log in to %@
+  verify_ssh_login:
+    value: >-
+      Please enter the verification code shown in your terminal to log in with
+      SSH.
+  verify_update_account:
+    value: Please enter the verification code shown in your browser to update %@
 webauthn:
   attestation:
     value: Verifying device integrity
-
