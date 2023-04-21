@@ -64,7 +64,6 @@ public extension BrowserSession {
     static func updateAllSessionData() -> Promise<Void> {
         do {
             let teamSessions = try TeamSession.all()
-            let wasAdmin = teamSessions.contains(where: { $0.isAdmin })
             let organisationKey = teamSessions.first?.organisationKey
             let organisationType = teamSessions.first?.type
             let isAdmin = teamSessions.contains(where: { $0.isAdmin })

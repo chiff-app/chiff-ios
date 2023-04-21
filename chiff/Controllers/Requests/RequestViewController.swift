@@ -117,7 +117,11 @@ class RequestViewController: UIViewController {
             AuthorizationGuard.shared.authorizationInProgress = false
         })
         alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
-            self.acceptRequest(code: alert.textFields?[0].text ?? "")
+            if self.authorizer.verify, let text = alert.textFields?[0].text {
+                self.acceptRequest(code: text)
+            } else {
+                self.acceptRequest(code: nil)
+            }
         })
         present(alert, animated: true, completion: nil)
     }
