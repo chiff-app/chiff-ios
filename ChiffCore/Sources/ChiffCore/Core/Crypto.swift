@@ -219,7 +219,7 @@ public class Crypto {
     /// - Parameter message: The hex-encoded string.
     /// - Throws: `CryptoError.convertFromHex` if libsodium fails to decode the string.
     /// - Returns: The data.
-    func fromHex(_ message: String) throws -> Data {
+    public func fromHex(_ message: String) throws -> Data {
         guard let data = sodium.utils.hex2bin(message)?.data else {
             throw CryptoError.convertFromHex
         }

@@ -344,6 +344,19 @@ public struct UserAccount: Account, Equatable, Identity {
         }
         return try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId, extensions: nil)
     }
+    
+    /// Sign a WebAuthn challenge.
+    /// - Parameters:
+    ///   - challenge: The challenge that should be signed.
+    ///   - rpId: The relying party id.
+    /// - Throws: Keychain or cryptography errors.
+    /// - Returns: The signature
+    public func webAuthnSign(challenge: Data, rpId: String) throws -> Data {
+        guard webAuthn != nil else {
+            throw AccountError.noWebAuthn
+        }
+        return try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId, extensions: nil)
+    }
 
     /// Return the WebAuthn public key.
     /// - Throws: Keychain or cryptography errors.

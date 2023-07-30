@@ -130,6 +130,11 @@ public extension String {
     var fromBase64: Data? {
         return try? Crypto.shared.convertFromBase64(from: self)
     }
+    
+    /// Decode this string from hex to data. Returns nil on any error.
+    var fromHex: Data? {
+        return try? Crypto.shared.fromHex(self)
+    }
 
     /// Convert to data using utf8.
     var data: Data {

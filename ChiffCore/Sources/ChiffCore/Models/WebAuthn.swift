@@ -55,10 +55,13 @@ public struct WebAuthnAttestation: Codable {
 /// A WebAuthn for an account.
 public struct WebAuthn: Equatable {
     /// This is the RPid (relying party id) in WebAuthn definition.
-    let id: String
+    public let id: String
     let algorithm: WebAuthnAlgorithm
     let salt: Data
-    let userHandle: String?
+    public let userHandle: String?
+    public var authenticatorData: Data {
+        return id.sha256Data + Data([0x05, 0x00, 0x00, 0x00, 0x00]) // UP + UV flags and we're not using the counter.
+    }
 
     static let cryptoContext = "webauthn"
     static let AAGUID = Data([UInt8](arrayLiteral: 0x73, 0x07, 0x21, 0x2e, 0xc6, 0xdb, 0x98, 0x5e, 0xcd, 0x80, 0x55, 0xf6, 0x4a, 0x1f, 0x10, 0x07))
@@ -206,7 +209,21 @@ public struct WebAuthn: Equatable {
             throw WebAuthnError.wrongRpId
         }
         let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
-        let data = try createAuthenticatorData(accountId: nil, extensions: nil) + challengeData
+        return (try self.sign(accountId: accountId, challenge: challengeData, rpId: rpId, extensions: extensions)).base64
+    }
+    
+    /// Sign a WebAuthn challenge.
+    /// - Parameters:
+    ///   - accountId: The account id.
+    ///   - challenge: The challenge to be signed.
+    ///   - rpId: The relying party id.
+    /// - Throws: Keychain, Crypto or WebAuthn errors.
+    /// - Returns: The signature
+    public func sign(accountId: String, challenge: Data, rpId: String, extensions: WebAuthnExtensions?) throws -> Data {
+        guard rpId == id else {
+            throw WebAuthnError.wrongRpId
+        }
+        let data = try createAuthenticatorData(accountId: nil, extensions: nil) + challenge
         return try sign(accountId: accountId, data: data)
     }
 
@@ -228,7 +245,7 @@ public struct WebAuthn: Equatable {
                 }.map { WebAuthnAttestation(signature: signature.derRepresentation.base64, clientData: clientDataHash, certificates: $0) }
             } else { // Self-signing
                 let signature = try sign(accountId: accountId, data: clientDataHash)
-                return .value(WebAuthnAttestation(signature: signature, clientData: clientDataHash, certificates: nil))
+                return .value(WebAuthnAttestation(signature: signature.base64, clientData: clientDataHash, certificates: nil))
             }
         } catch {
             return Promise(error: error)
@@ -240,9 +257,7 @@ public struct WebAuthn: Equatable {
     // MARK: - Private functions
 
     private func createAuthenticatorData(accountId: String?, extensions: WebAuthnExtensions?) throws -> Data {
-        var data = Data()
-        data.append(id.sha256Data)
-        data.append(contentsOf: [0x05, 0x00, 0x00, 0x00, 0x00]) // UP + UV flags and we're not using the counter.
+        var data = authenticatorData
         if let accountId = accountId {
             try appendAttestation(data: &data, accountId: accountId)
         }
@@ -299,14 +314,14 @@ public struct WebAuthn: Equatable {
         }
     }
 
-    private func sign(accountId: String, data: Data) throws -> String {
+    private func sign(accountId: String, data: Data) throws -> Data {
         switch algorithm {
         case .edDSA:
             guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .account(attribute: .webauthn)) else {
                 throw KeychainError.notFound
             }
             let signature = try Crypto.shared.signature(message: data, privKey: privKey)
-            return signature.base64
+            return signature
         case .ECDSA256:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -315,7 +330,7 @@ public struct WebAuthn: Equatable {
                 throw KeychainError.notFound
             }
             let signature = try privKey.signature(for: data)
-            return signature.derRepresentation.base64
+            return signature.derRepresentation
         case .ECDSA384:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -324,7 +339,7 @@ public struct WebAuthn: Equatable {
                 throw KeychainError.notFound
             }
             let signature = try privKey.signature(for: data)
-            return signature.derRepresentation.base64
+            return signature.derRepresentation
         case .ECDSA512:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -333,7 +348,7 @@ public struct WebAuthn: Equatable {
                 throw KeychainError.notFound
             }
             let signature = try privKey.signature(for: data)
-            return signature.derRepresentation.base64
+            return signature.derRepresentation
         }
     }
 
