@@ -90,7 +90,7 @@ public class LocalAuthenticationManager {
 
     /// A helper function to determine if an `LAError` is actionable or not.
     ///
-    /// Some errors indicate there may something wrong in the app, while others are throws when, for example, the user cancels the operation.
+    /// Some errors indicate there may something wrong in the app, while others are thrown when, for example, the user cancels the operation.
     /// - Parameter error: The error that should be checked.
     /// - Returns: A localized user-friendly error string.
     public func handleError(error: Error) -> String? {
@@ -99,10 +99,10 @@ public class LocalAuthenticationManager {
             // Not interesting, do nothing.
             break
         case LAError.invalidContext, LAError.notInteractive:
-            Logger.shared.error("AuthenticateUser error", error: error)
+            Logger.shared.error(error.localizedDescription, error: error)
             return "errors.local_authentication.generic".localized
         case LAError.passcodeNotSet:
-            Logger.shared.error("AuthenticateUser error", error: error)
+            Logger.shared.error(error.localizedDescription, error: error)
             return "errors.local_authentication.passcode_not_set".localized
         case let error as LAError:
             if #available(iOS 11.0, *) {
@@ -112,13 +112,13 @@ public class LocalAuthenticationManager {
                 case LAError.biometryNotEnrolled:
                     return "errors.local_authentication.biometry_not_enrolled".localized
                 default:
-                    Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
+                    Logger.shared.warning("An LA error occured that was not catched \(error.localizedDescription). Check if it should be..", error: error)
                 }
             } else {
-                Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
+                Logger.shared.warning("An LA error occured that was not catched. Check if it should be.. \(error.localizedDescription)", error: error)
             }
         default:
-            Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
+            Logger.shared.warning("An LA error occured that was not catched. Check if it should be.. \(error.localizedDescription)", error: error)
         }
         return nil
     }
