@@ -71,7 +71,7 @@ public struct WebAuthn: Equatable {
     ///   - id: The relying party id (RPid)
     ///   - algorithms: The algorithms should be provided in order of preference.
     /// - Throws: Crypto errors if no accepted algorithm is found.
-    init(id: String, algorithms: [WebAuthnAlgorithm], userHandle: String?) throws {
+    public init(id: String, algorithms: [WebAuthnAlgorithm], userHandle: String?) throws {
         var algorithm: WebAuthnAlgorithm?
         if #available(iOS 13.0, *) {
             algorithm = algorithms.first
