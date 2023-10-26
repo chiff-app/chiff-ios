@@ -83,6 +83,10 @@
 		<dict>
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
+				<key>ShowsConfigurationUI</key>
+				<false/>
+				<key>ProvidesPasswords</key>
+				<true/>
 				<key>ProvidesPasskeys</key>
 				<true/>
 			</dict>
