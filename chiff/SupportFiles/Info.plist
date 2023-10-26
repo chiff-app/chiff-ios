@@ -45,7 +45,7 @@
 	<dict>
 		<key>TSKPinnedDomains</key>
 		<dict>
-			<key>api.chiff.io</key>
+			<key>api.chiff.dev</key>
 			<dict>
 				<key>TSKDisableDefaultReportUri</key>
 				<true/>
@@ -62,7 +62,7 @@
 					<string>KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I=</string>
 				</array>
 			</dict>
-			<key>api.chiff.dev</key>
+			<key>api.chiff.io</key>
 			<dict>
 				<key>TSKDisableDefaultReportUri</key>
 				<true/>

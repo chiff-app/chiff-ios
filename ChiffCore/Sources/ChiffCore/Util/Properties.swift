@@ -53,7 +53,7 @@ public struct Properties {
     private static let attestationKeyIDFlag = "attestationKeyIDFlag"
     private static let extraVerificationFlag = "extraVerificationFlag"
 
-    public static let latestKeychainVersion = 2
+    public static let latestKeychainVersion = 3
     static let termsOfUseVersion = 2
 
     /// Whether this is the first time the app is launched.

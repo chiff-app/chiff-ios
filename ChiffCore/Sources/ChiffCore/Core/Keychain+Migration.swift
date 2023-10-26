@@ -34,6 +34,9 @@ extension Keychain {
                 try migrateKeychainGroup(id: nil, service: .sharedAccount(attribute: .notes), oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
                 try migrateKeychainGroup(id: nil, service: .sharedAccount(attribute: .otp), oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
                 Properties.currentKeychainVersion = 2
+            case let n where n < 3:
+                try migrateKeychainGroup(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
+                Properties.currentKeychainVersion = 3
             default:
                 return
             }
@@ -81,8 +84,8 @@ extension Keychain {
                 var updateQuery: [String: Any] = [kSecClass as String:  kSecClassGenericPassword,
                                                   kSecAttrAccount as String: id,
                                                   kSecAttrAccessGroup as String: oldGroup,
-                                            kSecAttrService as String: service.service,
-                                            kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
+                                                  kSecAttrService as String: service.service,
+                                                  kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
 
                 if let defaultContext = service.defaultContext {
                     updateQuery[kSecUseAuthenticationContext as String] = context ?? defaultContext
