@@ -36,6 +36,7 @@ extension Keychain {
                 Properties.currentKeychainVersion = 2
             case let n where n < 3:
                 try migrateKeychainGroup(id: KeyIdentifier.webauthn.identifier(for: .webAuthnSeed), service: .webAuthnSeed, oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
+                Properties.reloadAccounts = true
                 Properties.currentKeychainVersion = 3
             default:
                 return
