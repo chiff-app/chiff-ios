@@ -113,7 +113,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         previewLayer?.frame = videoView.layer.bounds
         videoView.layer.insertSublayer(previewLayer!, at: 0)
-        
+
         DispatchQueue.global(qos: .userInteractive).async {
             captureSession.startRunning()
         }
