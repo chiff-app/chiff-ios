@@ -47,6 +47,11 @@
 		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
 		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
 		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
+		4946E4E72AF52F5900EDA023 /* PasskeyRegistrationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */; };
+		4946E4E92AF52FAD00EDA023 /* PasskeyAssertionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */; };
+		4946E4EB2AF5321E00EDA023 /* LoginViewController+Passwords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */; };
+		4946E4ED2AF5322E00EDA023 /* LoginViewController+PassKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */; };
+		4946E4EF2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */; };
 		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
@@ -257,6 +262,11 @@
 		4931BC55254190B70015277D /* CreateOrganisationAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrganisationAuthorizer.swift; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
+		4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyRegistrationRequest.swift; sourceTree = "<group>"; };
+		4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyAssertionRequest.swift; sourceTree = "<group>"; };
+		4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Passwords.swift"; sourceTree = "<group>"; };
+		4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+PassKeys.swift"; sourceTree = "<group>"; };
+		4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCredentialServiceIdentifier+Site.swift"; sourceTree = "<group>"; };
 		494AA2AF24266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/privacy_policy.md; sourceTree = "<group>"; };
 		494AA2B124266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = en; path = en.lproj/Localized.yml; sourceTree = "<group>"; };
 		494AA2B324266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/terms_of_use.md; sourceTree = "<group>"; };
@@ -734,6 +744,11 @@
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
 				49590F422625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift */,
 				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
+				4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */,
+				4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */,
+				4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */,
+				4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */,
+				4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */,
 			);
 			path = chiffCredentialProvider;
 			sourceTree = "<group>";
@@ -1225,20 +1240,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4946E4E72AF52F5900EDA023 /* PasskeyRegistrationRequest.swift in Sources */,
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				49E454782622F76600AD9E68 /* ChiffTableViewController.swift in Sources */,
 				49B2A96425433502001BA6EE /* TeamAccount.swift in Sources */,
+				4946E4EF2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift in Sources */,
 				492EC78C26249EB9003962F5 /* LocalizableTextField.swift in Sources */,
 				498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
+				4946E4E92AF52FAD00EDA023 /* PasskeyAssertionRequest.swift in Sources */,
 				498B6048260B9DE5009259E8 /* Constants.swift in Sources */,
 				49B2A958254334EF001BA6EE /* TeamRole.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				49590F412625D3E1003578B0 /* AccountsPickerButton.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
+				4946E4ED2AF5322E00EDA023 /* LoginViewController+PassKeys.swift in Sources */,
 				49B2A957254334EF001BA6EE /* TeamUser.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */,
 				498B6040260B9A14009259E8 /* Localizer.swift in Sources */,
@@ -1254,6 +1273,7 @@
 				49CEB506260CC50900FEF356 /* Properties.swift in Sources */,
 				49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
+				4946E4EB2AF5321E00EDA023 /* LoginViewController+Passwords.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
