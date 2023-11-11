@@ -175,6 +175,17 @@ public struct BrowserSession: Session {
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
     }
+    
+    /// Respond to a request export all accounts
+    /// - Parameters:
+    ///   - accounts: A dictionary of account, where the key is the id
+    ///   - context: Optionally, an authenticated `LAContext` object.
+    /// - Throws: Encoding, encryption or network errors.
+    func sendExportResponse(browserTab: Int, accounts: [String: ExportAccount], context: LAContext?) throws {
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .export, browserTab: browserTab, exportAccounts: accounts))
+        let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
+        try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
+    }
 
     /// Send the team seed to the client.
     /// - Parameters:
