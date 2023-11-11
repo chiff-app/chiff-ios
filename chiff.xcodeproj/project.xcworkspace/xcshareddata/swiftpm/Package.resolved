@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/amplitude/Amplitude-iOS.git",
         "state": {
           "branch": null,
-          "revision": "83b6c60321e0d5a6824e89aa45699c557cca5531",
-          "version": "8.15.2"
+          "revision": "dca2c744336e651ee285011282b86accc2ce3704",
+          "version": "8.17.2"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/amplitude/analytics-connector-ios.git",
         "state": {
           "branch": null,
-          "revision": "d3d682a26ca6f4947ece2c2e627971bb41b940fa",
-          "version": "1.0.1"
+          "revision": "e2ca17ac735bcbc48b13062484541702ef45153d",
+          "version": "1.0.3"
         }
       },
       {
@@ -57,11 +57,11 @@
       },
       {
         "package": "Kronos",
-        "repositoryURL": "https://github.com/lyft/Kronos.git",
+        "repositoryURL": "https://github.com/MobileNativeFoundation/Kronos.git",
         "state": {
           "branch": null,
-          "revision": "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
-          "version": "4.2.1"
+          "revision": "a46542ce639581af2a85ab9ec1616a507a5d4ae2",
+          "version": "4.2.2"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
         "state": {
           "branch": null,
-          "revision": "a739d4effcbafd177a699bac8a7ff343f4d0706c",
-          "version": "6.22.0"
+          "revision": "8a98e31a47854d3180882c8068cc4d9381bf382d",
+          "version": "6.22.1"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
         "state": {
           "branch": null,
-          "revision": "65d573e0e2687ea91ab0b1be377f9dd3eb1c2785",
-          "version": "2.0.1"
+          "revision": "5718ba8720b4dafc5360aebfbc9762e2d5f2615e",
+          "version": "3.0.3"
         }
       }
     ]
