@@ -72,6 +72,7 @@ public enum AnalyticsEvent: String {
     case createSSHKeyRequestAuthorized = "CreateSSHKeyRequestAuthorized"
     case loginWithSSHRequestOpened = "LoginWithSSHRequestOpened"
     case loginWithSSHRequestAuthorized = "LoginWithSSHRequestAuthorized"
+    case exportAccountsRequestAuthorized = "ExportAccountsRequestAuthorized"
 
     // Local login
     case passwordCopied = "PasswordCopied"

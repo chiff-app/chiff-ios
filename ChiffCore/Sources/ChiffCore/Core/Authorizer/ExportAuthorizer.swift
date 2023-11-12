@@ -14,17 +14,17 @@ public class ExportAuthorizer: Authorizer {
     public let browserTab: Int
     public let code: String?
     public var logParam: String {
-        return "TODO"
+        return ""
     }
 
-    public let requestText = "requests.confirm_login".localized.capitalizedFirstLetter
-    public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
+    public let requestText = "requests.export_accounts".localized.capitalizedFirstLetter
+    public let successText = "requests.export_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
-        return "TODO"
+        return requestText
     }
     public let verify = true
     public var verifyText: String? {
-        return "TODO"
+        return "requests.verify_export".localized
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
@@ -35,7 +35,7 @@ public class ExportAuthorizer: Authorizer {
         }
         self.code = code
         self.browserTab = browserTab
-//        Logger.shared.analytics(.bulkLoginRequestOpened)
+        Logger.shared.analytics(.exportAccountsRequestAuthorized)
     }
 
     public func authorize(verification: String?, startLoading: ((String?) -> Void)?) -> Promise<Account?> {
