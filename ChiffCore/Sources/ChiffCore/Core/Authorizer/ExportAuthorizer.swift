@@ -45,12 +45,14 @@ public class ExportAuthorizer: Authorizer {
             let accounts: [String: Account] = try UserAccount.allCombined(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             let exportAccounts = accounts.compactMapValues { (account) -> ExportAccount? in
-                guard let password = try? account.password(),
-                      let notes = try? account.notes(),
-                      let token = try? account.oneTimePasswordToken() else {
-                    return nil
+                var tokenURL: String?
+                if let token = try? account.oneTimePasswordToken() {
+                    let queryItem = URLQueryItem(name: "secret", value: token.generator.secret.base32)
+                    var queryComponents = try? URLComponents(url: token.toURL(), resolvingAgainstBaseURL: false)
+                    queryComponents?.queryItems?.append(queryItem)
+                    tokenURL = queryComponents?.url?.absoluteString
                 }
-                return ExportAccount(password: password, notes: notes, tokenURL: try? token.toURL().absoluteString)
+                return ExportAccount(password: try? account.password(), notes: try? account.notes(), tokenURL: tokenURL)
             }
             try self.session.sendExportResponse(browserTab: self.browserTab, accounts: exportAccounts, context: context)
             return nil

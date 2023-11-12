@@ -13,6 +13,7 @@ import Kronos
 import Sodium
 import DataCompression
 import DeviceCheck
+import Base32
 #if os(iOS)
 import UIKit
 #endif
@@ -240,6 +241,11 @@ public extension Data {
         result = result.replacingOccurrences(of: "/", with: "_")
         result = result.replacingOccurrences(of: "=", with: "")
         return result
+    }
+    
+    var base32: String {
+        let data = NSData(data: self)
+        return data.base32String()
     }
 
     /// A bytes object for libsodium compatibility.
