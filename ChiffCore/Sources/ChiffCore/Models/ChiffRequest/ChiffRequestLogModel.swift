@@ -55,6 +55,8 @@ public struct ChiffRequestLogModel: Codable {
             return String(format: "logs.ssh_created".localized, param)
         case .sshLogin:
             return String(format: "logs.ssh_login".localized, param)
+        case .export:
+            return "logs.export".localized
         default:
            return "logs.unknown".localized
         }

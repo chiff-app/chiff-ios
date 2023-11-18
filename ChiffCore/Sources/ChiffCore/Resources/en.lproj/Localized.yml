@@ -171,6 +171,8 @@ logs:
     value: Logged in to %@ accounts
   change:
     value: Password changed @ %@
+  export:
+    value: Accounts exported
   fill:
     value: Password retrieved for %@
   get_details:
@@ -228,7 +230,7 @@ requests:
     value: Change password
   chiff_for_teams:
     value: Chiff for teams
-  confirm_login:
+  confirm_login (2):
     value: Confirm login
   confirm_request:
     value: Confirm request
@@ -238,6 +240,10 @@ requests:
     value: >-
       The request that was received expired. This means it was sent more than
       three minutes ago.
+  export_accounts:
+    value: Export accounts
+  export_succesful:
+    value: Accounts exported
   generate_ssh:
     value: Generate SSH key
   get_for:
@@ -319,6 +325,13 @@ requests:
     value: >-
       Please enter the verification code shown in your browser to change the
       password for %@
+  verify_export:
+    value: |-
+      ⚠️ You are about to export ALL accounts to an unencrypted file.
+
+      ⚠️ Only proceed if this is your intention.
+
+      Enter the verification code shown in the browser:
   verify_login:
     value: Please enter the verification code shown in your browser to log in to %@
   verify_ssh_login:

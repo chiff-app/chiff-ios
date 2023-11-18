@@ -18,6 +18,19 @@ struct BulkLoginAccount: Codable {
     }
 }
 
+/// Account for CSV exports.
+struct ExportAccount: Codable {
+    let password: String?
+    let notes: String?
+    let tokenURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case password = "p"
+        case notes = "n"
+        case tokenURL = "o"
+    }
+}
+
 /// Account object when importing from a CSV file.
 public struct BulkAccount: Codable {
     let username: String
@@ -170,6 +183,7 @@ struct KeynCredentialsResponse: Codable {
     var certificates: [String]?
     var error: ChiffErrorResponse?
     var userHandle: String?
+    var exportAccounts: [String: ExportAccount]?
 
     enum CodingKeys: String, CodingKey {
         case username = "u"
@@ -188,6 +202,7 @@ struct KeynCredentialsResponse: Codable {
         case certificates = "c"
         case error = "e"
         case userHandle = "h"
+        case exportAccounts = "z"
     }
 
 }
