@@ -2188,7 +2188,7 @@
 								</children>
 							</folder_node>
 							<folder_node>
-								<name>confirm_login (2)</name>
+								<name>confirm_login</name>
 								<children>
 									<concept_node>
 										<name>value</name>
