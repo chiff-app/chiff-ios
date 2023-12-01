@@ -112,17 +112,20 @@ class RequestViewController: UIViewController {
                 textField.textContentType = .oneTimeCode
                 textField.delegate = self
             }
-        }
-        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
-            AuthorizationGuard.shared.authorizationInProgress = false
-        })
-        alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
-            if self.authorizer.verify, let text = alert.textFields?[0].text {
-                self.acceptRequest(code: text)
-            } else {
+            alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+                AuthorizationGuard.shared.authorizationInProgress = false
+            })
+            alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
+                self.acceptRequest(code: alert.textFields?[0].text)
+            })
+        } else {
+            alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
                 self.acceptRequest(code: nil)
-            }
-        })
+            })
+            alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+                AuthorizationGuard.shared.authorizationInProgress = false
+            })
+        }
         present(alert, animated: true, completion: nil)
     }
 
