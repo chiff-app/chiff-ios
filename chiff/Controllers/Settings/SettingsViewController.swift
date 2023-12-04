@@ -75,13 +75,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 4, #available(iOS 13.0, *) {
+        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 3, #available(iOS 13.0, *) {
             cell.accessoryView = UIImageView(image: UIImage(systemName: "square.and.arrow.up"))
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 4 {
+        if indexPath.row == 3 {
             let activityViewController = UIActivityViewController(activityItems: [self], applicationActivities: nil)
             activityViewController.excludedActivityTypes = [.addToReadingList, .assignToContact, .markupAsPDF, .openInIBooks, .saveToCameraRoll]
             present(activityViewController, animated: true, completion: nil)
