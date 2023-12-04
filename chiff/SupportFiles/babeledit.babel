@@ -2528,6 +2528,26 @@
 								</children>
 							</folder_node>
 							<folder_node>
+								<name>otp_redirect</name>
+								<children>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
 								<name>paired_devices</name>
 								<children>
 									<concept_node>

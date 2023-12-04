@@ -17,9 +17,8 @@ protocol PairControllerDelegate: AnyObject {
 }
 
 enum URLError: Error {
-    case invalidScheme
-    case invalidHost
-    case invalidPath
+    case invalid
+    case otp
 }
 
 class PairViewController: QRViewController {
@@ -29,22 +28,15 @@ class PairViewController: QRViewController {
 
     override func handleURL(url: URL) throws {
         var promise: Promise<Session>
-        switch url.scheme {
-        case "keyn":
+        switch url.chiffType {
+        case .pairing, .addUser:
             promise = self.pair(url: url)
-        case "https":
-            guard url.host == "keyn.app" || url.host == "chiff.app" else {
-                throw URLError.invalidHost
-            }
-            switch url.pathComponents[1] {
-            case "pair", "adduser":
-                promise = self.pair(url: url)
-            case "create":
-                promise = self.createTeam(url: url)
-            default:
-                throw URLError.invalidPath
-            }
-        default: throw URLError.invalidScheme
+        case .createTeam:
+            promise = self.createTeam(url: url)
+        case .otp:
+            throw URLError.otp
+        default:
+            throw URLError.invalid
         }
         promise.done(on: .main) {
             self.createSession($0)
@@ -88,6 +80,8 @@ class PairViewController: QRViewController {
             if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
                 self.showAlert(message: authenticationError, handler: closeError)
             }
+        case URLError.otp:
+            self.showAlert(message: "devices.otp_redirect".localized, handler: closeError)
         case SessionError.invalid:
             Logger.shared.error("Invalid QR-code scanned", error: error)
             self.showAlert(message: "errors.session_invalid".localized, handler: closeError)

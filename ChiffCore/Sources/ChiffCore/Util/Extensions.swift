@@ -351,6 +351,41 @@ extension UserDefaults {
     }
 }
 
+extension URL {
+    
+    public enum ChiffType {
+        case pairing
+        case createTeam
+        case addUser
+        case otp
+    }
+    
+    public var chiffType: ChiffType? {
+        switch scheme {
+        case "otpauth":
+            return .otp
+        case "keyn":
+            return .pairing
+        case "https":
+            guard host == "keyn.app" || host == "chiff.app" else {
+                return nil
+            }
+            switch pathComponents[1] {
+            case "pair":
+                return .pairing
+            case "adduser":
+                return .addUser
+            case "create":
+                return .createTeam
+            default:
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
+}
+
 @available(iOS 13.0, *)
 extension UIImage {
 

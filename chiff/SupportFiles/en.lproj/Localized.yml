@@ -279,6 +279,10 @@ devices:
     value: 'on'
   open_settings:
     value: Open settings
+  otp_redirect:
+    value: >-
+      This seems to be a 2FA URL. You can add it by selecting an account from
+      the 'Accounts'-tab and tapping 'Scan QR'.
   paired_devices:
     value: My paired devices
   pairing:
