@@ -48,8 +48,12 @@ extension LoginViewController {
                 return
             }
             self.passkeyAssertionRequest = PasskeyAssertionRequest(clientDataHash: request.clientDataHash, relyingPartyIdentifier: credentialIdentity.relyingPartyIdentifier)
-        default:
-            print("TODO")
+        case .password:
+            self.type = .passwordLogin
+            self.username = credentialRequest.credentialIdentity.user
+            self.accountId = credentialRequest.credentialIdentity.recordIdentifier
+        @unknown default:
+            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
 
