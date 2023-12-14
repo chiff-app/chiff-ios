@@ -42,7 +42,7 @@ extension Keychain {
                         throw SeedError.notFound
                     }
                     let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: "keynseed")
-                    try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, secretData: webAuthnSeed)
+                    try? Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, secretData: webAuthnSeed)
                 }
                 Properties.reloadAccounts = true
                 Properties.currentKeychainVersion = 3
