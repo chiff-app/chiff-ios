@@ -168,7 +168,7 @@ accounts:
   username:
     value: Naam
   webauthn_enabled:
-    value: "WebAuthn is ingeschakeld ⭐ \U0001F5DD️ "
+    value: "Dit account heeft een Passkey ⭐ \U0001F5DD️ "
   website_details:
     value: Websitegegevens
 backup:

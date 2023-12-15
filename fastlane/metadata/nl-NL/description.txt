@@ -10,7 +10,7 @@ Wat is Chiff?
 - Gratis voor persoonlijk gebruik.
 - Gebruik lange, complexe en unieke wachtwoorden voor al je accounts.
 - Wachtwoorden staan veilig op je telefoon opgeslagen.
-- Ondersteunt meerdere authenticatiemethoden zoals One Time Passwords (OTP) en WebAuthn.
+- Ondersteunt meerdere authenticatiemethoden zoals One Time Passwords (OTP) en Passkeys.
 - De nieuwe manier van inloggen.
 
 Veiligheid is onze hoogste prioriteit. De app en extensie zijn uitgebreid getest door een onafhankelijke derde partij. Bovendien is Chiff ontworpen dat we nooit toegang hebben tot je wachtwoorden en andere gevoelige informatie. Je wachtwoorden worden veilig opgeslagen op je telefoon en elk bericht tussen de app en de browser is end-to-end versleuteld. Niemand kan deze lezen, dus ook wij niet. Dit maakt Chiff niet alleen veilig, maar ook privacy-vriendelijk.

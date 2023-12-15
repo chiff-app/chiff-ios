@@ -34,6 +34,18 @@ extension Keychain {
                 try migrateKeychainGroup(id: nil, service: .sharedAccount(attribute: .notes), oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
                 try migrateKeychainGroup(id: nil, service: .sharedAccount(attribute: .otp), oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
                 Properties.currentKeychainVersion = 2
+            case let n where n < 3:
+                let updated = try migrateKeychainGroup(id: KeyIdentifier.webauthn.identifier(for: .webAuthnSeed), service: .webAuthnSeed, oldGroup: "35MFYY2JY5.io.keyn.keyn", context: context)
+                if !updated {
+                    // Create WebAuthn seed, because it did not exist yet.
+                    guard let masterSeed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context) else {
+                        throw SeedError.notFound
+                    }
+                    let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: "keynseed")
+                    try? Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, secretData: webAuthnSeed)
+                }
+                Properties.reloadAccounts = true
+                Properties.currentKeychainVersion = 3
             default:
                 return
             }
@@ -44,7 +56,7 @@ extension Keychain {
 
     // MARK: - Private functions
 
-    private func migrateKeychainGroup(id identifier: String?, service: KeychainService, oldGroup: String, context: LAContext?) throws {
+    @discardableResult private func migrateKeychainGroup(id identifier: String?, service: KeychainService, oldGroup: String, context: LAContext?) throws -> Bool {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service.service,
                                     kSecAttrAccessGroup as String: oldGroup,
@@ -63,7 +75,7 @@ extension Keychain {
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
         case errSecSuccess: break
-        case errSecItemNotFound: return
+        case errSecItemNotFound: return false
         case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case let status:
@@ -81,8 +93,8 @@ extension Keychain {
                 var updateQuery: [String: Any] = [kSecClass as String:  kSecClassGenericPassword,
                                                   kSecAttrAccount as String: id,
                                                   kSecAttrAccessGroup as String: oldGroup,
-                                            kSecAttrService as String: service.service,
-                                            kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
+                                                  kSecAttrService as String: service.service,
+                                                  kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
 
                 if let defaultContext = service.defaultContext {
                     updateQuery[kSecUseAuthenticationContext as String] = context ?? defaultContext
@@ -97,6 +109,7 @@ extension Keychain {
                 }
             }
         }
+        return dataArray.count > 0
     }
 
     private func migrateService(oldService: String, attribute: KeychainService.AccountAttribute, includeSharedAccount: Bool, context: LAContext?) throws {

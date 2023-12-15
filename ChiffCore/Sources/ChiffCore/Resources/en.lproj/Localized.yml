@@ -230,7 +230,7 @@ requests:
     value: Change password
   chiff_for_teams:
     value: Chiff for teams
-  confirm_login (2):
+  confirm_login:
     value: Confirm login
   confirm_request:
     value: Confirm request

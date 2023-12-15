@@ -234,7 +234,7 @@ requests:
     value: Wijzig wachtwoord
   chiff_for_teams:
     value: Chiff voor teams
-  confirm_login (2):
+  confirm_login:
     value: Bevestig login
   confirm_request:
     value: Bevestig verzoek

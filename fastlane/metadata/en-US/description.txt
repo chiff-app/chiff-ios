@@ -10,7 +10,7 @@ What is Chiff?
 - Free for personal use.
 - Use long, complex and unique passwords for all accounts.
 - Passwords are securely stored on your phone.
-- Supports multiple authentication methods such as One Time Passwords (OTP) and WebAuthn. 
+- Supports multiple authentication methods such as One Time Passwords (OTP) and Passkeys. 
 - The new way of logging in.
 
 Security is our top priority. The security of the app and extension have been extensively tested by an independent third party. Moreover, Chiff never has access to your sensitive data. Your passwords are securely stored on your phone and every message between the app and browser is end-to-end encrypted, so even we cannot decrypt it. Besides being very secure, it makes Chiff also privacy-friendly.

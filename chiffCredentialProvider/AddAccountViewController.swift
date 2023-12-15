@@ -53,23 +53,9 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate {
         if let index = self.navigationController?.viewControllers.firstIndex(of: self), index == 0 {
             updateUI()
         }
-        if let service = self.serviceIdentifiers.first {
-            switch service.type {
-            case .URL:
-                if let url = URL(string: service.identifier) {
-                    if let host = url.host {
-                        self.siteNameField.text = host.starts(with: "www.") ? String(host.dropFirst(4)) : host
-                        if let scheme = url.scheme {
-                            self.siteURLField.text = "\(scheme)://\(host)"
-                        }
-                    }
-                }
-            case .domain:
-                self.siteURLField.text = "https://\(service.identifier)"
-                self.siteNameField.text = service.identifier.starts(with: "www.") ? String(service.identifier.dropFirst(4)) : service.identifier
-            @unknown default:
-                break
-            }
+        if let service = self.serviceIdentifiers.first, let site = service.site {
+            self.siteNameField.text = site.name
+            self.siteURLField.text = site.url
         }
 
         notesCell.delegate = self

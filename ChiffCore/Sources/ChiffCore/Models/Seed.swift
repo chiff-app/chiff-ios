@@ -158,12 +158,12 @@ public struct Seed {
     /// - Throws: `SeedError` if the item is not found.
     /// - Returns: The seed data.
     static func getWebAuthnSeed(context: LAContext?) throws -> Data {
-        guard let seed = try Keychain.shared.get(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, context: context) else {
+        guard let seed = try Keychain.shared.get(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, context: context) else {
             guard let masterSeed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context) else {
                 throw SeedError.notFound
             }
             let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: seedCryptoContext)
-            try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
+            try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, secretData: webAuthnSeed)
             return webAuthnSeed
         }
         return seed
@@ -263,7 +263,7 @@ public struct Seed {
         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .passwordSeed), service: .passwordSeed, secretData: passwordSeed)
         try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-        try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
+        try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .webAuthnSeed, secretData: webAuthnSeed)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)

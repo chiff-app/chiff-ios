@@ -79,6 +79,18 @@
 	</dict>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>ASCredentialProviderExtensionCapabilities</key>
+			<dict>
+				<key>ShowsConfigurationUI</key>
+				<false/>
+				<key>ProvidesPasswords</key>
+				<true/>
+				<key>ProvidesPasskeys</key>
+				<true/>
+			</dict>
+		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
