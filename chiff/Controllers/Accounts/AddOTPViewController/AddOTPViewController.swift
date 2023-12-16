@@ -17,6 +17,7 @@ class AddOTPViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchBar: UISearchBar!
 
     var otpUrl: URL!
+    var token: Token!
     var unfilteredAccounts: [UserAccount]!
     var filteredAccounts: [UserAccount]!
     var addAccountButton: KeynBarButton?
@@ -50,18 +51,30 @@ class AddOTPViewController: UIViewController, UITableViewDataSource, UITableView
             Filters.personal.text()
         ]
         searchBar.delegate = self
-        
+
         if addAccountButton == nil {
             addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             addAccountButton!.setImage(UIImage(named: "add_button"), for: .normal)
         }
         addAccountButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
+
+        guard otpUrl.chiffType == .otp else {
+            showAlert(message: "errors.session_invalid".localized, handler: nil)
+            return
+        }
+        guard let token = Token(url: otpUrl) else {
+            Logger.shared.error("Error creating OTP token")
+            showAlert(message: "errors.token_creation".localized, handler: nil)
+            return
+        }
+        self.token = token
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowAddAccount", let destination = segue.destination as? AddAccountViewController {
-            // TODO: Set OTP URL
+            destination.token = token
+            destination.presentedModally = true
         }
     }
 
@@ -86,12 +99,7 @@ class AddOTPViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var identifier: String!
-        if let account = filteredAccounts[indexPath.row] as? UserAccount {
-            identifier = account.shadowing ? "ShadowingCell" : "AccountCell"
-        } else {
-            identifier = "TeamsCell"
-        }
+        let identifier = filteredAccounts[indexPath.row].shadowing ? "ShadowingCell" : "AccountCell"
         return tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
     }
 
@@ -112,20 +120,11 @@ class AddOTPViewController: UIViewController, UITableViewDataSource, UITableView
         guard let account = filteredAccounts?[indexPath.row] else {
             return
         }
-        guard otpUrl.chiffType == .otp else {
-            showAlert(message: "errors.session_invalid".localized, handler: nil)
-            return
-        }
-        guard let token = Token(url: otpUrl) else {
-            Logger.shared.error("Error creating OTP token")
-            showAlert(message: "errors.token_creation".localized, handler: nil)
-            return
-        }
         if account.hasOtp {
             let alert = UIAlertController(title: "popups.questions.has_otp_title".localized, message: "popups.questions.has_otp_message".localized, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.update".localized, style: .destructive, handler: { _ in
-                self.addOTP(account: account, token: token)
+                self.addOTP(account: account, token: self.token)
             }))
             self.present(alert, animated: true)
             return

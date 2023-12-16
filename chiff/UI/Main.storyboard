@@ -600,7 +600,7 @@
             <objects>
                 <tableViewController title="Add Account" id="ndI-SS-mi6" customClass="AddAccountViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="NK4-FC-Akv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="802"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -5501,16 +5501,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                     <connections>
                         <outlet property="searchBar" destination="W8e-bQ-ibf" id="VUy-6W-8Bk"/>
                         <outlet property="tableView" destination="Dnk-lR-ywb" id="Xx8-SF-Myp"/>
+                        <segue destination="ndI-SS-mi6" kind="show" identifier="ShowAddAccount" id="ET2-Px-dnn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rw6-uP-rIw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1714.4000000000001" y="-1729.0640394088671"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Chiff Navigation Controller-->
         <scene sceneID="Gdg-Zl-ni7">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="T4W-0h-CN6" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="T4W-0h-CN6" customClass="ChiffNavigationController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="4TB-lF-ojY"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UVP-4d-CHS">
@@ -5874,7 +5875,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <segue reference="bFG-cG-0Z9"/>
         <segue reference="xrO-JS-RqG"/>
         <segue reference="RlN-hs-OcW"/>
-        <segue reference="H1z-FM-r4q"/>
+        <segue reference="ET2-Px-dnn"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="accounts_tab" width="20" height="25"/>
