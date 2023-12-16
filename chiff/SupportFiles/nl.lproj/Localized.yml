@@ -278,10 +278,6 @@ devices:
     value: op
   open_settings:
     value: Open instellingen
-  otp_redirect:
-    value: >-
-      Dit lijkt een 2FA-URL te zijn. Je kunt deze toevoegen door een account te
-      selecteren op het tabblad 'Accounts' en op 'Scan QR' te klikken.
   paired_devices:
     value: Mijn gekoppelde apparaten
   pairing:
