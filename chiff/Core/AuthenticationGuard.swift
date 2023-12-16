@@ -25,7 +25,7 @@ class AuthenticationGuard {
     }
 
     var authenticationInProgress = false
-    var pairingUrl: URL?
+    var otpUrl: URL?
 
     private init() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
@@ -82,6 +82,10 @@ class AuthenticationGuard {
         }.map(on: .main) { (accounts, context) -> LAContext in
             NotificationCenter.default.post(name: .accountsLoaded, object: self, userInfo: accounts)
             self.hideLockWindow()
+            if let url = self.otpUrl {
+                self.otpUrl = nil
+                NotificationCenter.default.post(name: .openAddOTP, object: self, userInfo: ["url": url])
+            }
             return context
         }.then { (context) -> Promise<Void> in
             return when(fulfilled: TeamSession.updateAllTeamSessions(), UserAccount.sync(context: context), TeamSession.sync(context: context), SSHIdentity.sync(context: context), self.updateNews())

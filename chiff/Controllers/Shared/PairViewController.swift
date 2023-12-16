@@ -17,39 +17,42 @@ protocol PairControllerDelegate: AnyObject {
 }
 
 enum URLError: Error {
-    case invalidScheme
-    case invalidHost
-    case invalidPath
+    case invalid
+    case otp
 }
 
 class PairViewController: QRViewController {
 
+    var url: URL!
     weak var pairControllerDelegate: PairControllerDelegate!
     weak var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
         var promise: Promise<Session>
-        switch url.scheme {
-        case "keyn":
+        switch url.chiffType {
+        case .pairing, .addUser:
             promise = self.pair(url: url)
-        case "https":
-            guard url.host == "keyn.app" || url.host == "chiff.app" else {
-                throw URLError.invalidHost
-            }
-            switch url.pathComponents[1] {
-            case "pair", "adduser":
-                promise = self.pair(url: url)
-            case "create":
-                promise = self.createTeam(url: url)
-            default:
-                throw URLError.invalidPath
-            }
-        default: throw URLError.invalidScheme
+        case .createTeam:
+            promise = self.createTeam(url: url)
+        case .otp:
+            self.url = url
+            performSegue(withIdentifier: "ShowAddOTP", sender: self)
+            return
+        default:
+            throw URLError.invalid
         }
         promise.done(on: .main) {
             self.createSession($0)
         }.catch(on: .main) {
             self.handleError($0)
+        }
+    }
+    
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowAddOTP", let destination = segue.destination.contents as? AddOTPViewController {
+            destination.otpUrl = self.url
         }
     }
 

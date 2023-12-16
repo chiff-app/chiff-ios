@@ -44,6 +44,7 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate, T
     private let ppd: PPD? = nil
     private var passwordIsHidden = true
 
+    var presentedModally = false
     var qrEnabled: Bool = true
     var token: Token?
     var loadingCircle: FilledCircle?
@@ -63,6 +64,15 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate, T
         tableView.layer.borderWidth = 1.0
 
         tableView.separatorColor = UIColor.primaryTransparant
+        
+        if let token = token {
+            usernameField.text = token.name
+            if !token.issuer.isEmpty {
+                siteNameField.text = token.issuer
+                siteURLField.text = "https://www.\(token.issuer.lowercased()).com"
+            }
+            updateOTPUI()
+        }
 
         updateSaveButtonState()
         Logger.shared.analytics(.addAccountOpened)
@@ -147,7 +157,11 @@ class AddAccountViewController: ChiffTableViewController, UITextFieldDelegate, T
             if let token = token {
                 try self.account!.setOtp(token: token)
             }
-            self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
+            if presentedModally {
+                dismiss(animated: true, completion: nil)
+            } else {
+                self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
+            }
             Logger.shared.analytics(.accountAddedLocal)
         } catch KeychainError.duplicateItem {
             showAlert(message: "errors.account_exists".localized)

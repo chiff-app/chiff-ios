@@ -30,6 +30,16 @@
 				<string>keyn</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>com.keyn.otpauth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>otpauth</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>92</string>

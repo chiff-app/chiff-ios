@@ -93,6 +93,8 @@
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
+		498782E72B2DA185008CF807 /* AddOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498782E62B2DA185008CF807 /* AddOTPViewController.swift */; };
+		498782EA2B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */; };
 		498B6036260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
 		498B6037260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
 		498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
@@ -304,6 +306,8 @@
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
+		498782E62B2DA185008CF807 /* AddOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOTPViewController.swift; sourceTree = "<group>"; };
+		498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddOTPViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		498B6035260B9A0D009259E8 /* ChiffLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChiffLogger.swift; sourceTree = "<group>"; };
 		498B603D260B9A14009259E8 /* Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		498B6045260B9DE5009259E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -539,6 +543,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		498782E82B2DA1DC008CF807 /* AddOTPViewController */ = {
+			isa = PBXGroup;
+			children = (
+				498782E62B2DA185008CF807 /* AddOTPViewController.swift */,
+				498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */,
+			);
+			path = AddOTPViewController;
+			sourceTree = "<group>";
+		};
 		499BE4F31FC0929C001038DF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -708,6 +721,7 @@
 		610C63BC1FAE1E6900A00FB0 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				498782E82B2DA1DC008CF807 /* AddOTPViewController */,
 				49B2A91725432CAC001BA6EE /* AccountsTableViewController */,
 				49B2A8E9254327C1001BA6EE /* AccountViewController */,
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
@@ -1209,6 +1223,8 @@
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
+				498782EA2B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift in Sources */,
+				498782E72B2DA185008CF807 /* AddOTPViewController.swift in Sources */,
 				42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */,
 				EA92D9A226AF7A9F001146B8 /* DeviceSessionFooterView.swift in Sources */,
 				49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */,
