@@ -47,6 +47,8 @@ accounts:
       value: Inloggen op je telefoon
   choose:
     value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
+  choose_otp:
+    value: Kies een account om de 2FA code aan toe te voegen.
   code:
     value: Code
   convert_to_team_footer:
@@ -603,6 +605,12 @@ popups:
         hier ook verwijderen of de backup herstellen vanaf dit apparaat?
     delete_x:
       value: Delete %@
+    has_otp_message:
+      value: >-
+        Aan dit account is al 2FA gekoppeld. Wil je deze vervangen? De oude
+        2FA-code gaat verloren!
+    has_otp_title:
+      value: 2FA gevonden
     move_data:
       comment: Resets Chiff and deletes all data
       value: Verhuis data?
@@ -689,6 +697,8 @@ popups:
       value: Herstel
     settings:
       value: Open instellingen
+    update:
+      value: Vervang
     'yes':
       comment: ja
       value: 'yes'

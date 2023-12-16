@@ -23,6 +23,7 @@ enum URLError: Error {
 
 class PairViewController: QRViewController {
 
+    var url: URL!
     weak var pairControllerDelegate: PairControllerDelegate!
     weak var pairContainerDelegate: PairContainerDelegate!
 
@@ -34,7 +35,9 @@ class PairViewController: QRViewController {
         case .createTeam:
             promise = self.createTeam(url: url)
         case .otp:
-            throw URLError.otp
+            self.url = url
+            performSegue(withIdentifier: "ShowAddOTP", sender: self)
+            return
         default:
             throw URLError.invalid
         }
@@ -42,6 +45,14 @@ class PairViewController: QRViewController {
             self.createSession($0)
         }.catch(on: .main) {
             self.handleError($0)
+        }
+    }
+    
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowAddOTP", let destination = segue.destination.contents as? AddOTPViewController {
+            destination.otpUrl = self.url
         }
     }
 
@@ -80,8 +91,6 @@ class PairViewController: QRViewController {
             if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
                 self.showAlert(message: authenticationError, handler: closeError)
             }
-        case URLError.otp:
-            self.showAlert(message: "devices.otp_redirect".localized, handler: closeError)
         case SessionError.invalid:
             Logger.shared.error("Invalid QR-code scanned", error: error)
             self.showAlert(message: "errors.session_invalid".localized, handler: closeError)

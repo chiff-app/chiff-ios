@@ -473,6 +473,26 @@
 								</children>
 							</folder_node>
 							<folder_node>
+								<name>choose_otp</name>
+								<children>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
 								<name>code</name>
 								<children>
 									<concept_node>
@@ -5626,6 +5646,46 @@
 										</children>
 									</folder_node>
 									<folder_node>
+										<name>has_otp_message</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>has_otp_title</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
 										<name>move_data</name>
 										<children>
 											<concept_node>
@@ -6412,6 +6472,26 @@
 									</folder_node>
 									<folder_node>
 										<name>settings</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>update</name>
 										<children>
 											<concept_node>
 												<name>value</name>
