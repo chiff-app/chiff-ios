@@ -81,6 +81,7 @@ public extension Notification.Name {
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
     static let backupCompleted = Notification.Name("BackupCompleted")
     static let newsMessage = Notification.Name("NewsMessage")
+    static let openAddOTP = Notification.Name("OpenAddOTP")
 }
 
 public extension Token {
@@ -204,6 +205,41 @@ extension URL {
         }
 
         return parameters
+    }
+    
+    public enum ChiffType {
+        case pairing
+        case createTeam
+        case addUser
+        case otp
+    }
+    
+    public var chiffType: ChiffType? {
+        switch scheme {
+        case "otpauth":
+            guard Token(url: self) != nil else {
+                return nil
+            }
+            return .otp
+        case "keyn":
+            return .pairing
+        case "https":
+            guard host == "keyn.app" || host == "chiff.app" else {
+                return nil
+            }
+            switch pathComponents[1] {
+            case "pair":
+                return .pairing
+            case "adduser":
+                return .addUser
+            case "create":
+                return .createTeam
+            default:
+                return nil
+            }
+        default:
+            return nil
+        }
     }
 }
 
@@ -348,41 +384,6 @@ extension DCAppAttestService {
 extension UserDefaults {
     public static var group: UserDefaults {
         return UserDefaults(suiteName: "group.app.chiff.chiff")!
-    }
-}
-
-extension URL {
-    
-    public enum ChiffType {
-        case pairing
-        case createTeam
-        case addUser
-        case otp
-    }
-    
-    public var chiffType: ChiffType? {
-        switch scheme {
-        case "otpauth":
-            return .otp
-        case "keyn":
-            return .pairing
-        case "https":
-            guard host == "keyn.app" || host == "chiff.app" else {
-                return nil
-            }
-            switch pathComponents[1] {
-            case "pair":
-                return .pairing
-            case "adduser":
-                return .addUser
-            case "create":
-                return .createTeam
-            default:
-                return nil
-            }
-        default:
-            return nil
-        }
     }
 }
 
