@@ -19,6 +19,7 @@ extension LoginViewController {
     }
 
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        self.type = .passwordLogin
         self.serviceIdentifiers = serviceIdentifiers
     }
 
