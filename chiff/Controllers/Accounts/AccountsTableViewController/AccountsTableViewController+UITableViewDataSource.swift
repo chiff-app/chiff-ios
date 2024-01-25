@@ -64,6 +64,7 @@ extension AccountsTableViewController: UITableViewDataSource {
         }
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.name
+        cell.titleLabel.font = UIFont.primaryBold
         if #available(iOS 13.0, *), let cell = cell as? SharedAccountTableViewCell {
             cell.teamIcon.image = UIImage(systemName: "person.2.fill")
         }
