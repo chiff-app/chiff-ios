@@ -16,7 +16,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var addSessionContainer: UIView!
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var pushNotificationWarning: UIView!
-
+    @IBOutlet weak var tableViewHeader: KeynLabel!
+    
     var sessions = [Session]()
 
     override func viewDidLoad() {
@@ -32,7 +33,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.dataSource = self
         tableView.delegate = self
         self.definesPresentationContext = true
-
+        tableViewHeader.font = UIFont.primaryBold
+        
         do {
             var sessions: [Session] = try BrowserSession.all()
             sessions.append(contentsOf: try TeamSession.all())

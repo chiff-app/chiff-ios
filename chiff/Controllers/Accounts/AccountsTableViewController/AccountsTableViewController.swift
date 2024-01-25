@@ -18,6 +18,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
     var filteredAccounts: [Identity]!
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
+    @IBOutlet weak var tableViewHeader: KeynLabel!
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     @IBOutlet weak var sortLabel: UILabel!
@@ -60,7 +61,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UIScro
         nc.addObserver(self, selector: #selector(updateAccount(notification:)), name: .accountUpdated, object: nil)
 
         tableViewFooter.text = "accounts.footer_unlimited".localized
-
+        tableViewHeader.font = UIFont.primaryBold
         searchBar.placeholder = "accounts.search".localized
         searchBar.setScopeBarButtonTitleTextAttributes([
             NSAttributedString.Key.font: UIFont.primaryMediumNormal as Any,
