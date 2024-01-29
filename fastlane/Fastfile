@@ -28,7 +28,7 @@ platform :ios do
     lane :test do
         scan(
             scheme: scheme,
-            device: 'iPhone 14 Pro'
+            device: 'iPhone 15'
         )
     end
 
