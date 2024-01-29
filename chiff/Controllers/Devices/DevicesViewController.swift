@@ -91,7 +91,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let session = sessions[indexPath.row]
         if let cell = cell as? DevicesViewCell {
             cell.titleLabel.text = session.title
-            cell.titleLabel.font = UIFont.primaryBold
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
             cell.deviceLogo.image = session.logo ?? UIImage(named: "logo_purple")
         } else {
