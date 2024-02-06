@@ -38,6 +38,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         return true
     }
 
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:] ) -> Bool {
+        guard url.chiffType == .otp else {
+            return false
+        }
+        AuthenticationGuard.shared.otpUrl = url
+        return true
+    }
+
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = userActivity.webpageURL,

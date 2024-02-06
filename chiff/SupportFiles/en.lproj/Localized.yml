@@ -47,6 +47,8 @@ accounts:
       value: Logging in on your phone
   choose:
     value: Choose an account to fill the credentials.
+  choose_otp:
+    value: Choose an account to add the 2FA code to.
   code:
     value: Code
   convert_to_team_footer:
@@ -169,7 +171,7 @@ accounts:
   username:
     value: Username
   webauthn_enabled:
-    value: "WebAuthn is enabled ⭐ \U0001F5DD️"
+    value: "This account has a Passkey ⭐ \U0001F5DD️"
   website_details:
     value: Website details
 backup:
@@ -601,6 +603,12 @@ popups:
         this device?
     delete_x:
       value: Delete %@
+    has_otp_message:
+      value: >-
+        This account already has 2FA attached. Do you want to replace it? The
+        old 2FA code will be lost!
+    has_otp_title:
+      value: 2FA found
     move_data:
       comment: Resets Chiff and deletes all data
       value: Move data?
@@ -687,6 +695,8 @@ popups:
       value: Restore
     settings:
       value: Open settings
+    update:
+      value: Replace
     'yes':
       comment: 'yes'
       value: 'yes'

@@ -12,7 +12,7 @@ import PromiseKit
 import StoreKit
 import UIKit
 
-class RequestViewController: UIViewController {
+class RequestViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var successView: BackupCircle!
     @IBOutlet var successTextLabel: UILabel!
@@ -46,6 +46,10 @@ class RequestViewController: UIViewController {
         nc.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         pickerView.dataSource = self
         pickerView.delegate = self
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = true
+            presentationController?.delegate = self
+        }
         requestLabel.text = authorizer.requestText
         if authorizer is TeamAdminLoginAuthorizer, !teamSessions.isEmpty {
             (authorizer as? TeamAdminLoginAuthorizer)?.teamSession = teamSessions.first
@@ -74,6 +78,10 @@ class RequestViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
 
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        cancelRequest()
+    }
+
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
@@ -82,6 +90,19 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func close(_ sender: UIButton) {
+        cancelRequest()
+    }
+
+
+    // MARK: - Navigation
+
+    func dismiss() {
+        presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Private functions
+
+    private func cancelRequest() {
         guard authorized else {
             return firstly {
                 authorizer.rejectRequest()
@@ -92,14 +113,6 @@ class RequestViewController: UIViewController {
         dismiss()
         AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
     }
-
-    // MARK: - Navigation
-
-    func dismiss() {
-        presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)
-    }
-
-    // MARK: - Private functions
 
     private func showAlert() {
         let alert = UIAlertController(title: authorizer.requestText,
@@ -112,17 +125,20 @@ class RequestViewController: UIViewController {
                 textField.textContentType = .oneTimeCode
                 textField.delegate = self
             }
-        }
-        alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
-            AuthorizationGuard.shared.authorizationInProgress = false
-        })
-        alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
-            if self.authorizer.verify, let text = alert.textFields?[0].text {
-                self.acceptRequest(code: text)
-            } else {
+            alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+                AuthorizationGuard.shared.authorizationInProgress = false
+            })
+            alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
+                self.acceptRequest(code: alert.textFields?[0].text)
+            })
+        } else {
+            alert.addAction(UIAlertAction(title: "popups.responses.authorize".localized, style: .default) { _ in
                 self.acceptRequest(code: nil)
-            }
-        })
+            })
+            alert.addAction(UIAlertAction(title: "popups.responses.deny".localized, style: .destructive) { _ in
+                AuthorizationGuard.shared.authorizationInProgress = false
+            })
+        }
         present(alert, animated: true, completion: nil)
     }
 
@@ -310,3 +326,4 @@ extension RequestViewController: UITextFieldDelegate {
         return CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
     }
 }
+

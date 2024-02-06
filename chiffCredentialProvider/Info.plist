@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.13.0</string>
+	<string>3.14.0</string>
 	<key>CFBundleVersion</key>
-	<string>92</string>
+	<string>96</string>
 	<key>TSKConfiguration</key>
 	<dict>
 		<key>TSKPinnedDomains</key>
@@ -79,6 +79,18 @@
 	</dict>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>ASCredentialProviderExtensionCapabilities</key>
+			<dict>
+				<key>ShowsConfigurationUI</key>
+				<false/>
+				<key>ProvidesPasswords</key>
+				<true/>
+				<key>ProvidesPasskeys</key>
+				<true/>
+			</dict>
+		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>

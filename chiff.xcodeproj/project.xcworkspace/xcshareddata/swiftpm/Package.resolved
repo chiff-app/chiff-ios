@@ -57,11 +57,11 @@
       },
       {
         "package": "Kronos",
-        "repositoryURL": "https://github.com/lyft/Kronos.git",
+        "repositoryURL": "https://github.com/MobileNativeFoundation/Kronos.git",
         "state": {
           "branch": null,
-          "revision": "b7f54653a8bb503f42b59ab3160eb11f333b9d3f",
-          "version": "4.2.1"
+          "revision": "a46542ce639581af2a85ab9ec1616a507a5d4ae2",
+          "version": "4.2.2"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
         "state": {
           "branch": null,
-          "revision": "65d573e0e2687ea91ab0b1be377f9dd3eb1c2785",
-          "version": "2.0.1"
+          "revision": "5718ba8720b4dafc5360aebfbc9762e2d5f2615e",
+          "version": "3.0.3"
         }
       }
     ]

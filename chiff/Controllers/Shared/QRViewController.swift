@@ -114,7 +114,9 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         previewLayer?.frame = videoView.layer.bounds
         videoView.layer.insertSublayer(previewLayer!, at: 0)
 
-        captureSession.startRunning()
+        DispatchQueue.global(qos: .userInteractive).async {
+            captureSession.startRunning()
+        }
     }
 
     func errorHandler(_ action: UIAlertAction) {

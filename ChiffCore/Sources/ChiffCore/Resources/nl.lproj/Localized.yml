@@ -173,6 +173,8 @@ logs:
     value: Ingelogd bij %@ accounts
   change:
     value: Wachtwoord gewijzigd @ %@
+  export:
+    value: Accounts geëxporteerd
   fill:
     value: Wachtwoord opgehaald voor %@
   get_details:
@@ -242,6 +244,10 @@ requests:
     value: >-
       Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
       verstuurd.
+  export_accounts:
+    value: Exporteer accounts
+  export_succesful:
+    value: Accounts geëxporteerd
   generate_ssh:
     value: Genereer SSH sleutel
   get_for:
@@ -325,6 +331,16 @@ requests:
     value: >-
       Voer de verificatiecode in die in je browser wordt weergegeven om het
       wachtwoord voor %@ te wijzigen
+  verify_export:
+    value: >-
+      ⚠️ Je staat op het punt ALLE accounts naar een onversleuteld bestand te
+      exporteren.
+
+
+      ⚠️ Ga alleen verder als dit de bedoeling is.
+
+
+      Voer de verificatiecode in die in de browser wordt getoond:
   verify_login:
     value: >-
       Voer de verificatiecode in die in je browser wordt weergegeven om je aan

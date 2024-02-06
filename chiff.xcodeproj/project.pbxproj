@@ -47,6 +47,11 @@
 		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
 		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
 		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
+		4946E4E72AF52F5900EDA023 /* PasskeyRegistrationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */; };
+		4946E4E92AF52FAD00EDA023 /* PasskeyAssertionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */; };
+		4946E4EB2AF5321E00EDA023 /* LoginViewController+Passwords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */; };
+		4946E4ED2AF5322E00EDA023 /* LoginViewController+PassKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */; };
+		4946E4EF2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */; };
 		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
@@ -88,6 +93,8 @@
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
+		498782E72B2DA185008CF807 /* AddOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498782E62B2DA185008CF807 /* AddOTPViewController.swift */; };
+		498782EA2B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */; };
 		498B6036260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
 		498B6037260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
 		498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498B6035260B9A0D009259E8 /* ChiffLogger.swift */; };
@@ -257,6 +264,11 @@
 		4931BC55254190B70015277D /* CreateOrganisationAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrganisationAuthorizer.swift; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
+		4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyRegistrationRequest.swift; sourceTree = "<group>"; };
+		4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyAssertionRequest.swift; sourceTree = "<group>"; };
+		4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Passwords.swift"; sourceTree = "<group>"; };
+		4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+PassKeys.swift"; sourceTree = "<group>"; };
+		4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCredentialServiceIdentifier+Site.swift"; sourceTree = "<group>"; };
 		494AA2AF24266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/privacy_policy.md; sourceTree = "<group>"; };
 		494AA2B124266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = en; path = en.lproj/Localized.yml; sourceTree = "<group>"; };
 		494AA2B324266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/terms_of_use.md; sourceTree = "<group>"; };
@@ -294,6 +306,8 @@
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
+		498782E62B2DA185008CF807 /* AddOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOTPViewController.swift; sourceTree = "<group>"; };
+		498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddOTPViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		498B6035260B9A0D009259E8 /* ChiffLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChiffLogger.swift; sourceTree = "<group>"; };
 		498B603D260B9A14009259E8 /* Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		498B6045260B9DE5009259E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -529,6 +543,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		498782E82B2DA1DC008CF807 /* AddOTPViewController */ = {
+			isa = PBXGroup;
+			children = (
+				498782E62B2DA185008CF807 /* AddOTPViewController.swift */,
+				498782E92B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift */,
+			);
+			path = AddOTPViewController;
+			sourceTree = "<group>";
+		};
 		499BE4F31FC0929C001038DF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,6 +721,7 @@
 		610C63BC1FAE1E6900A00FB0 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				498782E82B2DA1DC008CF807 /* AddOTPViewController */,
 				49B2A91725432CAC001BA6EE /* AccountsTableViewController */,
 				49B2A8E9254327C1001BA6EE /* AccountViewController */,
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
@@ -734,6 +758,11 @@
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
 				49590F422625D422003578B0 /* CredentialProviderViewController+UISearchBarDelegate.swift */,
 				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
+				4946E4EA2AF5321E00EDA023 /* LoginViewController+Passwords.swift */,
+				4946E4EC2AF5322E00EDA023 /* LoginViewController+PassKeys.swift */,
+				4946E4EE2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift */,
+				4946E4E82AF52FAD00EDA023 /* PasskeyAssertionRequest.swift */,
+				4946E4E62AF52F5900EDA023 /* PasskeyRegistrationRequest.swift */,
 			);
 			path = chiffCredentialProvider;
 			sourceTree = "<group>";
@@ -863,8 +892,9 @@
 		49E766481F7E6F420022C042 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = keyn;
 				TargetAttributes = {
 					4919DAE320123FE50048B060 = {
@@ -886,7 +916,6 @@
 					49E7664F1F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1020;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
@@ -1194,6 +1223,8 @@
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
+				498782EA2B2DA1F4008CF807 /* AddOTPViewController+UISearchBarDelegate.swift in Sources */,
+				498782E72B2DA185008CF807 /* AddOTPViewController.swift in Sources */,
 				42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */,
 				EA92D9A226AF7A9F001146B8 /* DeviceSessionFooterView.swift in Sources */,
 				49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */,
@@ -1225,20 +1256,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4946E4E72AF52F5900EDA023 /* PasskeyRegistrationRequest.swift in Sources */,
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				49E454782622F76600AD9E68 /* ChiffTableViewController.swift in Sources */,
 				49B2A96425433502001BA6EE /* TeamAccount.swift in Sources */,
+				4946E4EF2AF5339C00EDA023 /* ASCredentialServiceIdentifier+Site.swift in Sources */,
 				492EC78C26249EB9003962F5 /* LocalizableTextField.swift in Sources */,
 				498B6038260B9A0D009259E8 /* ChiffLogger.swift in Sources */,
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
+				4946E4E92AF52FAD00EDA023 /* PasskeyAssertionRequest.swift in Sources */,
 				498B6048260B9DE5009259E8 /* Constants.swift in Sources */,
 				49B2A958254334EF001BA6EE /* TeamRole.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				49590F412625D3E1003578B0 /* AccountsPickerButton.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
+				4946E4ED2AF5322E00EDA023 /* LoginViewController+PassKeys.swift in Sources */,
 				49B2A957254334EF001BA6EE /* TeamUser.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* ChiffNavigationController.swift in Sources */,
 				498B6040260B9A14009259E8 /* Localizer.swift in Sources */,
@@ -1254,6 +1289,7 @@
 				49CEB506260CC50900FEF356 /* Properties.swift in Sources */,
 				49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
+				4946E4EB2AF5321E00EDA023 /* LoginViewController+Passwords.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1324,8 +1360,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiffNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1353,8 +1390,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiffNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1412,6 +1450,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1474,6 +1513,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1500,9 +1540,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiff/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1554,10 +1595,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = chiff/SupportFiles/chiff.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiff/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1659,8 +1700,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiffCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1674,7 +1716,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1690,8 +1731,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = chiffCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1704,7 +1746,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

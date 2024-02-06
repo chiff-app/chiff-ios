@@ -15,12 +15,13 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git", from: "2.0.1"),
+        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git", from: "3.0.3"),
         .package(name: "PromiseKit", url: "https://github.com/mxcl/PromiseKit.git", from: "6.13.3"),
         .package(name: "DataCompression", url: "https://github.com/mw99/DataCompression.git", from: "3.6.0"),
+        .package(name: "Base32", url: "https://github.com/mattrubin/Base32.git", .branch("1.1.2+spm")),
         .package(name: "OneTimePassword", url: "https://github.com/bas-d/OneTimePassword.git", .branch("spm")),
         .package(name: "PMKFoundation", url: "https://github.com/PromiseKit/Foundation.git", from: "3.3.4"),
-        .package(name: "Kronos", url: "https://github.com/lyft/Kronos.git", from: "4.1.1"),
+        .package(name: "Kronos", url: "https://github.com/MobileNativeFoundation/Kronos.git", from: "4.1.1"),
         .package(name: "Sodium", url: "https://github.com/jedisct1/swift-sodium.git", from: "0.9.1")
     ],
     targets: [
@@ -28,7 +29,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "ChiffCore",
-            dependencies: ["TrustKit", "Sodium", "PromiseKit", "Kronos", "OneTimePassword", "DataCompression", "PMKFoundation"],
+            dependencies: ["TrustKit", "Sodium", "PromiseKit", "Kronos", "OneTimePassword", "DataCompression", "PMKFoundation", "Base32"],
             resources: [.process("Resources")]
         ),
         .testTarget(

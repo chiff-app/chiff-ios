@@ -20,6 +20,7 @@ class RootViewController: UITabBarController {
         tabBar.unselectedItemTintColor = UIColor.primaryHalfOpacity
         tabBar.tintColor = UIColor.primary
         launchTerms()
+        NotificationCenter.default.addObserver(self, selector: #selector(showAddOTP(notification:)), name: .openAddOTP, object: nil)
     }
 
     func setBadge(completed: Bool) {
@@ -52,9 +53,21 @@ class RootViewController: UITabBarController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination.contents as? WebViewController, let url = sender as? URL {
+        if segue.identifier == "ShowTerms", let destination = segue.destination.contents as? WebViewController, let url = sender as? URL {
             destination.presentedModally = true
             destination.url = url
+        } else if segue.identifier == "ShowAddOTP", let destination = segue.destination.contents as? AddOTPViewController, let url = sender as? URL {
+            destination.otpUrl = url
+        }
+    }
+    
+    // MARK: - Private functions
+    
+    @objc private func showAddOTP(notification: Notification?) {
+        DispatchQueue.main.async {
+            if let userInfo = notification?.userInfo as? [String: URL], let url = userInfo["url"] {
+                self.performSegue(withIdentifier: "ShowAddOTP", sender: url)
+            }
         }
     }
 

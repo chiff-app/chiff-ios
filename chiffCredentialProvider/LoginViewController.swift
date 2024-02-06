@@ -11,14 +11,29 @@ import AuthenticationServices
 import PromiseKit
 import ChiffCore
 
+enum AutofillError: Error {
+    case invalidURL
+}
+
+enum AutoFillRequestType {
+    case passkeyAssertion
+    case passkeyRegistration
+    case passwordLogin
+    case passwordRegistration
+}
+
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var touchIDButton: UIButton!
     @IBOutlet weak var requestLabel: UILabel!
     var credentialProviderViewController: CredentialProviderViewController?
     var shouldAsk: Bool = false
-    var credentialIdentity: ASPasswordCredentialIdentity?
     var serviceIdentifiers: [ASCredentialServiceIdentifier]!
+    var type: AutoFillRequestType!
     var accounts: [String: Account]!
+    var accountId: String?
+    var username: String?
+    var passkeyRegistrationRequest: PasskeyRegistrationRequest?
+    var passkeyAssertionRequest: PasskeyAssertionRequest?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +45,17 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let username = credentialIdentity?.user {
-            requestLabel.text = String(format: "requests.login_with".localized, username)
-        } else {
-            requestLabel.text = "requests.unlock_accounts".localized
+        switch type {
+        case .passkeyRegistration:
+            requestLabel.text = String(format: "requests.add_site".localized, passkeyRegistrationRequest!.relyingPartyIdentifier)
+        case .passkeyAssertion:
+            requestLabel.text = String(format: "requests.login_to".localized, passkeyAssertionRequest!.relyingPartyIdentifier)
+        default:
+            if let username = username {
+                requestLabel.text = String(format: "requests.login_with".localized, username)
+            } else {
+                requestLabel.text = "requests.unlock_accounts".localized
+            }
         }
     }
 
@@ -65,54 +87,52 @@ class LoginViewController: ASCredentialProviderViewController {
         }
     }
 
-    // MARK: - AuthenicationServices
-
-    override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        do {
-            guard let account = try UserAccount.getAny(id: credentialIdentity.recordIdentifier!, context: nil), let password = try account.password(context: nil) else {
-                return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
-            }
-
-            let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-        } catch KeychainError.interactionNotAllowed {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
-        } catch {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-        }
-    }
-
-    override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        self.credentialIdentity = credentialIdentity
-    }
-
-    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        self.serviceIdentifiers = serviceIdentifiers
-    }
-
     // MARK: - Private functions
 
     private func loadUsers() {
-        let reason = credentialIdentity != nil ? String(format: "requests.login_with".localized, credentialIdentity!.user) : "requests.unlock_accounts".localized
+        let reason = username != nil ? String(format: "requests.login_with".localized, username!) : "requests.unlock_accounts".localized
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true)
         }.done { context in
-            if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.getAny(id: accountID, context: context), let password = try account.password(context: context) {
-                let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-                self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-            } else {
-                let accounts = try UserAccount.allCombined(context: context)
-                DispatchQueue.main.async {
-                    if accounts.isEmpty {
-                        self.performSegue(withIdentifier: "ShowAddAccount", sender: self)
-                    } else {
+            switch self.type {
+            case .passkeyRegistration:
+                guard #available(iOS 17.0, *), let passkeyRegistrationRequest = self.passkeyRegistrationRequest else {
+                    return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                }
+                try self.completePasskeyRegistration(with: passkeyRegistrationRequest, context: context)
+            case .passkeyAssertion:
+                guard #available(iOS 17.0, *), let passkeyAssertionRequest = self.passkeyAssertionRequest else {
+                    return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                }
+                guard let accountID = self.accountId, let account = try UserAccount.getAny(id: accountID, context: context) as? UserAccount else {
+                    let accounts = try UserAccount.all(context: context).filter { $1.webAuthn != nil }
+                    DispatchQueue.main.async {
                         self.accounts = accounts
                         self.performSegue(withIdentifier: "ShowAccounts", sender: self)
                     }
+                    return
                 }
+                try self.completeWebauthnAssertion(with: passkeyAssertionRequest, account: account, context: context)
+            case .passwordLogin:
+                guard let accountID = self.accountId, let account = try UserAccount.getAny(id: accountID, context: context) else {
+                    let accounts = try UserAccount.allCombined(context: context)
+                    DispatchQueue.main.async {
+                        if accounts.isEmpty {
+                            self.performSegue(withIdentifier: "ShowAddAccount", sender: self)
+                        } else {
+                            self.accounts = accounts
+                            self.performSegue(withIdentifier: "ShowAccounts", sender: self)
+                        }
+                    }
+                    return
+                }
+                try self.completePasswordLoginRequest(account: account, context: context)
+            default:
+                self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
         }.catch { _ in
             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
+
 }

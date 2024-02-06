@@ -18,8 +18,6 @@ protocol TokenController {
 
 class OTPViewController: QRViewController, TokenController {
 
-    private let otpURLScheme = "otpauth"
-
     @IBOutlet weak var instructionLabel: UILabel!
 
     var account: UserAccount?
@@ -38,7 +36,7 @@ class OTPViewController: QRViewController, TokenController {
     }
 
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme, scheme == otpURLScheme else {
+        guard url.chiffType == .otp else {
             showAlert(message: "errors.session_invalid".localized, handler: errorHandler)
             return
         }

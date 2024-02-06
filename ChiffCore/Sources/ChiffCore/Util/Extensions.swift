@@ -13,6 +13,7 @@ import Kronos
 import Sodium
 import DataCompression
 import DeviceCheck
+import Base32
 #if os(iOS)
 import UIKit
 #endif
@@ -80,6 +81,7 @@ public extension Notification.Name {
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
     static let backupCompleted = Notification.Name("BackupCompleted")
     static let newsMessage = Notification.Name("NewsMessage")
+    static let openAddOTP = Notification.Name("OpenAddOTP")
 }
 
 public extension Token {
@@ -129,6 +131,11 @@ public extension String {
     /// Decode this string from base64 to data. Returns nil on any error.
     var fromBase64: Data? {
         return try? Crypto.shared.convertFromBase64(from: self)
+    }
+    
+    /// Decode this string from hex to data. Returns nil on any error.
+    var fromHex: Data? {
+        return try? Crypto.shared.fromHex(self)
     }
 
     /// Convert to data using utf8.
@@ -199,6 +206,41 @@ extension URL {
 
         return parameters
     }
+    
+    public enum ChiffType {
+        case pairing
+        case createTeam
+        case addUser
+        case otp
+    }
+    
+    public var chiffType: ChiffType? {
+        switch scheme {
+        case "otpauth":
+            guard Token(url: self) != nil else {
+                return nil
+            }
+            return .otp
+        case "keyn":
+            return .pairing
+        case "https":
+            guard host == "keyn.app" || host == "chiff.app" else {
+                return nil
+            }
+            switch pathComponents[1] {
+            case "pair":
+                return .pairing
+            case "adduser":
+                return .addUser
+            case "create":
+                return .createTeam
+            default:
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
 }
 
 public extension Data {
@@ -240,6 +282,11 @@ public extension Data {
         result = result.replacingOccurrences(of: "/", with: "_")
         result = result.replacingOccurrences(of: "=", with: "")
         return result
+    }
+    
+    var base32: String {
+        let data = NSData(data: self)
+        return data.base32String()
     }
 
     /// A bytes object for libsodium compatibility.

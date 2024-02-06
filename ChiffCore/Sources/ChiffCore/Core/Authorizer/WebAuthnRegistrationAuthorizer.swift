@@ -84,7 +84,7 @@ public class WebAuthnRegistrationAuthorizer: Authorizer {
                                           context: context)
             if let clientDataHash = self.clientDataHash {
                 startLoading?("webauthn.attestation".localized)
-                return account.webAuthn!.signAttestation(accountId: account.id, clientData: clientDataHash, extensions: self.extensions).map { (account, $0, context) }
+                return account.webAuthn!.signAttestation(accountId: account.id, clientDataHash: clientDataHash, extensions: self.extensions).map { (account, $0, context) }
             } else { // No attestation
                 return .value((account, nil, context))
             }

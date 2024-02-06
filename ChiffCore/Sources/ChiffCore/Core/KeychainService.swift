@@ -14,6 +14,7 @@ public enum KeychainService {
     case sharedAccount(attribute: AccountAttribute? = nil)
     case sshIdentity
     case seed
+    case webAuthnSeed
     case passwordSeed
     case browserSession(attribute: SessionAttribute)
     case teamSession(attribute: SessionAttribute)
@@ -57,7 +58,7 @@ public enum KeychainService {
             return "io.keyn.session.\(attribute.rawValue)"
         case .teamSession(let attribute):
             return "io.keyn.teamsession.\(attribute.rawValue)"
-        case .seed, .passwordSeed:
+        case .seed, .passwordSeed, .webAuthnSeed:
             return "io.keyn.seed"
         case .aws:
             return "io.keyn.aws"
@@ -82,7 +83,7 @@ public enum KeychainService {
         switch self {
         case .browserSession, .teamSession:
             return "35MFYY2JY5.io.keyn.restricted"      // Shared with notificationExtension and credentialProvider
-        case .account, .sharedAccount, .backup, .passwordSeed:
+        case .account, .sharedAccount, .backup, .passwordSeed, .webAuthnSeed:
             return "group.app.chiff.chiff"              // Shared with credentialProvider
         case .aws, .seed, .sshIdentity:
             return "35MFYY2JY5.io.keyn.keyn"            // Chiff only
