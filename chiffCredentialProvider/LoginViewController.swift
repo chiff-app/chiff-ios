@@ -50,10 +50,12 @@ class LoginViewController: ASCredentialProviderViewController {
             requestLabel.text = String(format: "requests.add_site".localized, passkeyRegistrationRequest!.relyingPartyIdentifier)
         case .passkeyAssertion:
             requestLabel.text = String(format: "requests.login_to".localized, passkeyAssertionRequest!.relyingPartyIdentifier)
-        case .passwordLogin:
-            requestLabel.text = String(format: "requests.login_with".localized, username!)
         default:
-            requestLabel.text = "requests.unlock_accounts".localized
+            if let username = username {
+                requestLabel.text = String(format: "requests.login_with".localized, username)
+            } else {
+                requestLabel.text = "requests.unlock_accounts".localized
+            }
         }
     }
 

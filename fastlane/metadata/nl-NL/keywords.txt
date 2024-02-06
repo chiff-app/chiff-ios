@@ -1,1 +1,1 @@
-Keyn,Authenticatie,Wachtwoord,Login,WebAuthn,2FA,Privacy,Authenticator,Veilig,Chiff,Kluis
+Keyn,Authenticatie,Wachtwoord,Login,Passkey,2FA,Privacy,Authenticator,Veilig,Chiff,Kluis
