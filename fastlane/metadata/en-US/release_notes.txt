@@ -1,1 +1,4 @@
-This releases contains various bugfixes and improvements.
+- Local support for Passkeys
+- Local support for OTP (QR) 2FA codes
+- Support for exporting accounts to a CSV file
+- Various small bugfixes
