@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/amplitude/Amplitude-iOS.git",
         "state": {
           "branch": null,
-          "revision": "83b6c60321e0d5a6824e89aa45699c557cca5531",
-          "version": "8.15.2"
+          "revision": "4471ff73fffdff9a9b256422a0a0b9233582f33d",
+          "version": "8.22.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/amplitude/analytics-connector-ios.git",
         "state": {
           "branch": null,
-          "revision": "d3d682a26ca6f4947ece2c2e627971bb41b940fa",
-          "version": "1.0.1"
+          "revision": "2062191f5b02da0e2a0c382070291bf8da66bbc0",
+          "version": "1.2.4"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/PromiseKit/Foundation.git",
         "state": {
           "branch": null,
-          "revision": "985f17fa69ee0e5b7eb3ff9be87ffc4e05fc0927",
-          "version": "3.4.0"
+          "revision": "d967438f58183e02f091f4c17ac7f04f70947e0a",
+          "version": "4.0.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/MobileNativeFoundation/Kronos.git",
         "state": {
           "branch": null,
-          "revision": "a46542ce639581af2a85ab9ec1616a507a5d4ae2",
-          "version": "4.2.2"
+          "revision": "f331821314f9b35867a18c5c8fc2f918536d79ac",
+          "version": "4.3.1"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
         "state": {
           "branch": null,
-          "revision": "a739d4effcbafd177a699bac8a7ff343f4d0706c",
-          "version": "6.22.0"
+          "revision": "6fcc08077124e9747f1ec7bd8bb78f5caffe5a79",
+          "version": "8.1.2"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
         "state": {
           "branch": null,
-          "revision": "cf43eac1aa12017868c257ad3854ad87a5de0758",
-          "version": "7.31.5"
+          "revision": "0ffc3c6287461962cb2a81e57fc0ee0335d8d56a",
+          "version": "8.40.1"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
         "state": {
           "branch": null,
-          "revision": "5718ba8720b4dafc5360aebfbc9762e2d5f2615e",
-          "version": "3.0.3"
+          "revision": "d009bab582513e029924f394c2a3b974f10a44a6",
+          "version": "3.0.5"
         }
       }
     ]
