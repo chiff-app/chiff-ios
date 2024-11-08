@@ -16,11 +16,11 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git", from: "3.0.3"),
-        .package(name: "PromiseKit", url: "https://github.com/mxcl/PromiseKit.git", from: "6.13.3"),
+        .package(name: "PromiseKit", url: "https://github.com/mxcl/PromiseKit.git", from: "8.1.2"),
         .package(name: "DataCompression", url: "https://github.com/mw99/DataCompression.git", from: "3.6.0"),
-        .package(name: "Base32", url: "https://github.com/mattrubin/Base32.git", .branch("1.1.2+spm")),
+        .package(name: "Base32", url: "https://github.com/mattrubin/Base32.git", from: "1.2.0"),
         .package(name: "OneTimePassword", url: "https://github.com/bas-d/OneTimePassword.git", .branch("spm")),
-        .package(name: "PMKFoundation", url: "https://github.com/PromiseKit/Foundation.git", from: "3.3.4"),
+        .package(name: "PMKFoundation", url: "https://github.com/PromiseKit/Foundation.git", from: "4.0.0"),
         .package(name: "Kronos", url: "https://github.com/MobileNativeFoundation/Kronos.git", from: "4.1.1"),
         .package(name: "Sodium", url: "https://github.com/jedisct1/swift-sodium.git", from: "0.9.1")
     ],

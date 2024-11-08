@@ -51,7 +51,7 @@ class ChiffLogger: LoggerProtocol {
             options.attachViewHierarchy = false
             options.sendClientReports = false
             options.enableSwizzling = false
-            options.enableOutOfMemoryTracking = enableOutOfMemoryTracking
+            options.enableWatchdogTerminationTracking = enableOutOfMemoryTracking
 
             options.integrations = Sentry.Options.defaultIntegrations().filter { $0 != "SentryAutoBreadcrumbTrackingIntegration" }
 
