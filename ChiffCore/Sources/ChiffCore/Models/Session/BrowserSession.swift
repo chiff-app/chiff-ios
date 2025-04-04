@@ -182,9 +182,16 @@ public struct BrowserSession: Session {
     ///   - context: Optionally, an authenticated `LAContext` object.
     /// - Throws: Encoding, encryption or network errors.
     func sendExportResponse(browserTab: Int, accounts: [String: ExportAccount], context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .export, browserTab: browserTab, exportAccounts: accounts))
-        let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
-        try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
+        let data = try JSONEncoder().encode(KeynCredentialsResponse(type: .export, browserTab: browserTab, exportAccounts: accounts))
+        let ciphertext = try Crypto.shared.encrypt(data, key: self.sharedKey())
+        let message = [
+            "httpMethod": APIMethod.put.rawValue,
+            "timestamp": String(Date.now),
+            "data": try Crypto.shared.convertToBase64(from: ciphertext)
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let signature = try Crypto.shared.signature(message: jsonData, privKey: signingPrivKey()).base64
+        API.shared.request(path: "sessions/\(signingPubKey)/accounts/export", method: .put, signature: signature, body: jsonData).asVoid().catchLog("Error sending export response")
     }
 
     /// Send the team seed to the client.
