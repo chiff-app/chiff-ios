@@ -143,6 +143,7 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
     }
 
     private func acceptRequest(code: String?) {
+        AuthorizationGuard.shared.authorizationInProgressSemaphore.wait()
         firstly {
             self.authorizer.authorize(verification: code) { message in
                 DispatchQueue.main.async { [weak self] in
@@ -156,6 +157,7 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
             }
         }.ensure {
             AuthorizationGuard.shared.authorizationInProgress = false
+            AuthorizationGuard.shared.authorizationInProgressSemaphore.signal()
             self.activityIndicator.stopAnimating()
         }.done(on: .main) { account in
             self.progressLabel.isHidden = true

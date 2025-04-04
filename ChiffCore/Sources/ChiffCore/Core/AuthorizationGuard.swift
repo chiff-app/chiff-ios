@@ -18,6 +18,9 @@ public class AuthorizationGuard {
 
     /// A variable to check the authorization of a request is currently in progress.
     public var authorizationInProgress = false
+    
+    /// A variable to check the authorization of a request is currently in progress in a thread-safe way
+    public var authorizationInProgressSemaphore = DispatchSemaphore(value: 1)
 
     /// Add a OTP (HOTP or TOTP) token to an account.
     /// - Parameters:
