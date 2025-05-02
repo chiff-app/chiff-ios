@@ -14,7 +14,9 @@ public class TeamAdminLoginAuthorizer: Authorizer {
     public let browserTab: Int
     public let code: String?
 
-    public let requestText = "requests.confirm_login".localized.capitalizedFirstLetter
+    public var requestText: String {
+        return String(format: "requests.confirm_login".localized.capitalizedFirstLetter, session.title)
+    }
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return String(format: "requests.login_to".localized, "requests.chiff_for_teams".localized)
