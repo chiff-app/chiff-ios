@@ -36,7 +36,7 @@ public class LoginAuthorizer: Authorizer {
         case .fill, .getDetails:
             return "requests.get_password".localized.capitalizedFirstLetter
         default:
-            return "requests.confirm_login".localized.capitalizedFirstLetter
+            return String(format: "requests.confirm_login".localized.capitalizedFirstLetter, session.title)
         }
     }
     public var authenticationReason: String {

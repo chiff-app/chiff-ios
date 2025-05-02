@@ -19,7 +19,9 @@ public class BulkLoginAuthorizer: Authorizer {
         return String(count)
     }
 
-    public let requestText = "requests.confirm_login".localized.capitalizedFirstLetter
+    public var requestText: String {
+        return String(format: "requests.confirm_login".localized.capitalizedFirstLetter, session.title)
+    }
     public let successText = "requests.login_succesful".localized.capitalizedFirstLetter
     public var authenticationReason: String {
         return String(format: "requests.login_to".localized, "\(accountIds.count) tabs")

@@ -231,7 +231,7 @@ requests:
   chiff_for_teams:
     value: Chiff for teams
   confirm_login:
-    value: Confirm login
+    value: Authorize login on %s
   confirm_request:
     value: Confirm request
   create_ssh_key:

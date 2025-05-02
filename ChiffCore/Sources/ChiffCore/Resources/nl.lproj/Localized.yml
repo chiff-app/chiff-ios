@@ -235,7 +235,7 @@ requests:
   chiff_for_teams:
     value: Chiff voor teams
   confirm_login:
-    value: Bevestig login
+    value: Bevestig login op %s
   confirm_request:
     value: Bevestig verzoek
   create_ssh_key:
