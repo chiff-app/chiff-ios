@@ -235,7 +235,7 @@ requests:
   chiff_for_teams:
     value: Chiff voor teams
   confirm_login:
-    value: Bevestig login op %s
+    value: Bevestig login op %@
   confirm_request:
     value: Bevestig verzoek
   create_ssh_key:
@@ -297,9 +297,9 @@ requests:
   ssh_key_created:
     value: SSH sleutel gegenereerd
   ssh_login:
-    value: Bevestig SSH login op %s
+    value: Bevestig SSH login op %@
   ssh_login_authentication:
-    value: Wil je inloggen via SSH op %s?
+    value: Wil je inloggen via SSH op %@?
   ssh_login_success:
     value: SSH login bevestigd
   to_complete_process:
@@ -348,7 +348,7 @@ requests:
   verify_ssh_login:
     value: >-
       Voer de verificatiecode in die in je terminal wordt weergegeven om in te
-      loggen via SSH op %s.
+      loggen via SSH op %@.
   verify_update_account:
     value: >-
       Voer de verificatiecode in die in je browser wordt weergegeven om %@ te

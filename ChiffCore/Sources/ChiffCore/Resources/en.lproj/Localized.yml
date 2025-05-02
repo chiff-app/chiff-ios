@@ -231,7 +231,7 @@ requests:
   chiff_for_teams:
     value: Chiff for teams
   confirm_login:
-    value: Authorize login on %s
+    value: Authorize login on %@
   confirm_request:
     value: Confirm request
   create_ssh_key:
@@ -293,9 +293,9 @@ requests:
   ssh_key_created:
     value: SSH key created
   ssh_login:
-    value: Authorize SSH login on %s
+    value: Authorize SSH login on %@
   ssh_login_authentication:
-    value: Do you authorize logging in with SSH on %s?
+    value: Do you authorize logging in with SSH on %@?
   ssh_login_success:
     value: SSH login confirmed
   to_complete_process:
@@ -337,7 +337,7 @@ requests:
   verify_ssh_login:
     value: >-
       Please enter the verification code shown in your terminal to log in with
-      SSH on %s.
+      SSH on %@.
   verify_update_account:
     value: Please enter the verification code shown in your browser to update %@
 webauthn:
