@@ -1,4 +1,2 @@
-- Lokale ondersteuning voor inloggen met Passkeys
-- Lokale ondersteuning voor het toevoegen van OTP (QR) 2FA codes
-- Ondersteuning voor het exporteren van accounts naar een CSV-bestand
-- Verschillende bugfixes
+- Fix issue met exporteren van accounts
+- Laat sessienaam in requests zien
