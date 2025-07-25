@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<babeledit_project be_version="5.0.0" version="1.3">
+<babeledit_project be_version="5.4.1" version="1.3">
 	<!--
 
     BabelEdit project file
@@ -3173,6 +3173,7 @@
 			</package_node>
 		</children>
 	</folder_node>
+	<embedded_source_texts>false</embedded_source_texts>
 	<isTemplateProject>false</isTemplateProject>
 	<languages>
 		<language>
@@ -3206,6 +3207,9 @@
 			<copy_template/>
 		</copy_templates>
 		<custom_languages/>
+		<id_extractor_ignores/>
+		<machine_translation_formality>default</machine_translation_formality>
+		<machine_translation_context/>
 	</editor_configuration>
 	<primary_language>en-US</primary_language>
 	<configuration>

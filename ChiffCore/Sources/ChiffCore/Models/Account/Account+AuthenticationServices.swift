@@ -56,13 +56,18 @@ extension Account {
 
     /// Reload all accounts into the identity store.
     public static func reloadIdentityStore() {
-        ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
-            if let error = error {
-                Logger.shared.error("Error deleting credentials from identity store", error: error)
-            } else if result {
-                saveCredentialIdentities()
+        ASCredentialIdentityStore.shared.getState { (state) in
+            guard state.isEnabled else {
+                return
             }
-        })
+            ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
+                if let error = error {
+                    Logger.shared.error("Error deleting credentials from identity store", error: error)
+                } else if result {
+                    saveCredentialIdentities()
+                }
+            })
+        }
     }
     
     private static func saveCredentialIdentities() {

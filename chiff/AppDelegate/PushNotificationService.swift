@@ -42,26 +42,32 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             completionHandler(.failed)
             return
         }
-        var promises: [Promise<Void>] = []
-        if sessions {
-            promises.append(firstly {
-                // First sync team session, because keys may have changed.
-                sessions ? TeamSession.sync(context: nil) : .value(())
-            }.map {
-                TeamSession.updateAllTeamSessions()
-            }.asVoid())
-        } else if userTeamSessions {
-            promises.append(TeamSession.sync(context: nil))
-        }
-        if accounts {
-            promises.append(UserAccount.sync(context: nil))
-        }
-        firstly {
-            when(fulfilled: promises)
-        }.done {
-            completionHandler(UIBackgroundFetchResult.newData)
-        }.catch { _ in
-            completionHandler(UIBackgroundFetchResult.failed)
+        let backgroundQueue = DispatchQueue.global(qos: .background)
+        backgroundQueue.async {
+            AuthorizationGuard.shared.authorizationInProgressSemaphore.wait()
+            var promises: [Promise<Void>] = []
+            if sessions {
+                promises.append(firstly {
+                    // First sync team session, because keys may have changed.
+                    sessions ? TeamSession.sync(context: nil) : .value(())
+                }.map {
+                    TeamSession.updateAllTeamSessions()
+                }.asVoid())
+            } else if userTeamSessions {
+                promises.append(TeamSession.sync(context: nil))
+            }
+            if accounts {
+                promises.append(UserAccount.sync(context: nil))
+            }
+            firstly {
+                when(fulfilled: promises)
+            }.ensure {
+                AuthorizationGuard.shared.authorizationInProgressSemaphore.signal()
+            }.done {
+                completionHandler(UIBackgroundFetchResult.newData)
+            }.catch { _ in
+                completionHandler(UIBackgroundFetchResult.failed)
+            }
         }
     }
 

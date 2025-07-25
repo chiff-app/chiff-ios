@@ -17,16 +17,18 @@ public class SSHLoginAuthorizer: Authorizer {
     public var logParam: String
     public let code: String?
 
-    public let requestText = "requests.ssh_login".localized.capitalizedFirstLetter
+    public var requestText: String {
+        return String(format: "requests.ssh_login".localized.capitalizedFirstLetter, session.title)
+    }
     public let successText = "requests.ssh_login_success".localized.capitalizedFirstLetter
     public var authenticationReason: String {
-        return "requests.ssh_login_authentication".localized
+        return String(format: "requests.ssh_login_authentication".localized, session.title)
     }
     public var verify: Bool {
         return code != nil
     }
     public var verifyText: String? {
-        return String(format: "requests.verify_ssh_login".localized)
+        return String(format: "requests.verify_ssh_login".localized, session.title)
     }
 
     public required init(request: ChiffRequest, session: BrowserSession) throws {
