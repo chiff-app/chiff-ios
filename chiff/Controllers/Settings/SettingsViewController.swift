@@ -9,6 +9,7 @@ import UIKit
 import PromiseKit
 import ChiffCore
 import LinkPresentation
+import AuthenticationServices
 
 class SettingsViewController: UITableViewController, UITextViewDelegate {
 
@@ -75,17 +76,43 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 3, #available(iOS 13.0, *) {
+        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 4, #available(iOS 13.0, *) {
             cell.accessoryView = UIImageView(image: UIImage(systemName: "square.and.arrow.up"))
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 {
+        if indexPath.row == 4 {
             let activityViewController = UIActivityViewController(activityItems: [self], applicationActivities: nil)
             activityViewController.excludedActivityTypes = [.addToReadingList, .assignToContact, .markupAsPDF, .openInIBooks, .saveToCameraRoll]
             present(activityViewController, animated: true, completion: nil)
         }
+        if #available(iOS 26.0, *), indexPath.row == 3 {
+            Task {
+                do {
+                    try await exportAccounts()
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+
+    @available(iOS 26.0, *)
+    func exportAccounts() async throws {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        let exportManager = ASCredentialExportManager(presentationAnchor: window)
+//        exportManager.
+        
+        guard let account = try UserAccount.toASImportableAccount() else {
+            return
+        }
+        let data = ASExportedCredentialData(accounts: [account], formatVersion: .v1, exporterRelyingPartyIdentifier: "io.keyn.keyn", exporterDisplayName: "Chiff", timestamp: Date())
+        print(data)
+        let result = try await exportManager.requestExport()
+        print(result)
+        try await exportManager.exportCredentials(data)
+
     }
 
     // MARK: - Navigation

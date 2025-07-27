@@ -53,8 +53,47 @@ extension Account {
             }
         }
     }
+    
+    @available(iOS 26.0, *)
+    func toASImportableItem() throws -> ASImportableItem {
+        var credentials = [ASImportableCredential]()
+        if let webAuthn = (self as? UserAccount)?.webAuthn {
+            let privKey = try webAuthn.getPrivKey(accountId: self.id)
+            let passkey = ASImportableCredential.Passkey(credentialID: self.id.fromHex!, relyingPartyIdentifier: webAuthn.id, userName: self.username, userDisplayName: self.site.name, userHandle: webAuthn.userHandle?.data ?? Data(), key: privKey)
+            credentials.append(ASImportableCredential.passkey(passkey))
+        }
+        if let password = try password() {
+            let passwordField = ASImportableEditableField(id: self.id.appending("-password").data(using: .utf8)!, fieldType: .string, value: password)
+            let usernameField = ASImportableEditableField(id: self.id.appending("-username").data(using: .utf8)!, fieldType: .string, value: self.username)
+            let passwordItem = ASImportableCredential.BasicAuthentication(userName: usernameField, password: passwordField)
+            credentials.append(ASImportableCredential.basicAuthentication(passwordItem))
+        }
+        if let token = try oneTimePasswordToken() {
+            let algorithm: ASImportableCredential.TOTP.Algorithm
+            switch token.generator.algorithm {
+            case .sha1:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha1
+            case .sha256:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha256
+            case .sha512:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha512
+            }
+            let totpItem = ASImportableCredential.TOTP(secret: token.generator.secret, period: 30, digits: UInt16(token.generator.digits), userName: nil, algorithm: algorithm, issuer: token.issuer)
+            credentials.append(ASImportableCredential.totp(totpItem))
+        }
+        return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, credentials: credentials)
+    }
 
     /// Reload all accounts into the identity store.
+    @available(iOS 26.0, *)
+    public static func toASImportableAccount() throws -> ASImportableAccount? {
+        guard let accounts = try? Self.all(context: nil) else {
+            return nil
+        }
+        let items = try Array(accounts.mapValues{ try $0.toASImportableItem() }.values)
+        return ASImportableAccount(id: "todo".data, userName: "todo", email: "todo@todo.com", collections: [], items: items)
+    }
+    
     public static func reloadIdentityStore() {
         ASCredentialIdentityStore.shared.getState { (state) in
             guard state.isEnabled else {
