@@ -81,15 +81,18 @@ extension Account {
             let totpItem = ASImportableCredential.TOTP(secret: token.generator.secret, period: 30, digits: UInt16(token.generator.digits), userName: nil, algorithm: algorithm, issuer: token.issuer)
             credentials.append(ASImportableCredential.totp(totpItem))
         }
+        if let notes = try self.notes() {
+            let noteData = ASImportableEditableField(id: self.id.appending("-notes").data(using: .utf8)!, fieldType: .string, value: notes)
+            let note = ASImportableCredential.Note(content: noteData)
+            credentials.append(ASImportableCredential.note(note))
+        }
         return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, credentials: credentials)
     }
 
     /// Reload all accounts into the identity store.
     @available(iOS 26.0, *)
     public static func toASImportableAccount() throws -> ASImportableAccount? {
-        guard let accounts = try? Self.all(context: nil) else {
-            return nil
-        }
+        let accounts = try Self.all(context: nil)
         let items = try Array(accounts.mapValues{ try $0.toASImportableItem() }.values)
         return ASImportableAccount(id: "todo".data, userName: "todo", email: "todo@todo.com", collections: [], items: items)
     }

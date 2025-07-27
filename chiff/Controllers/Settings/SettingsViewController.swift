@@ -102,15 +102,11 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     func exportAccounts() async throws {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let exportManager = ASCredentialExportManager(presentationAnchor: window)
-//        exportManager.
-        
+        _ = try await exportManager.requestExport()
         guard let account = try UserAccount.toASImportableAccount() else {
             return
         }
         let data = ASExportedCredentialData(accounts: [account], formatVersion: .v1, exporterRelyingPartyIdentifier: "io.keyn.keyn", exporterDisplayName: "Chiff", timestamp: Date())
-        print(data)
-        let result = try await exportManager.requestExport()
-        print(result)
         try await exportManager.exportCredentials(data)
 
     }
