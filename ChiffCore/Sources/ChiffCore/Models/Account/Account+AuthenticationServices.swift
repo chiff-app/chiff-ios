@@ -91,6 +91,7 @@ extension Account {
         return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, scope: scope, credentials: credentials)
     }
 
+    /// Reload all accounts into the identity store.
     public static func reloadIdentityStore() {
         ASCredentialIdentityStore.shared.getState { (state) in
             guard state.isEnabled else {
