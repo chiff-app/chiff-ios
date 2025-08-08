@@ -83,8 +83,14 @@
 		<dict>
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
+				<key>SupportedCredentialExchangeVersions</key>
+				<array>
+					<string>1.0</string>
+				</array>
 				<key>ShowsConfigurationUI</key>
 				<false/>
+				<key>SupportsCredentialExchange</key>
+				<true/>
 				<key>ProvidesPasswords</key>
 				<true/>
 				<key>ProvidesPasskeys</key>

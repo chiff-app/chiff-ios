@@ -42,7 +42,9 @@ accounts:
     second:
       value: Kies Chiff onder 'Vul automatisch in'.
     third:
-      value: "Wanneer je wilt inloggen in een app of website op je telefoon kun je Chiff gebruiken \U0001F389."
+      value: >-
+        Wanneer je wilt inloggen in een app of website op je telefoon kun je
+        Chiff gebruiken 🎉.
     title:
       value: Inloggen op je telefoon
   choose:
@@ -69,7 +71,7 @@ accounts:
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen.
   email:
-    value: 'E-mailadres (optioneel, als je een reactie wilt)'
+    value: E-mailadres (optioneel, als je een reactie wilt)
   enable_autofill:
     value: Zet autofill aan
   enabled:
@@ -170,7 +172,7 @@ accounts:
   username:
     value: Naam
   webauthn_enabled:
-    value: "Dit account heeft een Passkey ⭐ \U0001F5DD️ "
+    value: 'Dit account heeft een Passkey ⭐ 🗝️ '
   website_details:
     value: Websitegegevens
 backup:
@@ -306,7 +308,11 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "Je bent beheerder van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in de beheer-applicatie."
+    value: >-
+      Je bent beheerder van dit team 🎉.
+
+      Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie
+      beëindigen in de beheer-applicatie.
   team_session_detail_footer:
     value: >-
       Je raakt toegang tot al je team-accounts kwijt als je deze sessie
@@ -323,7 +329,7 @@ errors:
   add_to_team:
     value: Fout bij toevoegen aan team
   authentication_error:
-    comment: 'Error in the authentication process to the phone, e.g. TouchID'
+    comment: Error in the authentication process to the phone, e.g. TouchID
     value: Authenticatiefout
   camera_denied:
     value: >-
@@ -449,14 +455,14 @@ initialization:
   agree:
     value: Akkoord
   all_set_up:
-    value: "Je bent helemaal klaar! \U0001F389"
+    value: Je bent helemaal klaar! 🎉
   begin_passwordless:
     end: '29'
     start: '16'
     value: Je leven zonder wachtwoorden begint nu.
   byebye:
     start: '18'
-    value: 'Dag wachtwoorden, hallo Chiff'
+    value: Dag wachtwoorden, hallo Chiff
   change:
     value: Je kunt dit altijd later veranderen in de instellingen.
   disagree:
@@ -541,11 +547,17 @@ notifications:
     value: Wil je inloggen bij %@?
   onboarding_reminder_message:
     first:
-      value: "Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! \U0001F389\U0001F389"
+      value: >-
+        Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je
+        kunt overal inloggen zonder wachtwoorden! 🎉🎉
     second:
-      value: "Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden. \U0001F4AA\U0001F603"
+      value: >-
+        Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden.
+        💪😃
     third:
-      value: "Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden kan beginnen! \U0001F423"
+      value: >-
+        Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden
+        kan beginnen! 🐣
   onboarding_reminder_title:
     first:
       value: Je bent er bijna!
@@ -705,7 +717,7 @@ requests:
     deny:
       value: Nee
     message:
-      value: 'Je hebt een account voor %@, wil je dat laten weten aan de website?'
+      value: Je hebt een account voor %@, wil je dat laten weten aan de website?
     title:
       value: Account bestaat
   click_authorize_button:
@@ -718,7 +730,7 @@ requests:
   enter_otp:
     value: Voer het one-time password in
   'on':
-    comment: 'The word for on, e.g. Pair with browser on OS?'
+    comment: The word for on, e.g. Pair with browser on OS?
     value: op
   pair_with:
     value: Koppel met
@@ -782,6 +794,8 @@ settings:
       met onze
   discount:
     value: Bespaar 17%
+  export:
+    value: Exporteer accounts
   extra_verification:
     value: Vraag verificatiecode
   faq:
@@ -790,12 +804,12 @@ settings:
     value: Feedback
   feedback_description:
     comment: Description under feedback form
-    value: 'Gebruik dit formulier om ons feedback te geven :)'
+    value: Gebruik dit formulier om ons feedback te geven :)
   feedback_footer:
     value: Help ons Chiff te verbeteren door ons te laten weten wat je er van vindt.
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
-    value: 'Feedback verstuurd, bedankt!'
+    value: Feedback verstuurd, bedankt!
   help:
     comment: The word for help
     value: Help
@@ -818,7 +832,7 @@ settings:
     value: Mobiel
   mobile_instruction:
     first:
-      value: 'Om Chiff op je telefoon te gebruiken, moet je toestemming geven bij iOS.'
+      value: Om Chiff op je telefoon te gebruiken, moet je toestemming geven bij iOS.
     second:
       value: >-
         Wanneer je wilt inloggen, zal iOS Chiff automatisch vragen om je
@@ -913,6 +927,6 @@ tabs:
     value: Instellingen
 urls:
   faq:
-    value: 'https://chiff.app/nl/faq_raw'
+    value: https://chiff.app/nl/faq_raw
   jailbreak:
-    value: 'https://chiff.app/nl/faq#jailbreak'
+    value: https://chiff.app/nl/faq#jailbreak
