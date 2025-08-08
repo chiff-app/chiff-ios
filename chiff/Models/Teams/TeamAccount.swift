@@ -8,6 +8,7 @@
 import Foundation
 import OneTimePassword
 import ChiffCore
+import AuthenticationServices
 
 /// A team account in the context of a team. Not to be confused with a shared account, which is the team account in the context of the team member.
 struct TeamAccount: BaseAccount {
@@ -142,6 +143,40 @@ extension TeamAccount: Codable {
         try container.encode(notes, forKey: .notes)
         try container.encode(tokenSecret, forKey: .tokenSecret)
         try container.encode(tokenURL, forKey: .tokenURL)
+    }
+
+}
+
+extension TeamAccount {
+    @available(iOS 26.0, *)
+    public func toASImportableItem(passwordSeed: Data) throws -> ASImportableItem {
+        var credentials = [ASImportableCredential]()
+        let password = try password(for: passwordSeed)
+        let passwordField = ASImportableEditableField(id: nil, fieldType: .concealedString, value: password)
+        let usernameField = ASImportableEditableField(id: nil, fieldType: .string, value: self.username)
+        let passwordItem = ASImportableCredential.BasicAuthentication(userName: usernameField, password: passwordField)
+        credentials.append(ASImportableCredential.basicAuthentication(passwordItem))
+        if let tokenSecret = tokenSecret, let tokenURL = tokenURL, let token = Token(url: tokenURL, secret: tokenSecret) {
+            let algorithm: ASImportableCredential.TOTP.Algorithm
+            switch token.generator.algorithm {
+            case .sha1:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha1
+            case .sha256:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha256
+            case .sha512:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha512
+            }
+            let totpItem = ASImportableCredential.TOTP(secret: token.generator.secret, period: 30, digits: UInt16(token.generator.digits), userName: nil, algorithm: algorithm, issuer: token.issuer)
+            credentials.append(ASImportableCredential.totp(totpItem))
+        }
+        if let notes = self.notes {
+            let noteData = ASImportableEditableField(id: nil, fieldType: .string, value: notes)
+            let note = ASImportableCredential.Note(content: noteData)
+            credentials.append(ASImportableCredential.note(note))
+        }
+        let urls = self.sites.compactMap { URL(string: $0.url) }
+        let scope = ASImportableCredentialScope(urls: urls)
+        return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, scope: scope, credentials: credentials)
     }
 
 }

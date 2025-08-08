@@ -103,12 +103,25 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let exportManager = ASCredentialExportManager(presentationAnchor: window)
         _ = try await exportManager.requestExport()
-        guard let account = try UserAccount.toASImportableAccount() else {
-            return
+        var collections: [String: ASImportableCollection] = [:]
+        var items = [ASImportableItem]()
+        if let teamSession = try TeamSession.all().first {
+            let team = try await teamSession.getTeam()
+            collections = team.roles.reduce(into: [String: ASImportableCollection]()) {
+                $0[$1.id] = ASImportableCollection(id: $1.id.fromHex!, created: nil, lastModified: nil, title: $1.name, items: [])
+            }
+            for teamAccount in team.accounts {
+                for role in teamAccount.roles {
+                    collections[role]?.items.append(ASImportableLinkedItem(item: teamAccount.id.fromHex!, account: nil))
+                }
+                items.append(try teamAccount.toASImportableItem(passwordSeed: team.passwordSeed))
+            }
         }
+        let accounts = try UserAccount.all(context: nil)
+        items.append(contentsOf: try accounts.mapValues{ try $0.toASImportableItem() }.values)
+        let account = ASImportableAccount(id: Properties.userId!.data, userName: "", email: "", collections: Array(collections.values), items: items)
         let data = ASExportedCredentialData(accounts: [account], formatVersion: .v1, exporterRelyingPartyIdentifier: "io.keyn.keyn", exporterDisplayName: "Chiff", timestamp: Date())
         try await exportManager.exportCredentials(data)
-
     }
 
     // MARK: - Navigation

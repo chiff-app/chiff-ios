@@ -55,7 +55,7 @@ extension Account {
     }
     
     @available(iOS 26.0, *)
-    func toASImportableItem() throws -> ASImportableItem {
+    public func toASImportableItem() throws -> ASImportableItem {
         var credentials = [ASImportableCredential]()
         if let webAuthn = (self as? UserAccount)?.webAuthn {
             let privKey = try webAuthn.getPrivKey(accountId: self.id)
@@ -86,17 +86,11 @@ extension Account {
             let note = ASImportableCredential.Note(content: noteData)
             credentials.append(ASImportableCredential.note(note))
         }
-        return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, credentials: credentials)
+        let urls = self.sites.compactMap { URL(string: $0.url) }
+        let scope = ASImportableCredentialScope(urls: urls)
+        return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, scope: scope, credentials: credentials)
     }
 
-    /// Reload all accounts into the identity store.
-    @available(iOS 26.0, *)
-    public static func toASImportableAccount() throws -> ASImportableAccount? {
-        let accounts = try Self.all(context: nil)
-        let items = try Array(accounts.mapValues{ try $0.toASImportableItem() }.values)
-        return ASImportableAccount(id: Properties.userId!.data, userName: "", email: "", collections: [], items: items)
-    }
-    
     public static func reloadIdentityStore() {
         ASCredentialIdentityStore.shared.getState { (state) in
             guard state.isEnabled else {

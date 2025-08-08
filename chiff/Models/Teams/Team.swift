@@ -120,11 +120,29 @@ extension TeamSession {
 
     /// Get an instance of the `Team` that corresponds to this session.
     /// - Returns: A Promise of the `Team`.
+    /// @available(*, renamed: "getTeam()")
     func getTeam() -> Promise<Team> {
         return firstly {
             getTeamSeed()
         }.then { seed in
             Team.get(id: self.teamId, seed: seed)
+        }
+    }
+
+    /// Get an instance of the `Team` that corresponds to this session.
+    /// - Returns: A Promise of the `Team`.
+    @available(iOS 13.0, *)
+    func getTeam() async throws -> Team {
+        return try await withUnsafeThrowingContinuation { continuation in
+            firstly {
+                getTeamSeed()
+            }.then { seed in
+                Team.get(id: self.teamId, seed: seed)
+            }.done { team in
+                continuation.resume(returning: team)
+            }.catch { error in
+                continuation.resume(throwing: error)
+            }
         }
     }
 
