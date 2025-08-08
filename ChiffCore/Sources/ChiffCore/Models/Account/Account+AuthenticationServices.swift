@@ -63,8 +63,8 @@ extension Account {
             credentials.append(ASImportableCredential.passkey(passkey))
         }
         if let password = try password() {
-            let passwordField = ASImportableEditableField(id: self.id.appending("-password").data(using: .utf8)!, fieldType: .string, value: password)
-            let usernameField = ASImportableEditableField(id: self.id.appending("-username").data(using: .utf8)!, fieldType: .string, value: self.username)
+            let passwordField = ASImportableEditableField(id: nil, fieldType: .concealedString, value: password)
+            let usernameField = ASImportableEditableField(id: nil, fieldType: .string, value: self.username)
             let passwordItem = ASImportableCredential.BasicAuthentication(userName: usernameField, password: passwordField)
             credentials.append(ASImportableCredential.basicAuthentication(passwordItem))
         }
@@ -82,7 +82,7 @@ extension Account {
             credentials.append(ASImportableCredential.totp(totpItem))
         }
         if let notes = try self.notes() {
-            let noteData = ASImportableEditableField(id: self.id.appending("-notes").data(using: .utf8)!, fieldType: .string, value: notes)
+            let noteData = ASImportableEditableField(id: nil, fieldType: .string, value: notes)
             let note = ASImportableCredential.Note(content: noteData)
             credentials.append(ASImportableCredential.note(note))
         }
@@ -94,7 +94,7 @@ extension Account {
     public static func toASImportableAccount() throws -> ASImportableAccount? {
         let accounts = try Self.all(context: nil)
         let items = try Array(accounts.mapValues{ try $0.toASImportableItem() }.values)
-        return ASImportableAccount(id: "todo".data, userName: "todo", email: "todo@todo.com", collections: [], items: items)
+        return ASImportableAccount(id: Properties.userId!.data, userName: "", email: "", collections: [], items: items)
     }
     
     public static func reloadIdentityStore() {
