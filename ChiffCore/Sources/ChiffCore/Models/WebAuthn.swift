@@ -341,7 +341,7 @@ public struct WebAuthn: Equatable {
             guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .account(attribute: .webauthn)) else {
                 throw KeychainError.notFound
             }
-            return privKey
+            return try Crypto.shared.encodeToPKCS8DER(privateKey: privKey.prefix(32))
         case .ECDSA256:
             guard let privKey: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
                 throw KeychainError.notFound
