@@ -53,6 +53,43 @@ extension Account {
             }
         }
     }
+    
+    @available(iOS 26.0, *)
+    public func toASImportableItem() throws -> ASImportableItem {
+        var credentials = [ASImportableCredential]()
+        if let webAuthn = (self as? UserAccount)?.webAuthn {
+            let privKey = try webAuthn.getPrivKey(accountId: self.id)
+            let passkey = ASImportableCredential.Passkey(credentialID: self.id.fromHex!, relyingPartyIdentifier: webAuthn.id, userName: self.username, userDisplayName: self.site.name, userHandle: webAuthn.userHandle?.data ?? Data(), key: privKey)
+            credentials.append(ASImportableCredential.passkey(passkey))
+        }
+        if let password = try password() {
+            let passwordField = ASImportableEditableField(id: nil, fieldType: .concealedString, value: password)
+            let usernameField = ASImportableEditableField(id: nil, fieldType: .string, value: self.username)
+            let passwordItem = ASImportableCredential.BasicAuthentication(userName: usernameField, password: passwordField)
+            credentials.append(ASImportableCredential.basicAuthentication(passwordItem))
+        }
+        if let token = try oneTimePasswordToken() {
+            let algorithm: ASImportableCredential.TOTP.Algorithm
+            switch token.generator.algorithm {
+            case .sha1:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha1
+            case .sha256:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha256
+            case .sha512:
+                algorithm = ASImportableCredential.TOTP.Algorithm.sha512
+            }
+            let totpItem = ASImportableCredential.TOTP(secret: token.generator.secret, period: 30, digits: UInt16(token.generator.digits), userName: nil, algorithm: algorithm, issuer: token.issuer)
+            credentials.append(ASImportableCredential.totp(totpItem))
+        }
+        if let notes = try self.notes() {
+            let noteData = ASImportableEditableField(id: nil, fieldType: .string, value: notes)
+            let note = ASImportableCredential.Note(content: noteData)
+            credentials.append(ASImportableCredential.note(note))
+        }
+        let urls = self.sites.compactMap { URL(string: $0.url) }
+        let scope = ASImportableCredentialScope(urls: urls)
+        return ASImportableItem(id: self.id.fromHex!, created: Date(), lastModified: Date(), title: self.site.name, scope: scope, credentials: credentials)
+    }
 
     /// Reload all accounts into the identity store.
     public static func reloadIdentityStore() {

@@ -333,6 +333,32 @@ public struct WebAuthn: Equatable {
             data.append(extensionData)
         }
     }
+    
+    @available(iOS 26.0, *)
+    func getPrivKey(accountId: String) throws -> Data {
+        switch algorithm {
+        case .edDSA:
+            guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .account(attribute: .webauthn)) else {
+                throw KeychainError.notFound
+            }
+            return try Crypto.shared.encodeToPKCS8DER(privateKey: privKey.prefix(32))
+        case .ECDSA256:
+            guard let privKey: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
+                throw KeychainError.notFound
+            }
+            return privKey.derRepresentation
+        case .ECDSA384:
+            guard let privKey: P384.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
+                throw KeychainError.notFound
+            }
+            return privKey.derRepresentation
+        case .ECDSA512:
+            guard let privKey: P521.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
+                throw KeychainError.notFound
+            }
+            return privKey.derRepresentation
+        }
+    }
 
     private func sign(accountId: String, data: Data) throws -> Data {
         switch algorithm {

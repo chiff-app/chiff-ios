@@ -31,7 +31,7 @@ accounts:
   alphabetically:
     value: Alphabetically
   alternative_add:
-    value: 'Alternatively, you can add an account manually.'
+    value: Alternatively, you can add an account manually.
   autofill:
     confirm:
       value: Got it
@@ -42,7 +42,9 @@ accounts:
     second:
       value: Enable Chiff under 'AutoFill Passwords'.
     third:
-      value: "When you want to log in to an app or website on your phone, you can use Chiff \U0001F389."
+      value: >-
+        When you want to log in to an app or website on your phone, you can use
+        Chiff 🎉.
     title:
       value: Logging in on your phone
   choose:
@@ -69,7 +71,7 @@ accounts:
   didnt_save:
     value: You didn’t save any of your accounts yet.
   email:
-    value: 'Email address (optional, if you want a response)'
+    value: Email address (optional, if you want a response)
   enable_autofill:
     value: Enable autofill
   enabled:
@@ -171,7 +173,7 @@ accounts:
   username:
     value: Username
   webauthn_enabled:
-    value: "This account has a Passkey ⭐ \U0001F5DD️"
+    value: This account has a Passkey ⭐ 🗝️
   website_details:
     value: Website details
 backup:
@@ -309,7 +311,9 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "You are the admin of this team \U0001F389.\nIf you don't want this burden, you can end the session in the admin panel."
+    value: |-
+      You are the admin of this team 🎉.
+      If you don't want this burden, you can end the session in the admin panel.
   team_session_detail_footer:
     value: You will lose access to all shared accounts by ending the team session.
   team_session_detail_header:
@@ -324,7 +328,7 @@ errors:
   add_to_team:
     value: Error adding account to team
   authentication_error:
-    comment: 'Error in the authentication process to the phone, e.g. TouchID'
+    comment: Error in the authentication process to the phone, e.g. TouchID
     value: Authentication error
   camera_denied:
     value: >-
@@ -450,14 +454,14 @@ initialization:
   agree:
     value: Agree
   all_set_up:
-    value: "You're all set up! \U0001F389"
+    value: You're all set up! 🎉
   begin_passwordless:
     end: '29'
     start: '17'
     value: Let's begin your passwordless life.
   byebye:
     start: '30'
-    value: 'Bye bye forgetting passwords, hello Chiff'
+    value: Bye bye forgetting passwords, hello Chiff
   change:
     value: You can always change this later in settings
   disagree:
@@ -479,7 +483,7 @@ initialization:
     comment: This is provided as a reason for authenticating the first time.
     value: This is how you log in from now on
   keyn_uses_push:
-    value: 'To log in to your computer, Chiff uses push notifications.'
+    value: To log in to your computer, Chiff uses push notifications.
   learn_more:
     value: Learn more
   lets_go:
@@ -542,11 +546,15 @@ notifications:
     value: Do you want to log in to %@?
   onboarding_reminder_message:
     first:
-      value: "You only have to pair your phone with your computer and you can log in without passwords! \U0001F389\U0001F389"
+      value: >-
+        You only have to pair your phone with your computer and you can log in
+        without passwords! 🎉🎉
     second:
-      value: "You're only one step away from logging in without passwords. \U0001F4AA\U0001F603"
+      value: You're only one step away from logging in without passwords. 💪😃
     third:
-      value: "Connect your phone to your computer and start logging in without passwords! \U0001F423"
+      value: >-
+        Connect your phone to your computer and start logging in without
+        passwords! 🐣
   onboarding_reminder_title:
     first:
       value: Almost there!
@@ -707,7 +715,7 @@ requests:
     deny:
       value: 'No'
     message:
-      value: 'You have an account for %@, do you want the website to know this?'
+      value: You have an account for %@, do you want the website to know this?
     title:
       value: Account exists
   click_authorize_button:
@@ -720,7 +728,7 @@ requests:
   enter_otp:
     value: Enter your one-time password
   'on':
-    comment: 'The word for on, e.g. Pair with browser on OS?'
+    comment: The word for on, e.g. Pair with browser on OS?
     value: 'on'
   pair_with:
     value: Pair with
@@ -785,6 +793,8 @@ settings:
       Store account settings after purchase. By purchasing, you agree with our
   discount:
     value: You save 17%
+  export:
+    value: Export accounts
   extra_verification:
     value: Ask verification code
   faq:
@@ -793,14 +803,14 @@ settings:
     value: Feedback
   feedback_description:
     comment: Description under feedback form
-    value: 'Use this form to provide feedback :)'
+    value: Use this form to provide feedback :)
   feedback_footer:
     value: >-
       Help us make Chiff better by letting us know what you think or providing
       suggestions for improvements.
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
-    value: 'Feedback sent, thanks!'
+    value: Feedback sent, thanks!
   help:
     comment: The word for help
     value: Help
@@ -920,6 +930,6 @@ tabs:
     value: Settings
 urls:
   faq:
-    value: 'https://chiff.app/faq_raw'
+    value: https://chiff.app/faq_raw
   jailbreak:
-    value: 'https://chiff.app/faq#jailbreak'
+    value: https://chiff.app/faq#jailbreak
