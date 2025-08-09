@@ -16,7 +16,6 @@ struct ASN1DEREncoder {
     static let integerTag: UInt8 = 0x02
     static let octetStringTag: UInt8 = 0x04
     static let objectIdentifierTag: UInt8 = 0x06
-    static let contextSpecificTag1: UInt8 = 0x81  // [1] for public key
     
     // Ed25519 OID: 1.3.101.112
     static let ed25519OID: [UInt8] = [0x06, 0x03, 0x2B, 0x65, 0x70]
