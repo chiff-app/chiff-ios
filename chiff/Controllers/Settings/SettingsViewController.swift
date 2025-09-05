@@ -43,6 +43,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         if indexPath.row == 0 && indexPath.section == 0 && !Properties.hasFaceID {
             return 0.5
         }
+        if indexPath.row == 3 {
+            if #available(iOS 26.0, *) {
+                return 44
+            } else {
+                return 0
+            }
+        }
         return 44
     }
 
@@ -78,6 +85,9 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let cell = cell as? AccessoryTableViewCell, indexPath.row == 4, #available(iOS 13.0, *) {
             cell.accessoryView = UIImageView(image: UIImage(systemName: "square.and.arrow.up"))
+        }
+        if let cell = cell as? AccessoryTableViewCell, indexPath.row == 3, #available(iOS 13.0, *) {
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "square.and.arrow.up.on.square"))
         }
     }
 
@@ -118,7 +128,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             }
         }
         let accounts = try UserAccount.all(context: nil)
-        items.append(contentsOf: try accounts.mapValues{ try $0.toASImportableItem() }.values)
+        items.append(contentsOf: try accounts.mapValues { try $0.toASImportableItem() }.values)
         let account = ASImportableAccount(id: Properties.userId!.data, userName: "", email: "", collections: Array(collections.values), items: items)
         let data = ASExportedCredentialData(accounts: [account], formatVersion: .v1, exporterRelyingPartyIdentifier: "io.keyn.keyn", exporterDisplayName: "Chiff", timestamp: Date())
         try await exportManager.exportCredentials(data)
