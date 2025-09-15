@@ -28,7 +28,7 @@ platform :ios do
     lane :test do
         scan(
             scheme: scheme,
-            device: 'iPhone 15'
+            device: 'iPhone 17'
         )
     end
 
@@ -139,7 +139,7 @@ platform :ios do
         upload_to_testflight(skip_waiting_for_build_processing: true)
         create_sentry_deployment(environment: "staging", version: version)
         upload_symbols
-        slack(message: "New Testflight version of Chiff released! #{version}")
+        # slack(message: "New Testflight version of Chiff released! #{version}")
     end
 
     desc "Submit Chiff to the App Store"
