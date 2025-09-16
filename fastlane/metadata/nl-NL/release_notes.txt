@@ -1,2 +1,1 @@
-- Fix issue met exporteren van accounts
-- Laat sessienaam in requests zien
+- Ondersteuning voor exporteren van accounts

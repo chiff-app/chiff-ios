@@ -161,7 +161,6 @@ platform :ios do
         upload_symbols
       end
       finalize_release(version: version)
-      slack(message: "New version of Chiff released! #{version}")
     end
 
 end
