@@ -405,6 +405,30 @@ class CryptoTests: XCTestCase {
         }
     }
 
-
+    @available(iOS 13.0, *)
+    func testASN1encoding() {
+        do {
+            // Data from https://www.rfc-editor.org/rfc/rfc8410.html
+            let rawPrivKey: [UInt8] = [0xD4, 0xEE, 0x72, 0xDB, 0xF9, 0x13, 0x58, 0x4A, 0xD5, 0xB6, 0xD8, 0xF1, 0xF7, 0x69, 0xF8, 0xAD, 0x3A, 0xFE, 0x7C, 0x28, 0xCB, 0xF1, 0xD4, 0xFB, 0xE0, 0x97, 0xA8, 0x8F, 0x44, 0x75, 0x58, 0x42]
+            let encoded = try Crypto.shared.encodeToPKCS8DER(privateKey: Data(rawPrivKey))
+            XCTAssertEqual(encoded.base64EncodedString(), "MC4CAQAwBQYDK2VwBCIEINTuctv5E1hK1bbY8fdp+K06/nwoy/HU++CXqI9EdVhC")
+        } catch {
+            XCTFail("Error encoding to ASN.1")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func testASN1encodingFromSodium() {
+        guard let seed = TestHelper.backupSeed.fromBase64 else {
+            return XCTFail("Error getting data from base64 seed")
+        }
+        do {
+            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
+            let encoded = try Crypto.shared.encodeToPKCS8DER(privateKey: signingKeyPair.privKey.prefix(32))
+            XCTAssertEqual(encoded.base64EncodedString(), "MC4CAQAwBQYDK2VwBCIEIGzqsOl9Ex9V6eY4fXl9ipKC1+sA7IKmxYOfhPnCYQGM")
+        } catch {
+            XCTFail("Error encoding to ASN.1")
+        }
+    }
 
 }
