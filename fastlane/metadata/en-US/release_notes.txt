@@ -1,2 +1,1 @@
-- Fix issue with exporting accounts
-- Add the session title to the request
+- Support exporting accounts
