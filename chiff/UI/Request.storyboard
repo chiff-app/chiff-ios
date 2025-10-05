@@ -48,6 +48,23 @@
                                     <action selector="authenticate:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="uir-QB-9JZ"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCK-xc-Ode" customClass="KeynButton" customModule="chiff" customModuleProvider="target">
+                                <rect key="frame" x="116" y="758" width="182" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="182" id="FCK-xc-ct1"/>
+                                    <constraint firstAttribute="height" constant="44" id="FCK-xc-ct2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Open Blog"/>
+                                <connections>
+                                    <action selector="openBlog:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="FCK-xc-onn"/>
+                                </connections>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.read_blog"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                             <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j0D-6t-I3t">
                                 <rect key="frame" x="16" y="196" width="343" height="275"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -67,7 +84,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jtk-5h-fdB">
                                         <rect key="frame" x="59.5" y="61" width="156.5" height="133"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="wwh-dI-pS2">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning" translatesAutoresizingMaskIntoConstraints="NO" id="wwh-dI-pS2">
                                                 <rect key="frame" x="38" y="0.0" width="80" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="hbI-90-4vC"/>
@@ -130,6 +147,7 @@
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="top" secondItem="qAm-BS-Rbr" secondAttribute="bottom" constant="20" id="9nH-wY-6Uf"/>
                             <constraint firstItem="j0D-6t-I3t" firstAttribute="top" secondItem="Dnn-31-QJY" secondAttribute="top" id="F2W-Mr-zlu"/>
                             <constraint firstItem="J0B-1e-Apk" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="Iz1-Ka-LIg"/>
+                            <constraint firstItem="FCK-xc-Ode" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="FCK-xc-ct4"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="qAm-BS-Rbr" secondAttribute="trailing" constant="16" id="KcC-aH-lvM"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="50" id="MlD-um-UHF"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="j0D-6t-I3t" secondAttribute="trailing" constant="16" id="WeN-EB-7cP"/>
@@ -138,6 +156,7 @@
                             <constraint firstItem="VTZ-Sz-IhE" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="25" id="cCz-eg-KTW"/>
                             <constraint firstItem="0yL-oc-bvy" firstAttribute="centerY" secondItem="TnR-ml-hOh" secondAttribute="centerY" id="db7-Ro-oyo"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="J0B-1e-Apk" secondAttribute="bottom" constant="60" id="dwk-8s-tIy"/>
+                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="FCK-xc-Ode" secondAttribute="bottom" constant="60" id="FCK-xc-ct3"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="0KU-eH-Piw" secondAttribute="trailing" constant="40" id="er0-TM-XRM"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="fEo-uK-RmZ"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="centerY" secondItem="TnR-ml-hOh" secondAttribute="centerY" id="g6y-im-dWL"/>
@@ -148,6 +167,7 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="0yL-oc-bvy" id="6ab-P4-stO"/>
+                        <outlet property="openBlogButton" destination="FCK-xc-Ode" id="FCK-xc-ou1"/>
                         <outlet property="authenticateButton" destination="J0B-1e-Apk" id="Onl-y7-Lnr"/>
                         <outlet property="checkmarkHeightContstraint" destination="hbI-90-4vC" id="bcd-zo-18U"/>
                         <outlet property="pickerView" destination="j0D-6t-I3t" id="aCi-Q2-xhd"/>
@@ -165,7 +185,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="checkmark" width="80" height="80"/>
+        <image name="warning" width="80" height="80"/>
         <image name="close_button" width="39" height="39"/>
         <image name="fingerprint" width="50" height="55"/>
         <image name="logo" width="291" height="323"/>

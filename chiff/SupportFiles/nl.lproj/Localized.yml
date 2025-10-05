@@ -737,8 +737,12 @@ requests:
     value: Creëer team
   create_this:
     value: Creëer %@.
+  deprecation:
+    value: Einde van Chiff
   enter_otp:
     value: Voer het one-time password in
+  notice:
+    value: '⚠️ BELANGRIJKE MEDEDELING ⚠️ '
   'on':
     comment: The word for on, e.g. Pair with browser on OS?
     value: op
@@ -747,6 +751,8 @@ requests:
   pick_team:
     comment: Click
     value: Kies het team
+  read_blog:
+    value: Lees blog
   team_created:
     value: Team gecreëerd
   unlock_keyn:

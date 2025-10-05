@@ -735,8 +735,12 @@ requests:
     value: Create team
   create_this:
     value: Create %@.
+  deprecation:
+    value: End of Chiff
   enter_otp:
     value: Enter your one-time password
+  notice:
+    value: ⚠️ IMPORTANT NOTICE ⚠️
   'on':
     comment: The word for on, e.g. Pair with browser on OS?
     value: 'on'
@@ -745,6 +749,8 @@ requests:
   pick_team:
     comment: Click
     value: Pick a team
+  read_blog:
+    value: Read blog
   team_created:
     value: Team created
   unlock_keyn:
