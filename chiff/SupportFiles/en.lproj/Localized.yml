@@ -611,6 +611,12 @@ popups:
         this device?
     delete_x:
       value: Delete %@
+    deprecation:
+      value: ⚠️ End of Chiff
+    deprecation_message:
+      value: >-
+        Chiff will be discontinued and stop working on 1 February 2026. Read
+        more details in the blog post.
     has_otp_message:
       value: >-
         This account already has 2FA attached. Do you want to replace it? The
@@ -689,6 +695,10 @@ popups:
       value: Deny
     dont_care:
       value: Don't care
+    later:
+      value: Not now
+    more_info:
+      value: More info
     move:
       value: Move
     'no':
@@ -929,6 +939,8 @@ tabs:
   settings:
     value: Settings
 urls:
+  deprecation:
+    value: https://www.chiff.app/articles/2025/10/31/end-of-chiff/
   faq:
     value: https://chiff.app/faq_raw
   jailbreak:

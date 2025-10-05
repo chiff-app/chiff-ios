@@ -19,7 +19,7 @@ class RootViewController: UITabBarController {
         tabBar.items?[2].title = "tabs.settings".localized
         tabBar.unselectedItemTintColor = UIColor.primaryHalfOpacity
         tabBar.tintColor = UIColor.primary
-        launchTerms()
+        launchDeprecationWarning()
         NotificationCenter.default.addObserver(self, selector: #selector(showAddOTP(notification:)), name: .openAddOTP, object: nil)
     }
 
@@ -30,22 +30,19 @@ class RootViewController: UITabBarController {
         }
     }
 
-    func launchTerms() {
-        if Properties.notifiedLatestTerms {
+    func launchDeprecationWarning() {
+        if Properties.acknowledgedDeprecation {
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let alert = UIAlertController(title: "popups.questions.terms".localized, message: "popups.questions.updated_terms_message".localized, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "popups.responses.dont_care".localized, style: .cancel) { _ in
-                Properties.notifiedLatestTerms = true
+            let alert = UIAlertController(title: "popups.questions.deprecation".localized, message: "popups.questions.deprecation_message".localized, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "popups.responses.later".localized, style: .cancel))
+            let moreInfoAction = UIAlertAction(title: "popups.responses.more_info".localized, style: .default, handler: { _ in
+                self.performSegue(withIdentifier: "ShowTerms", sender: URL(string: "urls.deprecation".localized))
+                Properties.acknowledgedDeprecation = true
             })
-            let agreeAction = UIAlertAction(title: "popups.responses.open".localized, style: .default, handler: { _ in
-                let urlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
-                self.performSegue(withIdentifier: "ShowTerms", sender: URL(fileURLWithPath: urlPath!))
-                Properties.notifiedLatestTerms = true
-            })
-            alert.addAction(agreeAction)
-            alert.preferredAction = agreeAction
+            alert.addAction(moreInfoAction)
+            alert.preferredAction = moreInfoAction
             self.present(alert, animated: true, completion: nil)
         }
     }
