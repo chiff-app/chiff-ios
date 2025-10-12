@@ -1,3 +1,5 @@
+WARNING: Chiff will be discontinued. Read more on https://chiff.app/articles/2025/10/31/end-of-chiff/.
+
 With Chiff you can easily log in to any website using TouchID or FaceID on both your mobile phone and desktop. You never have to remember a single password, not even a master password. Chiff can be paired with your browser, so you can simply authorize logins with your fingerprint or face.
 
 Why Chiff?
