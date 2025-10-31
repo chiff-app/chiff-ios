@@ -1,3 +1,7 @@
+> ## ⚠️ End of Chiff
+>
+> After much consideration, I have decided to discontinue the development of Chiff. Read more about this decision in the [blog post](https://www.chiff.app/articles/2025/10/31/end-of-chiff/).
+
 # Chiff for iOS ![Current version](https://img.shields.io/github/v/tag/chiff-app/chiff-ios?sort=semver) ![Twitter Follow](https://img.shields.io/twitter/follow/Chiff_App?style=social)
 
 ![Chiff logo](https://chiff.app/assets/images/logo.svg)
@@ -61,8 +65,7 @@ To be more secure, you should change your password to randomly generated ones (i
 
 ### Backup
 
-When initializing Chiff, a 128-bit seed is randomly generated. Passwords and encryption keys are derived from this seed, which means that you can restore your data if you lose your phone. We present the seed in the form of a 12-word mnemonic, based on [BIP-0039 of Bitcoin](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki).
-**Make sure you write this _paper backup_ down and store it in safe place**:
+When initializing Chiff, a 128-bit seed is randomly generated. Passwords and encryption keys are derived from this seed, which means that you can restore your data if you lose your phone. We present the seed in the form of a 12-word mnemonic, based on [BIP-0039 of Bitcoin](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki). **Make sure you write this _paper backup_ down and store it in safe place**:
 
 - If you lose it, there is no way to retrieve your passwords.
 - If someone else gets hold of it, he/she can retrieve all your passwords.
@@ -71,10 +74,7 @@ When initializing Chiff, a 128-bit seed is randomly generated. Passwords and enc
 
 ### Prerequisites
 
-To build this project, you need a _MacOS_ machine with the latest version of Xcode.
-Furthermore, the build process assumes that _Ruby_ is present.
-You also need the _Xcode additional components_.
-Install the ruby dependencies in the _Gemfile_ with:
+To build this project, you need a _MacOS_ machine with the latest version of Xcode. Furthermore, the build process assumes that _Ruby_ is present. You also need the _Xcode additional components_. Install the ruby dependencies in the _Gemfile_ with:
 
 ```bash
 bundle install
@@ -82,13 +82,11 @@ bundle install
 
 ### Build with Xcode
 
-Open `chiff.xcodeproj` with _XCode_. We use SPM for dependencies, so Xcode should automatically resolve those as soon as the project is opened.
-Simply build by clicking the _build_ button.
+Open `chiff.xcodeproj` with _XCode_. We use SPM for dependencies, so Xcode should automatically resolve those as soon as the project is opened. Simply build by clicking the _build_ button.
 
 ### Build with Fastlane
 
-We also have fastlane scripts to build from commandline.
-To build Chiff, run
+We also have fastlane scripts to build from commandline. To build Chiff, run
 
 ```
 bundle exec fastlane build
