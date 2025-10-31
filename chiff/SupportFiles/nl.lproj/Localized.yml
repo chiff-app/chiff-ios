@@ -613,6 +613,12 @@ popups:
         hier ook verwijderen of de backup herstellen vanaf dit apparaat?
     delete_x:
       value: Delete %@
+    deprecation:
+      value: ⚠️ Chiff gaat stoppen
+    deprecation_message:
+      value: >-
+        Chiff gaat stoppen en zal niet meer werken per 1 februari 2026. Lees
+        meer details in de blog.
     has_otp_message:
       value: >-
         Aan dit account is al 2FA gekoppeld. Wil je deze vervangen? De oude
@@ -691,6 +697,10 @@ popups:
       value: Weiger
     dont_care:
       value: Prima
+    later:
+      value: Nu niet
+    more_info:
+      value: Meer info
     move:
       value: Verplaats
     'no':
@@ -727,8 +737,12 @@ requests:
     value: Creëer team
   create_this:
     value: Creëer %@.
+  deprecation:
+    value: Einde van Chiff
   enter_otp:
     value: Voer het one-time password in
+  notice:
+    value: '⚠️ BELANGRIJKE MEDEDELING ⚠️ '
   'on':
     comment: The word for on, e.g. Pair with browser on OS?
     value: op
@@ -737,6 +751,8 @@ requests:
   pick_team:
     comment: Click
     value: Kies het team
+  read_blog:
+    value: Lees blog
   team_created:
     value: Team gecreëerd
   unlock_keyn:
@@ -926,6 +942,8 @@ tabs:
   settings:
     value: Instellingen
 urls:
+  deprecation:
+    value: https://www.chiff.app/articles/2025/10/31/end-of-chiff/
   faq:
     value: https://chiff.app/nl/faq_raw
   jailbreak:

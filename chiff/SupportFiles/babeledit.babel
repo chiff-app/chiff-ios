@@ -5626,6 +5626,46 @@
 										</children>
 									</folder_node>
 									<folder_node>
+										<name>deprecation</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>deprecation_message</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
 										<name>has_otp_message</name>
 										<children>
 											<concept_node>
@@ -6321,6 +6361,46 @@
 										</children>
 									</folder_node>
 									<folder_node>
+										<name>later</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>more_info</name>
+										<children>
+											<concept_node>
+												<name>value</name>
+												<description/>
+												<comment/>
+												<translations>
+													<translation>
+														<language>en-US</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>nl-NL</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
 										<name>move</name>
 										<children>
 											<concept_node>
@@ -6693,7 +6773,47 @@
 								</children>
 							</folder_node>
 							<folder_node>
+								<name>deprecation</name>
+								<children>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
 								<name>enter_otp</name>
+								<children>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
+								<name>notice</name>
 								<children>
 									<concept_node>
 										<name>value</name>
@@ -6785,6 +6905,26 @@
 											</translation>
 										</translations>
 									</concept_node>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
+								<name>read_blog</name>
+								<children>
 									<concept_node>
 										<name>value</name>
 										<description/>
@@ -8382,6 +8522,26 @@
 					<folder_node>
 						<name>urls</name>
 						<children>
+							<folder_node>
+								<name>deprecation</name>
+								<children>
+									<concept_node>
+										<name>value</name>
+										<description/>
+										<comment/>
+										<translations>
+											<translation>
+												<language>en-US</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>nl-NL</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+								</children>
+							</folder_node>
 							<folder_node>
 								<name>faq</name>
 								<children>

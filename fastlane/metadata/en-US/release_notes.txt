@@ -1,1 +1,1 @@
-- Support exporting accounts
+WARNING: Chiff will be discontinued. Read more on https://chiff.app/articles/2025/10/31/end-of-chiff/.

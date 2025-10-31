@@ -1,3 +1,5 @@
+WAARSCHUWING: Chiff gaat stoppen. Lees meer op https://chiff.app/articles/2025/10/31/end-of-chiff/
+
 Met Chiff gebruik je TouchID of FaceID om in te loggen op elke website, zowel op je telefoon als op je computer. Je hoeft geen enkel wachtwoord meer te onthouden, zelfs geen hoofdwachtwoord. Je kan Chiff koppelen met je computer, zodat je elke inlogpoging kan autoriseren met je vingerafdruk of gezicht.
 
 Waarom Chiff?

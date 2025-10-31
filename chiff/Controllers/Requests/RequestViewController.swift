@@ -23,6 +23,7 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
     @IBOutlet var successImageView: UIImageView!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var pickerView: UIPickerView!
+    @IBOutlet weak var openBlogButton: UIButton!
 
     var authorizer: Authorizer!
 
@@ -93,7 +94,15 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
         cancelRequest()
     }
 
-
+    @IBAction func openBlog(_ sender: UIButton) {
+        guard let url = URL(string: "urls.deprecation".localized) else {
+            dismiss()
+            AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+            return
+        }
+        UIApplication.shared.open(url)
+    }
+    
     // MARK: - Navigation
 
     func dismiss() {
@@ -278,6 +287,7 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
             })
             successView.startCircleAnimation(duration: period, start: start)
         }
+        openBlogButton.isHidden = false
         successTextDetailLabel.text = "requests.enter_otp".localized
         authorized = true
         showSuccessView()
@@ -288,21 +298,12 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
     }
 
     private func success() {
-        successTextLabel.text = authorizer.successText
-        successTextDetailLabel.text = authorizer.succesDetailText
+        openBlogButton.isHidden = false
+        requestLabel.text = "requests.notice".localized
+        successTextLabel.text = "requests.deprecation".localized
+        successTextDetailLabel.text = "popups.questions.deprecation_message".localized
         authorized = true
         showSuccessView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
-            if self.authorizer.type == .login &&
-                !Properties.hasBeenPromptedReview &&
-                (Properties.loginCount % 30 == 0 || Properties.accountCount > 15) {
-                SKStoreReviewController.requestReview()
-                Properties.hasBeenPromptedReview = true
-            } else {
-                AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
-                self.dismiss()
-            }
-        }
     }
 
     private func showSuccessView() {
@@ -328,4 +329,3 @@ extension RequestViewController: UITextFieldDelegate {
         return CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
     }
 }
-

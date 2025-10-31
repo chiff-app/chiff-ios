@@ -45,6 +45,7 @@ public struct Properties {
     private static let accountCountFlag = "accountCount"
     private static let teamAccountCountFlag = "accountCount"
     private static let agreedWithTermsFlag = "agreedWithTerms"
+    private static let acknowledgedDeprecationFlag = "acknowledgedDeprecation"
     private static let firstPairingCompletedFlag = "firstPairingCompleted"
     private static let reloadAccountsFlag = "reloadAccountsFlag"
     private static let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
@@ -106,6 +107,12 @@ public struct Properties {
                 UserDefaults.standard.set(termsOfUseVersion, forKey: agreedWithTermsFlag)
             }
         }
+    }
+    
+    /// Whether the user acknowledged the deprecation warning.
+    public static var acknowledgedDeprecation: Bool {
+        get { return UserDefaults.standard.bool(forKey: acknowledgedDeprecationFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: acknowledgedDeprecationFlag) }
     }
 
     /// Whether the user allows error logging.
