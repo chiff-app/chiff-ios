@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class AddWebAuthnToExistingAuthorizer: Authorizer {
+    public var deprecated = true
     public var session: BrowserSession
     public let type = ChiffMessageType.addWebauthnToExisting
     public let browserTab: Int

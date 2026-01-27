@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class AddBulkSiteAuthorizer: Authorizer {
+    public var deprecated = true
     public var session: BrowserSession
     public let type = ChiffMessageType.addBulk
     public let browserTab: Int

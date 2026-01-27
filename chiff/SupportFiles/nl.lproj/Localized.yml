@@ -617,8 +617,8 @@ popups:
       value: ⚠️ Chiff gaat stoppen
     deprecation_message:
       value: >-
-        Chiff gaat stoppen en zal niet meer werken per 1 februari 2026. Lees
-        meer details in de blog.
+        Chiff is niet langer beschikbaar. Inloggen is uitgeschakeld. Lees meer
+        details in het blogbericht.
     has_otp_message:
       value: >-
         Aan dit account is al 2FA gekoppeld. Wil je deze vervangen? De oude

@@ -615,8 +615,8 @@ popups:
       value: ⚠️ End of Chiff
     deprecation_message:
       value: >-
-        Chiff will be discontinued and stop working on 1 February 2026. Read
-        more details in the blog post.
+        Chiff has been discontinued. Logging in has been disabled. Read more
+        details in the blog post.
     has_otp_message:
       value: >-
         This account already has 2FA attached. Do you want to replace it? The

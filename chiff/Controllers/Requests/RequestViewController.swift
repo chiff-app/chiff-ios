@@ -51,6 +51,10 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
             isModalInPresentation = true
             presentationController?.delegate = self
         }
+        if authorizer.deprecated {
+            showDeprecation()
+            return
+        }
         requestLabel.text = authorizer.requestText
         if authorizer is TeamAdminLoginAuthorizer, !teamSessions.isEmpty {
             (authorizer as? TeamAdminLoginAuthorizer)?.teamSession = teamSessions.first
@@ -304,6 +308,15 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
         successTextDetailLabel.text = "popups.questions.deprecation_message".localized
         authorized = true
         showSuccessView()
+    }
+
+    private func showDeprecation() {
+        authenticateButton.isHidden = true
+        firstly {
+            self.authorizer.cancelRequest(reason: .error, error: .deprecated)
+        }.done {
+            self.success()
+        }
     }
 
     private func showSuccessView() {
