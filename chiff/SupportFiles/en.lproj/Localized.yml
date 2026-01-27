@@ -615,7 +615,7 @@ popups:
       value: ⚠️ End of Chiff
     deprecation_message:
       value: >-
-        Chiff has been discontinued. Logging in has been disabled. Read more
+        Chiff has been discontinued. Requests have been disabled. Read more
         details in the blog post.
     has_otp_message:
       value: >-

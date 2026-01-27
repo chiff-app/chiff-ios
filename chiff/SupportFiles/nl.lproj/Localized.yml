@@ -614,7 +614,7 @@ popups:
     delete_x:
       value: Delete %@
     deprecation:
-      value: ⚠️ Chiff gaat stoppen
+      value: ⚠️ Chiff is gestopt
     deprecation_message:
       value: >-
         Chiff is niet langer beschikbaar. Inloggen is uitgeschakeld. Lees meer
