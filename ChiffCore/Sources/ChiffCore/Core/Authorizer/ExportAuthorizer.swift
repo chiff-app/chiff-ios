@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class ExportAuthorizer: Authorizer {
+    public var deprecated = false
     public var session: BrowserSession
     public let type = ChiffMessageType.export
     public let browserTab: Int

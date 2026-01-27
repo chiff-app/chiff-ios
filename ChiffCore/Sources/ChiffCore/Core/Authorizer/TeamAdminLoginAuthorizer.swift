@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class TeamAdminLoginAuthorizer: Authorizer {
+    public var deprecated = false
     public var session: BrowserSession
     public let type = ChiffMessageType.adminLogin
     public let browserTab: Int
