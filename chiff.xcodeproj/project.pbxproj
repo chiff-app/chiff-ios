@@ -172,7 +172,6 @@
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
-		611F4B512146B47300B35A89 /* chiffCredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
 		611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
@@ -205,13 +204,6 @@
 			remoteGlobalIDString = 49E7664F1F7E6F420022C042;
 			remoteInfo = athena;
 		};
-		611F4B4F2146B47300B35A89 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 611F4B442146B47300B35A89;
-			remoteInfo = keynCredentialProvider;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -222,7 +214,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				4919DAEB20123FE50048B060 /* chiffNotificationExtension.appex in Embed Foundation Extensions */,
-				611F4B512146B47300B35A89 /* chiffCredentialProvider.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -832,7 +823,6 @@
 			);
 			dependencies = (
 				49214B872103327C00C793DE /* PBXTargetDependency */,
-				611F4B502146B47300B35A89 /* PBXTargetDependency */,
 			);
 			name = chiff;
 			packageProductDependencies = (
@@ -1305,11 +1295,6 @@
 			isa = PBXTargetDependency;
 			target = 49E7664F1F7E6F420022C042 /* chiff */;
 			targetProxy = 49E766671F7E6F420022C042 /* PBXContainerItemProxy */;
-		};
-		611F4B502146B47300B35A89 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 611F4B442146B47300B35A89 /* chiffCredentialProvider */;
-			targetProxy = 611F4B4F2146B47300B35A89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
