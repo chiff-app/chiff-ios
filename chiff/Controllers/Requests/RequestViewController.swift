@@ -40,7 +40,9 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         if Properties.hasFaceID {
-            showAuthorizationAlert = authorizer.verify || !Properties.autoShowAuthorization
+            if !authorizer.deprecated {
+                showAuthorizationAlert = authorizer.verify || !Properties.autoShowAuthorization
+            }
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         let nc = NotificationCenter.default
