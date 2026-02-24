@@ -52,6 +52,7 @@ public protocol Authorizer {
     var logParam: String { get }
     var code: String? { get }
     var verify: Bool { get }
+    var deprecated: Bool { get }
 
     init(request: ChiffRequest, session: BrowserSession) throws
 

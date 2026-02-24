@@ -40,7 +40,9 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         if Properties.hasFaceID {
-            showAuthorizationAlert = authorizer.verify || !Properties.autoShowAuthorization
+            if !authorizer.deprecated {
+                showAuthorizationAlert = authorizer.verify || !Properties.autoShowAuthorization
+            }
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         let nc = NotificationCenter.default
@@ -50,6 +52,10 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
         if #available(iOS 13.0, *) {
             isModalInPresentation = true
             presentationController?.delegate = self
+        }
+        if authorizer.deprecated {
+            showDeprecation()
+            return
         }
         requestLabel.text = authorizer.requestText
         if authorizer is TeamAdminLoginAuthorizer, !teamSessions.isEmpty {
@@ -304,6 +310,15 @@ class RequestViewController: UIViewController, UIAdaptivePresentationControllerD
         successTextDetailLabel.text = "popups.questions.deprecation_message".localized
         authorized = true
         showSuccessView()
+    }
+
+    private func showDeprecation() {
+        authenticateButton.isHidden = true
+        firstly {
+            self.authorizer.cancelRequest(reason: .error, error: .deprecated)
+        }.done {
+            self.success()
+        }
     }
 
     private func showSuccessView() {

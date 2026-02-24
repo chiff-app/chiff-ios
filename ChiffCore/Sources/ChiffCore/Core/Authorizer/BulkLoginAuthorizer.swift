@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class BulkLoginAuthorizer: Authorizer {
+    public var deprecated = true
     public var session: BrowserSession
     public let type = ChiffMessageType.bulkLogin
     public let browserTab: Int

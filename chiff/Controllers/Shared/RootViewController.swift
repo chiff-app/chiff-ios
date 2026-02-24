@@ -31,9 +31,6 @@ class RootViewController: UITabBarController {
     }
 
     func launchDeprecationWarning() {
-        if Properties.acknowledgedDeprecation {
-            return
-        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             let alert = UIAlertController(title: "popups.questions.deprecation".localized, message: "popups.questions.deprecation_message".localized, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "popups.responses.later".localized, style: .cancel))

@@ -10,6 +10,7 @@ import PromiseKit
 import ChiffCore
 
 class CreateOrganisationAuthorizer: Authorizer {
+    public var deprecated = true
     var session: BrowserSession
     let type = ChiffMessageType.createOrganisation
     let browserTab: Int

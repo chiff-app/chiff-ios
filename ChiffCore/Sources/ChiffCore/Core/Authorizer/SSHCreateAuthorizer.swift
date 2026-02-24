@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class SSHCreateAuthorizer: Authorizer {
+    public var deprecated = true
     public var session: BrowserSession
     public let type = ChiffMessageType.sshCreate
     public let browserTab: Int

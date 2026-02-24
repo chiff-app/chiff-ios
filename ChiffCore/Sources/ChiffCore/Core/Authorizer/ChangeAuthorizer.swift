@@ -9,6 +9,7 @@ import LocalAuthentication
 import PromiseKit
 
 public class ChangeAuthorizer: Authorizer {
+    public var deprecated = true
     public var session: BrowserSession
     public let type = ChiffMessageType.change
     public let browserTab: Int

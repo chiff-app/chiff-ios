@@ -9,6 +9,9 @@ import LocalAuthentication
 import PromiseKit
 
 public class LoginAuthorizer: Authorizer {
+    public var deprecated: Bool {
+        return self.type != .getDetails
+    }
     public var session: BrowserSession
     public let type: ChiffMessageType
     public let browserTab: Int
